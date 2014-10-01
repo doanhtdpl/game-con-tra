@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\GameInit">
+      <UniqueIdentifier>{c9e6335f-4721-4349-a857-d8d040df4baa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameRun">
+      <UniqueIdentifier>{6a80aea7-147d-40c7-8b30-321e0f3f3f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject">
+      <UniqueIdentifier>{b76359aa-c1df-44af-8f07-24ff6bff4a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameInit\Direct_X">
+      <UniqueIdentifier>{bd1cb297-8811-41e7-8004-fb9cd2e69fdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameRun\StateGame">
+      <UniqueIdentifier>{efab261c-e428-48a7-8728-8048ab0c537c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameRun\MainGame">
+      <UniqueIdentifier>{1a1a85ec-a0b1-4f76-866d-d22603a92a96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameInit\Utils">
+      <UniqueIdentifier>{0a87a554-dd40-4e05-95c7-a744e9d1a7b0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>Source Files\GameInit\Direct_X</Filter>
+    </ClCompile>
+    <ClCompile Include="CGame.cpp">
+      <Filter>Source Files\GameRun\MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameContra.cpp">
+      <Filter>Source Files\GameRun\MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CState.cpp">
+      <Filter>Source Files\GameRun\StateGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CStateLogo.cpp">
+      <Filter>Source Files\GameRun\StateGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CStateManagement.cpp">
+      <Filter>Source Files\GameRun\StateGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CStateMenu.cpp">
+      <Filter>Source Files\GameRun\StateGame</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\GameRun\MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CView.cpp">
+      <Filter>Source Files\GameRun\MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CDevice.cpp">
+      <Filter>Source Files\GameRun\MainGame</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CTexture.h">
+      <Filter>Source Files\GameInit\Direct_X</Filter>
+    </ClInclude>
+    <ClInclude Include="CGame.h">
+      <Filter>Source Files\GameRun\MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameContra.h">
+      <Filter>Source Files\GameRun\MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>Source Files\GameRun\StateGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CStateLogo.h">
+      <Filter>Source Files\GameRun\StateGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CStateManagement.h">
+      <Filter>Source Files\GameRun\StateGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CStateMenu.h">
+      <Filter>Source Files\GameRun\StateGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CView.h">
+      <Filter>Source Files\GameRun\MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CSingleton.h">
+      <Filter>Source Files\GameInit\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CGlobal.h">
+      <Filter>Source Files\GameInit\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CDevice.h">
+      <Filter>Source Files\GameRun\MainGame</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
