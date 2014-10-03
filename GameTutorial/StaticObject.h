@@ -13,5 +13,5 @@ public:
 	virtual void update(float deltaTime);
 	virtual void update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
 };
-
+// ;)
 #endif
