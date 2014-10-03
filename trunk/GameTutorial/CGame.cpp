@@ -37,11 +37,11 @@ namespace GameTutorial
 				float delta_time = (float)deltaTime / 1000;
 				if(this->m_isPaused)
 				{
-					//CStateManagement::GetInstance()->Update(true, delta_time);
+					CStateManagement::GetInstance()->Update(true, delta_time);
 				}
 				else
 				{
-					//CStateManagement::GetInstance()->Update(false, delta_time);
+					CStateManagement::GetInstance()->Update(false, delta_time);
 				}
 			}
 		}
