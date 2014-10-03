@@ -2,6 +2,9 @@
 #define __CSTATELOGO_H__
 #include "CState.h"
 #include <iostream>
+#include "CSprite.h"
+#include "CTexture.h"
+
 class CStateLogo : public CState
 {
 public:
@@ -13,6 +16,8 @@ public:
 	void Destroy();
 protected:
 	int m_count;
+	CSprite* sprite;
+	CTexture* texture;
 };
 
 #endif // !__CSTATELOGO_H__

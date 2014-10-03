@@ -22,7 +22,7 @@ bool CTexture::LoadImage(std::string filePath, D3DCOLOR color)
 	if(result != D3D_OK)
 	{
 		m_d3dTexture = nullptr;
-		return 0;
+		return false;
 	}
 	// create a new Texture by loading bitmap image file
 	result = D3DXCreateTextureFromFileEx(
@@ -44,14 +44,9 @@ bool CTexture::LoadImage(std::string filePath, D3DCOLOR color)
 	if(result != D3D_OK)
 	{
 		m_d3dTexture = NULL;
-		return true;
+		return false;
 	}
-	return  false;
-}
-
-LPDIRECT3DTEXTURE9 CTexture::GetTexture()
-{
-	return this->m_d3dTexture;
+	return  true;
 }
 
 int CTexture::GetImageHeight()
