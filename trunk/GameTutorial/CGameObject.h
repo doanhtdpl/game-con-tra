@@ -1,35 +1,33 @@
 #ifndef __CGAMEOBJECT__H__
 #define __CGAMEOBJECT__H__
 
-#include <d3dx9.h>
-#include <list>
-#include <vector>
-#include <string>
+#include "CGlobal.h"
 
 class CGameObject
 {
 public:
-	int _ID;//each object has a ID to identified with other object
-	int _ID_Image;
-	D3DXVECTOR2 _pos;//position of object
-	float z;//xet thang nao ve tren. mac dinh  = 0
-	bool _isALive;//life or die??
-	int _height;//height of object and uses to draw.
-	int _width;
+	int m_id;//each object has a ID to identified with other object
+	int m_idImage;
+	D3DXVECTOR2 m_pos;//position of object
+	float m_posZ;//xet thang nao ve tren. mac dinh  = 0
+	bool m_isALive;//life or die??
+	int m_height;//height of object and uses to draw.
+	int m_width;
 
-	bool _isAnimatedSprite;//default = false, but when object iherit IAnimatedSprite-> True;
-	bool _Left;//Direction. Default left
-	RECT *_rectRS;//NULL if object hasn't animated sprite
+	bool m_isAnimatedSprite;//default = false, but when object iherit IAnimatedSprite-> True;
+	bool m_left;//Direction. Default left
+	RECT *m_rectRS;//NULL if object hasn't animated sprite
 
-	RECT _rect;//xen trong Quadtree
+	RECT m_rect;//xen trong Quadtree
 
 public:
-	virtual std::string className() = 0;
+	virtual std::string ClassName() = 0;
 	CGameObject(void);
 	CGameObject(std::vector<std::string> arr);
-	virtual void update(float deltaTime);
-	virtual void update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
-	virtual RECT getRect();
+	virtual void Update(float deltaTime);
+	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
+	virtual D3DXVECTOR2 GetPos(){return this->m_pos;};
+	virtual RECT GetRect();
 	~CGameObject(void);
 };
 

@@ -8,7 +8,7 @@ public:
 	CStateMenu();
 	virtual ~CStateMenu();
 	void Init();
-	void Update();
+	void Update(float deltaTime);
 	void Render();
 	void Destroy();
 protected:

@@ -18,6 +18,7 @@ using namespace std;
 #define __SCREEN_WIDTH  800
 #define __SCREEN_HEIGHT 600
 #define __CLASS_NAME "Contra"
+#define __CLASS_NAME__(x) #x
 
 typedef unsigned long long __UINT64;
 typedef long long		   __INT64;
@@ -27,5 +28,7 @@ typedef signed short	   __INT16;
 typedef unsigned short	   __UINT16;
 typedef signed char		   __INT8;
 typedef unsigned char	   __UINT8;
+
+#define __CONTRA_PATH__ "..\\Resource\\contra.png"
 
 #endif // !__CGLOBAL_H__

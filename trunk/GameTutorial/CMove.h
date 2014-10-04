@@ -6,6 +6,8 @@ class CMove
 public:
 	CMove() : m_vx(0), 
 				m_vy(0),
+				m_vxDefault(0),
+				m_vyDefault(0),
 				m_a(0), 
 				m_isMoveLeft(true),
 				m_isMoveRight(false), 
@@ -14,6 +16,8 @@ public:
 				m_jumpMax(0){};
 	~CMove(){};
 protected:
+	float m_vxDefault;
+	float m_vyDefault;
 	float m_vx;
 	float m_vy;
 	float m_a;

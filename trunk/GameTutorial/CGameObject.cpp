@@ -4,45 +4,45 @@ using namespace std;
 CGameObject::CGameObject(void)
 {
 	//_ID = 0;
-	_isALive = true;
-	_rectRS = NULL;
-	_isAnimatedSprite = false;
-	this->_height = 0;
-	this->_width = 0;
-	this->z = 0;
+	m_isALive = true;
+	m_rectRS = NULL;
+	m_isAnimatedSprite = false;
+	this->m_height = 0;
+	this->m_width = 0;
+	this->m_posZ = 0;
 }
 
 CGameObject::CGameObject(std::vector<std::string> arr)
 {
-	this->z = 0;
+	this->m_posZ = 0;
 }
 
 CGameObject::~CGameObject(void)
 {
 }
 
-std::string CGameObject::className()
+std::string CGameObject::ClassName()
 {
-	return "Game Object";
+	return __CLASS_NAME__(CGameObject);
 }
 
-void CGameObject::update(float deltaTime, std::vector<CGameObject*> listObjectCollision)
-{
-
-}
-
-void CGameObject::update(float deltaTime)
+void CGameObject::Update(float deltaTime, std::vector<CGameObject*> listObjectCollision)
 {
 
 }
 
-RECT CGameObject::getRect()
+void CGameObject::Update(float deltaTime)
 {
-	this->_rect.top = _pos.y + this->_height / 2;
-	this->_rect.bottom = this->_rect.top - this->_height;
 
-	this->_rect.left = _pos.x - this->_width / 2;
-	this->_rect.right = this->_rect.left + this->_width;
+}
 
-	return this->_rect;
+RECT CGameObject::GetRect()
+{
+	this->m_rect.top = m_pos.y + this->m_height / 2;
+	this->m_rect.bottom = this->m_rect.top - this->m_height;
+
+	this->m_rect.left = m_pos.x - this->m_width / 2;
+	this->m_rect.right = this->m_rect.left + this->m_width;
+
+	return this->m_rect;
 }
