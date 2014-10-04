@@ -33,7 +33,7 @@ void CStateManagement::Update(bool isUpdate, float deltaTime)
 	{
 		if(!isUpdate)
 		{
-			this->m_pCurrent->Update();
+			this->m_pCurrent->Update(deltaTime);
 		}
 		this->m_pCurrent->Render();
 	}

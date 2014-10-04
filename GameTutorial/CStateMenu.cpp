@@ -15,7 +15,7 @@ void CStateMenu::Init()
 {
 }
 
-void CStateMenu::Update()
+void CStateMenu::Update(float detaTime)
 {
 	
 }
