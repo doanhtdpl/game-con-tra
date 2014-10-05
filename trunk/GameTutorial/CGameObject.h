@@ -28,6 +28,7 @@ public:
 	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
 	virtual D3DXVECTOR2 GetPos(){return this->m_pos;};
 	virtual RECT GetRect();
+	virtual RECT* GetRectRS();
 	~CGameObject(void);
 };
 

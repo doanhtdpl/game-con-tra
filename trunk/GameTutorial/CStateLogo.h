@@ -6,6 +6,7 @@
 #include "CTexture.h"
 #include "CContra.h"
 #include "CSimon.h"
+#include "CDynamicObject.h"
 
 class CStateLogo : public CState
 {
@@ -20,8 +21,8 @@ protected:
 	int m_count;
 	CSprite* sprite;
 	CTexture** texture;
-	CContra** contra;
-	CSimon** simon;
+	CDynamicObject** object;
+	//CSimon** simon;
 };
 
 #endif // !__CSTATELOGO_H__

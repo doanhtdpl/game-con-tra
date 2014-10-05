@@ -46,3 +46,8 @@ RECT CGameObject::GetRect()
 
 	return this->m_rect;
 }
+
+RECT* CGameObject::GetRectRS()
+{
+	return NULL;
+}

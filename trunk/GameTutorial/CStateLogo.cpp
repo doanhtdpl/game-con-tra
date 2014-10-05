@@ -7,15 +7,13 @@ CStateLogo::CStateLogo()
 {
 	this->sprite = new CSprite();
 	this->texture = new CTexture*[2];
-	this->contra = new CContra*[6];
+	this->object = new CDynamicObject*[6];
 	for (int i = 0; i < 6; i++)
 	{
-		this->contra[i] = new CContra();
-	}
-	this->simon = new CSimon*[6];
-	for (int i = 0; i < 6; i++)
-	{
-		this->simon[i] = new CSimon();
+		if(i % 2 == 0)
+			this->object[i] = new CContra();
+		else 
+			this->object[i] = new CSimon();
 	}
 
 	for (int i = 0; i < 2; i++)
@@ -43,7 +41,7 @@ float timeDelay = 0.0f;
 void CStateLogo::Update(float deltaTime)
 {
 	timeDelay += deltaTime;
-	if(temp < 12)
+	if(temp < 6)
 	{
 		if(timeDelay > 2.5f)
 		{
@@ -54,25 +52,7 @@ void CStateLogo::Update(float deltaTime)
 	//temp = 4;
 	for (int i = 0; i < temp; i++)
 	{
-
-		if(i % 2 == 0)
-		{
-			if(i > 5)
-			{
-				this->simon[i - 6]->Update(deltaTime);
-			}
-			else
-				this->simon[i]->Update(deltaTime);
-		}
-		else
-		{
-			if(i > 5)
-			{
-				this->contra[i - 6]->Update(deltaTime);
-			}
-			else
-				this->contra[i]->Update(deltaTime);
-		}
+		this->object[i]->Update(deltaTime);
 	}
 
 	m_count ++;
@@ -92,60 +72,23 @@ void CStateLogo::Render()
 			for (int i = 0; i < temp; i++)
 			{
 					CDevice::s_spriteHandle->Begin(D3DXSPRITE_ALPHABLEND);
-					if(i % 2 == 0)
+					D3DVECTOR pos;
+					pos.x = this->object[i]->GetPos().x;
+					pos.y = this->object[i]->GetPos().y;
+					pos.z = 0.0f;
+					if(this->object[i]->ClassName() == __CLASS_NAME__(CContra))
 					{
-						if(i > 5)
-						{
-							//simon
-							D3DVECTOR pos1;
-							pos1.x = this->simon[i - 6]->GetPos().x;
-							pos1.y = this->simon[i - 6]->GetPos().y;
-							pos1.z = 0.0f;
-							//ve simon
-							if(!this->simon[i - 6]->m_left)
-								sprite->drawFlipX(texture[1], this->simon[i - 6]->GetRectRS(), pos1, D3DCOLOR_XRGB(255,255,225), true);
-							else
-								sprite->draw(texture[1], this->simon[i - 6]->GetRectRS(), pos1, D3DCOLOR_XRGB(255,255,225), true);
-						}
+						if(this->object[i]->m_left)
+							sprite->drawFlipX(texture[0], this->object[i]->GetRectRS(), pos, D3DCOLOR_XRGB(255,255,225), true);
 						else
-						{
-							//simon
-							D3DVECTOR pos1;
-							pos1.x = this->simon[i]->GetPos().x;
-							pos1.y = this->simon[i]->GetPos().y;
-							pos1.z = 0.0f;
-							//ve simon
-							if(!this->simon[i]->m_left)
-								sprite->drawFlipX(texture[1], this->simon[i]->GetRectRS(), pos1, D3DCOLOR_XRGB(255,255,225), true);
-							else
-								sprite->draw(texture[1], this->simon[i]->GetRectRS(), pos1, D3DCOLOR_XRGB(255,255,225), true);
-						}
-						
+							sprite->draw(texture[0], this->object[i]->GetRectRS(), pos, D3DCOLOR_XRGB(255,255,225), true);
 					}
-					else
+					else if(this->object[i]->ClassName() == __CLASS_NAME__(CSimon))
 					{
-						if(i > 5)
-						{
-							D3DVECTOR pos;
-							pos.x = this->contra[i - 6]->GetPos().x;
-							pos.y = this->contra[i - 6]->GetPos().y;
-							pos.z = 0.0f;
-							if(this->contra[i - 6]->m_left)
-								sprite->drawFlipX(texture[0], this->contra[i - 6]->GetRectRS(), pos, D3DCOLOR_XRGB(255,255,225), true);
-							else
-								sprite->draw(texture[0], this->contra[i - 6]->GetRectRS(), pos, D3DCOLOR_XRGB(255,255,225), true);
-						}
+						if(!this->object[i]->m_left)
+							sprite->drawFlipX(texture[1], this->object[i]->GetRectRS(), pos, D3DCOLOR_XRGB(255,255,225), true);
 						else
-						{
-							D3DVECTOR pos;
-							pos.x = this->contra[i]->GetPos().x;
-							pos.y = this->contra[i]->GetPos().y;
-							pos.z = 0.0f;
-							if(this->contra[i]->m_left)
-								sprite->drawFlipX(texture[0], this->contra[i]->GetRectRS(), pos, D3DCOLOR_XRGB(255,255,225), true);
-							else
-								sprite->draw(texture[0], this->contra[i]->GetRectRS(), pos, D3DCOLOR_XRGB(255,255,225), true);
-						}
+							sprite->draw(texture[1], this->object[i]->GetRectRS(), pos, D3DCOLOR_XRGB(255,255,225), true);
 					}
 					CDevice::s_spriteHandle->End();
 					CDevice::s_d3ddv->EndScene();
