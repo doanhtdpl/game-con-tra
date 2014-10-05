@@ -7,8 +7,8 @@ CContra::CContra()
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 78.0f;
-	this->m_height = 84.0f;
+	this->m_width = 78.0f; //78
+	this->m_height = 84.0f; //84
 	this->m_pos = D3DXVECTOR2(0.0f, 400.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
@@ -86,7 +86,7 @@ void CContra::ChangeFrame(float deltaTime)
 	if(this->m_currentTime > this->m_elapseTimeChangeFrame)
 	{
 		this->m_currentFrame += this->m_increase;
-		if(this->m_currentFrame > 4)
+		if(this->m_currentFrame > 3)
 		{
 			this->m_currentFrame = 0;
 		}

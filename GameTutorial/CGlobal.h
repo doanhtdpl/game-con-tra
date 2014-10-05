@@ -30,5 +30,6 @@ typedef signed char		   __INT8;
 typedef unsigned char	   __UINT8;
 
 #define __CONTRA_PATH__ "..\\Resource\\contra.png"
+#define __SIMON_PATH__  "..\\Resource\\simon.png"
 
 #endif // !__CGLOBAL_H__
