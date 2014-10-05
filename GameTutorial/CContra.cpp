@@ -17,14 +17,15 @@ CContra::CContra()
 	this->m_a = 0;
 	this->m_canJump = true;
 	this->m_jumpMax = 150.0f;
-	this->m_vxDefault = 30.0f;
+	this->m_vxDefault = 50.0f;
 	this->m_vyDefault = 50.0f;
 	this->m_vx = this->m_vxDefault;
 	this->m_vy = this->m_vyDefault;
+	this->m_left = false;
 	//Khoi tao cac thong so chuyen doi sprite
 	this->m_currentTime = 0;
 	this->m_currentFrame = 0;
-	this->m_elapseTimeChangeFrame = 0.2f;
+	this->m_elapseTimeChangeFrame = 0.23f;
 	this->m_increase = 1;
 	this->m_totalFrame = 28;
 	this->m_column = 11;
@@ -39,11 +40,15 @@ void CContra::MoveUpdate(float deltaTime)
 {
 	if(this->m_pos.x > __SCREEN_WIDTH)
 	{
-		this->m_pos.x = 0;
+		this->m_left = true;
+	}
+	if(this->m_pos.x < 0)
+	{
+		this->m_left = false;
 	}
 
-	if (this->m_pos.x < this->m_width / 2)
-		this->m_pos.x = this->m_width / 2;
+	//if (this->m_pos.x < this->m_width / 2)
+	//	this->m_pos.x = this->m_width / 2;
 
 	if (this->m_isMoveLeft)
 	{
@@ -61,6 +66,18 @@ void CContra::MoveUpdate(float deltaTime)
 		}
 	}
 
+	if(this->m_left)
+	{
+		this->m_isMoveRight = false;
+		this->m_isMoveLeft = true;
+		this->m_vx = -this->m_vxDefault;
+	}
+	else
+	{
+		this->m_isMoveLeft = false;
+		this->m_isMoveRight = true;
+		this->m_vx = this->m_vxDefault;
+	}
 }
 
 void CContra::ChangeFrame(float deltaTime)
