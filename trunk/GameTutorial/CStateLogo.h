@@ -19,7 +19,7 @@ protected:
 	int m_count;
 	CSprite* sprite;
 	CTexture* texture;
-	CContra* contra;
+	CContra** contra;
 };
 
 #endif // !__CSTATELOGO_H__
