@@ -21,8 +21,8 @@ protected:
 	int m_count;
 	CSprite* sprite;
 	CTexture** texture;
-	CDynamicObject** object;
-	//CSimon** simon;
+	CSimon* simon;
+	CContra* contra;
 };
 
 #endif // !__CSTATELOGO_H__

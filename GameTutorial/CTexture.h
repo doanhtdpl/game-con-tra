@@ -11,10 +11,10 @@ protected:
 public:
 	CTexture();
 	~CTexture();
-	bool LoadImage(std::string, D3DCOLOR);
+	bool LoadImageFromFile(std::string, D3DCOLOR);
 	LPDIRECT3DTEXTURE9 GetTexture(){return m_d3dTexture;};
 	int GetImageHeight();
-	int GetUmageWidth();
+	int GetImageWidth();
 };
 
 #endif // !__CTEXTURE_H__

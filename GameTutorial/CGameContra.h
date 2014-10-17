@@ -14,6 +14,7 @@ public:
 	virtual ~CGameContra(){};
 protected:
 	virtual void Init();
+	virtual void ProcessInput();
 	virtual void Destroy();
 };
 #endif // !__CGAME_CONTRA_H__

@@ -13,17 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\GameInit">
-      <UniqueIdentifier>{c9e6335f-4721-4349-a857-d8d040df4baa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GameObject">
       <UniqueIdentifier>{b76359aa-c1df-44af-8f07-24ff6bff4a1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameInit\Direct_X">
-      <UniqueIdentifier>{bd1cb297-8811-41e7-8004-fb9cd2e69fdf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameInit\Utils">
-      <UniqueIdentifier>{0a87a554-dd40-4e05-95c7-a744e9d1a7b0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\GameObject\StaticObject">
       <UniqueIdentifier>{4b876376-5e50-41e9-ad4e-04db5b20725c}</UniqueIdentifier>
@@ -46,10 +37,25 @@
     <Filter Include="Source Files\GameObject\DynamicObject\Enemy">
       <UniqueIdentifier>{22fbed21-fc21-4e79-9064-853281bb97c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame">
+      <UniqueIdentifier>{87f93cde-0d2d-46d3-bdaf-f5bc16a92b46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameFramwork">
+      <UniqueIdentifier>{c9e6335f-4721-4349-a857-d8d040df4baa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameFramwork\Direct_X">
+      <UniqueIdentifier>{bd1cb297-8811-41e7-8004-fb9cd2e69fdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameFramwork\Utils">
+      <UniqueIdentifier>{0a87a554-dd40-4e05-95c7-a744e9d1a7b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\DynamicObject\Bullet">
+      <UniqueIdentifier>{ee4c5133-dc42-48f2-a36e-1bd84f5f088f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTexture.cpp">
-      <Filter>Source Files\GameInit\Direct_X</Filter>
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClCompile>
     <ClCompile Include="CGame.cpp">
       <Filter>Source Files\GameLoop\MainGame</Filter>
@@ -79,7 +85,7 @@
       <Filter>Source Files\GameLoop\MainGame</Filter>
     </ClCompile>
     <ClCompile Include="CSprite.cpp">
-      <Filter>Source Files\GameInit\Direct_X</Filter>
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClCompile>
     <ClCompile Include="CAnimation.cpp">
       <Filter>Source Files\GameObject</Filter>
@@ -99,10 +105,31 @@
     <ClCompile Include="CSimon.cpp">
       <Filter>Source Files\GameObject\DynamicObject\Contra</Filter>
     </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileUtil.cpp">
+      <Filter>Source Files\GameFramwork\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CLoadBackGround.cpp">
+      <Filter>Source Files\GameLoop\InitGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CManagementTexture.cpp">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClCompile>
+    <ClCompile Include="CFactoryStaticObject.cpp">
+      <Filter>Source Files\GameObject\DynamicObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CInput.cpp">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTexture.h">
-      <Filter>Source Files\GameInit\Direct_X</Filter>
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClInclude>
     <ClInclude Include="CGame.h">
       <Filter>Source Files\GameLoop\MainGame</Filter>
@@ -126,16 +153,16 @@
       <Filter>Source Files\GameLoop\MainGame</Filter>
     </ClInclude>
     <ClInclude Include="CSingleton.h">
-      <Filter>Source Files\GameInit\Utils</Filter>
+      <Filter>Source Files\GameFramwork\Utils</Filter>
     </ClInclude>
     <ClInclude Include="CGlobal.h">
-      <Filter>Source Files\GameInit\Utils</Filter>
+      <Filter>Source Files\GameFramwork\Utils</Filter>
     </ClInclude>
     <ClInclude Include="CDevice.h">
       <Filter>Source Files\GameLoop\MainGame</Filter>
     </ClInclude>
     <ClInclude Include="CSprite.h">
-      <Filter>Source Files\GameInit\Direct_X</Filter>
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClInclude>
     <ClInclude Include="CMove.h">
       <Filter>Source Files\GameObject</Filter>
@@ -157,6 +184,30 @@
     </ClInclude>
     <ClInclude Include="CSimon.h">
       <Filter>Source Files\GameObject\DynamicObject\Contra</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileUtil.h">
+      <Filter>Source Files\GameFramwork\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CLoadBackGround.h">
+      <Filter>Source Files\GameLoop\InitGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CManagementTexture.h">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClInclude>
+    <ClInclude Include="CFactoryObject.h">
+      <Filter>Source Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CFactoryStaticObject.h">
+      <Filter>Source Files\GameObject\DynamicObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CInput.h">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
