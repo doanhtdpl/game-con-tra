@@ -12,6 +12,7 @@ namespace GameTutorial
 		virtual void Exit();
 		virtual void Pause();
 		virtual void Resume();
+		virtual void ProcessInput();
 		bool IsAlive(){ return m_isAlived;};
 		bool IsPause(){ return m_isPaused;};
 	protected:

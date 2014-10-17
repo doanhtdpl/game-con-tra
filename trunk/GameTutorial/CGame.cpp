@@ -35,6 +35,7 @@ namespace GameTutorial
 			{
 				frameStart = now;
 				float delta_time = (float)deltaTime / 1000;
+				this->ProcessInput();
 				if(this->m_isPaused)
 				{
 					CStateManagement::GetInstance()->Update(true, delta_time);
@@ -76,6 +77,11 @@ namespace GameTutorial
 	}
 
 	void CGame::Exit()
+	{
+
+	}
+
+	void CGame::ProcessInput()
 	{
 
 	}

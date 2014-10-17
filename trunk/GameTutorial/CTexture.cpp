@@ -14,7 +14,7 @@ CTexture::~CTexture()
 	}
 }
 
-bool CTexture::LoadImage(std::string filePath, D3DCOLOR color)
+bool CTexture::LoadImageFromFile(std::string filePath, D3DCOLOR color)
 {
 	HRESULT result; // take a value return
 	//save information of source file into avaiable _infoImageT
@@ -54,7 +54,7 @@ int CTexture::GetImageHeight()
 	return this->m_d3dInfo.Height;
 }
 
-int CTexture::GetUmageWidth()
+int CTexture::GetImageWidth()
 {
 	return this->m_d3dInfo.Width;
 }

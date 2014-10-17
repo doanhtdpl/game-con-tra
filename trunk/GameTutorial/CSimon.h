@@ -16,7 +16,8 @@ public:
 	RECT GetRect();
 	RECT* GetRectRS();
 protected:
-
+	int m_endFrame;
+	int m_startFrame;
 };
 
 #endif // !__CSimon_H__
