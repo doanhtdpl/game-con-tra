@@ -9,19 +9,19 @@ CContra::CContra()
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 56.0f; //78
-	this->m_height = 88.0f; //84
+	this->m_width = 72.0f;//56.0f; //78
+	this->m_height = 92.0f; //88.0f; //84
 	this->m_pos = D3DXVECTOR2(50.0f, 280.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
-	this->m_a = 150.0f;
+	this->m_a = -700.0f;
 	this->m_canJump = true;
-	this->m_jumpMax = 50.0f;
+	this->m_jumpMax = 40.0f;
 	this->m_currentJump = 0.0f;
-	this->m_vxDefault = 60.0f;
-	this->m_vyDefault = 50.0f;
+	this->m_vxDefault = 100.0f;
+	this->m_vyDefault = 400.0f;
 	this->m_vx = this->m_vxDefault;
 	this->m_vy = this->m_vyDefault;
 	this->m_left = false;
@@ -34,9 +34,9 @@ CContra::CContra()
 	//Khoi tao cac thong so chuyen doi sprite
 	this->m_currentTime = 0;
 	this->m_currentFrame = 0;
-	this->m_elapseTimeChangeFrame = 0.12f;
+	this->m_elapseTimeChangeFrame = 0.23f;
 	this->m_increase = 1;
-	this->m_totalFrame = 31;
+	this->m_totalFrame = 50;
 	this->m_column = 6;
 }
 
@@ -51,21 +51,40 @@ void CContra::MoveUpdate(float deltaTime)
 	//Kiem tra doi tuong co nhay duoc hay ko
 	if(this->m_canJump && this->m_isJumping)
 	{
-		//Neu nhay den do cao cuc dai, gia toc doi chieu
-		if(this->m_currentJump > this->m_jumpMax)
+		if(this->m_stateCurrent == ON_GROUND::IS_FALL)
 		{
-			this->m_a = -210.0f;
+			this->m_pos.y -= this->m_vy * deltaTime;
+			if(this->m_pos.y <= 200)
+			{ 
+				this->m_elapseTimeChangeFrame = 0.00f;
+				//this->m_stateCurrent = ON_GROUND::IS_STANDING;
+				this->m_vy = this->m_vyDefault;
+				//this->m_elapseTimeChangeFrame = 0.23f;
+				this->m_pos.y = 200;
+				this->m_isJumping = false;
+			}
 		}
-		this->m_vy = this->m_a * deltaTime;
-		this->m_pos.y += this->m_vy;
-		this->m_currentJump += this->m_vy;
-		//Neu co vao cham thi cai dat lai posY cua doi tuong
-		if(this->m_pos.y <= 280)
+		else
 		{
-			this->m_a = 150.0f;
-			this->m_pos.y = 280;
-			this->m_isJumping = false;
-			this->m_stateCurrent = ON_GROUND::IS_STANDING;
+			//Neu nhay den do cao cuc dai, gia toc doi chieu
+			this->m_elapseTimeChangeFrame = 0.10f;
+			if(this->m_vy <= 0)
+			{
+	//			this->m_a = 1500.0f;
+			}
+			this->m_vy += this->m_a * deltaTime;
+			this->m_pos.y += this->m_vy * deltaTime;
+			this->m_currentJump += this->m_vy * deltaTime;
+			//Neu co vao cham thi cai dat lai posY cua doi tuong
+			if(this->m_pos.y <= 290)
+			{ 
+				this->m_elapseTimeChangeFrame = 0.00f;
+				//this->m_stateCurrent = ON_GROUND::IS_STANDING;
+				this->m_vy = this->m_vyDefault;
+				//this->m_elapseTimeChangeFrame = 0.23f;
+				this->m_pos.y = 280;
+				this->m_isJumping = false;
+			}
 		}
 	}
 	if(this->m_isMoveLeft)
@@ -107,40 +126,43 @@ void CContra::SetFrame()
 		case ON_GROUND::IS_JOGGING:
 			{
 				this->m_startFrame = 18;
-				this->m_endFrame = 20;
+				this->m_endFrame = 23;
 				break;
 			}
 		case ON_GROUND::IS_JUMPING:
 			{
-				this->m_startFrame = 24;
-				this->m_endFrame = 27;
+				this->m_startFrame = 32;
+				this->m_endFrame = 35;
 				break;
 			}
 		case ON_GROUND::IS_LYING:
 			{
+				this->m_startFrame = 29;
+				this->m_endFrame = 29;
 				break;
 			}
 		case ON_GROUND::IS_SHOOTING_DIAGONAL_DOWN:
-			{
-				this->m_startFrame = 6;
-				this->m_endFrame = 11;
-				break;
-			}
-		case ON_GROUND::IS_SHOOTING_DIAGONAL_UP:
 			{
 				this->m_startFrame = 12;
 				this->m_endFrame = 17;
 				break;
 			}
-		case ON_GROUND::IS_SHOOTING_DOWN:
+		case ON_GROUND::IS_SHOOTING_DIAGONAL_UP:
 			{
-
+				this->m_startFrame = 6;
+				this->m_endFrame = 11;
+				break;
+			}
+		case ON_GROUND::IS_SHOOTING_NORMAL:
+			{
+				this->m_startFrame = 0;
+				this->m_endFrame = 5;
 				break;
 			}
 		case ON_GROUND::IS_SHOOTING_UP:
 			{
-				this->m_startFrame = 21;
-				this->m_endFrame = 22;
+				this->m_startFrame = 30;
+				this->m_endFrame = 31;
 				break;
 			}
 		case ON_GROUND::IS_STANDING:
@@ -188,6 +210,14 @@ void CContra::InputUpdate(float deltaTime)
 		this->m_isMoveLeft = false;
 		this->m_isMoveRight = false;
 		this->m_stateShoot = SHOOT::IS_NORMAL;
+		if(this->m_stateCurrent == ON_GROUND::IS_JUMPING)
+		{
+			this->m_elapseTimeChangeFrame = 0.00f;
+		}
+		else
+		{
+			this->m_elapseTimeChangeFrame = 0.23f;
+		}
 		if(!this->m_isUnderWater)
 		{
 			this->m_stateCurrent = ON_GROUND::IS_STANDING;
@@ -209,11 +239,14 @@ void CContra::InputUpdate(float deltaTime)
 #pragma region __XU_LY_PHIM_NHAY__
 	if(CInput::GetInstance()->IsKeyDown(DIK_X))
 	{
-		this->m_stateCurrent = ON_GROUND::IS_JUMPING;
-		if(!this->m_isUnderWater && !this->m_isJumping)
+		if(this->m_stateCurrent != ON_GROUND::IS_LYING)
 		{
-			this->m_isJumping = true;
-			this->m_vy = this->m_vyDefault;
+			this->m_stateCurrent = ON_GROUND::IS_JUMPING;
+			if(!this->m_isUnderWater && !this->m_isJumping)
+			{
+				this->m_isJumping = true;
+				//this->m_vy = this->m_vyDefault;
+			}
 		}
 	}
 #pragma endregion
@@ -223,9 +256,9 @@ void CContra::InputUpdate(float deltaTime)
 	if(CInput::GetInstance()->IsKeyDown(DIK_UP))
 	{
 		this->m_stateShoot = SHOOT::IS_UP;
-		if(CInput::GetInstance()->IsKeyDown(DIK_X))
+		if(CInput::GetInstance()->IsKeyDown(DIK_X) || this->m_isJumping)
 		{
-			//Chuyen sang trang thai roi
+			//Chuyen sang trang thai nhay
 			this->m_stateCurrent = ON_GROUND::IS_JUMPING;
 		}else
 		{
@@ -238,10 +271,13 @@ void CContra::InputUpdate(float deltaTime)
 	if(CInput::GetInstance()->IsKeyDown(DIK_DOWN))
 	{
 		this->m_stateShoot = SHOOT::IS_NORMAL;
-		if(CInput::GetInstance()->IsKeyDown(DIK_X))
+		if(this->m_stateCurrent == ON_GROUND::IS_LYING && this->m_isJumping)
 		{
 			//Chuyen sang trang thai roi
 			this->m_stateCurrent = ON_GROUND::IS_FALL;
+		}else if(CInput::GetInstance()->IsKeyDown(DIK_DOWN) && this->m_isJumping)
+		{
+			this->m_stateCurrent = ON_GROUND::IS_JUMPING;
 		}else
 		{
 			this->m_stateCurrent = ON_GROUND::IS_LYING;
@@ -292,6 +328,10 @@ void CContra::InputUpdate(float deltaTime)
 				{
 					//Nhay
 					this->m_stateCurrent = ON_GROUND::IS_JUMPING;
+				}else if(CInput::GetInstance()->IsKeyDown(DIK_C))
+				{
+					//Ban binh thuong
+					this->m_stateCurrent = ON_GROUND::IS_SHOOTING_NORMAL;
 				}else
 				{
 					//Chuyen sprite
