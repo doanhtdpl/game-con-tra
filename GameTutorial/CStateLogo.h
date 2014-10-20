@@ -22,7 +22,6 @@ protected:
 	CSprite* sprite;
 	CTexture** texture;
 	CSimon* simon;
-	CContra* contra;
 };
 
 #endif // !__CSTATELOGO_H__
