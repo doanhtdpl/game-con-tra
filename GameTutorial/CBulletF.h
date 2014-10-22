@@ -21,7 +21,7 @@ public:
 private:
 	double m_angle;
 	D3DXVECTOR2 m_posStart;
-	
+	D3DXVECTOR2 m_center;
 };
 
 #endif // !__CBulletF_H__
