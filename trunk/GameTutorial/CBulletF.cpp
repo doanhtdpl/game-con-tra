@@ -51,7 +51,7 @@ CBullet_F::CBullet_F(double rotation)
 	this->m_canJump = false;
 	this->m_jumpMax = 40.0f;
 	this->m_vxDefault = 100.0f;
-	this->m_vyDefault = 400.0f;
+	this->m_vyDefault = 100.0f;
 	this->m_vx = this->m_vxDefault;
 	this->m_vy = this->m_vyDefault;
 	this->m_pos = this->m_posStart;
@@ -67,16 +67,16 @@ void CBullet_F::InitPosition()
 	this->m_pos = CContra::GetInstance()->GetPos();
 	//Huong cua vien dan cung huong voi contra
 	this->m_left = CContra::GetInstance()->m_left; 
-	if(!this->m_left)
-	{
-		this->m_vx = this->m_vxDefault;
-		this->m_a = 1000;
-	}
-	else
-	{
-		this->m_vx = -this->m_vxDefault;
-		this->m_a = -1000;
-	}
+	//if(!this->m_left)
+	//{
+	//	this->m_vx = this->m_vxDefault;
+	//	this->m_a = 50;
+	//}
+	//else
+	//{
+	//	this->m_vx = -this->m_vxDefault;
+	//	this->m_a = -50;
+	//}
 	//Thiet lap huong ban cua dau dan
 	this->m_shootState = CContra::GetInstance()->GetShootState();
 	//Thiet lap vi tri cua dau dan .../pos = posContra + Offset 
@@ -132,6 +132,22 @@ void CBullet_F::InitPosition()
 			this->m_pos.y += this->m_offset.y;
 		}
 		this->m_posStart = this->m_pos;
+		this->m_center.x = this->m_pos.x + 10;
+		this->m_center.y = this->m_pos.y;
+	}
+	if(!this->m_left)
+	{
+		//this->m_vx = this->m_vxDefault;
+		//this->m_a = 1000;
+		this->m_vx = this->m_vxDefault * cos(this->m_rotation);
+		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
+	}
+	else
+	{
+		//this->m_vx = -this->m_vxDefault;
+		//this->m_a = 1000;
+		this->m_vx = -this->m_vxDefault * cos(this->m_rotation);
+		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	}
 }
 
@@ -145,9 +161,34 @@ void CBullet_F::MoveUpdate(float deltaTime)
 	//this->m_pos.y += this->m_vy * deltaTime;
 
 	//
-	this->m_angle += 600 * deltaTime;
-	this->m_pos.x += 10 * (cos(this->m_angle + PI/4)) + 0.30;
-	this->m_pos.y += 10 * (sin(this->m_angle + PI/4));
+	this->m_angle -= 0.45f;
+	this->m_pos.x = 30 * (cos(this->m_angle)) + this->m_center.x;
+	this->m_pos.y = (30 * (sin(this->m_angle)) + this->m_center.y);
+
+	if(m_vx != 0) 
+	{
+		if(this->m_vx > 0)
+		{
+			this->m_vx += this->m_a * deltaTime;
+		}
+		else
+		{
+			this->m_vx -= this->m_a * deltaTime;
+		}
+	}
+	if(m_vy != 0)
+	{
+		if(this->m_vy > 0)
+		{
+			this->m_vy += this->m_a * deltaTime;
+		}
+		else
+		{
+			this->m_vy -= this->m_a * deltaTime;
+		}
+	}
+	this->m_center.x += this->m_vx * deltaTime;
+	this->m_center.y += this->m_vy * deltaTime;
 	//this->m_pos.x += this->m_vx * deltaTime;
 	//this->m_pos.y += this->m_vy * deltaTime;
 
