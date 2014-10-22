@@ -5,6 +5,8 @@
 #include "CAnimation.h"
 #include "CBullet.h"
 #include "CSingleton.h"
+#include "CBulletS.h"
+#include "CBulletF.h"
 
 enum ON_GROUND
 {

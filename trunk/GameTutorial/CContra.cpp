@@ -1,6 +1,7 @@
 #include "CContra.h"
 #include "CInput.h"
 #include "CCamera.h"
+#include <cmath>
 
 CContra::CContra()
 {
@@ -41,6 +42,7 @@ CContra::CContra()
 	//
 	this->m_currentFall = 0;
 	this->m_currentJump = 0;
+	
 }
 
 CContra::~CContra()
@@ -163,6 +165,10 @@ void CContra::SetFrame()
 			}
 		case ON_GROUND::IS_SHOOTING_NORMAL:
 			{
+				if(this->m_currentFrame > 17 && this->m_currentFrame < 24)
+				{
+					 this->m_currentFrame -= 18;
+				}
 				this->m_startFrame = 0;
 				this->m_endFrame = 5;
 				break;
@@ -429,7 +435,55 @@ void CContra::BulletUpdate(float deltaTime)
 {
 	if(this->m_isShoot)
 	{
-		this->m_listBullet.push_back(new CBullet());
+		//Cap nhat goc quay
+		float rotation = 0;
+		switch (this->m_stateShoot)
+		{
+		case SHOOT::IS_NORMAL:
+			{
+				rotation = 0; //Goc ban bang 0
+				break;
+			}
+		case SHOOT::IS_UP:
+			{
+				rotation = PI/2; //Goc ban bang 90
+				break;
+			}
+		case SHOOT::IS_DOWN:
+			{
+				rotation = -PI/2;
+				break;
+			}
+		case SHOOT::IS_DIAGONAL_UP:
+			{ 
+				rotation = PI/4; //Goc ban bang 45
+				break;
+			}
+		case SHOOT::IS_DIAGONAL_DOWN:
+			{
+				//this->m_a = -700;
+				//this->m_vy = -400.0f;
+				rotation = -PI/4;// //Goc ban bang -45
+				break;
+			}
+		default:
+			{
+				rotation = 0;
+				break;
+			}
+		}
+
+		// Them dan S.
+		/*CBullet_S* bullet = new CBullet_S(rotation);
+		this->m_listBullet.push_back(bullet->m_bullet_1);
+		this->m_listBullet.push_back(bullet->m_bullet_2);
+		this->m_listBullet.push_back(bullet->m_bullet_3);
+		this->m_listBullet.push_back(bullet->m_bullet_4);
+		this->m_listBullet.push_back(bullet->m_bullet_5);*/
+
+		CBullet_F* bulletF = new CBullet_F(rotation);
+		this->m_listBullet.push_back(bulletF);
+
 		this->m_isShoot = false;
 	}
 	//Update trang thai dan

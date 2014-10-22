@@ -10,6 +10,7 @@
 #include <Windows.h>
 #include <hash_map>
 #include <sstream>
+#include <math.h>
 
 using namespace std;
 
@@ -34,5 +35,8 @@ typedef unsigned char	   __UINT8;
 #define __CONTRA_PATH__ "..\\Resource\\contra.png"
 #define __SIMON_PATH__  "..\\Resource\\simon.png"
 #define __BULLET_PATH__ "..\\Resource\\Bullet.png"
+#define PI atan(1.0)*4
+//#define PI 3.141592653589793
+//#define PI boost::math::constants::pi<double>()
 
 #endif // !__CGLOBAL_H__

@@ -70,6 +70,8 @@
   <ItemGroup>
     <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CBulletF.cpp" />
+    <ClCompile Include="CBulletS.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CContra.cpp" />
     <ClCompile Include="CDevice.cpp" />
@@ -96,6 +98,8 @@
   <ItemGroup>
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CBulletF.h" />
+    <ClInclude Include="CBulletS.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CContra.h" />
     <ClInclude Include="CDevice.h" />
