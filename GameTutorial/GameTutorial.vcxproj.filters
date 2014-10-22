@@ -126,6 +126,12 @@
     <ClCompile Include="CInput.cpp">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClCompile>
+    <ClCompile Include="CBulletS.cpp">
+      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletF.cpp">
+      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTexture.h">
@@ -208,6 +214,12 @@
     </ClInclude>
     <ClInclude Include="CInput.h">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletS.h">
+      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletF.h">
+      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

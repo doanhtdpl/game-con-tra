@@ -2,6 +2,7 @@
 #define __CBULLET_H__
 
 #include "CDynamicObject.h"
+#include "CAnimation.h"
 
 enum SHOOT
 {
@@ -12,24 +13,26 @@ enum SHOOT
 	IS_DIAGONAL_DOWN = 4
 };
 
-class CBullet : public CDynamicObject
+class CBullet : public CDynamicObject, CAnimation
 {
 public:
 	CBullet(void);
+	CBullet(double rotation);
 	~CBullet(void);
 public:
 	virtual void MoveUpdate(float DeltaTime);// overide IMOVE
 	virtual std::string ClassName(){return __CLASS_NAME__(CBullet);};
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision);
+	virtual void ChangeFrame(float deltaTime);
 	virtual RECT* GetRectRS();
 	virtual RECT GetRect();
 protected:
-	void InitPosotion(); //Khoi tao vi tri ban dau cua vien dan
+	virtual void InitPosition(); //Khoi tao vi tri ban dau cua vien dan
 	int m_shootState; //Trang thai dan hien tai
 	D3DXVECTOR2 m_posStart; //Vi tri ban dau cua vien dan
 	D3DXVECTOR2 m_offset; //Vi tri cua vien dan so voi contra
-	float m_rotation(); //Goc ban
+	double m_rotation; //Goc ban
 };
 
 #endif // !__CBULLET_H__

@@ -15,9 +15,9 @@ CBullet::CBullet() : CDynamicObject()
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 10.0f;//56.0f; //78
-	this->m_height = 10.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(55.0f, 300.0f);
+	this->m_width = 18.0f;//56.0f; //78
+	this->m_height = 18.0f; //88.0f; //84
+	//this->m_pos = D3DXVECTOR2(55.0f, 300.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -29,12 +29,51 @@ CBullet::CBullet() : CDynamicObject()
 	this->m_vx = this->m_vxDefault;
 	this->m_vy = this->m_vyDefault;
 	this->m_pos = this->m_posStart;
+	this->m_totalFrame= 3;
+	this->m_column = 3;
+	this->m_elapseTimeChangeFrame = 0.35f;
+	this->m_currentTime = 0;
+	this->m_increase = 1;
+	this->m_currentFrame = 0;
 	//this->m_rotation = 0;
-	this->InitPosotion();
+	this->InitPosition();
 	
 }
 
-void CBullet::InitPosotion()
+CBullet::CBullet(double rotation)
+{
+	//Khoi tao cac thong so cua doi tuong
+	this->m_id = 0;
+	this->m_idImage = 0;
+	this->m_isALive = true;
+	this->m_isAnimatedSprite = true;
+	this->m_width = 18.0f;//56.0f; //78
+	this->m_height = 18.0f; //88.0f; //84
+	//this->m_pos = D3DXVECTOR2(55.0f, 300.0f);
+	//Khoi tao cac thong so di chuyen
+	this->m_isJumping = false;
+	this->m_isMoveLeft = false;
+	this->m_isMoveRight = true;
+	this->m_canJump = false;
+	this->m_jumpMax = 40.0f;
+	this->m_vxDefault = 400.0f;
+	this->m_vyDefault = 400.0f;
+	this->m_vx = this->m_vxDefault;
+	this->m_vy = this->m_vyDefault;
+	this->m_pos = this->m_posStart;
+	this->m_totalFrame= 3;
+	this->m_column = 3;
+	this->m_elapseTimeChangeFrame = 0.35f;
+	this->m_currentTime = 0;
+	this->m_increase = 1;
+	this->m_currentFrame = 0;
+	//this->m_rotation = 0;
+	//
+	this->m_rotation = rotation; //Lay sin cua goc
+	this->InitPosition();
+}
+
+void CBullet::InitPosition()
 {
 	//Vi tri cua dau dan
 	this->m_pos = CContra::GetInstance()->GetPos();
@@ -42,14 +81,20 @@ void CBullet::InitPosotion()
 	this->m_left = CContra::GetInstance()->m_left; 
 	if(!this->m_left)
 	{
-		this->m_vx = this->m_vxDefault;
-		this->m_a = 1000;
+		//this->m_vx = this->m_vxDefault;
+		//this->m_a = 1000;
+		this->m_vx = this->m_vxDefault * cos(this->m_rotation);
+		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	}
 	else
 	{
-		this->m_vx = -this->m_vxDefault;
-		this->m_a = -1000;
+		//this->m_vx = -this->m_vxDefault;
+		//this->m_a = 1000;
+		this->m_vx = -this->m_vxDefault * cos(this->m_rotation);
+		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	}
+	//this->m_vx = this->m_vxDefault * cos(this->m_rotation);
+	//this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	//Thiet lap huong ban cua dau dan
 	this->m_shootState = CContra::GetInstance()->GetShootState();
 	//Thiet lap vi tri cua dau dan .../pos = posContra + Offset 
@@ -110,43 +155,43 @@ void CBullet::InitPosotion()
 void CBullet::MoveUpdate(float deltaTime)
 {
 #pragma region __XET_TRANG_THAI_DAN__
-	float rotation = 0;
+	//float rotation = this->m_rotation;
 	//this->m_posStart.y = CContra::GetInstance()->GetPos().y + 10;
-		switch (this->m_shootState)
-		{
-		case SHOOT::IS_NORMAL:
-			{
-				rotation = 1; //Goc ban bang 0
-				break;
-			}
-		case SHOOT::IS_UP:
-			{
-				rotation = 0; //Goc ban bang 90
-				break;
-			}
-		case SHOOT::IS_DOWN:
-			{
-				rotation = -1;
-				break;
-			}
-		case SHOOT::IS_DIAGONAL_UP:
-			{ 
-				rotation = sqrt(2) /2; //Goc ban bang 45
-				break;
-			}
-		case SHOOT::IS_DIAGONAL_DOWN:
-			{
-				//this->m_a = -700;
-				//this->m_vy = -400.0f;
-				rotation = -sqrt(2) /2; // //Goc ban bang -45
-				break;
-			}
-		default:
-			{
-				rotation = 0;
-				break;
-			}
-		}
+		//switch (this->m_shootState)
+		//{
+		//case SHOOT::IS_NORMAL:
+		//	{
+		//		rotation = 1; //Goc ban bang 0
+		//		break;
+		//	}
+		//case SHOOT::IS_UP:
+		//	{
+		//		rotation = 0; //Goc ban bang 90
+		//		break;
+		//	}
+		//case SHOOT::IS_DOWN:
+		//	{
+		//		rotation = -1;
+		//		break;
+		//	}
+		//case SHOOT::IS_DIAGONAL_UP:
+		//	{ 
+		//		rotation = sin(5*PI/12); //Goc ban bang 45
+		//		break;
+		//	}
+		//case SHOOT::IS_DIAGONAL_DOWN:
+		//	{
+		//		//this->m_a = -700;
+		//		//this->m_vy = -400.0f;
+		//		rotation = -sin(5*PI/12);// //Goc ban bang -45
+		//		break;
+		//	}
+		//default:
+		//	{
+		//		rotation = 0;
+		//		break;
+		//	}
+		//}
 #pragma endregion
 
 #pragma region __SET_TOA_DO_DAN__
@@ -168,19 +213,44 @@ void CBullet::MoveUpdate(float deltaTime)
 	//	this->m_vy += this->m_a * deltaTime;
 	//	this->m_pos.y += this->m_vy * deltaTime;
 	//}
-	float posXOld = this->m_pos.x;
-	this->m_vx += this->m_a * deltaTime;
-	if(!this->m_left)
+	//float posXOld = this->m_pos.x;
+	//this->m_vx = this->m_vxDefault * sin(this->m_rotation);
+	//this->m_vy = this->m_vyDefault * cos(this->m_rotation);
+	if(m_vx != 0) 
 	{
-		if(rotation > 0)
+		if(this->m_vx > 0)
 		{
-			this->m_pos.x += this->m_vx * deltaTime;
-			this->m_pos.y += (1 - rotation*rotation)/(rotation*rotation) * (this->m_pos.x - posXOld);
+			this->m_vx += this->m_a * deltaTime;
 		}
-		else if(rotation < 0)
+		else
+		{
+			this->m_vx -= this->m_a * deltaTime;
+		}
+	}
+	if(m_vy != 0)
+	{
+		if(this->m_vy > 0)
+		{
+			this->m_vy += this->m_a * deltaTime;
+		}
+		else
+		{
+			this->m_vy -= this->m_a * deltaTime;
+		}
+	}
+	this->m_pos.x += this->m_vx * deltaTime;
+	this->m_pos.y += this->m_vy * deltaTime;
+	/*if(!this->m_left)
+	{
+		if(this->m_rotation > 0)
 		{
 			this->m_pos.x += this->m_vx * deltaTime;
-			this->m_pos.y -= (1 - rotation*rotation)/(rotation*rotation) * (this->m_pos.x - posXOld);
+			this->m_pos.y += (1 - this->m_rotation* this->m_rotation)/(this->m_rotation*this->m_rotation) * (this->m_pos.x - posXOld);
+		}
+		else if(this->m_rotation < 0)
+		{
+			this->m_pos.x += this->m_vx * deltaTime;
+			this->m_pos.y -= (1 - this->m_rotation*this->m_rotation)/(this->m_rotation*this->m_rotation) * (this->m_pos.x - posXOld);
 		}
 		else
 		{
@@ -189,21 +259,21 @@ void CBullet::MoveUpdate(float deltaTime)
 	}
 	else
 	{
-		if(rotation > 0)
+		if(this->m_rotation > 0)
 		{
 			this->m_pos.x += this->m_vx * deltaTime;
-			this->m_pos.y -= (1 - rotation*rotation)/(rotation*rotation) * (this->m_pos.x - posXOld);
+			this->m_pos.y -= (1 - this->m_rotation*this->m_rotation)/(this->m_rotation*this->m_rotation) * (this->m_pos.x - posXOld);
 		}
-		else if(rotation < 0)
+		else if(this->m_rotation < 0)
 		{
 			this->m_pos.x += this->m_vx * deltaTime;
-			this->m_pos.y += (1 - rotation*rotation)/(rotation*rotation) * (this->m_pos.x - posXOld);
+			this->m_pos.y += (1 - this->m_rotation*this->m_rotation)/(this->m_rotation*this->m_rotation) * (this->m_pos.x - posXOld);
 		}
 		else
 		{
 			this->m_pos.y += this->m_vy * deltaTime;
 		}
-	}
+	}*/
 
 #pragma endregion
 
@@ -233,9 +303,25 @@ void CBullet::MoveUpdate(float deltaTime)
 	//	}
 	//}
 }
+
+void CBullet::ChangeFrame(float deltaTime)
+{
+	this->m_currentTime += deltaTime;
+	if(this->m_currentTime > this->m_elapseTimeChangeFrame)
+	{
+		this->m_currentFrame += this->m_increase;
+		if(this->m_currentFrame > 3 || this->m_currentFrame < 0)
+		{
+			this->m_currentFrame = 0;
+		}
+		this->m_currentTime -= this->m_elapseTimeChangeFrame;
+	}
+}
+
 void CBullet::Update(float deltaTime)
 {
 	this->MoveUpdate(deltaTime);
+	this->ChangeFrame(deltaTime);
 }
 
 void CBullet::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
@@ -245,7 +331,7 @@ void CBullet::Update(float deltaTime, std::vector<CGameObject*> _listObjectColli
 
 RECT* CBullet::GetRectRS()
 {
-	return nullptr;
+	return this->UpdateRectResource(m_height, m_width);
 }
 
 RECT CBullet::GetRect()

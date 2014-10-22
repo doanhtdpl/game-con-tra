@@ -52,7 +52,7 @@ void CStateLogo::Render()
 		pos.x = CContra::GetInstance()->m_listBullet.at(i)->GetPos().x;
 		pos.y = CContra::GetInstance()->m_listBullet.at(i)->GetPos().y;
 		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-		sprite->draw(texture[2], NULL, pos, D3DCOLOR_XRGB(255,255,225), true);
+		sprite->draw(texture[2], CContra::GetInstance()->m_listBullet.at(i)->GetRectRS(), pos, D3DCOLOR_XRGB(255,255,225), true);
 	}
 	if(CContra::GetInstance()->m_left)
 		sprite->drawFlipX(texture[0], CContra::GetInstance()->GetRectRS(), posOfContra, D3DCOLOR_XRGB(255,255,225), true);
