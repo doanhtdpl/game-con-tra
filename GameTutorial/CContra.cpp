@@ -7,6 +7,7 @@ CContra::CContra()
 {
 	//Khoi tao cac thong so cua doi tuong
 	this->m_id = 0;
+	this->m_idType = 10; 
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;

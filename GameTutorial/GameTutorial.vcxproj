@@ -75,6 +75,7 @@
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CContra.cpp" />
     <ClCompile Include="CDevice.cpp" />
+    <ClCompile Include="CDrawObject.cpp" />
     <ClCompile Include="CFactoryStaticObject.cpp" />
     <ClCompile Include="CFileUtil.cpp" />
     <ClCompile Include="CGame.cpp" />
@@ -83,6 +84,9 @@
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CLoadBackGround.cpp" />
     <ClCompile Include="CManagementTexture.cpp" />
+    <ClCompile Include="CQuadNode.cpp" />
+    <ClCompile Include="CQuadObject.cpp" />
+    <ClCompile Include="CQuadTree.cpp" />
     <ClCompile Include="CSimon.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CState.cpp" />
@@ -103,6 +107,7 @@
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CContra.h" />
     <ClInclude Include="CDevice.h" />
+    <ClInclude Include="CDrawObject.h" />
     <ClInclude Include="CFactoryObject.h" />
     <ClInclude Include="CFactoryStaticObject.h" />
     <ClInclude Include="CFileUtil.h" />
@@ -113,6 +118,9 @@
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CLoadBackGround.h" />
     <ClInclude Include="CMove.h" />
+    <ClInclude Include="CQuadNode.h" />
+    <ClInclude Include="CQuadObject.h" />
+    <ClInclude Include="CQuadTree.h" />
     <ClInclude Include="CSimon.h" />
     <ClInclude Include="CSingleton.h" />
     <ClInclude Include="CSprite.h" />

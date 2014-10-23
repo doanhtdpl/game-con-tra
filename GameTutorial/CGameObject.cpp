@@ -36,6 +36,17 @@ void CGameObject::Update(float deltaTime)
 
 }
 
+//Dung de xet va cham + xen trong quad tree
+RECT* CGameObject::GetBox()
+{
+	RECT* rect = new RECT();
+	rect->top = this->m_pos.y;
+	rect->left = this->m_pos.x;
+	rect->bottom = rect->top + this->m_height;
+	rect->right = rect->left + this->m_width;
+	return rect;
+}
+
 RECT CGameObject::GetRect()
 {
 	this->m_rect.top = m_pos.y + this->m_height / 2;

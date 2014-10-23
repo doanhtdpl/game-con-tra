@@ -52,6 +52,9 @@
     <Filter Include="Source Files\GameObject\DynamicObject\Bullet">
       <UniqueIdentifier>{ee4c5133-dc42-48f2-a36e-1bd84f5f088f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\QuadTree">
+      <UniqueIdentifier>{eca802d5-a7c0-4137-8530-7320b35e01d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTexture.cpp">
@@ -131,6 +134,18 @@
     </ClCompile>
     <ClCompile Include="CBulletF.cpp">
       <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CDrawObject.cpp">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClCompile>
+    <ClCompile Include="CQuadNode.cpp">
+      <Filter>Source Files\GameLoop\InitGame\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CQuadObject.cpp">
+      <Filter>Source Files\GameLoop\InitGame\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CQuadTree.cpp">
+      <Filter>Source Files\GameLoop\InitGame\QuadTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +235,18 @@
     </ClInclude>
     <ClInclude Include="CBulletF.h">
       <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CDrawObject.h">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClInclude>
+    <ClInclude Include="CQuadNode.h">
+      <Filter>Source Files\GameLoop\InitGame\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CQuadObject.h">
+      <Filter>Source Files\GameLoop\InitGame\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CQuadTree.h">
+      <Filter>Source Files\GameLoop\InitGame\QuadTree</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 #include "CTexture.h"
 #include "CSprite.h"
 #include <hash_map>
+#include "CQuadTree.h"
 
 #define __Level_Map__ "..\\Resource\\BackGround\\MapBackGround.csv"
 #define __Level_Image__ "..\\Resource\\BackGround\\ImageBackGround.csv"
@@ -29,9 +30,12 @@ protected:
 	int m_tileRows; //So luong tile tren chieu rong cua Image
 	CTexture* m_imageCurr; //Lay texture trong bo dem, can dung lop managertexture
 	CSprite* m_drawImg; //Dung de ve anh len man hinh, can dung lop managerSprite
+	CQuadTree* m_quadTree; // Luu quadtree hien tai
+	std::hash_map<int, CQuadTree*>* m_listQuadTree; //Su dung de luu danh sach quadtree
 	std::hash_map<int, CTexture*>* m_listBackGroundImage; //Su dung de luu tat ca cac tileMap Image
 	std::hash_map<int, int**>* m_listBackGroundMatrix; //Su dung de luu tat ca cac tileMap Matrix
 	void LoadAllTextureFromFile(std::string);
+	void LoadAllQuadTreeFromFile(std::string);
 	void LoadAllMatrixFromFile(std::string);
 	bool InitMatrix();
 	void LoadMatrix(std::string filePath);

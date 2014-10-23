@@ -38,6 +38,7 @@ CBullet_F::CBullet_F(double rotation)
 	this->m_angle = 0;
 
 	this->m_id = 0;
+	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
@@ -66,7 +67,7 @@ void CBullet_F::InitPosition()
 	//Vi tri cua dau dan
 	this->m_pos = CContra::GetInstance()->GetPos();
 	//Huong cua vien dan cung huong voi contra
-	this->m_left = CContra::GetInstance()->m_left; 
+	this->m_left = CContra::GetInstance()->GetDirection(); 
 	//if(!this->m_left)
 	//{
 	//	this->m_vx = this->m_vxDefault;
@@ -93,7 +94,7 @@ void CBullet_F::InitPosition()
 			}
 		case ON_GROUND::IS_FALL: case ON_GROUND::IS_JOGGING : case ON_GROUND::IS_SHOOTING_NORMAL: case ON_GROUND::IS_STANDING:
 			{
-				this->m_offset.x = 14.5f;
+				this->m_offset.x = 32.0f;
 				this->m_offset.y = 8.0f;
 				break;
 			}
@@ -128,7 +129,7 @@ void CBullet_F::InitPosition()
 		}
 		else
 		{
-			this->m_pos.x -= (this->m_offset.x + CContra::GetInstance()->m_width/4); //Vi tri cua vien dan
+			this->m_pos.x -= (this->m_offset.x + CContra::GetInstance()->GetWidth()/4); //Vi tri cua vien dan
 			this->m_pos.y += this->m_offset.y;
 		}
 		this->m_posStart = this->m_pos;
@@ -162,8 +163,8 @@ void CBullet_F::MoveUpdate(float deltaTime)
 
 	//
 	this->m_angle -= 0.45f;
-	this->m_pos.x = 30 * (cos(this->m_angle)) + this->m_center.x;
-	this->m_pos.y = (30 * (sin(this->m_angle)) + this->m_center.y);
+	this->m_pos.x = 30 * (cos(this->m_angle - PI)) + this->m_center.x;
+	this->m_pos.y = (30 * (sin(this->m_angle - PI)) + this->m_center.y);
 
 	if(m_vx != 0) 
 	{

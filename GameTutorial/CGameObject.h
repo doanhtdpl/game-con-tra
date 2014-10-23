@@ -5,8 +5,9 @@
 
 class CGameObject
 {
-public:
+protected:
 	int m_id;//each object has a ID to identified with other object
+	int m_idType; // Thuoc loai doi tuong nao
 	int m_idImage;
 	D3DXVECTOR2 m_pos;//position of object
 	float m_posZ;//xet thang nao ve tren. mac dinh  = 0
@@ -27,6 +28,13 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
 	virtual D3DXVECTOR2 GetPos(){return this->m_pos;};
+	int GetID(){return this->m_id;};
+	int GetIDType(){return this->m_idType;};
+	bool GetDirection(){return this->m_left;};
+	float GetWidth(){return this->m_width;};
+	float GetHeight(){return this->m_height;};
+	bool IsAlive(){return this->m_isALive;};
+	RECT* GetBox();
 	virtual RECT GetRect();
 	virtual RECT* GetRectRS();
 	~CGameObject(void);

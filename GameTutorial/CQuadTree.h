@@ -1,0 +1,28 @@
+#ifndef __CQUAD_TREE_H__
+#define __CQUAD_TREE_H__
+
+#include "CQuadNode.h"
+
+class CQuadTree
+{
+public:
+	CQuadTree();
+	~CQuadTree();
+	void ReBuildQuadTree(std::vector<CQuadObject*>& listQuadObj);
+	void ReBuildQuadTree(const std::string& file);
+	void BuildQuadTree();
+	void AddNode(CQuadNode*&);
+	CQuadNode*& SearchNode(int iDNode, CQuadNode*&);
+	std::vector<int> GetListObjectOnScreen(RECT*&, CQuadNode*&);
+	std::vector<int> m_listIdObject();
+	void AddGameObjectToQuadTree(CGameObject*&);
+	void Clear(){this->~CQuadTree();};
+protected:
+	CQuadNode* m_nodeRoot;
+	//Doi tuong co id lon nhat trong quadtree
+	int m_maxID;
+private:
+	bool Contains(int ID,const std::vector<int>& list);
+};
+
+#endif // !__CQUAD_TREE_H__

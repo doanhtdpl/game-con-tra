@@ -22,10 +22,10 @@ class CManagementTexture : public CSingleton<CManagementTexture>
 public:
 	~CManagementTexture();
 	CTexture* GetTextureByID(int id, int idType); //Lay mot CTexture theo ID cua Object
+	void LoadAllResourceFromFile(const std::string&); //Dung de load tat ca cac duong dan cua cac file
 protected:
 	CManagementTexture();
 	std::hash_map<int, std::hash_map<int, CTexture*>*>* m_listTexure; //Dung de luu tat cac texture trong Game
-	void LoadAllResourceFromFile(const std::string&); //Dung de load tat ca cac duong dan cua cac file
 	std::hash_map<int, CTexture*>*& LoadAllTextureFromFile(const std::string&); //Khoi tao texture, va luu vao trong list
 };
 
