@@ -10,6 +10,7 @@ class CCamera : public CSingleton<CCamera>
 public:
 	~CCamera();
 	void Update(float x, float deltaTime); //Update vi tri cua camera
+	RECT*& GetBox();
 	D3DXVECTOR3 GetPointTransform(float x, float y); // Tra ve vi tri da transform
 protected:
 	CCamera();

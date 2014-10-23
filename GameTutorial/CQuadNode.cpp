@@ -9,7 +9,7 @@ CQuadNode::CQuadNode()
 	this->m_posY = 0.0f;
 	this->m_height = 0.0f;
 	this->m_width = 0.0f;
-	this->m_listObject = new std::vector<CQuadObject*>();
+	this->m_listObject = new std::vector<int>();
 	this->m_nodeTL = nullptr;
 	this->m_nodeTR = nullptr;
 	this->m_nodeBL = nullptr;
@@ -23,7 +23,7 @@ CQuadNode::CQuadNode(int iD, float posX, float posY, float height, float width)
 	this->m_posY = posY;
 	this->m_height = height;
 	this->m_width = width;
-	this->m_listObject = new std::vector<CQuadObject*>();
+	this->m_listObject = new std::vector<int>();
 	this->m_nodeTL = nullptr;
 	this->m_nodeTR = nullptr;
 	this->m_nodeBL = nullptr;
@@ -65,7 +65,7 @@ void CQuadNode::ClipObject(CQuadObject*& obj)
 	CGameObject* gameObj = obj->GetGameObject();
 	if(gameObj)
 	{
-		if(IntersectRect(gameObj->GetBox(), this->GetBox()))
+		if(IntersectRectRS(gameObj->GetBox(), this->GetBox()))
 		{
 			if(this->m_nodeTL)
 			{
@@ -90,7 +90,7 @@ void CQuadNode::DeleteObjectFromQuadNode(CQuadObject*& obj)
 		CGameObject* gameObj = obj->GetGameObject();
 		if(gameObj)
 		{
-			if(IntersectRect(gameObj->GetBox(), this->GetBox()))
+			if(IntersectRectRS(gameObj->GetBox(), this->GetBox()))
 			{
 				if(this->m_nodeTL)
 				{
@@ -122,7 +122,7 @@ void CQuadNode::DeleteObjectFromQuadNode(CQuadObject*& obj)
 	}
 }
 	//Dung de check giao nhau giua hai node
-bool IntersectRect(RECT* rectFirst, RECT* rectSecond)
+bool CQuadNode::IntersectRectRS(RECT* rectFirst, RECT* rectSecond)
 {
 	LPRECT result = new RECT();
 	IntersectRect(result, rectFirst, rectSecond);

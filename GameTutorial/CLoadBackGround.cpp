@@ -29,22 +29,49 @@ void CLoadBackGround::Draw()
 		this->m_matrix = this->m_listBackGroundMatrix->find(this->m_idCurrent)->second;
 	if(this->m_matrix != nullptr)
 	{
-		for (int i = 0; i < this->m_rows; i++)
+		std::vector<int> listIDObj;
+		this->m_quadTree->GetListObjectOnScreen(
+																				CCamera::GetInstance()->GetBox(),
+																				this->m_quadTree->GetRoot(),
+																				listIDObj
+																			);
+		if(!listIDObj.empty())
 		{
-			for (int j = 0; j < this->m_cols; j++)
+			int size = listIDObj.size();
+			int row;
+			int col;
+			for (int i = 0; i < size; i++)
 			{
+				row = listIDObj.at(i) / this->m_cols;
+				col = listIDObj.at(i) % this->m_cols;
 				//Ve tung tile len man hinh
-				rectRS.left = (this->m_matrix[i][j] % this->m_tileCols) * this->m_tileWidth;
+				rectRS.left = (this->m_matrix[row][col] % this->m_tileCols) * this->m_tileWidth;
 				rectRS.right = rectRS.left + this->m_tileWidth;
-				rectRS.top = (this->m_matrix[i][j] / this->m_tileCols) * this->m_tileHeight;
+				rectRS.top = (this->m_matrix[row][col] / this->m_tileCols) * this->m_tileHeight;
 				rectRS.bottom = rectRS.top + this->m_tileHeight;
-				pos.x = j * this->m_tileHeight;
-				pos.y = (this->m_rows - i) * this->m_tileWidth;
+				pos.x = col * this->m_tileHeight;
+				pos.y = (this->m_rows - row) * this->m_tileWidth;
 				pos.z = 0;
 				pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
 				this->m_drawImg->draw(this->m_imageCurr, &rectRS, pos, D3DCOLOR_XRGB(255,255,225), false);
 			}
 		}
+		//for (int i = 0; i < this->m_rows; i++)
+		//{
+		//	for (int j = 0; j < this->m_cols; j++)
+		//	{
+		//		//Ve tung tile len man hinh
+		//		rectRS.left = (this->m_matrix[i][j] % this->m_tileCols) * this->m_tileWidth;
+		//		rectRS.right = rectRS.left + this->m_tileWidth;
+		//		rectRS.top = (this->m_matrix[i][j] / this->m_tileCols) * this->m_tileHeight;
+		//		rectRS.bottom = rectRS.top + this->m_tileHeight;
+		//		pos.x = j * this->m_tileHeight;
+		//		pos.y = (this->m_rows - i) * this->m_tileWidth;
+		//		pos.z = 0;
+		//		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
+		//		this->m_drawImg->draw(this->m_imageCurr, &rectRS, pos, D3DCOLOR_XRGB(255,255,225), false);
+		//	}
+		//}
 	}
 }
 
@@ -52,6 +79,7 @@ void CLoadBackGround::LoadAllResourceFromFile()
 {
 	LoadAllTextureFromFile(__Level_Image__);
 	LoadAllMatrixFromFile(__Level_Map__);
+	LoadAllQuadTreeFromFile(__Level_QuadTree__);
 }
 
 void CLoadBackGround::LoadAllTextureFromFile(std::string filePath)
@@ -93,6 +121,7 @@ void CLoadBackGround::LoadAllMatrixFromFile(std::string filePath)
 	}
 }
 
+//Load tat ca cac QuadTree tu file
 void CLoadBackGround::LoadAllQuadTreeFromFile(std::string filePath)
 {
 	int mapID;
@@ -106,8 +135,8 @@ void CLoadBackGround::LoadAllQuadTreeFromFile(std::string filePath)
 		mapID = atoi(item.at(0).c_str());
 		pathItem = item.at(1).c_str();
 		//Tao CTexture
-		this->m_quadTree = 
-		this->m_listBackGroundMatrix->insert(Pair(mapID, this->m_matrix));
+		this->m_quadTree->ReBuildQuadTree(pathItem);
+		this->m_listQuadTree->insert(Pair(mapID, this->m_quadTree));
 	}
 }
 
@@ -123,10 +152,10 @@ void CLoadBackGround::ChangeBackGround(int idBackGround)
 			this->m_tileCols = this->m_imageCurr->GetImageWidth() / this->m_tileWidth;
 			this->m_tileRows = this->m_imageCurr->GetImageHeight() / this->m_tileHeight;
 		}
-		else
-		{
-			return;
-		}
+	}
+	if(this->m_listQuadTree)
+	{
+		this->m_quadTree = this->m_listQuadTree->find(idBackGround)->second;
 	}
 }
 

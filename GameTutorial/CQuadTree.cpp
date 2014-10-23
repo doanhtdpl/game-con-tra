@@ -5,7 +5,8 @@
 CQuadTree::CQuadTree()
 {
 	this->m_maxID = 0;
-	this->m_nodeRoot = nullptr;
+	this->m_nodeRoot = new CQuadNode();
+	this->m_nodeRoot->SetID(1);
 }
 
 //Kiem tra neu doi tuong nao da die thi xoa no khoi quatree
@@ -39,9 +40,6 @@ void CQuadTree::ReBuildQuadTree(const std::string& filePath)
 	float posY;
 	float width;
 	float height;
-	std::vector<int>* listIDObject;
-	//Can mot bien con tro de giu node goc hien tai
-	CQuadNode* rootCurr;
 	//
 	std::vector<std::string> result = CFileUtil::GetInstance()->LoadFromFile(filePath);
 	int size = result.size();
@@ -53,99 +51,273 @@ void CQuadTree::ReBuildQuadTree(const std::string& filePath)
 		{
 			line = result.at(i);
 			dataInfo = CFileUtil::GetInstance()->Split(line, '\t');
+			std::vector<int>* listIDObject = new std::vector<int>();
 			if(!dataInfo.empty())
 			{
 				int size = dataInfo.size();
 				iDNode = std::atoi(dataInfo.at(0).c_str());
-				//Kiem tra neu iDNode khong phai la node cha
-				if(!this->m_nodeRoot)
+				posX = std::atof(dataInfo.at(1).c_str());
+				posY = std::atof(dataInfo.at(2).c_str());
+				width =  std::atof(dataInfo.at(3).c_str());
+				height = std::atof(dataInfo.at(4).c_str());
+				if(size > 5)
 				{
-					this->m_nodeRoot = new CQuadNode();
-					this->m_nodeRoot->SetID(iDNode);
-				}else
-				{
-					posX = std::atof(dataInfo.at(1).c_str());
-					posY = std::atof(dataInfo.at(2).c_str());
-					width =  std::atof(dataInfo.at(3).c_str());
-					height = std::atof(dataInfo.at(4).c_str());
-					if(size > 4)
+					for (int j = 5; j < size; j++)
 					{
-						listIDObject->clear();
-						delete listIDObject;
-						listIDObject = new std::vector<int>();
-						for (int j = 5; j < size; j++)
-						{
-							listIDObject->push_back(std::atoi(dataInfo.at(i).c_str()));
-						}
+						listIDObject->push_back(std::atoi(dataInfo.at(j).c_str()));
 					}
-					CQuadNode* node = new CQuadNode(iDNode, posX, posY, width, height);
-					node->SetListObject(listIDObject);
-					this->AddNode(node);
 				}
+				CQuadNode* node = new CQuadNode(iDNode, posX, posY, width, height);
+				node->SetListObject(listIDObject);
+				this->AddNode(node, this->m_nodeRoot);
 			}
 		}
 	}
 }
-
+/*
 void CQuadTree::AddNode(CQuadNode*& node)
 {
+	if(!this->m_nodeRoot)
+	{
+		this->m_nodeRoot = node;
+	}else
+	{
+		//Neu node do khong phai node goc
+		if(node->GetID() != this->m_nodeRoot->GetID())
+		{
+			//Kiem tra neu node da ton tai
+			CQuadNode*  nodeTemp = this->SearchNode(node->GetID(), this->m_nodeRoot);
+			if(nodeTemp)
+			{r
+				if(nodeTemp->GetWidth() == 0)
+				{
+					//Cap nhat thong tin cua node
+					nodeTemp->SetPosX(node->GetPosX());
+					nodeTemp->SetPosY(node->GetPosY());
+					nodeTemp->SetHeight(node->GetHeight());
+					nodeTemp->SetWidth(node->GetWidth()); 
+				}
+			}else
+			{
+				int iDParent = node->GetID() / 8;
+				CQuadNode* nodeParent = this->SearchNode(iDParent, this->m_nodeRoot);
+				if(nodeParent)
+				{
+					switch(node->GetID() % 8)
+					{
+					case 1:
+						{
+							nodeParent->SetNodeTL(node);
+								break;
+						}
+					case 2:
+						{
+							nodeParent->SetNodeTR(node);
+							break;
+						}
+					case 3:
+						{
+							nodeParent->SetNodeBL(node);
+							break;
+						}
+					case 4:
+						{
+							nodeParent->SetNodeBR(node);
+							break;
+						}
+					}
+				}else
+				{
+					nodeParent = new CQuadNode();
+					nodeParent->SetID(iDParent);
+					switch(node->GetID() % 8)
+					{
+					case 1:
+						{
+							nodeParent->SetNodeTL(node);
+								break;
+						}
+					case 2:
+						{
+							nodeParent->SetNodeTR(node);
+							break;
+						}
+					case 3:
+						{
+							nodeParent->SetNodeBL(node);
+							break;
+						}
+					case 4:
+						{
+							nodeParent->SetNodeBR(node);
+							break;
+						}
+					}
+					this->AddNode(nodeParent);
+				}
+			}
+		}
+	}
+
 	if(node != this->m_nodeRoot)
 	{
 		//Tim node cha cua no, neu node cha chua duoc tao thi khoi tao
+		CQuadNode* nodeParent;
 		int IDParent = node->GetID() / 8;
 		if(IDParent < this->m_nodeRoot->GetID())
 		{
-			CQuadNode* nodeParent = this->m_nodeRoot;
+			nodeParent = this->m_nodeRoot;
 			this->m_nodeRoot = new CQuadNode();
 			this->m_nodeRoot->SetID(IDParent);
-			delete nodeParent;
-		}else //Neu no khong phai node cha
-		{
-			CQuadNode* nodeParent = this->SearchNode(IDParent, this->m_nodeRoot);
-			if(nodeParent)
+			switch(node->GetID() % 8)
 			{
-				switch(node->GetID() % 8)
-				{
 				case 1:
 					{
-						nodeParent->SetNodeTL(node);
+						this->m_nodeRoot->SetNodeTL(node);
 						break;
 					}
 				case 2:
 					{
-						nodeParent->SetNodeTR(node);
+						this->m_nodeRoot->SetNodeTR(node);
 						break;
 					}
 				case 3:
 					{
-						nodeParent->SetNodeBL(node);
+						this->m_nodeRoot->SetNodeBL(node);
 						break;
 					}
 				case 4:
 					{
-						nodeParent->SetNodeBR(node);
+						this->m_nodeRoot->SetNodeBR(node);
 						break;
 					}
+			}
+			//delete nodeParent;
+		}else //Neu no khong phai node cha
+		{
+    		nodeParent = this->SearchNode(IDParent, this->m_nodeRoot);
+			if(!nodeParent)
+			{
+				nodeParent = new CQuadNode();
+				nodeParent->SetID(IDParent);
+			}else
+			{
+				if((node ->GetNodeTL() || nodeParent->GetNodeTL()->GetID() == node->GetID())|| 
+					(node ->GetNodeTR() || nodeParent->GetNodeTR()->GetID() == node->GetID())||
+					(node ->GetNodeBL() || nodeParent->GetNodeBL()->GetID() == node->GetID()) ||
+					(node ->GetNodeBR() || nodeParent->GetNodeBR()->GetID() == node->GetID()))
+				{
+					return;
+				}
+			}
+			switch(node->GetID() % 8)
+			{
+			case 1:
+				{
+					nodeParent->SetNodeTL(node);
+					break;
+				}
+			case 2:
+				{
+					nodeParent->SetNodeTR(node);
+					break;
+				}
+			case 3:
+				{
+					nodeParent->SetNodeBL(node);
+					break;
+				}
+			case 4:
+				{
+					nodeParent->SetNodeBR(node);
+					break;
 				}
 			}
 		}
+		this->AddNode(nodeParent);
 	}
+}*/
+
+void CQuadTree::AddNode(CQuadNode*& node, CQuadNode*& nodeRoot)
+{
+	if(node->GetID() == nodeRoot->GetID())
+	{
+		//Update thong tin
+		nodeRoot->SetPosX(node->GetPosX());
+		nodeRoot->SetPosY(node->GetPosY());
+		nodeRoot->SetWidth(node->GetWidth());
+		nodeRoot->SetHeight(node->GetHeight());
+		nodeRoot->SetListObject(node->GetListObject());
+		return;
+	}
+	if(node ->GetID() > nodeRoot->GetID() * 8)
+	{
+		if(!nodeRoot->GetNodeTL())
+		{
+			nodeRoot->GetNodeTL() = new CQuadNode();
+			nodeRoot->GetNodeTL()->SetID(nodeRoot->GetID() * 8 + 1);
+		}
+		if(!nodeRoot->GetNodeTR())
+		{
+			nodeRoot->GetNodeTR() = new CQuadNode();
+			nodeRoot->GetNodeTR()->SetID(nodeRoot->GetID() * 8 + 2);
+		}
+		if(!nodeRoot->GetNodeBL())
+		{
+			nodeRoot->GetNodeBL() = new CQuadNode();
+			nodeRoot->GetNodeBL()->SetID(nodeRoot->GetID() * 8 + 3);
+		}
+		if(!nodeRoot->GetNodeBR())
+		{
+			nodeRoot->GetNodeBR() = new CQuadNode();
+			nodeRoot->GetNodeBR()->SetID(nodeRoot->GetID() * 8 + 4);
+		}
+		this->AddNode(node, nodeRoot->GetNodeTL());
+		this->AddNode(node, nodeRoot->GetNodeTR());
+		this->AddNode(node, nodeRoot->GetNodeBL());
+		this->AddNode(node, nodeRoot->GetNodeBR());
+	}else if(node ->GetID() / 8 == nodeRoot->GetID())
+	{
+		switch(node->GetID() % 8)
+		{
+		case 1:
+			{
+				nodeRoot->SetNodeTL(node);
+				break;
+			}
+		case 2:
+			{
+				nodeRoot->SetNodeTR(node);
+				break;
+			}
+		case 3:
+			{
+				nodeRoot->SetNodeBL(node);
+				break;
+			}
+		case 4:
+			{
+				nodeRoot->SetNodeBR(node);
+				break;
+			}
+		}
+	}
+
 }
 
 //Xen viewPort
-std::vector<int> CQuadTree::GetListObjectOnScreen(RECT*& viewBox, CQuadNode*& node)
+void CQuadTree::GetListObjectOnScreen(RECT* viewBox, CQuadNode*& node, std::vector<int>& listIDObj)
 {
-	std::vector<int> listIDObj;
 	if(viewBox && node)
 	{
-		if(this->m_nodeRoot->IntersectRect(viewBox, node->GetBox()))
+		if(node->IntersectRectRS(viewBox, node->GetBox()))
 		{
-			if(this->m_nodeRoot->GetNodeTL())
+			if(node->GetNodeTL())
 			{
-				this->GetListObjectOnScreen(viewBox, node->GetNodeTL());
-				this->GetListObjectOnScreen(viewBox, node->GetNodeTR());
-				this->GetListObjectOnScreen(viewBox, node->GetNodeBL());
-				this->GetListObjectOnScreen(viewBox, node->GetNodeBR());
+				this->GetListObjectOnScreen(viewBox, node->GetNodeTL(), listIDObj);
+				this->GetListObjectOnScreen(viewBox, node->GetNodeTR(), listIDObj);
+				this->GetListObjectOnScreen(viewBox, node->GetNodeBL(),	listIDObj );
+				this->GetListObjectOnScreen(viewBox, node->GetNodeBR(), listIDObj);
 			}else
 			{
 				std::vector<int>* listItem = node->GetListObject();
@@ -189,14 +361,21 @@ CQuadNode*& CQuadTree::SearchNode(int iDNode, CQuadNode*& node)
 	CQuadNode* result = nullptr;
 	if(iDNode == node->GetID())
 	{
-		result = node;
+		return node;
 	}
-	if(node ->GetNodeTL())
+	else
 	{
-		this->SearchNode(iDNode, node->GetNodeTL());
-		this->SearchNode(iDNode, node->GetNodeTR());
-		this->SearchNode(iDNode, node->GetNodeBL());
-		this->SearchNode(iDNode, node->GetNodeBR());
+		if(iDNode / 8 != node->GetID() / 8)
+		{
+			if(node ->GetNodeTL() && !this->SearchNode(iDNode, node->GetNodeTL()) &&
+				node ->GetNodeTR() && !this->SearchNode(iDNode, node->GetNodeTR()) &&
+				node ->GetNodeBL() && !this->SearchNode(iDNode, node->GetNodeBL()) &&
+				node ->GetNodeBR())
+			{
+
+				this->SearchNode(iDNode, node->GetNodeBR());
+			}
+		}
 	}
 	return result;
 }

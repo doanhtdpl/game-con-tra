@@ -16,7 +16,17 @@ CCamera::~CCamera()
 
 void CCamera::Update(float x, float deltaTime)
 {
-		m_pos.x += x;
+	m_pos.x += x;
+}
+
+RECT*& CCamera::GetBox()
+{
+	RECT* rect = new RECT();
+	rect->top = m_pos.y - __SCREEN_HEIGHT;
+	rect->left = m_pos.x;
+	rect->right = rect->left + __SCREEN_WIDTH;
+	rect->bottom = m_pos.y;
+	return rect;
 }
 
 D3DXVECTOR3 CCamera::GetPointTransform(float x, float y)
