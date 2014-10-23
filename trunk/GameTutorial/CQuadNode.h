@@ -1,0 +1,49 @@
+#ifndef __CQUAD_NODE_H__
+#define __CQUAD_NODE_H__
+#include "CQuadObject.h"
+#include "CGlobal.h"
+
+class CQuadNode 
+{
+public:
+	CQuadNode();
+	CQuadNode(int iD, float posX, float posY, float height, float width);
+	~CQuadNode();
+	int GetID(){return this->m_ID;}
+	void SetID(int iD){this->m_ID = iD;}
+	void SetPosX(float posX){this->m_posX = posX;}
+	void SetPosY(float posY){this->m_posY = posY;}
+	void SetWidth(float width){this->m_width = width;}
+	void SetHeight(float height){this->m_height = height;}
+	void SetNodeTL(CQuadNode*& node){this->m_nodeTL = node;};
+	void SetNodeTR(CQuadNode*& node){this->m_nodeTR = node;};
+	void SetNodeBL(CQuadNode*& node){this->m_nodeBL = node;};
+	void SetNodeBR(CQuadNode*& node){this->m_nodeBR = node;};
+	CQuadNode*& GetNodeTL(){return this->m_nodeTL;};
+	CQuadNode*& GetNodeTR(){return this->m_nodeTR;};
+	CQuadNode*& GetNodeBL(){return this->m_nodeBL;};
+	CQuadNode*& GetNodeBR(){return this->m_nodeBR;};
+	std::vector<int> SetListObject(std::vector<int>*& list){ this->m_listObject = list;};
+	std::vector<int>*& GetListObject(){return this->m_listObject;};
+	RECT* GetBox();
+	void ClipObject(CQuadObject*&);
+	void DeleteObjectFromQuadNode(CQuadObject*&);
+private:
+	//ID node
+	int m_ID;
+	//Kich thuoc cua node
+	float m_posX;
+	float m_posY;
+	float m_height;
+	float m_width;
+	CQuadNode* m_nodeTL;
+	CQuadNode* m_nodeTR;
+	CQuadNode* m_nodeBL;
+	CQuadNode* m_nodeBR;
+	//List luu giu doi tuong cua quadtree
+	std::vector<int>* m_listObject;
+public:
+	//Dung de check giao nhau giua hai node
+	bool IntersectRect(RECT*, RECT*);
+};
+#endif // !__CQUAD_NODE_H__

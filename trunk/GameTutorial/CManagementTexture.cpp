@@ -44,7 +44,7 @@ std::hash_map<int, CTexture*>*& CManagementTexture::LoadAllTextureFromFile(const
 		pathItem = item.at(1).c_str();
 		//Tao CTexture
 		texture = new CTexture();
-		if((texture->LoadImageFromFile(pathItem, NULL)));
+		if((texture->LoadImageFromFile(pathItem, D3DCOLOR_XRGB(255,0,255))));
 		{
 			listTexureOfObject->insert(Pair(idObject, texture));
 		}
@@ -57,7 +57,7 @@ CTexture* CManagementTexture::GetTextureByID(int id, int idType)
 	std::hash_map<int, CTexture*>* listTexure = this->m_listTexure->find(idType)->second;
 	if(listTexure->size() > 0)
 	{
-		CTexture* texture = listTexure->find(id)->second;
+		CTexture* texture = listTexure->find(idType* 1000 + id)->second;
 		if(texture)
 		{
 			return texture;

@@ -6,8 +6,10 @@ CLoadBackGround::CLoadBackGround()
 {
 	this->m_listBackGroundImage = new std::hash_map<int, CTexture*>();
 	this->m_listBackGroundMatrix = new std::hash_map<int, int**>();
+	this->m_listQuadTree = new std::hash_map<int, CQuadTree*>();
 	this->m_imageCurr = new CTexture();
 	this->m_drawImg = new CSprite();
+	this->m_quadTree = new CQuadTree();
 	this->m_matrix = nullptr;
 	this->m_cols = 0;
 	this->m_rows = 0;
@@ -87,6 +89,24 @@ void CLoadBackGround::LoadAllMatrixFromFile(std::string filePath)
 		pathItem = item.at(1).c_str();
 		//Tao CTexture
 		this->LoadMatrix(pathItem);
+		this->m_listBackGroundMatrix->insert(Pair(mapID, this->m_matrix));
+	}
+}
+
+void CLoadBackGround::LoadAllQuadTreeFromFile(std::string filePath)
+{
+	int mapID;
+	std::string pathItem;
+	typedef pair<int, CQuadTree*> Pair;
+	std::vector<std::string> result = CFileUtil::GetInstance()->LoadFromFile(filePath); //Load tat ca cac duong dan tu nguon
+	std::vector<std::string> item; //Lay tung item trong result
+	for (int i = 0; i < result.size(); i++)
+	{
+		item = CFileUtil::GetInstance()->Split(result.at(i).c_str(), ',');
+		mapID = atoi(item.at(0).c_str());
+		pathItem = item.at(1).c_str();
+		//Tao CTexture
+		this->m_quadTree = 
 		this->m_listBackGroundMatrix->insert(Pair(mapID, this->m_matrix));
 	}
 }

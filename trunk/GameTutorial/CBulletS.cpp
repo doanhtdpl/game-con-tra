@@ -73,7 +73,7 @@ void CBullet_S::InitPosition()
 	//Vi tri cua dau dan
 	this->m_pos = CContra::GetInstance()->GetPos();
 	//Huong cua vien dan cung huong voi contra
-	this->m_left = CContra::GetInstance()->m_left; 
+	this->m_left = CContra::GetInstance()->GetDirection(); 
 	if(!this->m_left)
 	{
 		this->m_vx = this->m_vxDefault;
@@ -135,7 +135,7 @@ void CBullet_S::InitPosition()
 		}
 		else
 		{
-			this->m_pos.x -= (this->m_offset.x + CContra::GetInstance()->m_width/4); //Vi tri cua vien dan
+			this->m_pos.x -= (this->m_offset.x + CContra::GetInstance()->GetWidth()/4); //Vi tri cua vien dan
 			this->m_pos.y += this->m_offset.y;
 		}
 	}
