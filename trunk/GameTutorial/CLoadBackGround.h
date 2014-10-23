@@ -10,6 +10,7 @@
 
 #define __Level_Map__ "..\\Resource\\BackGround\\MapBackGround.csv"
 #define __Level_Image__ "..\\Resource\\BackGround\\ImageBackGround.csv"
+#define __Level_QuadTree__ "..\\Resource\\BackGround\\QuadTreeBackGround.csv"
 
 class CLoadBackGround : public CSingleton<CLoadBackGround> 
 {

@@ -101,22 +101,19 @@ void CContra::MoveUpdate(float deltaTime)
 	{
 		if (this->m_vx < 0)
 		{	
-			this->m_pos.x += this->m_vx * deltaTime;
+			this->m_pos.x += int(this->m_vx * deltaTime);
 		}
 	}else if(this->m_isMoveRight)
 	{
 		if (this->m_vx > 0)
 		{
-			this->m_pos.x += this->m_vx * deltaTime;
+			this->m_pos.x += int(this->m_vx * deltaTime);
 		}
 	}
 	if(this->m_pos.x > 400)
-		{
-			if(this->m_vx * deltaTime - int(this->m_vx * deltaTime) > 0.6)
-				CCamera::GetInstance()->Update(int(this->m_vx * deltaTime) + 1, 0);
-			else
-				CCamera::GetInstance()->Update(int(this->m_vx * deltaTime), 0);
-		}
+	{
+		CCamera::GetInstance()->Update(int(this->m_vx * deltaTime), 0);
+	}
 #pragma endregion
 }
 

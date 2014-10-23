@@ -13,8 +13,12 @@ public:
 	void SetID(int iD){this->m_ID = iD;}
 	void SetPosX(float posX){this->m_posX = posX;}
 	void SetPosY(float posY){this->m_posY = posY;}
+	float GetPosX(){return this->m_posX;};
+	float GetPosY(){return this->m_posY;};
 	void SetWidth(float width){this->m_width = width;}
 	void SetHeight(float height){this->m_height = height;}
+	float GetWidth(){return this->m_width;};
+	float GetHeight(){return this->m_height;};
 	void SetNodeTL(CQuadNode*& node){this->m_nodeTL = node;};
 	void SetNodeTR(CQuadNode*& node){this->m_nodeTR = node;};
 	void SetNodeBL(CQuadNode*& node){this->m_nodeBL = node;};
@@ -23,7 +27,7 @@ public:
 	CQuadNode*& GetNodeTR(){return this->m_nodeTR;};
 	CQuadNode*& GetNodeBL(){return this->m_nodeBL;};
 	CQuadNode*& GetNodeBR(){return this->m_nodeBR;};
-	std::vector<int> SetListObject(std::vector<int>*& list){ this->m_listObject = list;};
+	void SetListObject(std::vector<int>*& list){ this->m_listObject = list;};
 	std::vector<int>*& GetListObject(){return this->m_listObject;};
 	RECT* GetBox();
 	void ClipObject(CQuadObject*&);
@@ -44,6 +48,6 @@ private:
 	std::vector<int>* m_listObject;
 public:
 	//Dung de check giao nhau giua hai node
-	bool IntersectRect(RECT*, RECT*);
+	bool IntersectRectRS(RECT*, RECT*);
 };
 #endif // !__CQUAD_NODE_H__

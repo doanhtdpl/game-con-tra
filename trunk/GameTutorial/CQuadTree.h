@@ -11,9 +11,10 @@ public:
 	void ReBuildQuadTree(std::vector<CQuadObject*>& listQuadObj);
 	void ReBuildQuadTree(const std::string& file);
 	void BuildQuadTree();
-	void AddNode(CQuadNode*&);
+	void AddNode(CQuadNode*&, CQuadNode*&);
+	CQuadNode*& GetRoot(){return this->m_nodeRoot;};
 	CQuadNode*& SearchNode(int iDNode, CQuadNode*&);
-	std::vector<int> GetListObjectOnScreen(RECT*&, CQuadNode*&);
+	void GetListObjectOnScreen(RECT*, CQuadNode*&, std::vector<int>&);
 	std::vector<int> m_listIdObject();
 	void AddGameObjectToQuadTree(CGameObject*&);
 	void Clear(){this->~CQuadTree();};
