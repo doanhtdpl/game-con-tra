@@ -12,9 +12,15 @@ CDynamicObject::CDynamicObject(void)
 	this->m_jumpMax = 0;
 }
 
-CDynamicObject::CDynamicObject(std::vector<std::string> arr) : CGameObject(arr)
+CDynamicObject::CDynamicObject(const std::vector<int>& info) : CGameObject(info)
 {
-
+	this->m_isMoveLeft = false;
+	this->m_isMoveRight = false;
+	this->m_canJump = 0;
+	this->m_left = false;
+	this->m_vx = 0;
+	this->m_vy = 0;
+	this->m_jumpMax = 0;
 }
 
 CDynamicObject::~CDynamicObject(void)
@@ -63,4 +69,9 @@ void CDynamicObject::Update(float deltaTime, std::vector<CGameObject*> listObjec
 {
 	this->MoveUpdate(deltaTime);
 	//this->move(delta_Time);
+}
+
+void CDynamicObject::HandleCollision(float deltatime, std::vector<CGameObject*> listObjectCollision)
+{
+
 }

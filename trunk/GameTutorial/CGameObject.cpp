@@ -12,8 +12,15 @@ CGameObject::CGameObject(void)
 	this->m_posZ = 0;
 }
 
-CGameObject::CGameObject(std::vector<std::string> arr)
+CGameObject::CGameObject(const std::vector<int>& info)
 {
+	if(!info.empty())
+	{
+		this->m_id = info.at(0) % 1000;
+		this->m_idType = info.at(0) / 1000;
+		this->m_pos.x = info.at(1);
+		this->m_pos.y = info.at(2);
+	}
 	this->m_posZ = 0;
 }
 
@@ -37,7 +44,12 @@ void CGameObject::Update(float deltaTime)
 }
 
 //Dung de xet va cham + xen trong quad tree
-RECT* CGameObject::GetBox()
+Box CGameObject::GetBox()
+{
+	return Box(this->m_pos, this->m_width, this->m_height, 0, 0);
+}
+
+RECT* CGameObject::GetBound()
 {
 	RECT* rect = new RECT();
 	rect->top = this->m_pos.y;
@@ -45,17 +57,6 @@ RECT* CGameObject::GetBox()
 	rect->bottom = rect->top + this->m_height;
 	rect->right = rect->left + this->m_width;
 	return rect;
-}
-
-RECT CGameObject::GetRect()
-{
-	this->m_rect.top = m_pos.y + this->m_height / 2;
-	this->m_rect.bottom = this->m_rect.top - this->m_height;
-
-	this->m_rect.left = m_pos.x - this->m_width / 2;
-	this->m_rect.right = this->m_rect.left + this->m_width;
-
-	return this->m_rect;
 }
 
 RECT* CGameObject::GetRectRS()

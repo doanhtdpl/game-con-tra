@@ -43,24 +43,28 @@ class CContra : public CDynamicObject, public  CAnimation, public CSingleton<CCo
 {
 	friend class CSingleton<CContra>;
 public:
-	CContra();
+	CContra(void);
+	CContra(const std::vector<int>& info);
 	~CContra();
 	std::string ClassName(){ return __CLASS_NAME__(CContra);};
 	virtual void MoveUpdate(float deltaTime);
-	void ChangeFrame(float deltaTime);
+	//void ChangeFrame(float deltaTime);
 	void InputUpdate(float deltaTime);
 	int GetShootState(){return m_stateShoot;};
 	int GetStateCurrent(){return m_stateCurrent;};
 	bool GetLocation(){return m_isUnderWater;}; //Neu con tra o duoi nuoc tra ve  true, nguoc lai tra ve false
+	void HandleCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
 	void BulletUpdate(float deltaTime);
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
-	RECT GetRect();
+	void SetVelocityY(float vy){this->m_vy = vy;};
+	RECT* GetBound();
+	Box GetBox();
 	RECT* GetRectRS();
 protected:
 	void SetFrame();
-	int m_startFrame; //Frame bat dau
-	int m_endFrame; //Frame ket thuc
+	//int m_startFrame; //Frame bat dau
+	//int m_endFrame; //Frame ket thuc
 	bool m_isUnderWater; // Dang o duoi nuoc
 	bool m_isShoot; // Duoc phep ban
 	int m_stateCurrent; // Trang thai hien tai
@@ -71,11 +75,14 @@ protected:
 	//
 	//Tam thoi dung mot vector de giu cac vien dan
 public:
-	std::vector<CBullet*> m_listBullet;
+	std::vector<CBullet_F*> m_listBullet;
 //Nhung tham so dung de test
 protected:
 	float m_currentFall; // Do cao hien tai
 	float m_currentJump;//
+public:
+	void SetPosY(float posY){this->m_pos.y = posY;};
+	float GetPosY(){return this->m_pos.y;};
 
 };
 

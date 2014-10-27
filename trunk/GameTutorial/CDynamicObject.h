@@ -13,8 +13,9 @@ public:
 	virtual std::string ClassName();
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision);
+	virtual void HandleCollision(float deltatime, std::vector<CGameObject*> listObjectCollision);
 	CDynamicObject(void);
-	CDynamicObject(std::vector<std::string> arr);
+	CDynamicObject(const std::vector<int>& info);
 	~CDynamicObject(void);
 };
 

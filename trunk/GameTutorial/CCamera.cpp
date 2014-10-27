@@ -3,7 +3,7 @@
 CCamera::CCamera()
 {
 	m_pos.x = 0;
-	m_pos.y = 400;
+	m_pos.y = 480;
 	m_pos.z = 0;
 	D3DXMatrixIdentity(&m_matrixTransform);
 	m_matrixTransform._22 = -1;
@@ -19,7 +19,7 @@ void CCamera::Update(float x, float deltaTime)
 	m_pos.x += x;
 }
 
-RECT*& CCamera::GetBox()
+RECT*& CCamera::GetBound()
 {
 	RECT* rect = new RECT();
 	rect->top = m_pos.y - __SCREEN_HEIGHT;
