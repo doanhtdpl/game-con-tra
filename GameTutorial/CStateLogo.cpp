@@ -4,17 +4,14 @@
 #include "CDevice.h"
 #include "CCamera.h"
 #include "CLoadBackGround.h"
+#include "CLoadGameObject.h"
 #include "CDrawObject.h"
+#include "CCollision.h"
 
 CStateLogo::CStateLogo()
 {
-	this->sprite = new CSprite();
-	this->texture = new CTexture*[3];
-	this->simon = new CSimon();
-	for (int i = 0; i < 3; i++)
-	{
-		this->texture[i] = new CTexture();
-	}
+	this->hideObj = new CHidenObject();
+	this->sObj = new CSoldier();
 }
 
 CStateLogo::~CStateLogo()
@@ -24,44 +21,62 @@ CStateLogo::~CStateLogo()
 
 void CStateLogo::Init()	
 {
+	CCamera::GetInstance()->Update(CContra::GetInstance()->GetPos().x - 400, 0.0f);
 	CLoadBackGround::GetInstance()->LoadAllResourceFromFile();
 	CLoadBackGround::GetInstance()->ChangeBackGround(10);
-	//texture[0]->LoadImageFromFile(__CONTRA_PATH__, D3DCOLOR_XRGB(255,0,255));
-	//texture[1]->LoadImageFromFile(__SIMON_PATH__, D3DCOLOR_XRGB(255,0,255));
-	//texture[2]->LoadImageFromFile(__BULLET_PATH__, D3DCOLOR_XRGB(255,0,255));
-	m_count = 0;
-
+	CLoadGameObject::GetInstance()->LoadReSourceFromFile();
+	CLoadGameObject::GetInstance()->ChangeMap(10);
+	//Test collision
+	isCollision = false;
+	increse = 0.0f;
 }
 
 void CStateLogo::Update(float deltaTime)
 {
-	//this->simon->Update(deltaTime);
+	CLoadGameObject::GetInstance()->Update();
+	sObj->Update(deltaTime);
 	CContra::GetInstance()->Update(deltaTime);
+	//CContra::GetInstance()->HandleCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
+	//Vi du ve va cham giua hai doi tuong
+	/*first = CContra::GetInstance()->GetBox();
+	second = hideObj->GetBox();
+	broadphaseBox = CCollision::GetInstance()->GetSweptBroadphaseBox(first, deltaTime);*/
+	//if(CCollision::GetInstance()->AABBCheck(broadphaseBox, second))
+	//{
+	//	float normalx, normaly;
+	//	collisiontime = CCollision::GetInstance()->SweptAABB(first, second, normalx, normaly, deltaTime);
+	//	//first.x += first.vx * collisiontime;
+	//	//first.y += first.vy * collisiontime;
+	//	if (collisiontime < 1.0f && collisiontime > 0.0f)
+	//	{
+	//		if(collisiontime <= deltaTime)
+	//		{
+	//			CContra::GetInstance()->SetPosY(CContra::GetInstance()->GetPosY() - 400 * collisiontime); 
+	//		}
+	//		else
+	//		{
+	//			CContra::GetInstance()->SetPosY(CContra::GetInstance()->GetPosY() - 400 * deltaTime);
+	//		}
+	//		//CContra::GetInstance()->SetVelocityY(0);
+	//	}
+	//}
+	//else
+	//{
+	//	CContra::GetInstance()->SetPosY(CContra::GetInstance()->GetPosY() - 400 * deltaTime);
+	//}
 }
 
 void CStateLogo::Render()
 {
-	/*D3DVECTOR posOfContra;
-	posOfContra.x = CContra::GetInstance()->GetPos().x;
-	posOfContra.y = CContra::GetInstance()->GetPos().y;
-	posOfContra = CCamera::GetInstance()->GetPointTransform(posOfContra.x, posOfContra.y);*/
-	//Draw simon
+	CLoadGameObject::GetInstance()->Draw();
 	CLoadBackGround::GetInstance()->Draw();
 	for (int i = 0; i < CContra::GetInstance()->m_listBullet.size(); i++)
 	{
 		CDrawObject::GetInstance()->Draw(CContra::GetInstance()->m_listBullet[i]);
-		/*D3DXVECTOR3 pos;
-		pos.x = CContra::GetInstance()->m_listBullet.at(i)->GetPos().x;
-		pos.y = CContra::GetInstance()->m_listBullet.at(i)->GetPos().y;
-		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-		sprite->draw(texture[2], CContra::GetInstance()->m_listBullet.at(i)->GetRectRS(), pos, D3DCOLOR_XRGB(255,255,225), true);*/
-
 	}
 	CDrawObject::GetInstance()->Draw(CContra::GetInstance());
-	//if(CContra::GetInstance()->GetDirection())
-	//	sprite->drawFlipX(texture[0], CContra::GetInstance()->GetRectRS(), posOfContra, D3DCOLOR_XRGB(255,255,225), true);
-	//else
-	//	sprite->draw(texture[0], CContra::GetInstance()->GetRectRS(), posOfContra, D3DCOLOR_XRGB(255,255,225), true);
+	CDrawObject::GetInstance()->Draw(hideObj);
+	CDrawObject::GetInstance()->Draw(sObj);
 }
 void CStateLogo::Destroy()
 {

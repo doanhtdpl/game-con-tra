@@ -29,7 +29,7 @@ public:
 	CQuadNode*& GetNodeBR(){return this->m_nodeBR;};
 	void SetListObject(std::vector<int>*& list){ this->m_listObject = list;};
 	std::vector<int>*& GetListObject(){return this->m_listObject;};
-	RECT* GetBox();
+	RECT* GetBound();
 	void ClipObject(CQuadObject*&);
 	void DeleteObjectFromQuadNode(CQuadObject*&);
 private:

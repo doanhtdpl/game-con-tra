@@ -13,15 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\GameObject">
-      <UniqueIdentifier>{b76359aa-c1df-44af-8f07-24ff6bff4a1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObject\StaticObject">
-      <UniqueIdentifier>{4b876376-5e50-41e9-ad4e-04db5b20725c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObject\DynamicObject">
-      <UniqueIdentifier>{ee2ce96e-30a1-4621-93f4-28001998c00b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GameLoop">
       <UniqueIdentifier>{6a80aea7-147d-40c7-8b30-321e0f3f3f9f}</UniqueIdentifier>
     </Filter>
@@ -30,12 +21,6 @@
     </Filter>
     <Filter Include="Source Files\GameLoop\MainGame">
       <UniqueIdentifier>{1a1a85ec-a0b1-4f76-866d-d22603a92a96}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObject\DynamicObject\Contra">
-      <UniqueIdentifier>{216cab4f-e2c0-4a38-8821-f3e4d6fc2036}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObject\DynamicObject\Enemy">
-      <UniqueIdentifier>{22fbed21-fc21-4e79-9064-853281bb97c3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\GameLoop\InitGame">
       <UniqueIdentifier>{87f93cde-0d2d-46d3-bdaf-f5bc16a92b46}</UniqueIdentifier>
@@ -49,11 +34,32 @@
     <Filter Include="Source Files\GameFramwork\Utils">
       <UniqueIdentifier>{0a87a554-dd40-4e05-95c7-a744e9d1a7b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObject\DynamicObject\Bullet">
-      <UniqueIdentifier>{ee4c5133-dc42-48f2-a36e-1bd84f5f088f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GameLoop\InitGame\QuadTree">
       <UniqueIdentifier>{eca802d5-a7c0-4137-8530-7320b35e01d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject">
+      <UniqueIdentifier>{b76359aa-c1df-44af-8f07-24ff6bff4a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\StaticObject">
+      <UniqueIdentifier>{4b876376-5e50-41e9-ad4e-04db5b20725c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject">
+      <UniqueIdentifier>{ee2ce96e-30a1-4621-93f4-28001998c00b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Contra">
+      <UniqueIdentifier>{216cab4f-e2c0-4a38-8821-f3e4d6fc2036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy">
+      <UniqueIdentifier>{22fbed21-fc21-4e79-9064-853281bb97c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet">
+      <UniqueIdentifier>{ee4c5133-dc42-48f2-a36e-1bd84f5f088f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\StaticObject\HidenObject">
+      <UniqueIdentifier>{e5a31906-a59e-48a3-85f3-e86ed00958c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry">
+      <UniqueIdentifier>{92c776dd-d49d-45cb-8459-123de5c8ef2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,23 +96,17 @@
     <ClCompile Include="CSprite.cpp">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClCompile>
-    <ClCompile Include="CAnimation.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="CGameObject.cpp">
-      <Filter>Source Files\GameObject</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="CStaticObject.cpp">
-      <Filter>Source Files\GameObject\StaticObject</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject</Filter>
     </ClCompile>
     <ClCompile Include="CDynamicObject.cpp">
-      <Filter>Source Files\GameObject\DynamicObject</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject</Filter>
     </ClCompile>
     <ClCompile Include="CContra.cpp">
-      <Filter>Source Files\GameObject\DynamicObject\Contra</Filter>
-    </ClCompile>
-    <ClCompile Include="CSimon.cpp">
-      <Filter>Source Files\GameObject\DynamicObject\Contra</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Contra</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
@@ -120,20 +120,17 @@
     <ClCompile Include="CManagementTexture.cpp">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClCompile>
-    <ClCompile Include="CFactoryStaticObject.cpp">
-      <Filter>Source Files\GameObject\DynamicObject</Filter>
-    </ClCompile>
     <ClCompile Include="CBullet.cpp">
-      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="CInput.cpp">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClCompile>
     <ClCompile Include="CBulletS.cpp">
-      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="CBulletF.cpp">
-      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="CDrawObject.cpp">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
@@ -146,6 +143,39 @@
     </ClCompile>
     <ClCompile Include="CQuadTree.cpp">
       <Filter>Source Files\GameLoop\InitGame\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CLoadGameObject.cpp">
+      <Filter>Source Files\GameLoop\InitGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CFactoryDynamicObject.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollision.cpp">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletN.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletL.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletM.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClCompile>
+    <ClCompile Include="CFactoryStaticObject.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CHidenObject.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\HidenObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoldier.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
+    </ClCompile>
+    <ClCompile Include="CSniper.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -186,25 +216,19 @@
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClInclude>
     <ClInclude Include="CMove.h">
-      <Filter>Source Files\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="CAnimation.h">
-      <Filter>Source Files\GameObject</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="CGameObject.h">
-      <Filter>Source Files\GameObject</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="CStaticObject.h">
-      <Filter>Source Files\GameObject\StaticObject</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject</Filter>
     </ClInclude>
     <ClInclude Include="CDynamicObject.h">
-      <Filter>Source Files\GameObject\DynamicObject</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject</Filter>
     </ClInclude>
     <ClInclude Include="CContra.h">
-      <Filter>Source Files\GameObject\DynamicObject\Contra</Filter>
-    </ClInclude>
-    <ClInclude Include="CSimon.h">
-      <Filter>Source Files\GameObject\DynamicObject\Contra</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Contra</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
@@ -219,22 +243,19 @@
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClInclude>
     <ClInclude Include="CFactoryObject.h">
-      <Filter>Source Files\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="CFactoryStaticObject.h">
-      <Filter>Source Files\GameObject\DynamicObject</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="CBullet.h">
-      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="CInput.h">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClInclude>
     <ClInclude Include="CBulletS.h">
-      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="CBulletF.h">
-      <Filter>Source Files\GameObject\DynamicObject\Bullet</Filter>
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="CDrawObject.h">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
@@ -247,6 +268,39 @@
     </ClInclude>
     <ClInclude Include="CQuadTree.h">
       <Filter>Source Files\GameLoop\InitGame\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CLoadGameObject.h">
+      <Filter>Source Files\GameLoop\InitGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CFactoryDynamicObject.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollision.h">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletN.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletL.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletM.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation.h">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClInclude>
+    <ClInclude Include="CFactoryStaticObject.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CHidenObject.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\HidenObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CSoldier.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
+    </ClInclude>
+    <ClInclude Include="CSniper.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

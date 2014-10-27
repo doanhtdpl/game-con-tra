@@ -14,6 +14,8 @@ protected:
 	int m_increase;
 	int m_totalFrame;
 	int m_currentFrame;
+	int m_startFrame;
+	int m_endFrame;
 	int m_column;
 	virtual void ChangeFrame(float deltaTime);
 	virtual RECT*& UpdateRectResource(int rsHeight, int rsWidth); 

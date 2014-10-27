@@ -30,16 +30,15 @@ void CLoadBackGround::Draw()
 	if(this->m_matrix != nullptr)
 	{
 		std::vector<int> listIDObj;
-		this->m_quadTree->GetListObjectOnScreen(
-																				CCamera::GetInstance()->GetBox(),
-																				this->m_quadTree->GetRoot(),
-																				listIDObj
-																			);
+		this->m_quadTree->GetListObjectOnScreen(CCamera::GetInstance()->GetBound(),
+													this->m_quadTree->GetRoot(),
+													listIDObj);
 		if(!listIDObj.empty())
 		{
 			int size = listIDObj.size();
 			int row;
 			int col;
+			D3DXVECTOR3 posCenter;
 			for (int i = 0; i < size; i++)
 			{
 				row = listIDObj.at(i) / this->m_cols;
@@ -50,9 +49,17 @@ void CLoadBackGround::Draw()
 				rectRS.top = (this->m_matrix[row][col] / this->m_tileCols) * this->m_tileHeight;
 				rectRS.bottom = rectRS.top + this->m_tileHeight;
 				pos.x = col * this->m_tileHeight;
-				pos.y = (this->m_rows - row) * this->m_tileWidth;
+				pos.y = (this->m_rows - row - 1) * this->m_tileWidth;
 				pos.z = 0;
-				pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
+				//Lay toa do tam
+				posCenter.x = pos.x + this->m_tileWidth/2;
+				posCenter.y = pos.y + this->m_tileHeight/2;
+				posCenter.z = 0;
+				//Transform
+				posCenter = CCamera::GetInstance()->GetPointTransform(posCenter.x, posCenter.y);
+				//Lay toa do de ve sau khi transform
+				pos.x = posCenter.x -  this->m_tileWidth/2;
+				pos.y = posCenter.y - this->m_tileHeight/2;
 				this->m_drawImg->draw(this->m_imageCurr, &rectRS, pos, D3DCOLOR_XRGB(255,255,225), false);
 			}
 		}

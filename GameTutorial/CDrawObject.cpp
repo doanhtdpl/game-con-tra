@@ -26,7 +26,10 @@ void CDrawObject::Draw(CGameObject* obj)
 				//Neu ton tai texture 
 				if(texture && this->m_draw)
 				{
-					D3DXVECTOR2 posObj = obj->GetPos();
+					D3DXVECTOR3 posObj(obj->GetPos().x, obj->GetPos().y, 0);
+					//D3DXVECTOR2 posCenter;
+					//posCenter.x = posObj.x + obj->GetWidth() / 2;
+					//posCenter.y = posObj.y + obj->GetHeight() / 2;
  					D3DXVECTOR3 posObjAfterTransform = CCamera::GetInstance()->GetPointTransform(posObj.x, posObj.y);
 					//Ve theo huong cua Object
 					if(!obj->GetDirection())

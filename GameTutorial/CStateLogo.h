@@ -5,8 +5,9 @@
 #include "CSprite.h"
 #include "CTexture.h"
 #include "CContra.h"
-#include "CSimon.h"
 #include "CDynamicObject.h"
+#include "CHidenObject.h"
+#include "CSoldier.h"
 
 class CStateLogo : public CState
 {
@@ -18,10 +19,15 @@ public:
 	void Render();
 	void Destroy();
 protected:
-	int m_count;
-	CSprite* sprite;
-	CTexture** texture;
-	CSimon* simon;
+	CHidenObject* hideObj;
+	CSoldier* sObj;
+	// Test collision
+	Box first;
+	Box second;
+	Box broadphaseBox;
+	bool isCollision;
+	float collisiontime;
+	float increse;
 };
 
 #endif // !__CSTATELOGO_H__

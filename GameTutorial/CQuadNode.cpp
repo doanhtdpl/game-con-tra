@@ -50,7 +50,7 @@ CQuadNode::~CQuadNode()
 
 }
 
-RECT* CQuadNode::GetBox()
+RECT* CQuadNode::GetBound()
 {
 	RECT* rect = new RECT();
 	rect->top = this->m_posY;
@@ -65,7 +65,7 @@ void CQuadNode::ClipObject(CQuadObject*& obj)
 	CGameObject* gameObj = obj->GetGameObject();
 	if(gameObj)
 	{
-		if(IntersectRectRS(gameObj->GetBox(), this->GetBox()))
+		if(IntersectRectRS(gameObj->GetBound(), this->GetBound()))
 		{
 			if(this->m_nodeTL)
 			{
@@ -90,7 +90,7 @@ void CQuadNode::DeleteObjectFromQuadNode(CQuadObject*& obj)
 		CGameObject* gameObj = obj->GetGameObject();
 		if(gameObj)
 		{
-			if(IntersectRectRS(gameObj->GetBox(), this->GetBox()))
+			if(IntersectRectRS(gameObj->GetBound(), this->GetBound()))
 			{
 				if(this->m_nodeTL)
 				{

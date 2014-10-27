@@ -310,7 +310,7 @@ void CQuadTree::GetListObjectOnScreen(RECT* viewBox, CQuadNode*& node, std::vect
 {
 	if(viewBox && node)
 	{
-		if(node->IntersectRectRS(viewBox, node->GetBox()))
+		if(node->IntersectRectRS(viewBox, node->GetBound()))
 		{
 			if(node->GetNodeTL())
 			{

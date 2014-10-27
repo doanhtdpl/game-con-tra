@@ -24,9 +24,10 @@ protected:
 public:
 	virtual std::string ClassName() = 0;
 	CGameObject(void);
-	CGameObject(std::vector<std::string> arr);
+	CGameObject(const std::vector<int>& info);
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
+	virtual void HandleCollision(float deltaTime, std::vector<CGameObject*> listObjectCollision) = 0;
 	virtual D3DXVECTOR2 GetPos(){return this->m_pos;};
 	int GetID(){return this->m_id;};
 	int GetIDType(){return this->m_idType;};
@@ -34,8 +35,8 @@ public:
 	float GetWidth(){return this->m_width;};
 	float GetHeight(){return this->m_height;};
 	bool IsAlive(){return this->m_isALive;};
-	RECT* GetBox();
-	virtual RECT GetRect();
+	virtual Box GetBox();
+	virtual RECT* GetBound();
 	virtual RECT* GetRectRS();
 	~CGameObject(void);
 };

@@ -1,6 +1,8 @@
 #include "CContra.h"
 #include "CInput.h"
 #include "CCamera.h"
+#include "CCollision.h"
+#include "CHidenObject.h"
 #include <cmath>
 
 CContra::CContra()
@@ -13,7 +15,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;//56.0f; //78
 	this->m_height = 92.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(50.0f, 285.0f);
+	this->m_pos = D3DXVECTOR2(1500.0f, 296.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -44,6 +46,11 @@ CContra::CContra()
 	this->m_currentFall = 0;
 	this->m_currentJump = 0;
 	
+}
+
+CContra::CContra(const std::vector<int>& info) : CDynamicObject(info)
+{
+	CContra();
 }
 
 CContra::~CContra()
@@ -97,6 +104,10 @@ void CContra::MoveUpdate(float deltaTime)
 			}
 		}
 	}
+	if(this->m_stateCurrent == ON_GROUND::IS_STANDING)
+	{
+		this->m_vx = 0;
+	}
 	if(this->m_isMoveLeft)
 	{
 		if (this->m_vx < 0)
@@ -110,7 +121,7 @@ void CContra::MoveUpdate(float deltaTime)
 			this->m_pos.x += int(this->m_vx * deltaTime);
 		}
 	}
-	if(this->m_pos.x > 400)
+	if(this->m_pos.x > 240)
 	{
 		CCamera::GetInstance()->Update(int(this->m_vx * deltaTime), 0);
 	}
@@ -414,21 +425,8 @@ void CContra::InputUpdate(float deltaTime)
 #pragma endregion
 }
 
-void CContra::ChangeFrame(float deltaTime)
-{
-	this->m_currentTime += deltaTime;
-	if(this->m_currentTime > this->m_elapseTimeChangeFrame)
-	{
-		this->m_currentFrame += this->m_increase;
-		if(this->m_currentFrame > this->m_endFrame || this->m_currentFrame < this->m_startFrame)
-		{
-			this->m_currentFrame = this->m_startFrame;
-		}
-		this->m_currentTime -= this->m_elapseTimeChangeFrame;
-	}
-}
-
 //Kiem tra co tao ra dan hay ko, sau nay add vao quadtree no se tu dong di chuyen
+#pragma region KHOI_TAO_DAU_DAN
 void CContra::BulletUpdate(float deltaTime)
 {
 	if(this->m_isShoot)
@@ -471,15 +469,61 @@ void CContra::BulletUpdate(float deltaTime)
 			}
 		}
 
-		// Them dan S.
-		/*CBullet_S* bullet = new CBullet_S(rotation);
-		this->m_listBullet.push_back(bullet->m_bullet_1);
-		this->m_listBullet.push_back(bullet->m_bullet_2);
-		this->m_listBullet.push_back(bullet->m_bullet_3);
-		this->m_listBullet.push_back(bullet->m_bullet_4);
-		this->m_listBullet.push_back(bullet->m_bullet_5);*/
+	//Thiet lap vi tri cua dau dan .../pos = posContra + Offset 
+	//Neu con tra o tren bo
+		D3DXVECTOR2 offset;
+		if(!this->m_isUnderWater)
+		{
+			switch(this->m_stateCurrent)
+			{
+			case ON_GROUND::IS_LYING:
+				{
+					offset.x = 25.0f;
+					offset.y = -10.0f;
+					break;
+				}
+			case ON_GROUND::IS_FALL: case ON_GROUND::IS_JOGGING : case ON_GROUND::IS_SHOOTING_NORMAL: case ON_GROUND::IS_STANDING:
+				{
+					offset.x = 20.0f;
+					offset.y = 3.0f;
+					break;
+				}
+			case ON_GROUND::IS_SHOOTING_UP:
+				{
+					offset.x = 5.0f;
+					offset.y = 36.0f;
+					break;
+				}
+			case ON_GROUND::IS_SHOOTING_DIAGONAL_DOWN:
+				{
+					offset.x = 25.0f;
+					offset.y = -15.0f;
+					break;
+				}
+			case ON_GROUND::IS_SHOOTING_DIAGONAL_UP:
+				{
+					offset.x = 20.0f;
+					offset.y = 25.0f;
+					break;
+				}
+			case ON_GROUND::IS_JUMPING:
+				{
+					offset.x = -10.0f;
+					offset.y = 10.0f;
+					break;
+				}
+			}
+		}
 
-		CBullet_F* bulletF = new CBullet_F(rotation);
+		// Them dan S.
+		//CBullet_S* bullet = new CBullet_S(rotation);
+		//this->m_listBullet.push_back(bullet->m_bullet_1);
+		//this->m_listBullet.push_back(bullet->m_bullet_2);
+		//this->m_listBullet.push_back(bullet->m_bullet_3);
+		//this->m_listBullet.push_back(bullet->m_bullet_4);
+		//this->m_listBullet.push_back(bullet->m_bullet_5);
+
+		CBullet_F* bulletF = new CBullet_F(rotation, this->m_pos, offset, this->m_left);
 		this->m_listBullet.push_back(bulletF);
 
 		this->m_isShoot = false;
@@ -500,7 +544,7 @@ void CContra::BulletUpdate(float deltaTime)
 	}
 
 }
-
+#pragma endregion
 void CContra::Update(float deltaTime)
 {
 	this->InputUpdate(deltaTime);
@@ -515,12 +559,55 @@ void CContra::Update(float deltaTime, std::vector<CGameObject*> listObjectCollis
 
 }
 
+void CContra::HandleCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
+{
+#pragma region XU_LY_VA_CHAM
+	float normalX = 0;
+	float normalY = 0;
+	float timeCollision;
+	for (std::hash_map<int, CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
+	{
+		CGameObject* obj = it->second;
+		//Lay thoi gian va cham
+		timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, deltaTime);
+		if(timeCollision == 0)
+		{
+			//Neu co va cham
+			if(obj->ClassName() == __CLASS_NAME__(CHidenObject))
+			{
+				if(((CHidenObject*)obj)->GetHidenObjectType() == HIDEN_OBJECT_TYPE::ON_GROUND && normalY > 0)
+				{
+					this->m_pos.y += this->m_vy * timeCollision;
+				}
+			}
+		}
+		else if(timeCollision < 1)
+		{
+			this->m_vy += this->m_a * timeCollision;
+			this->m_pos.y -= this->m_vy * timeCollision;
+		}else
+		{
+			this->m_vy += this->m_a * deltaTime;
+			this->m_pos.y -= this->m_vy * deltaTime;
+		}
+	}
+
+#pragma endregion
+
+}
+
 RECT* CContra::GetRectRS()
 {
 	return this->UpdateRectResource(m_height, m_width);
 }
 
-RECT CContra::GetRect()
+RECT* CContra::GetBound()
 {
-	return RECT();
+	return nullptr;
+}
+
+Box CContra::GetBox()
+{
+	//D3DXVECTOR3 pos = CCamera::GetInstance()->GetPointTransform(this->m_pos.x, this->m_pos.y);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
 }

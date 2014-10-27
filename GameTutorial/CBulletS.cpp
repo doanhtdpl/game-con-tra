@@ -10,40 +10,44 @@
 */
 CBullet_S::CBullet_S()
 {
-	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 0;
-	this->m_idImage = 0;
-	this->m_isALive = true;
-	this->m_isAnimatedSprite = true;
-	this->m_width = 10.0f;//56.0f; //78
-	this->m_height = 10.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(55.0f, 300.0f);
-	//Khoi tao cac thong so di chuyen
-	this->m_isJumping = false;
-	this->m_isMoveLeft = false;
-	this->m_isMoveRight = true;
-	this->m_canJump = false;
-	this->m_jumpMax = 40.0f;
-	this->m_vxDefault = 100.0f;
-	this->m_vyDefault = 400.0f;
-	this->m_vx = this->m_vxDefault;
-	this->m_vy = this->m_vyDefault;
-	this->m_pos = this->m_posStart;
-	//this->m_rotation = 0;
-	this->InitPosition();
+	
 	
 }
 
-CBullet_S::CBullet_S(double rotation)
+CBullet_S::CBullet_S(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset)
+{
+	CBullet_S();
+	this->Init();
+	this->m_rotation = rotation;
+	this->m_bullet_1 = new CBullet_S(rotation, pos, offset);
+	this->m_bullet_2 = new CBullet_S(rotation + PI/24, pos, offset);
+	this->m_bullet_3 = new CBullet_S(rotation + PI/12, pos, offset);
+	this->m_bullet_4 = new CBullet_S(rotation - PI/24, pos, offset);
+	this->m_bullet_5 = new CBullet_S(rotation - PI/12, pos, offset);
+}
+
+CBullet_S::CBullet_S(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset, bool direction)
+{
+	this->Init();
+	this->m_rotation = rotation;
+	this->m_bullet_1 = new CBullet_S(rotation, pos, offset, direction);
+	this->m_bullet_2 = new CBullet_S(rotation + PI/24, pos, offset, direction);
+	this->m_bullet_3 = new CBullet_S(rotation + PI/12, pos, offset, direction);
+	this->m_bullet_4 = new CBullet_S(rotation - PI/24, pos, offset, direction);
+	this->m_bullet_5 = new CBullet_S(rotation - PI/12, pos, offset, direction);
+}
+
+void CBullet_S::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 0;
+	this->m_id = 1;
+	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
 	this->m_width = 10.0f;//56.0f; //78
 	this->m_height = 10.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(55.0f, 300.0f);
+	this->m_pos = D3DXVECTOR2(0.0f, 0.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -54,108 +58,81 @@ CBullet_S::CBullet_S(double rotation)
 	this->m_vyDefault = 400.0f;
 	this->m_vx = this->m_vxDefault;
 	this->m_vy = this->m_vyDefault;
-	this->m_pos = this->m_posStart;
-	//this->m_rotation = 0;
-	this->InitPosition();
-	//
-	this->m_rotation = rotation;
-	this->m_bullet_1 = new CBullet(rotation);
-	this->m_bullet_2 = new CBullet(rotation + PI/24);
-	this->m_bullet_3 = new CBullet(rotation + PI/12);
-	this->m_bullet_4 = new CBullet(rotation - PI/24);
-	this->m_bullet_5 = new CBullet(rotation - PI/12);
-	//this->m_bullet_4 = new CBullet(rotation > 0 ? rotation - PI/12 : -rotation - PI/12);
-	//this->m_bullet_5 = new CBullet(rotation > 0 ? rotation - PI/6 : -rotation - PI/6);
-}
-
-void CBullet_S::InitPosition()
-{
-	//Vi tri cua dau dan
-	this->m_pos = CContra::GetInstance()->GetPos();
-	//Huong cua vien dan cung huong voi contra
-	this->m_left = CContra::GetInstance()->GetDirection(); 
-	if(!this->m_left)
-	{
-		this->m_vx = this->m_vxDefault;
-		this->m_a = 1000;
-	}
-	else
-	{
-		this->m_vx = -this->m_vxDefault;
-		this->m_a = -1000;
-	}
-	//Thiet lap huong ban cua dau dan
-	this->m_shootState = CContra::GetInstance()->GetShootState();
-	//Thiet lap vi tri cua dau dan .../pos = posContra + Offset 
-	//Neu con tra o tren bo
-	if(!CContra::GetInstance()->GetLocation())
-	{
-		switch(CContra::GetInstance()->GetStateCurrent())
-		{
-		case ON_GROUND::IS_LYING:
-			{
-				this->m_offset.x = 19.0f;
-				this->m_offset.y = -20.0f;
-				break;
-			}
-		case ON_GROUND::IS_FALL: case ON_GROUND::IS_JOGGING : case ON_GROUND::IS_SHOOTING_NORMAL: case ON_GROUND::IS_STANDING:
-			{
-				this->m_offset.x = 14.5f;
-				this->m_offset.y = 8.0f;
-				break;
-			}
-		case ON_GROUND::IS_SHOOTING_UP:
-			{
-				this->m_offset.x = -4.0f;
-				this->m_offset.y = 50.0f;
-				break;
-			}
-		case ON_GROUND::IS_SHOOTING_DIAGONAL_DOWN:
-			{
-				this->m_offset.x = 14.5f;
-				this->m_offset.y = -10.0f;
-				break;
-			}
-		case ON_GROUND::IS_SHOOTING_DIAGONAL_UP:
-			{
-				this->m_offset.x = 14.5f;
-				this->m_offset.y = 25.0f;
-				break;
-			}
-		case ON_GROUND::IS_JUMPING:
-			{
-				this->m_offset.x = 14.5f;
-				this->m_offset.y = 20.0f;
-				break;
-			}
-		}
-		if(!this->m_left)
-		{
-			this->m_pos += this->m_offset; //Vi tri cua vien dan
-		}
-		else
-		{
-			this->m_pos.x -= (this->m_offset.x + CContra::GetInstance()->GetWidth()/4); //Vi tri cua vien dan
-			this->m_pos.y += this->m_offset.y;
-		}
-	}
+	//Chuyen doi sprite
+	this->m_totalFrame= 3;
+	this->m_column = 3;
+	this->m_elapseTimeChangeFrame = 0.35f;
+	this->m_currentTime = 0;
+	this->m_increase = 1;
+	this->m_currentFrame = 0;
 }
 
 void CBullet_S::MoveUpdate(float deltaTime)
 {
 #pragma region __XET_TRANG_THAI_DAN__
-	
+	if(m_vx != 0) 
+	{
+		if(this->m_vx > 0)
+		{
+			this->m_vx += this->m_a * deltaTime;
+		}
+		else
+		{
+			this->m_vx -= this->m_a * deltaTime;
+		}
+	}
+	if(m_vy != 0)
+	{
+		if(this->m_vy > 0)
+		{
+			this->m_vy += this->m_a * deltaTime;
+		}
+		else
+		{
+			this->m_vy -= this->m_a * deltaTime;
+		}
+	}
+	this->m_pos.x += this->m_vx * deltaTime;
+	this->m_pos.y += this->m_vy * deltaTime;
+#pragma endregion
+}
+void CBullet_S::Update(float deltaTime)
+{
+	#pragma region CAP_NHAT_THONG_TIN_TUNG_VIEN_DAN
 	this->m_bullet_1->MoveUpdate(deltaTime);
 	this->m_bullet_2->MoveUpdate(deltaTime);
 	this->m_bullet_3->MoveUpdate(deltaTime);
 	this->m_bullet_4->MoveUpdate(deltaTime);
 	this->m_bullet_5->MoveUpdate(deltaTime);
-
-#pragma endregion
-}
-void CBullet_S::Update(float deltaTime)
-{
+	#pragma endregion
+	#pragma region CAP_NHAT_TRANG_THAI_TUNG_VIEN_DAN
+	this->m_bullet_1->ChangeFrame(deltaTime);
+	this->m_bullet_2->ChangeFrame(deltaTime);
+	this->m_bullet_3->ChangeFrame(deltaTime);
+	this->m_bullet_4->ChangeFrame(deltaTime);
+	this->m_bullet_5->ChangeFrame(deltaTime);
+	#pragma endregion
 	//this->MoveUpdate(deltaTime);
+}
+
+void CBullet_S::ChangeFrame(float deltaTime)
+{
+	this->m_currentTime += deltaTime;
+	if(this->m_currentTime > this->m_elapseTimeChangeFrame)
+	{
+		this->m_currentFrame += this->m_increase;
+		if(this->m_currentFrame > 3 || this->m_currentFrame < 0)
+		{
+			this->m_currentFrame = 0;
+		}
+		this->m_currentTime -= this->m_elapseTimeChangeFrame;
+	}
+}
+
+
+RECT* CBullet_S::GetRectRS()
+{
+	return this->UpdateRectResource(this->m_height, this->m_width);
 }
 
 void CBullet_S::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
@@ -163,14 +140,10 @@ void CBullet_S::Update(float deltaTime, std::vector<CGameObject*> _listObjectCol
 
 }
 
-RECT* CBullet_S::GetRectRS()
+
+RECT* CBullet_S::GetBound()
 {
 	return nullptr;
-}
-
-RECT CBullet_S::GetRect()
-{
-	return RECT();
 }
 
 CBullet_S::~CBullet_S()
