@@ -1,6 +1,7 @@
 #include "CSniper.h"
 #include "CContra.h"
 #include <math.h>
+#include "CCamera.h"
 
 CSniper::CSniper(void)
 {
@@ -30,7 +31,7 @@ void CSniper::Init()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 52.0f;//56.0f; //78
 	this->m_height = 78.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(1200.0f, 280.0f);
+	this->m_pos = D3DXVECTOR2(1250.0f, 100.0f);
 	this->m_left = false;
 
 	//Khoi tao cac thong so chuyen doi sprite
@@ -41,10 +42,11 @@ void CSniper::Init()
 	this->m_totalFrame = 10;
 	this->m_column = 6;
 	//
-	this->m_isShoot = false;
+	this->m_isShoot = true;
 	this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_SHOOTING_NORMAL;
 	//Test
-	this->m_s = 0;
+	this->m_bulletCount = 0;
+	this->m_timeDelay = 0.25f;
 }
 
 void CSniper::Update(float deltaTime)
@@ -59,7 +61,7 @@ void CSniper::Update(float deltaTime, std::hash_map<int, CGameObject*>* listObje
 
 }
 
-
+/*
 void CSniper::BulletUpdate(float deltaTime)
 {
 #pragma region XET_GOC_BAN_CUA_SNIPER
@@ -149,6 +151,167 @@ void CSniper::BulletUpdate(float deltaTime)
 		}
 	}
 }
+*/
+
+void CSniper::BulletUpdate(float deltaTime)
+{
+#pragma region THIET LAP GOC BAN
+	D3DXVECTOR2 posContra = CContra::GetInstance()->GetPos();
+	float spaceX = posContra.x - this->m_pos.x;
+	float spaceY = posContra.y - this->m_pos.y;
+	double shootAngleNormal = PI / 10;
+	double angle = 0.0f;
+	if(spaceX > 0)
+	{
+		this->m_left = true;
+	}
+	else
+	{
+		this->m_left = false;
+	}
+	if(spaceX != 0)
+	{
+		angle = atan(spaceY / abs(spaceX));
+		if(angle < 0)
+		{
+			//Chuyen sang toa do duong
+			angle += 2*PI;
+		}
+		if(int(angle / shootAngleNormal) != 0 && int(angle / shootAngleNormal) != 10)
+			angle = (int(angle / shootAngleNormal) + 1) * shootAngleNormal;
+		else
+			angle = (int(angle / shootAngleNormal)) * shootAngleNormal;
+	}
+	else
+	{
+		if(spaceY > 0)
+		{
+			angle = PI/2;
+		}
+		else
+		{
+			angle = -PI/2;
+		}
+	}
+#pragma endregion
+
+#pragma region THIET LAP TRANG THAI BAN
+	if(this->m_isShoot)
+	{
+		angle = (angle > 2 * PI) ? angle - 2*PI : angle;
+		int space = int(angle / shootAngleNormal);
+		switch(space)
+		{
+		case 0: case 10: case 20:
+			{
+				this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_SHOOTING_NORMAL;
+				break;
+			}
+		case 1: case 2: case 3: case 4: case 6: case 7: case 8: case 9:
+			{
+				this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DIAGONAL_UP;
+				break;
+			}
+		case 5:
+			{
+				this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_SHOOTING_UP;
+				break;
+			}
+		case 11: case 12: case 13: case 14: case 16: case 17: case 18: case 19:
+			{
+				this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DIAGONAL_DOWN;
+				break;
+			}
+		case 15:
+			{
+				this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DOWN;
+				break;
+			}
+		}
+	}
+#pragma endregion
+
+#pragma region KHOI TAO MOT VIEN DAN THEO HUONG
+	D3DXVECTOR2 offset;
+	switch(this->m_stateCurrent)
+	{
+	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_NORMAL:
+		{
+			offset.x = this->m_width/ 2;
+			offset.y = 26.0f;
+			break;
+		}
+	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_UP:
+		{
+			offset.x = 0;
+			offset.y = 50.0f;
+			break;
+		}
+	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DIAGONAL_UP:
+		{
+			offset.y = 50.0f;
+			offset.x = this->m_width/2;
+			break;
+		}
+	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DOWN:
+		{
+			offset.y = 0;
+			offset.x = this->m_width/ 2;
+			break;
+		}
+	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DIAGONAL_DOWN:
+		{
+			offset.y = -8.0f;
+			offset.x = this->m_width/ 2;
+			break;
+		}
+	default:
+		{
+			break;
+		}
+	}
+#pragma endregion
+
+#pragma region THIET LAP TOC DO DAN
+
+	if(this->m_isShoot)
+	{
+		if(m_bulletCount > 2)
+		{
+			this->m_bulletCount = 0;
+			this->m_isShoot = false;
+		}
+		if(this->m_timeDelay >= 0.25f)
+		{
+			CBullet_N* bullet = new CBullet_N(angle, this->m_pos, offset, !this->m_left);
+			m_listBullet.push_back(bullet);
+			this->m_timeDelay = 0;
+			m_bulletCount ++;
+		}
+		m_timeDelay += deltaTime;
+	}
+
+	//Update trang thai dan
+	D3DXVECTOR3 pos;
+	for (int i = 0; i < this->m_listBullet.size(); i++)
+	{
+		this->m_listBullet.at(i)->Update(deltaTime);
+		pos.x = this->m_listBullet.at(i)->GetPos().x;
+		pos.y = this->m_listBullet.at(i)->GetPos().y;
+		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
+		if(pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
+		{
+			delete this->m_listBullet.at(i);
+			this->m_listBullet.erase(this->m_listBullet.begin() + i);
+		}
+	}
+	if(this->m_listBullet.empty())
+	{
+		this->m_isShoot = true;
+	}
+#pragma endregion
+
+}
 
 void CSniper::SetFrame()
 {
@@ -157,14 +320,46 @@ void CSniper::SetFrame()
 	{
 	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_NORMAL:
 		{
-			this->m_startFrame = 0;
-			this->m_endFrame = 5;
+			if(this->m_isShoot)
+			{
+				this->m_startFrame = 2;
+				this->m_endFrame = 3;
+			}
+			else
+			{
+				this->m_startFrame = 2;
+				this->m_endFrame = 2;
+			}
 			break;
 		}
-	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_UP: case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DOWN:
-	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DIAGONAL_UP: case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DIAGONAL_DOWN:
+	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_UP: case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DIAGONAL_UP: 
 		{
-
+			if(this->m_isShoot)
+			{
+				//this->m_currentFrame = 1;
+				this->m_startFrame = 0;
+				this->m_endFrame = 1;
+			}
+			else
+			{
+				this->m_startFrame = 0;
+				this->m_endFrame = 0;
+			}
+			break;
+		}
+	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DIAGONAL_DOWN: case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DOWN:
+		{
+			if(this->m_isShoot)
+			{
+				this->m_startFrame = 4;
+				this->m_endFrame = 5;
+			}
+			else
+			{
+				this->m_startFrame = 4;
+				this->m_endFrame = 4;
+			}
+			break;
 		}
 	default:
 		break;

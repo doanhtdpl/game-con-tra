@@ -12,6 +12,7 @@ CStateLogo::CStateLogo()
 {
 	this->hideObj = new CHidenObject();
 	this->sObj = new CSoldier();
+	this->nobj = new CSniper();
 }
 
 CStateLogo::~CStateLogo()
@@ -34,7 +35,6 @@ void CStateLogo::Init()
 void CStateLogo::Update(float deltaTime)
 {
 	CLoadGameObject::GetInstance()->Update();
-	sObj->Update(deltaTime);
 	CContra::GetInstance()->Update(deltaTime);
 	//CContra::GetInstance()->HandleCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 	//Vi du ve va cham giua hai doi tuong
@@ -64,6 +64,10 @@ void CStateLogo::Update(float deltaTime)
 	//{
 	//	CContra::GetInstance()->SetPosY(CContra::GetInstance()->GetPosY() - 400 * deltaTime);
 	//}
+
+	//Testing
+	sObj->Update(deltaTime);
+	nobj->Update(deltaTime);
 }
 
 void CStateLogo::Render()
@@ -74,9 +78,14 @@ void CStateLogo::Render()
 	{
 		CDrawObject::GetInstance()->Draw(CContra::GetInstance()->m_listBullet[i]);
 	}
+	for (int i = 0; i < nobj->m_listBullet.size(); i++)
+	{
+		CDrawObject::GetInstance()->Draw(nobj->m_listBullet[i]);
+	}
 	CDrawObject::GetInstance()->Draw(CContra::GetInstance());
 	CDrawObject::GetInstance()->Draw(hideObj);
 	CDrawObject::GetInstance()->Draw(sObj);
+	CDrawObject::GetInstance()->Draw(nobj);
 }
 void CStateLogo::Destroy()
 {

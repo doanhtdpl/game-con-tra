@@ -35,7 +35,7 @@ CBullet_N::CBullet_N(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset, bool 
 void CBullet_N::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 1;
+	this->m_id = 0;
 	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;
@@ -46,8 +46,8 @@ void CBullet_N::Init()
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
 	this->m_canJump = false;
-	this->m_vxDefault = 100.0f;
-	this->m_vyDefault = 400.0f;
+	this->m_vxDefault = 200.0f;
+	this->m_vyDefault = 200.0f;
 	if(!this->m_left)
 	{
 		//this->m_vx = this->m_vxDefault;
