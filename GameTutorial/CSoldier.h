@@ -28,7 +28,7 @@ public:
 protected:
 	void Init();
 	void BulletUpdate(float deltaTime);
-	SOLIDER_STATE m_stateCurrent;
+	SOLDIER_STATE m_stateCurrent;
 	void SetFrame();
 	bool m_isShoot;
 	//Tham so dung de test
