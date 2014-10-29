@@ -40,6 +40,11 @@ public:
 	std::vector<CBullet_N*> m_listBullet;
 	int m_bulletCount; //So luong vien dan da ban ra
 	float m_timeDelay;
+	double m_oldangle;
+	double m_totalCurr;
+	double m_space;
+	bool m_direction;
+	bool m_IsCre;
 };
 
 #endif // !__CWALL_TURRET_H__

@@ -157,9 +157,9 @@ void CSniper::BulletUpdate(float deltaTime)
 {
 #pragma region THIET LAP GOC BAN
 	D3DXVECTOR2 posContra = CContra::GetInstance()->GetPos();
-	float spaceX = posContra.x - this->m_pos.x;
+	float spaceX = posContra.x - this->m_pos.x; //
 	float spaceY = posContra.y - this->m_pos.y;
-	double shootAngleNormal = PI / 10;
+	double shootAngleNormal = PI / 10; //
 	double angle = 0.0f;
 	if(spaceX > 0)
 	{
