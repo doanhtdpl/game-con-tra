@@ -70,6 +70,7 @@ void CBullet_N::Init()
 	else
 	{
 		//Neu la ban len
+		this->m_pos.x -= this->m_offset.x;
 		if(this->m_rotation == PI/2)
 		{
 			this->m_pos.x += 20.0f;

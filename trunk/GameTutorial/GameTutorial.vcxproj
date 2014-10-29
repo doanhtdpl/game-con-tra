@@ -103,6 +103,7 @@
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CView.cpp" />
     <ClCompile Include="CDynamicObject.cpp" />
+    <ClCompile Include="CWallTurret.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CStateManagement.cpp" />
     <ClCompile Include="CStaticObject.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="CDynamicObject.h" />
     <ClInclude Include="CStaticObject.h" />
     <ClInclude Include="CManagementTexture.h" />
+    <ClInclude Include="CWallTurret.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

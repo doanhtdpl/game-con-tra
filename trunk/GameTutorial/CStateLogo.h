@@ -9,6 +9,7 @@
 #include "CHidenObject.h"
 #include "CSoldier.h"
 #include "CSniper.h"
+#include "CWallTurret.h"
 
 class CStateLogo : public CState
 {
@@ -23,6 +24,7 @@ protected:
 	CHidenObject* hideObj;
 	CSoldier* sObj;
 	CSniper* nobj;
+	CWallTurret* wobj;
 	// Test collision
 	Box first;
 	Box second;
