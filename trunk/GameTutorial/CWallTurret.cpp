@@ -47,6 +47,10 @@ void CWallTurret::Init()
 	//Test
 	this->m_bulletCount = 0;
 	this->m_timeDelay = 0.25f;
+
+	this->m_IsCre = false;
+	this->m_direction = false;
+	this->m_totalCurr = 0;
 }
 
 void CWallTurret::Update(float deltaTime)
@@ -63,51 +67,255 @@ void CWallTurret::Update(float deltaTime, std::hash_map<int, CGameObject*>* list
 
 void CWallTurret::BulletUpdate(float deltaTime)
 {
-#pragma region THIET LAP GOC BAN
+
+/*
 	D3DXVECTOR2 posContra = CContra::GetInstance()->GetPos();
-	float spaceX = posContra.x - this->m_pos.x;
-	float spaceY = posContra.y - this->m_pos.y;
-	double shootAngleNormal = PI / 6;
-	double angle = 0.0f;
-	if(spaceX > 0)
+	float spaceX = posContra.x - this->m_pos.x; //Khoang cach Contra va Object theo X la canh ke^` cua goc ban
+	float spaceY = posContra.y - this->m_pos.y; //Khoang cach Contra va Object theo Y la canh do^i cua goc ban
+	double shootAngleNormal = PI / 6; //Goc Ban
+	double angle = 0.0f; //Goc @
+
+	if (spaceX != 0)
 	{
-		this->m_left = false;
-	}
-	else
-	{
-		this->m_left = true;
-	}
-	if(spaceX != 0)
-	{
-		angle = atan(spaceY / abs(spaceX));
-		if(angle < 0)
+		angle = atan(spaceY / abs(spaceX)); //tan @ = Do^i / Ke^` => @ = arctan(Do^i / Ke^`)
+		if (angle < 0) // Xet toan bo la toan do duong, Ki @ am thi chuyen sang duong + 2PI
 		{
 			//Chuyen sang toa do duong
-			angle += 2*PI;
+			//	angle += 2*PI;
 		}
-		if(int(angle / shootAngleNormal) != 3 && int(angle / shootAngleNormal) != 9)
-			angle = (int(angle / shootAngleNormal) + 1) * shootAngleNormal;
-		else
-			angle = (int(angle / shootAngleNormal)) * shootAngleNormal;
+
+		//if(int(angle / shootAngleNormal) != 3 && int(angle / shootAngleNormal) != 9) //
+		//	angle = (int(angle / shootAngleNormal) + 1) * shootAngleNormal;
+		//else
+		angle = (int(angle / shootAngleNormal)) * shootAngleNormal;
+		this->m_timeDelay += deltaTime;
+		if (((angle < 0) ? angle + 2 * PI : angle - (m_oldangle < 0) ? m_oldangle + 2 * PI : m_oldangle) / shootAngleNormal <= 1)
+		{
+			m_oldangle = angle;
+		}
+
+		if (this->m_timeDelay >= 0.3){
+			if (m_oldangle != angle && abs(m_oldangle) - 2 * PI != abs(angle)){
+				if (angle > 0){
+					if (m_oldangle < 0){
+						m_oldangle += 2 * PI;
+						if (m_oldangle < 3 * PI / 2)
+						{
+							this->m_IsCre = true;
+						}
+						else
+						{
+							this->m_IsCre = false;
+						}
+					}
+					else
+					{
+						if (m_oldangle > angle)
+						{
+							this->m_IsCre = false;
+						}
+						else
+						{
+							this->m_IsCre = true;
+						}
+					}
+
+				}
+				else{
+					if (m_oldangle > 0){
+						m_oldangle = -2 * PI + angle;
+						if (m_oldangle < -3 * PI / 2){
+							this->m_IsCre = true;
+						}
+						else{
+							this->m_IsCre = false;
+						}
+					}
+					else
+					{
+						if (m_oldangle < angle){
+							this->m_IsCre = true;
+						}
+						else{
+							this->m_IsCre = false;
+						}
+					}
+				}
+			}
+
+			if (this->m_IsCre){
+				m_oldangle += shootAngleNormal;
+			}
+			else
+			{
+				m_oldangle -= shootAngleNormal;
+			}
+			this->m_timeDelay = 0;
+		}
+
+		/*if (spaceY > 0){
+			angle = (spaceX < 0) ? PI - angle : angle;
+			}
+			else{
+			angle = (spaceX < 0) ? -PI + abs(angle) : angle;
+			}
+
+			if (angle > 0 && m_oldangle < 0){
+			angle = 2 * PI - angle;
+			}
+
+			if ((abs(m_oldangle - angle)) / shootAngleNormal <= 1){
+			m_oldangle = angle;
+			}
+
+
+			/*this->m_timeDelay += deltaTime;
+			if (this->m_timeDelay >= 0.5){
+			if (this->m_oldangle != angle){
+			if (abs(m_oldangle - angle) > PI && !(this->m_IsCre) && (abs(angle) > abs(m_oldangle))){
+			m_oldangle += shootAngleNormal;
+			this->m_IsCre = false;
+			}
+			else{
+			m_oldangle -= shootAngleNormal;
+			this->m_IsCre = true;
+			}
+			}
+			else
+			{
+			this->m_IsCre = false;
+			}
+			this->m_timeDelay = 0;
+			}
+		//this->m_oldangle = (this->m_oldangle<0) ? this->m_oldangle += 2 * PI : this->m_oldangle;
 	}
 	else
 	{
-		if(spaceY > 0)
+		if (spaceY > 0)
 		{
-			angle = PI/2;
+			angle = PI / 2;
 		}
 		else
 		{
-			angle = -PI/2;
+			angle = -PI / 2;
+		}
+	}
+*/
+
+#pragma region THIET LAP GOC BAN
+	D3DXVECTOR2 posContra = CContra::GetInstance()->GetPos();
+	float spaceX = posContra.x - this->m_pos.x; //Khoang cach Contra va Object theo X la canh ke^` cua goc ban
+	float spaceY = posContra.y - this->m_pos.y; //Khoang cach Contra va Object theo Y la canh do^i cua goc ban
+	double shootAngleNormal = PI / 6; //Goc Ban
+	double angle = 0.0f; //Goc @
+	int temp = 0;
+	if (spaceX != 0)
+	{
+		angle = atan(spaceY / abs(spaceX));
+		if (spaceX < 0) //Chuyen doi goc
+		{
+			if (spaceY > 0)
+			{
+				angle = PI - angle;
+			}
+			else
+			{
+				angle = -PI + abs(angle);
+			}
+		}
+		//Gan gia tri
+		this->m_space = (angle * m_oldangle >= 0) ? abs(abs(angle) - abs(m_oldangle)) : abs(angle - m_oldangle);
+		if (m_oldangle == -1 || this->m_space / shootAngleNormal <= 1) //Gan gia tri cho m_oldangle
+		{
+			this->m_oldangle = angle;
+		}
+		//
+		if (angle  * m_oldangle >= 0)
+		{
+			if (angle < m_oldangle)
+			{
+				temp = -1;
+				//m_oldangle -= shootAngleNormal;
+			}
+			else
+			{
+				temp = 1;
+				//m_oldangle += shootAngleNormal;
+			}
+		}
+		else
+		{
+			if (spaceX > 0)
+			{
+				if (m_oldangle > 0 && angle < 0)
+				{
+					temp = -1;
+					//m_oldangle -= shootAngleNormal;
+				}
+				else
+				{
+					temp = 1;
+					//m_oldangle += shootAngleNormal;
+				}
+			}
+			else
+			{
+				if (m_oldangle > 0 && angle < 0)
+				{
+					temp = 1;
+					//m_oldangle -= shootAngleNormal;
+				}
+				else
+				{
+					temp = - 1;
+					//m_oldangle += shootAngleNormal;
+				}
+			}
+
+		}
+		if (temp != 0)
+		{
+			this->m_totalCurr += shootAngleNormal;
+			if (this->m_totalCurr < this->m_space)
+			{
+				m_oldangle += temp*shootAngleNormal;
+			}
+		}
+	}
+	else
+	{
+		if (spaceY < 0)
+		{
+			angle = PI / 2;
+		}
+		else
+		{
+			angle = -PI / 2;
 		}
 	}
 #pragma endregion
 
+
 #pragma region THIET LAP TRANG THAI BAN
 	if(this->m_isShoot)
 	{
-		angle = (angle > 2 * PI) ? angle - 2*PI : angle;
-		int space = int(angle / shootAngleNormal);
+		double temp = m_oldangle;
+		
+		if (m_oldangle <= PI / 2 && m_oldangle >= -PI / 2){
+			this->m_direction = true;
+		}
+		else{
+			this->m_direction = false;
+		}
+
+		temp = (temp < 0) ? temp += 2 * PI : temp;
+		int tempdiv = int(temp / shootAngleNormal);
+		//if (tempdiv != 0 && tempdiv != 3 && tempdiv != 6 && tempdiv != 9) //
+		//	temp = (int(temp / shootAngleNormal) + 1) * shootAngleNormal;
+		//else
+			temp = (int(temp / shootAngleNormal)) * shootAngleNormal;
+
+		int space = int(temp / shootAngleNormal);
 		switch(space)
 		{
 		case 0: case 6:
@@ -204,7 +412,7 @@ void CWallTurret::BulletUpdate(float deltaTime)
 
 #pragma region THIET LAP TOC DO DAN
 
-	if(this->m_isShoot)
+	/*if(this->m_isShoot)
 	{
 		if(m_bulletCount > 2)
 		{
@@ -219,7 +427,7 @@ void CWallTurret::BulletUpdate(float deltaTime)
 			m_bulletCount ++;
 		}
 		m_timeDelay += deltaTime;
-	}
+	}*/
 
 	//Update trang thai dan
 	D3DXVECTOR3 pos;
@@ -251,26 +459,44 @@ void CWallTurret::SetFrame()
 	{
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_NORMAL:
 		{
-			this->m_startFrame = 12;
-			this->m_endFrame = 14;
+			if (this->m_direction){
+				this->m_startFrame = 12;
+				this->m_endFrame = 14;
+			}
+			else{
+				this->m_startFrame = 30;
+				this->m_endFrame = 32;
+			}
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_UP:
-		{
+	{
 			this->m_startFrame = 3;
 			this->m_endFrame = 5;
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_UP_X:
 		{
-			this->m_startFrame = 6;
-			this->m_endFrame = 8;
+			if (this->m_direction){
+				this->m_startFrame = 9;
+				this->m_endFrame = 11;
+			}
+			else{
+				this->m_startFrame = 33;
+				this->m_endFrame =35;
+			}
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_UP_2X:
 		{
-			this->m_startFrame = 9;
-			this->m_endFrame = 11;
+			if (this->m_direction){
+				this->m_startFrame = 6;
+				this->m_endFrame = 8;
+			}
+			else{
+				this->m_startFrame = 0;
+				this->m_endFrame = 2;
+			}
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DOWN:
@@ -281,14 +507,26 @@ void CWallTurret::SetFrame()
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_DOWN_X:
 		{
-			this->m_startFrame = 18;
-			this->m_endFrame = 20;
+			if (this->m_direction){
+				this->m_startFrame = 15;
+				this->m_endFrame = 17;
+			}
+			else{
+				this->m_startFrame = 27;
+				this->m_endFrame = 29;
+			}
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_DOWN_2X:
 		{
-			this->m_startFrame = 15;
-			this->m_endFrame = 17;
+			if (this->m_direction){
+				this->m_startFrame = 18;
+				this->m_endFrame = 20;
+			}
+			else{
+				this->m_startFrame = 24;
+				this->m_endFrame = 26;
+			}
 			break;
 		}
 	default:

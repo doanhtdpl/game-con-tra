@@ -183,6 +183,9 @@
     <ClCompile Include="CWallTurret.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Artillery</Filter>
     </ClCompile>
+    <ClCompile Include="CGroundCannon.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Artillery</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTexture.h">
@@ -309,6 +312,9 @@
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
     </ClInclude>
     <ClInclude Include="CWallTurret.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Artillery</Filter>
+    </ClInclude>
+    <ClInclude Include="CGroundCannon.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Artillery</Filter>
     </ClInclude>
   </ItemGroup>
