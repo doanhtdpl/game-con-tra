@@ -186,6 +186,12 @@
     <ClCompile Include="CGroundCannon.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Artillery</Filter>
     </ClCompile>
+    <ClCompile Include="CWeapon.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CSWeapon.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTexture.h">
@@ -316,6 +322,12 @@
     </ClInclude>
     <ClInclude Include="CGroundCannon.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Artillery</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeapon.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CSWeapon.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

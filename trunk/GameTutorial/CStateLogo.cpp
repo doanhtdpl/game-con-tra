@@ -14,6 +14,8 @@ CStateLogo::CStateLogo()
 	this->sObj = new CSoldier();
 	this->nobj = new CSniper();
 	this->wobj = new CWallTurret();
+	this->weObj = new CWeapon();
+	this->wseObj = new CSWeapon();
 }
 
 CStateLogo::~CStateLogo()
@@ -35,8 +37,9 @@ void CStateLogo::Init()
 
 void CStateLogo::Update(float deltaTime)
 {
-	CLoadGameObject::GetInstance()->Update();
+	CLoadGameObject::GetInstance()->Update(deltaTime);
 	CContra::GetInstance()->Update(deltaTime);
+	//CLoadGameObject::GetInstance()->Draw();
 	//CContra::GetInstance()->HandleCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 	//Vi du ve va cham giua hai doi tuong
 	/*first = CContra::GetInstance()->GetBox();
@@ -70,12 +73,15 @@ void CStateLogo::Update(float deltaTime)
 	sObj->Update(deltaTime);
 	nobj->Update(deltaTime);
 	wobj->Update(deltaTime);
+	weObj->Update(deltaTime);
+	wseObj->Update(deltaTime);
 }
 
 void CStateLogo::Render()
 {
-	CLoadGameObject::GetInstance()->Draw();
+	
 	CLoadBackGround::GetInstance()->Draw();
+	CLoadGameObject::GetInstance()->Draw();
 	for (int i = 0; i < CContra::GetInstance()->m_listBullet.size(); i++)
 	{
 		CDrawObject::GetInstance()->Draw(CContra::GetInstance()->m_listBullet[i]);
@@ -84,15 +90,17 @@ void CStateLogo::Render()
 	{
 		CDrawObject::GetInstance()->Draw(nobj->m_listBullet[i]);
 	}
-	//for (int i = 0; i < nobj->m_listBullet.size(); i++)
-	//{
-	//	CDrawObject::GetInstance()->Draw(wobj->m_listBullet[i]);
-	//}
-	CDrawObject::GetInstance()->Draw(CContra::GetInstance());
+	for (int i = 0; i < wobj->m_listBullet.size(); i++)
+	{
+		CDrawObject::GetInstance()->Draw(wobj->m_listBullet[i]);
+	}
 	CDrawObject::GetInstance()->Draw(hideObj);
 	CDrawObject::GetInstance()->Draw(sObj);
 	CDrawObject::GetInstance()->Draw(nobj);
 	CDrawObject::GetInstance()->Draw(wobj);
+	CDrawObject::GetInstance()->Draw(weObj);
+	CDrawObject::GetInstance()->Draw(wseObj);
+	CDrawObject::GetInstance()->Draw(CContra::GetInstance());
 }
 void CStateLogo::Destroy()
 {

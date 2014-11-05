@@ -59,12 +59,27 @@ void CLoadGameObject::CreateObjectOnScreen()
 				if(this->m_listGameObject)
 				{
 					CGameObject* gameObj;
-					if(!this>m_listGameObject->empty())
+					if(this->m_listGameObject->size() != 0)
 					{
-						gameObj = this->m_listGameObject->find(id)->second;
-						if(gameObj)
+						std::hash_map<int, CGameObject*>::iterator it = this->m_listGameObject->find(id);
+						if(it != this->m_listGameObject->end())
 						{
-							return;
+							//gameObj = this->m_listGameObject->find(id)->second;
+							//if(gameObj)
+							//{
+							//	break;
+							//}
+						}else
+						{
+							//Neu chua ton tai doi tuong thi khoi tao doi tuong, roi add vao list
+							//Can lay thong tin cua doi tuong do
+							if(!this->m_listInfoCurr.empty())
+							{
+								objectInfo = this->m_listInfoCurr.find(id)->second;
+								//Lop factory se tao doi tuong
+								gameObj = this->CreateObject(objectInfo);
+								this->m_listGameObject->insert(Pair(id, gameObj));
+							}
 						}
 					}
 					else
@@ -110,24 +125,60 @@ CGameObject* CLoadGameObject::CreateObject(const std::vector<int>& info)
 }
 
 //Kiem tra neu doi tuong nao trong list ko ton tai trong man hinh thi xoa di
-void CLoadGameObject::DeleteObjectOutScreen()
+void CLoadGameObject::DeleteObjectOutScreen(float deltaTime)
 {
 	if(this->m_listGameObject)
 	{
 		CGameObject* gameObj;
 		std::vector<int> lisObjectInfo;
+		int size = 0;
+		int idObject;
+		bool allowErase = true;
 		for (std::hash_map<int, CGameObject*>::iterator it = this->m_listGameObject->begin(); 
 				it != this->m_listGameObject->end();
 				++it)
 		{
-			lisObjectInfo = this->m_listInfoCurr.find(it->first)->second;
-			if(lisObjectInfo.empty())
+			size = this->m_listIdObject.size();
+			if(size != 0)
 			{
-				//Khong ton tai doi tuong do trong screen
+				idObject = it->first;
+				allowErase = true;
+				for (int i = 0; i < size; i++)
+				{
+					if(this->m_listIdObject.at(i) == idObject)
+					{
+						allowErase = false;
+						break;
+					}
+				}
 				gameObj = it->second;
-				gameObj->~CGameObject();
-				m_listGameObject->erase(it);
+				if(allowErase)
+				{
+					gameObj->~CGameObject();
+					//m_listGameObject->erase(it);
+				}
+				else
+				{
+					gameObj->Update(deltaTime);
+				}
 			}
+			else
+			{
+				this->m_listGameObject->clear();
+			}
+			//lisObjectInfo = this->m_listInfoCurr.find(it->first)->second;
+			//if(lisObjectInfo.empty())
+			//{
+			//	//Khong ton tai doi tuong do trong screen
+			//	gameObj = it->second;
+			//	gameObj->~CGameObject();
+			//	m_listGameObject->erase(it);
+			//}
+			//else
+			//{
+			//	//Update doi tuong
+			//	it->second->Update(deltaTime);
+			//}
 		}
 	}
 }
@@ -142,16 +193,16 @@ void CLoadGameObject::Draw()
 		{
 			CGameObject* gameObj = it->second;
 			if(gameObj->GetIDType() != 13)
-				CDrawObject::GetInstance()->Draw(it->second);
+				CDrawObject::GetInstance()->Draw(gameObj);
 		}
 	}
 }
 
 //
-void CLoadGameObject::Update()
+void CLoadGameObject::Update(float deltaTime)
 {
 	this->CreateObjectOnScreen();
-	this->DeleteObjectOutScreen();
+	//this->DeleteObjectOutScreen(deltaTime);
 }
 
 void CLoadGameObject::LoadGameObjectFromFile(const std::string& filePath) 

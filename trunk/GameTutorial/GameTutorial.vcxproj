@@ -18,7 +18,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -101,10 +101,12 @@
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CStateLogo.cpp" />
     <ClCompile Include="CStateMenu.cpp" />
+    <ClCompile Include="CSWeapon.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CView.cpp" />
     <ClCompile Include="CDynamicObject.cpp" />
     <ClCompile Include="CWallTurret.cpp" />
+    <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CStateManagement.cpp" />
     <ClCompile Include="CStaticObject.cpp" />
@@ -146,6 +148,7 @@
     <ClInclude Include="CStateLogo.h" />
     <ClInclude Include="CStateManagement.h" />
     <ClInclude Include="CStateMenu.h" />
+    <ClInclude Include="CSWeapon.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CView.h" />
     <ClInclude Include="CDynamicObject.h" />
@@ -153,6 +156,7 @@
     <ClInclude Include="CManagementTexture.h" />
     <ClInclude Include="CWallTurret.h" />
     <ClInclude Include="CGroundCannon.h" />
+    <ClInclude Include="CWeapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

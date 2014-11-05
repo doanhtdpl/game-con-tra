@@ -19,7 +19,7 @@ public:
 	void CreateObjectOnScreen();
 	void Draw();
 	void LoadReSourceFromFile();
-	void Update();
+	void Update(float deltaTime);
 	void ChangeMap(const int& );
 protected:
 	//Luu danh sach doi tuong khi xen viewport
@@ -32,7 +32,7 @@ protected:
 	std::hash_map<int, std::vector<int>> m_listInfoCurr;
 	void LoadQuadTreeFromFile(const std::string&);
 	void LoadGameObjectFromFile(const std::string&);
-	void DeleteObjectOutScreen();
+	void DeleteObjectOutScreen(float deltaTime);
 	CGameObject* CreateObject(const std::vector<int>&);
 	std::hash_map<int, std::vector<int>> LoadGameObjectInfo(const std::string&);
 
