@@ -1,5 +1,7 @@
 #include "CFactoryStaticObject.h"
 #include "CHidenObject.h"
+#include "CSWeapon.h"
+#include "CWallTurret.h"
 
 CFactoryStaticObject::~CFactoryStaticObject()
 {
@@ -29,6 +31,14 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 			{
 				return new CHidenObject(info);
 				break;
+			}
+		case 20003:
+			{
+				return new CSWeapon(info);
+			}
+		case 11002:
+			{
+				return new CWallTurret(info);
 			}
 		}
 	}
