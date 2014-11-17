@@ -62,14 +62,7 @@ void CLoadGameObject::CreateObjectOnScreen()
 					if(this->m_listGameObject->size() != 0)
 					{
 						std::hash_map<int, CGameObject*>::iterator it = this->m_listGameObject->find(id);
-						if(it != this->m_listGameObject->end())
-						{
-							//gameObj = this->m_listGameObject->find(id)->second;
-							//if(gameObj)
-							//{
-							//	break;
-							//}
-						}else
+						if(it == this->m_listGameObject->end())
 						{
 							//Neu chua ton tai doi tuong thi khoi tao doi tuong, roi add vao list
 							//Can lay thong tin cua doi tuong do
@@ -113,7 +106,7 @@ CGameObject* CLoadGameObject::CreateObject(const std::vector<int>& info)
 				return CFactoryDynamicObject::GetInstance()->CreateObject(info);
 				break;
 			}
-		case 13:
+		case 13: case 14:
 			{
 				return CFactoryStaticObject::GetInstance()->CreateObject(info);
 				break;
@@ -192,8 +185,10 @@ void CLoadGameObject::Draw()
 				++it)
 		{
 			CGameObject* gameObj = it->second;
-			if(gameObj->GetIDType() != 13)
+			if(gameObj->GetIDType() != 14)
+			{
 				CDrawObject::GetInstance()->Draw(gameObj);
+			}
 		}
 	}
 }
@@ -203,6 +198,20 @@ void CLoadGameObject::Update(float deltaTime)
 {
 	this->CreateObjectOnScreen();
 	//this->DeleteObjectOutScreen(deltaTime);
+	//Update doi tuong
+	if(this->m_listGameObject)
+	{
+		for (std::hash_map<int, CGameObject*>::iterator it = this->m_listGameObject->begin(); 
+				it != this->m_listGameObject->end();
+				++it)
+		{
+			CGameObject* gameObj = it->second;
+			if(gameObj->GetIDType() != 14)
+			{
+				gameObj->Update(deltaTime);
+			}
+		}
+	}
 }
 
 void CLoadGameObject::LoadGameObjectFromFile(const std::string& filePath) 

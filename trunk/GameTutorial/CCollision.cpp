@@ -124,6 +124,28 @@ Box CCollision::GetSweptBroadphaseBox(Box b, float deltaTime)
     return broadphasebox;
 }
 
+bool CCollision::AABBCheck(Box first, Box second, float& moveX, float& moveY)
+{
+	float l = (second.x - second.w / 2) - (first.x + first.w / 2);
+	float r = (second.x + second.w / 2) - (first.x - first.w / 2);
+	float t = (second.y + second.h / 2) - (first.y - first.h / 2);
+	float b = (second.y - second.h / 2) - (first.y + first.h / 2);
+	//Khong va cham
+	if(l > 0 || r < 0 || t < 0 || b > 0)
+		return false;
+	moveX = (abs(l) < r) ? l : r;
+	moveY = (abs(b) < t) ? b : t;
+	if(abs(moveX) < abs(moveY))
+	{
+		moveY = 0.0f;
+	}
+	else
+	{
+		moveX = 0.0f;
+	}
+	return true;
+}
+
 bool CCollision::AABBCheck(Box first, Box second)
 {
     return !((first.x + first.w / 2 < second.x - second.w / 2)||

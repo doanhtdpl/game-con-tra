@@ -23,7 +23,7 @@ CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 		this->m_height = info.at(4);
 		switch (info.at(0))
 		{
-		case 13001:
+		case 14001:
 			this->m_type = HIDEN_OBJECT_TYPE::ON_GROUND;
 		default:
 			break;
