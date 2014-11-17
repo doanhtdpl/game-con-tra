@@ -15,12 +15,12 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;//56.0f; //78
 	this->m_height = 92.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(1500.0f, 296.0f);
+	this->m_pos = D3DXVECTOR2(500.0f, 500.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
-	this->m_a = -700.0f;
+	this->m_a = 800.0f;
 	this->m_canJump = true;
 	this->m_jumpMax = 40.0f;
 	//this->m_currentJump = 0.0f;
@@ -66,18 +66,18 @@ void CContra::MoveUpdate(float deltaTime)
 	{
 		if(this->m_stateCurrent == ON_GROUND::IS_FALL)
 		{
-			this->m_pos.y -= this->m_vy * deltaTime;
+			this->m_pos.y += this->m_vy * deltaTime;
 			this->m_currentFall -= this->m_vy * deltaTime;
-			if(this->m_currentFall <= -60)
-			{ 
-				this->m_currentFall = 0.0f;
-				this->m_elapseTimeChangeFrame = 0.00f;
-				this->m_stateCurrent = ON_GROUND::IS_STANDING;
-				this->m_vy = this->m_vyDefault;
-				//this->m_elapseTimeChangeFrame = 0.23f;
-				//this->m_pos.y = 220;
-				this->m_isJumping = false;
-			}
+			//if(this->m_currentFall <= -60)
+			//{ 
+			//	this->m_currentFall = 0.0f;
+			//	this->m_elapseTimeChangeFrame = 0.00f;
+			//	this->m_stateCurrent = ON_GROUND::IS_STANDING;
+			//	this->m_vy = -this->m_vyDefault;
+			//	//this->m_elapseTimeChangeFrame = 0.23f;
+			//	//this->m_pos.y = 220;
+			//	this->m_isJumping = false;
+			//}
 		}
 		else
 		{
@@ -90,19 +90,24 @@ void CContra::MoveUpdate(float deltaTime)
 			if(this->m_currentJump == 0)
 				this->m_currentJump = m_pos.y;
 			this->m_vy += this->m_a * deltaTime;
-			this->m_pos.y += this->m_vy * deltaTime;
+			this->m_pos.y -= this->m_vy * deltaTime;
 			//Neu co vao cham thi cai dat lai posY cua doi tuong
-			if(this->m_pos.y <= this->m_currentJump)
-			{ 
-				this->m_pos.y = this->m_currentJump;
-				this->m_currentJump = 0;
-				this->m_elapseTimeChangeFrame = 0.00f;
-				//this->m_stateCurrent = ON_GROUND::IS_STANDING;
-				this->m_vy = this->m_vyDefault;
-				//this->m_elapseTimeChangeFrame = 0.23f;
-				this->m_isJumping = false;
-			}
+			//if(this->m_pos.y <= this->m_currentJump)
+			//{ 
+			//	this->m_pos.y = this->m_currentJump;
+			//	this->m_currentJump = 0;
+			//	this->m_elapseTimeChangeFrame = 0.00f;
+			//	//this->m_stateCurrent = ON_GROUND::IS_STANDING;
+			//	this->m_vy = -this->m_vyDefault;
+			//	//this->m_elapseTimeChangeFrame = 0.23f;
+			//	this->m_isJumping = false;
+			//}
 		}
+	}
+	else
+	{
+		//this->m_vy = -this->m_vyDefault;
+		this->m_pos.y += this->m_vy * deltaTime;
 	}
 	if(this->m_stateCurrent == ON_GROUND::IS_STANDING)
 	{
@@ -564,31 +569,76 @@ void CContra::HandleCollision(float deltaTime, std::hash_map<int, CGameObject*>*
 #pragma region XU_LY_VA_CHAM
 	float normalX = 0;
 	float normalY = 0;
+	float moveX = 0.0f;
+	float moveY = 0.0f;
 	float timeCollision;
 	for (std::hash_map<int, CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
 	{
 		CGameObject* obj = it->second;
 		//Lay thoi gian va cham
-		timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, deltaTime);
-		if(timeCollision == 0)
+		if(obj->GetIDType() == 14)
 		{
-			//Neu co va cham
-			if(obj->ClassName() == __CLASS_NAME__(CHidenObject))
+			if(CCollision::GetInstance()->AABBCheck(this->GetBox(), obj->GetBox(), moveX, moveY))
 			{
-				if(((CHidenObject*)obj)->GetHidenObjectType() == HIDEN_OBJECT_TYPE::ON_GROUND && normalY > 0)
+				switch(obj->GetID())
 				{
-					this->m_pos.y += this->m_vy * timeCollision;
+					//Doi tuong ground
+				case 1:
+					{
+						timeCollision = CCollision::GetInstance()->SweptAABB(this->GetBox(), obj->GetBox(), normalX, normalY, deltaTime);
+
+						// va cham theo huong tu tren xuong.
+						if (moveY > 0)
+						{
+							this->m_pos.y += moveY;
+							this->m_isJumping = false;
+						}
+						
+
+						//if(this->m_stateCurrent == ON_GROUND::IS_FALL)
+						//{
+						//	if(this->m_pos.y + this->m_height / 2 < obj->GetPos().y + obj->GetHeight() / 2)
+						//	{
+						//		//this->m_pos.y += moveY;
+						//		//this->m_vy = -this->m_vyDefault;
+						//		this->m_isJumping = false;
+						//		this->m_stateCurrent = ON_GROUND::IS_STANDING;
+						//	}
+						//}
+						//else if(this->m_stateCurrent == ON_GROUND::IS_JUMPING )
+						//{
+						//	if(moveY > 0 && this->m_vy >= 0)
+						//	{
+						//		this->m_pos.y += moveY;
+						//		//this->m_stateCurrent = ON_GROUND::IS_STANDING;
+						//		this->m_elapseTimeChangeFrame = 0.00f;
+						//		this->m_vy = 0;
+						//		this->m_isJumping = false;
+						//	}
+						//}
+						//else
+						//{
+						//	if(moveY > 0)
+						//	{
+						//		this->m_pos.y += moveY;
+						//		//this->m_stateCurrent = ON_GROUND::IS_STANDING;
+						//		this->m_elapseTimeChangeFrame = 0.00f;
+						//		this->m_vy = 0;
+						//		this->m_isJumping = false;
+						//	}
+						//}
+						break;
+					}
 				}
 			}
-		}
-		else if(timeCollision < 1)
-		{
-			this->m_vy += this->m_a * timeCollision;
-			this->m_pos.y -= this->m_vy * timeCollision;
-		}else
-		{
-			this->m_vy += this->m_a * deltaTime;
-			this->m_pos.y -= this->m_vy * deltaTime;
+			else
+			{
+				if(this->m_stateCurrent != ON_GROUND::IS_FALL && this->m_stateCurrent != ON_GROUND::IS_JUMPING)
+				{
+					this->m_vy = -this->m_vyDefault;
+				}
+			}
+			
 		}
 	}
 

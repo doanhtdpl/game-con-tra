@@ -191,6 +191,7 @@ void CWallTurret::BulletUpdate(float deltaTime)
 
 		temp = (temp < 0) ? 2 * PI + temp : temp;
 		int tempdiv = int(temp / shootAngleNormal);
+		tempdiv = ((temp - tempdiv*shootAngleNormal) > shootAngleNormal / 2) ? ++tempdiv : tempdiv;
 		//if (tempdiv != 0 && tempdiv != 3 && tempdiv != 6 && tempdiv != 9) //
 		//	temp = (int(temp / shootAngleNormal) + 1) * shootAngleNormal;
 		//else

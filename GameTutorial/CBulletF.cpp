@@ -37,7 +37,7 @@ void CBullet_F::Init()
 	//Khoi tao cac thong so cua doi tuong
 	//
 	this->m_angle = 0;
-	this->m_id = 0;
+	this->m_id = 4;
 	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;

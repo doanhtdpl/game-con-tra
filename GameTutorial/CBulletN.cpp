@@ -35,13 +35,13 @@ CBullet_N::CBullet_N(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset, bool 
 void CBullet_N::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 0;
+	this->m_id = 7;
 	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = false;
-	this->m_width = 18.0f;//56.0f; //78
-	this->m_height = 18.0f; //88.0f; //84
+	this->m_width = 6.0f;//56.0f; //78
+	this->m_height = 6.0f; //88.0f; //84
 	//Khoi tao cac thong so di chuyen
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
