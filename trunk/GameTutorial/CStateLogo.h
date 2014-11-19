@@ -24,6 +24,7 @@ public:
 	void Destroy();
 protected:
 	CHidenObject* hideObj;
+	
 	CSoldier* sObj;
 	CSniper* nobj;
 	CWallTurret* wobj;

@@ -14,9 +14,9 @@ class CCollision : public CSingleton<CCollision>
 public:
 	float SweptAABB(Box first, Box second, float& normalx, float& normaly, float deltaTime);
 	Box GetSweptBroadphaseBox(Box box, float deltaTime);
-	bool AABBCheck(Box b1, Box b2, float& moveX, float& moveY);
+	bool AABBCheck(Box b1, Box b2, float& moveX, float& moveY, float& normalX, float& normalY);
 	bool AABBCheck(Box b1, Box b2);
-	float Collision(CGameObject* ObjectA, CGameObject* ObjectB, float& normalx, float& normaly, float deltaTime);
+	float Collision(CGameObject* ObjectA, CGameObject* ObjectB, float& normalx, float& normaly, float& moveX, float& moveY, float deltaTime);
 	CCollision();
 	~CCollision();
 private:

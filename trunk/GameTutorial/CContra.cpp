@@ -17,20 +17,20 @@ CContra::CContra()
 	this->m_height = 92.0f; //88.0f; //84
 	this->m_pos = D3DXVECTOR2(500.0f, 500.0f);
 	//Khoi tao cac thong so di chuyen
-	this->m_isJumping = false;
+	this->m_isJumping = true;
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
-	this->m_a = 800.0f;
+	this->m_a = -700.0f;
 	this->m_canJump = true;
 	this->m_jumpMax = 40.0f;
 	//this->m_currentJump = 0.0f;
 	this->m_vxDefault = 100.0f;
 	this->m_vyDefault = 400.0f;
-	this->m_vx = this->m_vxDefault;
-	this->m_vy = this->m_vyDefault;
+	this->m_vx = 0;//this->m_vxDefault;
+	this->m_vy = -this->m_vyDefault;
 	this->m_left = false;
 	//Trang thai ban dau la dang dung yen
-	this->m_stateCurrent = ON_GROUND::IS_STANDING;
+	this->m_stateCurrent = ON_GROUND::IS_FALL;
 	//Tren mat dat
 	this->m_isUnderWater = false;
 	this->m_isShoot = false;
@@ -66,47 +66,23 @@ void CContra::MoveUpdate(float deltaTime)
 	{
 		if(this->m_stateCurrent == ON_GROUND::IS_FALL)
 		{
+			this->m_vy += this->m_a * deltaTime;
 			this->m_pos.y += this->m_vy * deltaTime;
-			this->m_currentFall -= this->m_vy * deltaTime;
-			//if(this->m_currentFall <= -60)
-			//{ 
-			//	this->m_currentFall = 0.0f;
-			//	this->m_elapseTimeChangeFrame = 0.00f;
-			//	this->m_stateCurrent = ON_GROUND::IS_STANDING;
-			//	this->m_vy = -this->m_vyDefault;
-			//	//this->m_elapseTimeChangeFrame = 0.23f;
-			//	//this->m_pos.y = 220;
-			//	this->m_isJumping = false;
-			//}
 		}
 		else
 		{
-			//Neu nhay den do cao cuc dai, gia toc doi chieu
+			////Neu nhay den do cao cuc dai, gia toc doi chieu
 			this->m_elapseTimeChangeFrame = 0.10f;
-			if(this->m_vy <= 0)
-			{
-	//			this->m_a = 1500.0f;
-			}
-			if(this->m_currentJump == 0)
-				this->m_currentJump = m_pos.y;
+			//if(this->m_currentJump == 0)
+			//	this->m_currentJump = m_pos.y;
 			this->m_vy += this->m_a * deltaTime;
-			this->m_pos.y -= this->m_vy * deltaTime;
-			//Neu co vao cham thi cai dat lai posY cua doi tuong
-			//if(this->m_pos.y <= this->m_currentJump)
-			//{ 
-			//	this->m_pos.y = this->m_currentJump;
-			//	this->m_currentJump = 0;
-			//	this->m_elapseTimeChangeFrame = 0.00f;
-			//	//this->m_stateCurrent = ON_GROUND::IS_STANDING;
-			//	this->m_vy = -this->m_vyDefault;
-			//	//this->m_elapseTimeChangeFrame = 0.23f;
-			//	this->m_isJumping = false;
-			//}
+			this->m_pos.y += this->m_vy * deltaTime;
 		}
 	}
 	else
 	{
 		//this->m_vy = -this->m_vyDefault;
+		this->m_vy += this->m_a * deltaTime;
 		this->m_pos.y += this->m_vy * deltaTime;
 	}
 	if(this->m_stateCurrent == ON_GROUND::IS_STANDING)
@@ -271,8 +247,8 @@ void CContra::InputUpdate(float deltaTime)
 			this->m_elapseTimeChangeFrame = 0.23f;
 		}
 		//Neu dang nam va phim down duoc giu
-		if(!(this->m_stateCurrent == ON_GROUND::IS_LYING && CInput::GetInstance()->IsKeyDown(DIK_DOWN)) && this->m_stateCurrent != ON_GROUND::IS_FALL)
-		{
+		//if(!(this->m_stateCurrent == ON_GROUND::IS_LYING && CInput::GetInstance()->IsKeyDown(DIK_DOWN)) && this->m_stateCurrent != ON_GROUND::IS_FALL)
+		//{
 			if(!this->m_isUnderWater)
 			{
 				this->m_stateCurrent = ON_GROUND::IS_STANDING;
@@ -281,7 +257,7 @@ void CContra::InputUpdate(float deltaTime)
 			{
 				this->m_stateCurrent = UNDER_WATER::IS_STANDING_UNDER_WATER;
 			}
-		}
+		//}
 	}
 #pragma endregion
 
@@ -296,19 +272,28 @@ void CContra::InputUpdate(float deltaTime)
 	if(m_keyDown == DIK_X)
 	{
 		//if(this->m_stateCurrent != ON_GROUND::IS_LYING && this->m_stateCurrent != ON_GROUND::IS_FALL)
-		if(!CInput::GetInstance()->IsKeyDown(DIK_DOWN) || this->m_stateCurrent == ON_GROUND::IS_JUMPING)
+		if(!this->m_isUnderWater)
 		{
-			this->m_stateCurrent = ON_GROUND::IS_JUMPING;
-		}
-		else
-		{
-			this->m_stateCurrent = ON_GROUND::IS_FALL;
-		}
-		//Duoc phep nhay
-		if(!this->m_isUnderWater && !this->m_isJumping)
-		{
-			this->m_isJumping = true;
-			//this->m_vy = this->m_vyDefault;
+			if(!CInput::GetInstance()->IsKeyDown(DIK_DOWN) || this->m_stateCurrent == ON_GROUND::IS_JUMPING)
+			{
+				this->m_stateCurrent = ON_GROUND::IS_JUMPING;
+				//Duoc phep nhay
+				if(!this->m_isJumping)
+				{
+					this->m_isJumping = true;
+					this->m_vy = this->m_vyDefault;
+				}
+			}
+			else
+			{
+				this->m_stateCurrent = ON_GROUND::IS_FALL;
+				//Duoc phep nhay
+				if(!this->m_isJumping)
+				{
+					this->m_isJumping = true;
+					this->m_vy = 0;
+				}
+			}
 		}
 	}
 #pragma endregion
@@ -564,9 +549,9 @@ void CContra::Update(float deltaTime, std::vector<CGameObject*> listObjectCollis
 
 }
 
-void CContra::HandleCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
-{
-#pragma region XU_LY_VA_CHAM
+//void CContra::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
+//{
+/*#pragma region XU_LY_VA_CHAM
 	float normalX = 0;
 	float normalY = 0;
 	float moveX = 0.0f;
@@ -587,7 +572,7 @@ void CContra::HandleCollision(float deltaTime, std::hash_map<int, CGameObject*>*
 					{
 						timeCollision = CCollision::GetInstance()->SweptAABB(this->GetBox(), obj->GetBox(), normalX, normalY, deltaTime);
 
-						// va cham theo huong tu tren xuong.
+						 //va cham theo huong tu tren xuong.
 						if (moveY > 0)
 						{
 							this->m_pos.y += moveY;
@@ -642,9 +627,70 @@ void CContra::HandleCollision(float deltaTime, std::hash_map<int, CGameObject*>*
 		}
 	}
 
-#pragma endregion
+#pragma endregion*/
 
+//}
+
+void CContra::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
+{
+#pragma region XU_LY_VA_CHAM
+	float normalX = 0;
+	float normalY = 0;
+	float moveX = 0.0f;
+	float moveY = 0.0f;
+	float timeCollision;
+	for (std::hash_map<int, CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
+	{
+		CGameObject* obj = it->second;
+		//Lay thoi gian va cham
+		//Neu doi tuong la ground va dang va cham
+		if(obj->GetIDType() == 14 && this->m_vy != 0)
+		{
+			timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), obj, normalX, normalY, moveX, moveY, deltaTime);
+			if((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+			{
+				if(normalY > 0)
+				{
+					if( timeCollision == 2.0f)
+					{
+						if(this->m_vy <= 0)
+						{
+							this->m_isJumping = false;
+							this->m_pos.y += moveY;
+							this->m_vy = 0;
+						}
+						if(this->m_stateCurrent == ON_GROUND::IS_FALL)
+						{
+							this->m_stateCurrent = ON_GROUND::IS_STANDING;
+						}
+					}else{
+						if(this->m_vy != 0)
+						{
+							//this->m_stateCurrent = ON_GROUND::IS_STANDING;
+							this->m_isJumping = false;
+							this->m_pos.y += (this->m_vy * timeCollision) * deltaTime;
+							this->m_vy = 0;
+						}
+					}
+				}
+			}
+			else
+			{
+				//if(this->m_stateCurrent != ON_GROUND::IS_JUMPING)
+				//{
+				//	//Dang dung yem va chuyen sang roi
+				//	if(this->m_vy == 0)
+				//	{
+				//		this->m_stateCurrent = ON_GROUND::IS_FALL;
+				//		this->m_isJumping = true;
+				//	}
+				//}
+			}
+		}
+	}
+#pragma endregion 
 }
+		
 
 RECT* CContra::GetRectRS()
 {

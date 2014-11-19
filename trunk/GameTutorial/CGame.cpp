@@ -12,8 +12,13 @@ namespace GameTutorial
 	{
 		MSG msg;
 		int done = 0;
-		DWORD frameStart = GetTickCount();
-		DWORD tickPerFrame = 1000 / __FRAME_RATE;
+		//DWORD frameStart = GetTickCount();
+		float tickPerFrame = 1.0f / __FRAME_RATE;
+		__int64 cntsPerSec = 0;
+		QueryPerformanceFrequency((LARGE_INTEGER*)&cntsPerSec);
+		float secsPerCnt = 1.0f / (float)cntsPerSec;
+		__int64 prevTimeStamp = 0;
+		QueryPerformanceCounter((LARGE_INTEGER*)&prevTimeStamp);
 		this->Init(); //Khoi tao game
 		while (!done) 
 		{
@@ -29,20 +34,26 @@ namespace GameTutorial
 				DispatchMessage(&msg);			
 			}
 
-			DWORD now = GetTickCount();//Xem lai sau
-			DWORD deltaTime = (now - frameStart); 
+			//DWORD now = GetTickCount();//Xem lai sau
+			//DWORD deltaTime = (now - frameStart); 
+			__int64 currTimeStamp = 0;
+			QueryPerformanceCounter((LARGE_INTEGER*)&currTimeStamp);
+			float deltaTime = (currTimeStamp - prevTimeStamp)*secsPerCnt;
 			if (deltaTime >= tickPerFrame)
 			{
-				frameStart = now;
-				float delta_time = (float)deltaTime / 1000;
+				//frameStart = now;
+				prevTimeStamp = currTimeStamp;
+				//float delta_time = (float)deltaTime / 1000;
+				if(deltaTime > tickPerFrame)
+					deltaTime = tickPerFrame;
 				this->ProcessInput();
 				if(this->m_isPaused)
 				{
-					CStateManagement::GetInstance()->Update(true, delta_time);
+					CStateManagement::GetInstance()->Update(true, deltaTime);
 				}
 				else
 				{
-					CStateManagement::GetInstance()->Update(false, delta_time);
+					CStateManagement::GetInstance()->Update(false, deltaTime);
 				}
 			}
 		}
