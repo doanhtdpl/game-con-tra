@@ -53,7 +53,7 @@ public:
 	int GetShootState(){return m_stateShoot;};
 	int GetStateCurrent(){return m_stateCurrent;};
 	bool GetLocation(){return m_isUnderWater;}; //Neu con tra o duoi nuoc tra ve  true, nguoc lai tra ve false
-	void HandleCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
+	void OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
 	void BulletUpdate(float deltaTime);
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);

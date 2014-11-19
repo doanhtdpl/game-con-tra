@@ -37,8 +37,8 @@ float CCollision::SweptAABB(Box first, Box second, float& normalx, float& normal
     }
     else
     {
-        yInvEntry = (first.y + first.h/2) - (second.y - second.h/2);
-        yInvExit = (first.y - first.h/2) - (second.y + second.h/2);
+        yInvEntry = (second.y + second.h/2) - (first.y - first.h/2);
+        yInvExit = (second.y - second.h/2) - (first.y + first.h/2);
     }
 
 	 // find time of collision and time of leaving for each axis (if statement is to prevent divide by zero)
@@ -116,15 +116,18 @@ float CCollision::SweptAABB(Box first, Box second, float& normalx, float& normal
 Box CCollision::GetSweptBroadphaseBox(Box b, float deltaTime)
 {
     Box broadphasebox;
-    broadphasebox.x = b.vx > 0 ? (b.x - b.w/2) : (b.x - b.w/2) + b.vx * deltaTime;
-    broadphasebox.y = b.vy > 0 ? (b.y - b.h/2) : (b.y - b.h/2) + b.vy * deltaTime;
+	float posX;
+	float posY;
+    posX = b.vx > 0 ? (b.x - b.w/2) : (b.x - b.w/2) + b.vx * deltaTime;
+	posY = b.vy > 0 ? (b.y + b.h/2) + b.vy * deltaTime : (b.y + b.h/2);
     broadphasebox.w = b.vx > 0 ? b.vx * deltaTime + b.w : b.w - b.vx * deltaTime;
     broadphasebox.h = b.vy > 0 ? b.vy * deltaTime + b.h : b.h - b.vy * deltaTime;
-
+	broadphasebox.x = posX + broadphasebox.w/2;
+	broadphasebox.y = posY - broadphasebox.h/2;
     return broadphasebox;
 }
 
-bool CCollision::AABBCheck(Box first, Box second, float& moveX, float& moveY)
+bool CCollision::AABBCheck(Box first, Box second, float& moveX, float& moveY, float& normalX, float& normalY)
 {
 	float l = (second.x - second.w / 2) - (first.x + first.w / 2);
 	float r = (second.x + second.w / 2) - (first.x - first.w / 2);
@@ -132,55 +135,74 @@ bool CCollision::AABBCheck(Box first, Box second, float& moveX, float& moveY)
 	float b = (second.y - second.h / 2) - (first.y + first.h / 2);
 	//Khong va cham
 	if(l > 0 || r < 0 || t < 0 || b > 0)
+	{
+		moveX = 0;
+		moveY = 0;
+		normalX = 0;
+		normalY = 0;
 		return false;
+	}
+	//Xet truong hop ground
 	moveX = (abs(l) < r) ? l : r;
 	moveY = (abs(b) < t) ? b : t;
+	//Loai tru truong hop hai doi tuong long nhau
+	if(moveY >= second.h / 2)
+	{
+		moveX = 0;
+		moveY = 0;
+		normalX = 0;
+		normalY = 0;
+		return false;
+	}
 	if(abs(moveX) < abs(moveY))
 	{
 		moveY = 0.0f;
+		normalX = (abs(l) > abs(r)) ? 1 : -1;
+		normalY = 0;
 	}
 	else
 	{
 		moveX = 0.0f;
+		normalY = (abs(t) < abs(b)) ? 1 : -1;
+		normalX = 0;
 	}
 	return true;
 }
 
 bool CCollision::AABBCheck(Box first, Box second)
 {
-    return !((first.x + first.w / 2 < second.x - second.w / 2)||
+	//return !(b1.x + b1.w < b2.x || b1.x > b2.x + b2.w || b1.y + b1.h < b2.y || b1.y > b2.y + b2.h);
+	/*
+	return !((second.x - second.w / 2) - (first.x + first.w / 2) > 0 || 
+		(second.x + second.w / 2) - (first.x - first.w / 2) < 0||
+		(second.y + second.h / 2) - (first.y - first.h / 2) < 0 ||
+		(second.y - second.h / 2) - (first.y + first.h / 2) > 0);
+		*/
+   return !((first.x + first.w / 2 < second.x - second.w / 2)||
 			(first.x - first.w / 2) > (second.x + second.w / 2) ||
 			(first.y + first.h / 2) < (second.y - second.h / 2) || 
 			(first.y - first.h / 2) > (second.y + second.h / 2));
 }
 
 
-float CCollision::Collision(CGameObject* objectA, CGameObject* objectB, float& normalx, float& normaly, float deltaTime)
+float CCollision::Collision(CGameObject* objectA, CGameObject* objectB, float& normalx, float& normaly, float& moveX, float& moveY, float deltaTime)
 {
 	Box first = objectA->GetBox();
 	Box second = objectB->GetBox();
 	Box broadphaseBox = this->GetSweptBroadphaseBox(first, deltaTime);
 	float collisiontime;
-	if(this->AABBCheck(first, second))
+	if(AABBCheck(first, second, moveX, moveY, normalx, normaly))
 	{
-		return 0.0f;
+		return 2.0f;
 	}
-	if(this->AABBCheck(broadphaseBox, second))
+	else if(this->AABBCheck(broadphaseBox, second))
 	{
+		//Lay thoi gian co the va cham
 		collisiontime = CCollision::GetInstance()->SweptAABB(first, second, normalx, normaly, deltaTime);
-		//first.x += first.vx * collisiontime;
-		//first.y += first.vy * collisiontime;
 		if (collisiontime < 1.0f && collisiontime > 0.0f)
 		{
-			if(collisiontime <= deltaTime)
-			{
-				return deltaTime; 
-			}
-			else
-			{
-				return collisiontime;
-			}
-			//CContra::GetInstance()->SetVelocityY(0);
+			//Xay ra va cham trong frame tiep theo
+			return collisiontime;
 		}
 	}
 	else

@@ -27,7 +27,7 @@ public:
 	CGameObject(const std::vector<int>& info);
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
-	virtual void HandleCollision(float deltaTime, std::vector<CGameObject*> listObjectCollision) = 0;
+	virtual void OnCollision(float deltaTime, std::vector<CGameObject*> listObjectCollision) = 0;
 	virtual D3DXVECTOR2 GetPos(){return this->m_pos;};
 	int GetID(){return this->m_id;};
 	int GetIDType(){return this->m_idType;};

@@ -40,7 +40,7 @@ void CStateLogo::Update(float deltaTime)
 	CLoadGameObject::GetInstance()->Update(deltaTime);
 	CContra::GetInstance()->Update(deltaTime);
 	//CLoadGameObject::GetInstance()->Draw();
-	CContra::GetInstance()->HandleCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
+	CContra::GetInstance()->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 	//Vi du ve va cham giua hai doi tuong
 	/*first = CContra::GetInstance()->GetBox();
 	second = hideObj->GetBox();
