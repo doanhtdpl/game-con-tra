@@ -15,7 +15,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;//56.0f; //78
 	this->m_height = 92.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(500.0f, 500.0f);
+	this->m_pos = D3DXVECTOR2(200.0f, 500.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = true;
 	this->m_isMoveLeft = false;
@@ -24,7 +24,7 @@ CContra::CContra()
 	this->m_canJump = true;
 	this->m_jumpMax = 40.0f;
 	//this->m_currentJump = 0.0f;
-	this->m_vxDefault = 100.0f;
+	this->m_vxDefault = 150.0f;
 	this->m_vyDefault = 400.0f;
 	this->m_vx = 0;//this->m_vxDefault;
 	this->m_vy = -this->m_vyDefault;
@@ -72,7 +72,7 @@ void CContra::MoveUpdate(float deltaTime)
 		else
 		{
 			////Neu nhay den do cao cuc dai, gia toc doi chieu
-			this->m_elapseTimeChangeFrame = 0.10f;
+			this->m_elapseTimeChangeFrame = 0.15f;
 			//if(this->m_currentJump == 0)
 			//	this->m_currentJump = m_pos.y;
 			this->m_vy += this->m_a * deltaTime;
@@ -570,9 +570,9 @@ void CContra::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* lis
 			timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), obj, normalX, normalY, moveX, moveY, deltaTime);
 			if((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 			{
-				checkColWithGround = true;
 				if(normalY > 0)
 				{
+					checkColWithGround = true;
 					if( timeCollision == 2.0f)
 					{
 						if(this->m_vy <= 0)
