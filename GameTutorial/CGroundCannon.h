@@ -7,13 +7,9 @@
 
 enum GROUNDCANON_SHOOT_STATE
 {
-	G_IS_SHOOTING_DOWN = 0,
-	G_IS_SHOOTING_UP = 1,
-	G_IS_SHOOTING_NORMAL = 2,
-	G_IS_SHOOTING_DIAGONAL_UP_X = 3,
-	G_IS_SHOOTING_DIAGONAL_UP_2X = 4,
-	G_IS_SHOOTING_DIAGONAL_DOWN_X = 5,
-	G_IS_SHOOTING_DIAGONAL_DOWN_2X = 6
+	G_IS_SHOOTING_NORMAL = 0,
+	G_IS_SHOOTING_DIAGONAL_UP_X = 1,
+	G_IS_SHOOTING_DIAGONAL_UP_2X = 2,
 };
 
 class CGroundCanon : public CStaticObject, public CAnimation
@@ -34,12 +30,14 @@ protected:
 	GROUNDCANON_SHOOT_STATE m_stateCurrent;
 	void SetFrame();
 	bool m_isShoot;
+	void MoveUp(float deltaTime);
 	//Tham so dung de test
 public:
 	//Phai co mot bien de giu nhung vien dan ma enemy da ban ra
 	std::vector<CBullet_N*> m_listBullet;
 	int m_bulletCount; //So luong vien dan da ban ra
 	float m_timeDelay;
+	float m_heightMax;
 };
 
 #endif // !__CGROUND_CANON_H__

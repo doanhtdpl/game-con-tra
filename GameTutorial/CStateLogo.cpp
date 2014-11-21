@@ -16,6 +16,7 @@ CStateLogo::CStateLogo()
 	this->wobj = new CWallTurret();
 	this->weObj = new CWeapon();
 	this->wseObj = new CSWeapon();
+	this->gcObj = new CGroundCanon();
 }
 
 CStateLogo::~CStateLogo()
@@ -75,6 +76,7 @@ void CStateLogo::Update(float deltaTime)
 	wobj->Update(deltaTime);
 	weObj->Update(deltaTime);
 	wseObj->Update(deltaTime);
+	gcObj->Update(deltaTime);
 }
 
 void CStateLogo::Render()
@@ -94,12 +96,17 @@ void CStateLogo::Render()
 	{
 		CDrawObject::GetInstance()->Draw(wobj->m_listBullet[i]);
 	}
+	for (int i = 0; i < gcObj->m_listBullet.size(); i++)
+	{
+		CDrawObject::GetInstance()->Draw(gcObj->m_listBullet[i]);
+	}
 	CDrawObject::GetInstance()->Draw(hideObj);
 	CDrawObject::GetInstance()->Draw(sObj);
 	CDrawObject::GetInstance()->Draw(nobj);
 	CDrawObject::GetInstance()->Draw(wobj);
 	CDrawObject::GetInstance()->Draw(weObj);
 	CDrawObject::GetInstance()->Draw(wseObj);
+	CDrawObject::GetInstance()->Draw(gcObj);
 	CDrawObject::GetInstance()->Draw(CContra::GetInstance());
 }
 void CStateLogo::Destroy()

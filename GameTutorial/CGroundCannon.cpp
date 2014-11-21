@@ -29,9 +29,10 @@ void CGroundCanon::Init()
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 64.0f;//56.0f; //78
-	this->m_height = 64.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(1100.0f, 200.0f);
+	this->m_width = 89.0f;//56.0f; //78
+	this->m_height = 0.0f; //88.0f; //84
+	this->m_heightMax = 64.0f;
+	this->m_pos = D3DXVECTOR2(470.0f, 220.0f);
 	this->m_left = false;
 
 	//Khoi tao cac thong so chuyen doi sprite
@@ -39,8 +40,8 @@ void CGroundCanon::Init()
 	this->m_currentFrame = 0;
 	this->m_elapseTimeChangeFrame = 0.20f;
 	this->m_increase = 1;
-	this->m_totalFrame = 42;
-	this->m_column = 6;
+	this->m_totalFrame = 9;
+	this->m_column = 3;
 	//
 	this->m_isShoot = true;
 	this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_NORMAL;
@@ -53,7 +54,7 @@ void CGroundCanon::Update(float deltaTime)
 {
 	this->SetFrame();
 	this->ChangeFrame(deltaTime);
-	this->BulletUpdate(deltaTime);
+	this->MoveUp(deltaTime);
 }
 
 void CGroundCanon::Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
@@ -69,44 +70,22 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 	float spaceY = posContra.y - this->m_pos.y;
 	double shootAngleNormal = PI / 6;
 	double angle = 0.0f;
-	if (spaceX > 0)
+	this->m_left = false;
+	
+	if (spaceX < 0)
 	{
-		this->m_left = false;
+		angle = atan(spaceY / abs(spaceX));		
 	}
 	else
 	{
-		this->m_left = true;
-	}
-	if (spaceX != 0)
-	{
-		angle = atan(spaceY / abs(spaceX));
-		if (angle < 0)
-		{
-			//Chuyen sang toa do duong
-			angle += 2 * PI;
-		}
-		if (int(angle / shootAngleNormal) != 3 && int(angle / shootAngleNormal) != 9)
-			angle = (int(angle / shootAngleNormal) + 1) * shootAngleNormal;
-		else
-			angle = (int(angle / shootAngleNormal)) * shootAngleNormal;
-	}
-	else
-	{
-		if (spaceY > 0)
-		{
-			angle = PI / 2;
-		}
-		else
-		{
-			angle = -PI / 2;
-		}
+		angle = PI;
 	}
 #pragma endregion
 
 #pragma region THIET LAP TRANG THAI BAN
 	if (this->m_isShoot)
 	{
-		angle = (angle > 2 * PI) ? angle - 2 * PI : angle;
+	//	angle = (angle > 2 * PI) ? angle - 2 * PI : angle;
 		int space = int(angle / shootAngleNormal);
 		switch (space)
 		{
@@ -115,35 +94,15 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 					this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_NORMAL;
 					break;
 		}
-		case 1: case 4:
+		case 1:
 		{
 					this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_UP_X;
 					break;
 		}
-		case 2: case 5:
+		case 2:
 		{
 					this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_UP_2X;
 					break;
-		}
-		case 3:
-		{
-				  this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_UP;
-				  break;
-		}
-		case 7: case 11:
-		{
-					this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_DOWN_X;
-					break;
-		}
-		case 8: case 10:
-		{
-					this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_DOWN_2X;
-					break;
-		}
-		case 9:
-		{
-				  this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DOWN;
-				  break;
 		}
 		}
 	}
@@ -156,18 +115,12 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_NORMAL:
 	{
 														 offset.x = this->m_width / 2;
-														 offset.y = 26.0f;
+														 offset.y = 0.0f;
 														 break;
-	}
-	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_UP:
-	{
-													 offset.x = 0;
-													 offset.y = 50.0f;
-													 break;
 	}
 	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_UP_X:
 	{
-																offset.y = 50.0f;
+																offset.y = 20.0f;
 																offset.x = this->m_width / 2;
 																break;
 	}
@@ -176,24 +129,6 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 																 offset.y = 50.0f;
 																 offset.x = this->m_width / 2;
 																 break;
-	}
-	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DOWN:
-	{
-													   offset.y = 0;
-													   offset.x = this->m_width / 2;
-													   break;
-	}
-	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_DOWN_X:
-	{
-																  offset.y = -8.0f;
-																  offset.x = this->m_width / 2;
-																  break;
-	}
-	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_DOWN_2X:
-	{
-																   offset.y = -8.0f;
-																   offset.x = this->m_width / 2;
-																   break;
 	}
 	default:
 	{
@@ -204,7 +139,7 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 
 #pragma region THIET LAP TOC DO DAN
 
-	if (this->m_isShoot)
+	if (this->m_isShoot && spaceX < 0)
 	{
 		if (m_bulletCount > 2)
 		{
@@ -243,6 +178,23 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 
 }
 
+void CGroundCanon::MoveUp(float deltaTime){
+
+	if (this->m_height != this->m_heightMax){
+		this->m_timeDelay += deltaTime;
+		if (this->m_timeDelay > 0.1) //0.3 co the thay tuy y cua minh
+		{
+			this->m_timeDelay = 0;
+			this->m_height += 8;
+		}
+	}
+	else
+	{
+		this->BulletUpdate(deltaTime);
+	}
+
+}
+
 void CGroundCanon::SetFrame()
 {
 	//Chuyen doi frame
@@ -251,45 +203,21 @@ void CGroundCanon::SetFrame()
 	{
 	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_NORMAL:
 	{
-														 this->m_startFrame = 12;
-														 this->m_endFrame = 14;
+														 this->m_startFrame = 0;
+														 this->m_endFrame = 2;
 														 break;
-	}
-	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_UP:
-	{
-													 this->m_startFrame = 3;
-													 this->m_endFrame = 5;
-													 break;
 	}
 	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_UP_X:
 	{
-																this->m_startFrame = 6;
-																this->m_endFrame = 8;
+																this->m_startFrame = 3;
+																this->m_endFrame = 5;
 																break;
 	}
 	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_UP_2X:
 	{
-																 this->m_startFrame = 9;
-																 this->m_endFrame = 11;
+																 this->m_startFrame = 6;
+																 this->m_endFrame = 8;
 																 break;
-	}
-	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DOWN:
-	{
-													   this->m_startFrame = 21;
-													   this->m_endFrame = 23;
-													   break;
-	}
-	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_DOWN_X:
-	{
-																  this->m_startFrame = 18;
-																  this->m_endFrame = 20;
-																  break;
-	}
-	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_DOWN_2X:
-	{
-																   this->m_startFrame = 15;
-																   this->m_endFrame = 17;
-																   break;
 	}
 	default:
 	{
