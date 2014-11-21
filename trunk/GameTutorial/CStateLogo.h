@@ -12,6 +12,7 @@
 #include "CWallTurret.h"
 #include "CWeapon.h"
 #include "CSWeapon.h"
+#include "CGroundCannon.h"
 
 class CStateLogo : public CState
 {
@@ -30,6 +31,7 @@ protected:
 	CWallTurret* wobj;
 	CWeapon* weObj;
 	CSWeapon* wseObj;
+	CGroundCanon* gcObj;
 	// Test collision
 	Box first;
 	Box second;
