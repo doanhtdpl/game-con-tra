@@ -25,7 +25,7 @@ CStateLogo::~CStateLogo()
 
 void CStateLogo::Init()	
 {
-	CCamera::GetInstance()->Update(CContra::GetInstance()->GetPos().x - 400, 0.0f);
+	//CCamera::GetInstance()->Update(CContra::GetInstance()->GetPos().x - 400, 0.0f);
 	CLoadBackGround::GetInstance()->LoadAllResourceFromFile();
 	CLoadBackGround::GetInstance()->ChangeBackGround(10);
 	CLoadGameObject::GetInstance()->LoadReSourceFromFile();

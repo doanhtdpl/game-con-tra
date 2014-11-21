@@ -108,9 +108,6 @@
     <ClCompile Include="CDynamicObject.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject</Filter>
     </ClCompile>
-    <ClCompile Include="CContra.cpp">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Contra</Filter>
-    </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClCompile>
@@ -191,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="CSWeapon.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CContra.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Contra</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
