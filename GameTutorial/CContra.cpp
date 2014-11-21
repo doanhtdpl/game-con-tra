@@ -82,8 +82,8 @@ void CContra::MoveUpdate(float deltaTime)
 	else
 	{
 		//this->m_vy = -this->m_vyDefault;
-		this->m_vy += this->m_a * deltaTime;
-		this->m_pos.y += this->m_vy * deltaTime;
+		//this->m_vy += this->m_a * deltaTime;
+		//this->m_pos.y += this->m_vy * deltaTime;
 	}
 	if(this->m_stateCurrent == ON_GROUND::IS_STANDING)
 	{
@@ -290,6 +290,7 @@ void CContra::InputUpdate(float deltaTime)
 				//Duoc phep nhay
 				if(!this->m_isJumping)
 				{
+					this->m_pos.y -= 20;
 					this->m_isJumping = true;
 					this->m_vy = 0;
 				}
@@ -354,7 +355,7 @@ void CContra::InputUpdate(float deltaTime)
 		this->m_stateShoot = SHOOT::IS_NORMAL;
 		if(this->m_isJumping)
 		{
-			this->m_stateCurrent = ON_GROUND::IS_JUMPING;
+			//this->m_stateCurrent = ON_GROUND::IS_JUMPING;
 			if(CInput::GetInstance()->IsKeyDown(DIK_UP))
 			{
 				this->m_stateShoot = SHOOT::IS_DIAGONAL_UP;
@@ -549,88 +550,6 @@ void CContra::Update(float deltaTime, std::vector<CGameObject*> listObjectCollis
 
 }
 
-//void CContra::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
-//{
-/*#pragma region XU_LY_VA_CHAM
-	float normalX = 0;
-	float normalY = 0;
-	float moveX = 0.0f;
-	float moveY = 0.0f;
-	float timeCollision;
-	for (std::hash_map<int, CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
-	{
-		CGameObject* obj = it->second;
-		//Lay thoi gian va cham
-		if(obj->GetIDType() == 14)
-		{
-			if(CCollision::GetInstance()->AABBCheck(this->GetBox(), obj->GetBox(), moveX, moveY))
-			{
-				switch(obj->GetID())
-				{
-					//Doi tuong ground
-				case 1:
-					{
-						timeCollision = CCollision::GetInstance()->SweptAABB(this->GetBox(), obj->GetBox(), normalX, normalY, deltaTime);
-
-						 //va cham theo huong tu tren xuong.
-						if (moveY > 0)
-						{
-							this->m_pos.y += moveY;
-							this->m_isJumping = false;
-						}
-						
-
-						//if(this->m_stateCurrent == ON_GROUND::IS_FALL)
-						//{
-						//	if(this->m_pos.y + this->m_height / 2 < obj->GetPos().y + obj->GetHeight() / 2)
-						//	{
-						//		//this->m_pos.y += moveY;
-						//		//this->m_vy = -this->m_vyDefault;
-						//		this->m_isJumping = false;
-						//		this->m_stateCurrent = ON_GROUND::IS_STANDING;
-						//	}
-						//}
-						//else if(this->m_stateCurrent == ON_GROUND::IS_JUMPING )
-						//{
-						//	if(moveY > 0 && this->m_vy >= 0)
-						//	{
-						//		this->m_pos.y += moveY;
-						//		//this->m_stateCurrent = ON_GROUND::IS_STANDING;
-						//		this->m_elapseTimeChangeFrame = 0.00f;
-						//		this->m_vy = 0;
-						//		this->m_isJumping = false;
-						//	}
-						//}
-						//else
-						//{
-						//	if(moveY > 0)
-						//	{
-						//		this->m_pos.y += moveY;
-						//		//this->m_stateCurrent = ON_GROUND::IS_STANDING;
-						//		this->m_elapseTimeChangeFrame = 0.00f;
-						//		this->m_vy = 0;
-						//		this->m_isJumping = false;
-						//	}
-						//}
-						break;
-					}
-				}
-			}
-			else
-			{
-				if(this->m_stateCurrent != ON_GROUND::IS_FALL && this->m_stateCurrent != ON_GROUND::IS_JUMPING)
-				{
-					this->m_vy = -this->m_vyDefault;
-				}
-			}
-			
-		}
-	}
-
-#pragma endregion*/
-
-//}
-
 void CContra::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
 {
 #pragma region XU_LY_VA_CHAM
@@ -639,16 +558,19 @@ void CContra::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* lis
 	float moveX = 0.0f;
 	float moveY = 0.0f;
 	float timeCollision;
+	//Kiem tra va cham voi ground
+	bool checkColWithGround = false;
 	for (std::hash_map<int, CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
 	{
 		CGameObject* obj = it->second;
 		//Lay thoi gian va cham
 		//Neu doi tuong la ground va dang va cham
-		if(obj->GetIDType() == 14 && this->m_vy != 0)
+		if(obj->GetIDType() == 14 && !checkColWithGround)
 		{
 			timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), obj, normalX, normalY, moveX, moveY, deltaTime);
 			if((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 			{
+				checkColWithGround = true;
 				if(normalY > 0)
 				{
 					if( timeCollision == 2.0f)
@@ -664,29 +586,22 @@ void CContra::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* lis
 							this->m_stateCurrent = ON_GROUND::IS_STANDING;
 						}
 					}else{
-						if(this->m_vy != 0)
-						{
-							//this->m_stateCurrent = ON_GROUND::IS_STANDING;
-							this->m_isJumping = false;
-							this->m_pos.y += (this->m_vy * timeCollision) * deltaTime;
-							this->m_vy = 0;
-						}
+						//if(this->m_vy != 0)
+						//{
+						//	////this->m_stateCurrent = ON_GROUND::IS_STANDING;
+						//	this->m_isJumping = false;
+						//	this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
+						//	this->m_vy = 0;
+						//}
 					}
 				}
 			}
-			else
-			{
-				//if(this->m_stateCurrent != ON_GROUND::IS_JUMPING)
-				//{
-				//	//Dang dung yem va chuyen sang roi
-				//	if(this->m_vy == 0)
-				//	{
-				//		this->m_stateCurrent = ON_GROUND::IS_FALL;
-				//		this->m_isJumping = true;
-				//	}
-				//}
-			}
 		}
+	}
+	if(!checkColWithGround && this->m_stateCurrent != ON_GROUND::IS_JUMPING)
+	{
+		this->m_stateCurrent = ON_GROUND::IS_FALL;
+		this->m_isJumping = true;
 	}
 #pragma endregion 
 }
@@ -704,6 +619,7 @@ RECT* CContra::GetBound()
 
 Box CContra::GetBox()
 {
-	//D3DXVECTOR3 pos = CCamera::GetInstance()->GetPointTransform(this->m_pos.x, this->m_pos.y);
+
 	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+
 }
