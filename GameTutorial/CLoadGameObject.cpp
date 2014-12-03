@@ -118,60 +118,23 @@ CGameObject* CLoadGameObject::CreateObject(const std::vector<int>& info)
 }
 
 //Kiem tra neu doi tuong nao trong list ko ton tai trong man hinh thi xoa di
-void CLoadGameObject::DeleteObjectOutScreen(float deltaTime)
+//Update lai cac doi tuong hien tai trong quadtree
+//Neu doi tuong di chuyen duoc, thi xoa roi add lai
+//Update lai trang thai cua doi tuong
+void CLoadGameObject::UpdateQuadTree(float deltaTime)
 {
 	if(this->m_listGameObject)
 	{
 		CGameObject* gameObj;
-		std::vector<int> lisObjectInfo;
-		int size = 0;
-		int idObject;
-		bool allowErase = true;
 		for (std::hash_map<int, CGameObject*>::iterator it = this->m_listGameObject->begin(); 
 				it != this->m_listGameObject->end();
 				++it)
 		{
-			size = this->m_listIdObject.size();
-			if(size != 0)
-			{
-				idObject = it->first;
-				allowErase = true;
-				for (int i = 0; i < size; i++)
-				{
-					if(this->m_listIdObject.at(i) == idObject)
-					{
-						allowErase = false;
-						break;
-					}
-				}
-				gameObj = it->second;
-				if(allowErase)
-				{
-					gameObj->~CGameObject();
-					//m_listGameObject->erase(it);
-				}
-				else
-				{
-					gameObj->Update(deltaTime);
-				}
-			}
-			else
-			{
-				this->m_listGameObject->clear();
-			}
-			//lisObjectInfo = this->m_listInfoCurr.find(it->first)->second;
-			//if(lisObjectInfo.empty())
-			//{
-			//	//Khong ton tai doi tuong do trong screen
-			//	gameObj = it->second;
-			//	gameObj->~CGameObject();
-			//	m_listGameObject->erase(it);
-			//}
-			//else
-			//{
-			//	//Update doi tuong
-			//	it->second->Update(deltaTime);
-			//}
+			it->second->Update(deltaTime);
+			this->m_quadTree->DeleteGameObjectFromQuadTree(new CQuadObject(it->first, it->second));
+			this->m_quadTree->AddGameObjectToQuadTree(new CQuadObject(it->first, it->second));
+			typedef pair<int, vector<int>> Pair;
+			//this->m_listInfoCurr->insert(Pair());
 		}
 	}
 }
@@ -197,21 +160,22 @@ void CLoadGameObject::Draw()
 void CLoadGameObject::Update(float deltaTime)
 {
 	this->CreateObjectOnScreen();
+	//this->UpdateQuadTree(deltaTime);
 	//this->DeleteObjectOutScreen(deltaTime);
 	//Update doi tuong
-	if(this->m_listGameObject)
-	{
-		for (std::hash_map<int, CGameObject*>::iterator it = this->m_listGameObject->begin(); 
-				it != this->m_listGameObject->end();
-				++it)
-		{
-			CGameObject* gameObj = it->second;
-			if(gameObj->GetIDType() != 14)
-			{
-				gameObj->Update(deltaTime);
-			}
-		}
-	}
+	//if(this->m_listGameObject)
+	//{
+	//	for (std::hash_map<int, CGameObject*>::iterator it = this->m_listGameObject->begin(); 
+	//			it != this->m_listGameObject->end();
+	//			++it)
+	//	{
+	//		CGameObject* gameObj = it->second;
+	//		if(gameObj->GetIDType() != 14)
+	//		{
+	//			gameObj->Update(deltaTime);
+	//		}
+	//	}
+	//}
 }
 
 void CLoadGameObject::LoadGameObjectFromFile(const std::string& filePath) 
@@ -273,6 +237,9 @@ void CLoadGameObject::ChangeMap(const int& idMap)
 	if(this->m_listInfoOfGameObject)
 	{
 		this->m_listInfoCurr = this->m_listInfoOfGameObject->find(idMap)->second;
+		std::hash_map<int, std::vector<int>>::iterator it = this->m_listInfoCurr.end();
+		it--;
+		this->m_quadTree->SetMaxID(it->first);
 	}
 }
 

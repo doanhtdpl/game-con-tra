@@ -80,6 +80,7 @@
     <ClCompile Include="CContra.cpp" />
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="CDrawObject.cpp" />
+    <ClCompile Include="CFileConfig.cpp" />
     <ClCompile Include="CGroundCannon.cpp" />
     <ClCompile Include="CSniper.cpp" />
     <ClCompile Include="CSoldier.cpp" />
@@ -99,7 +100,7 @@
     <ClCompile Include="CQuadTree.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CState.cpp" />
-    <ClCompile Include="CStateLogo.cpp" />
+    <ClCompile Include="CStateGamePlay.cpp" />
     <ClCompile Include="CStateMenu.cpp" />
     <ClCompile Include="CSWeapon.cpp" />
     <ClCompile Include="CTexture.cpp" />
@@ -145,7 +146,7 @@
     <ClInclude Include="CSingleton.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CState.h" />
-    <ClInclude Include="CStateLogo.h" />
+    <ClInclude Include="CStateGamePlay.h" />
     <ClInclude Include="CStateManagement.h" />
     <ClInclude Include="CStateMenu.h" />
     <ClInclude Include="CSWeapon.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="CWallTurret.h" />
     <ClInclude Include="CGroundCannon.h" />
     <ClInclude Include="CWeapon.h" />
+    <ClInclude Include="CFileConfig.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

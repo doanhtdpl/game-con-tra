@@ -32,7 +32,7 @@ protected:
 	std::hash_map<int, std::vector<int>> m_listInfoCurr;
 	void LoadQuadTreeFromFile(const std::string&);
 	void LoadGameObjectFromFile(const std::string&);
-	void DeleteObjectOutScreen(float deltaTime);
+	void UpdateQuadTree(float deltaTime);
 	CGameObject* CreateObject(const std::vector<int>&);
 	std::hash_map<int, std::vector<int>> LoadGameObjectInfo(const std::string&);
 

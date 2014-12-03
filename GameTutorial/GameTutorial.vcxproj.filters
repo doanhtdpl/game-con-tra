@@ -78,9 +78,6 @@
     <ClCompile Include="CState.cpp">
       <Filter>Source Files\GameLoop\StateGame</Filter>
     </ClCompile>
-    <ClCompile Include="CStateLogo.cpp">
-      <Filter>Source Files\GameLoop\StateGame</Filter>
-    </ClCompile>
     <ClCompile Include="CStateManagement.cpp">
       <Filter>Source Files\GameLoop\StateGame</Filter>
     </ClCompile>
@@ -192,6 +189,12 @@
     <ClCompile Include="CContra.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Contra</Filter>
     </ClCompile>
+    <ClCompile Include="CStateGamePlay.cpp">
+      <Filter>Source Files\GameLoop\StateGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileConfig.cpp">
+      <Filter>Source Files\GameFramwork\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTexture.h">
@@ -204,9 +207,6 @@
       <Filter>Source Files\GameLoop\MainGame</Filter>
     </ClInclude>
     <ClInclude Include="CState.h">
-      <Filter>Source Files\GameLoop\StateGame</Filter>
-    </ClInclude>
-    <ClInclude Include="CStateLogo.h">
       <Filter>Source Files\GameLoop\StateGame</Filter>
     </ClInclude>
     <ClInclude Include="CStateManagement.h">
@@ -328,6 +328,12 @@
     </ClInclude>
     <ClInclude Include="CSWeapon.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CStateGamePlay.h">
+      <Filter>Source Files\GameLoop\StateGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileConfig.h">
+      <Filter>Source Files\GameFramwork\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

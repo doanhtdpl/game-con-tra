@@ -95,7 +95,7 @@ void CBullet_F::MoveUpdate(float deltaTime)
 	//this->m_pos.x += this->m_vx * deltaTime;
 	//this->m_pos.y += this->m_vy * deltaTime;
 
-	//
+	//Dung ban tra sin-cos
 	this->m_angle -= 0.45f;
 	this->m_pos.x = 30 * (cos(this->m_angle - PI)) + this->m_center.x;
 	this->m_pos.y = (30 * (sin(this->m_angle - PI)) + this->m_center.y);
