@@ -394,6 +394,19 @@ void CQuadTree::AddGameObjectToQuadTree(CGameObject*& gameObj)
 	}
 }
 
+void CQuadTree::AddGameObjectToQuadTree(CQuadObject* quadObj)
+{
+	this->m_nodeRoot->ClipObject(quadObj);
+}
+
+void CQuadTree::DeleteGameObjectFromQuadTree(CQuadObject* quadObj)
+{
+	if(this->m_nodeRoot)
+	{
+		this->m_nodeRoot->DeleteObjectFromQuadNode(quadObj);
+	}
+}
+
 CQuadTree::~CQuadTree()
 {
 	this->m_nodeRoot->~CQuadNode();

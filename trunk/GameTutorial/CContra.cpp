@@ -15,7 +15,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;//56.0f; //78
 	this->m_height = 92.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(200.0f, 500.0f);
+	this->m_pos = D3DXVECTOR2(500.0f, 500.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = true;
 	this->m_isMoveLeft = false;
@@ -137,8 +137,16 @@ void CContra::SetFrame()
 			}
 		case ON_GROUND::IS_LYING:
 			{
-				this->m_startFrame = 29;
-				this->m_endFrame = 29;
+				if(this->m_isShoot)
+				{
+					this->m_startFrame = 51;
+					this->m_endFrame = 52;
+				}
+				else
+				{
+					this->m_startFrame = 51;
+					this->m_endFrame = 51;
+				}
 				break;
 			}
 		case ON_GROUND::IS_SHOOTING_DIAGONAL_DOWN:
@@ -506,8 +514,8 @@ void CContra::BulletUpdate(float deltaTime)
 			}
 		}
 
-		// Them dan S.
-		//CBullet_S* bullet = new CBullet_S(rotation);
+		 //Them dan S.
+		//CBullet_S* bullet = new CBullet_S(rotation, this->m_pos, offset, this->m_left);
 		//this->m_listBullet.push_back(bullet->m_bullet_1);
 		//this->m_listBullet.push_back(bullet->m_bullet_2);
 		//this->m_listBullet.push_back(bullet->m_bullet_3);
