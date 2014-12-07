@@ -1,5 +1,5 @@
-#ifndef __CSTATELOGO_H__
-#define __CSTATELOGO_H__
+#ifndef __CStateGamePlay_H__
+#define __CStateGamePlay_H__
 #include "CState.h"
 #include <iostream>
 #include "CSprite.h"
@@ -12,26 +12,22 @@
 #include "CWallTurret.h"
 #include "CWeapon.h"
 #include "CSWeapon.h"
-#include "CGroundCannon.h"
 
-class CStateLogo : public CState
+class CStateGamePlay : public CState
 {
 public:
-	CStateLogo();
-	virtual ~CStateLogo();
+	CStateGamePlay();
+	virtual ~CStateGamePlay();
 	void Init();
 	void Update(float deltaTime);
 	void Render();
 	void Destroy();
 protected:
-	CHidenObject* hideObj;
-	
 	CSoldier* sObj;
 	CSniper* nobj;
 	CWallTurret* wobj;
 	CWeapon* weObj;
 	CSWeapon* wseObj;
-	CGroundCanon* gcObj;
 	// Test collision
 	Box first;
 	Box second;
@@ -41,5 +37,5 @@ protected:
 	float increse;
 };
 
-#endif // !__CSTATELOGO_H__
+#endif // !__CStateGamePlay_H__
 
