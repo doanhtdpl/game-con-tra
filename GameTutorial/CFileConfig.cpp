@@ -2,63 +2,36 @@
 
 CFileConfig::CFileConfig()
 {
-
+	
 }
 
-float CFileConfig::Sin(float angle){
-	int r =(angle / PI)*180;
-	switch (r)
-	{
-		case 0:
-			return 0;
-		case 30:
-			return 1 / 2;
-		case 45:
-			return sqrt(2) / 2;
-		case 60:
-			return sqrt(3) / 2;
-		case 90:
-			return sqrt(4) / 2;
-		case 120:
-			return sqrt(3) / 2;
-		case 135:
-			return sqrt(2) / 2;
-		case 150:
-			return 1 / 2;
-		case 180:
-			return 0;
-		case 210:
-			return -1 / 2;
-		case 225:
-			return -sqrt(2) / 2;
-		case 240:
-			return -sqrt(3) / 2;
-		case 270:
-			return -1;
-		case 300:
-			return -sqrt(3) / 2;
-		case 315:
-			return -sqrt(2) / 2;
-		case 330:
-			return -1 / 2;
-		case 360:
-			return 0;
-	}
-}
-
-float CFileConfig::Cos(float angle){
-	return this->Sin((PI/2)-angle);
-}
-
-float CFileConfig::Tan(float angle){
-	return this->Sin(angle) / this->Cos(angle);
-}
-
-float CFileConfig::Cot(float angle){
-	return this->Tan((PI / 2) - angle);
-}
-
-CFileConfig::~CFileConfig()
+void CFileConfig::SetValue()
 {
+	//Index
+	/*
+		0: 0
+		1: PI/6
+		2: PI/4
+		3: PI/3
+		4: PI/2
+		5: 2*PI/3
+		6: 3*PI/4
+		7: 5*PI/6
+		8: PI
+		9: 7*PI/6
+		10: 5*PI/4
+		11: 4*PI/3
+		12: 3*PI/2
+		13: 10*PI/6
+		14: 7*PI/4
+		15: 11*PI/6
+		16: 2*PI
+	*/
 
+}
+
+float CFileConfig::Cos(double angle)
+{
+	return 0.0f;
+	
 }
