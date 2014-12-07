@@ -17,7 +17,7 @@ public:
 protected:
 	CFileConfig();
 private:
-	float 
+	
 };
 
 #endif // !__CFILE_CONFIG_H__
