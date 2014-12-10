@@ -48,13 +48,13 @@ protected:
 
 	void LoadQuadTreeFromFile(const std::string&);
 	void LoadGameObjectFromFile(const std::string&);
-	void UpdateQuadTree(float deltaTime);
+	void DeleteObjectOutScreen(float deltaTime);
 	CGameObject* CreateObject(const std::vector<int>&);
 	std::hash_map<int, CGameObject*> LoadGameObjectInfo(const std::string&);
 
 	// TT
 	bool contains(std::vector<int> v, int x);
-	
+
 
 };
 
