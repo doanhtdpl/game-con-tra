@@ -17,8 +17,8 @@ protected:
 	int m_startFrame;
 	int m_endFrame;
 	int m_column;
-	virtual void ChangeFrame(float deltaTime);
-	virtual RECT*& UpdateRectResource(int rsHeight, int rsWidth); 
+	virtual void ChangeFrame(float deltaTime);		// ham chuyen frame.
+	virtual RECT*& UpdateRectResource(int rsHeight, int rsWidth);	//cap nhat lai vi tri rect resources.
 };
 
 #endif // !__CANIMATION_H__
