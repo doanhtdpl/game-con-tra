@@ -11,13 +11,17 @@ enum SNIPER_SHOOT_STATE
 	SN_IS_SHOOTING_UP = 1,
 	SN_IS_SHOOTING_NORMAL = 2,
 	SN_IS_SHOOTING_DIAGONAL_UP = 3,
-	SN_IS_SHOOTING_DIAGONAL_DOWN = 4
+	SN_IS_SHOOTING_DIAGONAL_DOWN = 4,
+	SN_IS_HIDING = 5
 };
 
 class CSniper : public CStaticObject, public CAnimation
 {
 public:
 	CSniper(void);
+	// New constructor
+	CSniper(int idType, D3DXVECTOR2 pos);
+
 	CSniper(const std::vector<int>& info);
 	~CSniper();
 	std::string ClassName(){return __CLASS_NAME__(CSniper);};
@@ -39,6 +43,8 @@ public:
 	int m_bulletCount; //So luong vien dan da ban ra
 	float m_timeDelay;
 
+	// thanh thai
+	int m_idState;
 };
 
 #endif // !__CSNIPER_H__
