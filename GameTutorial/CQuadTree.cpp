@@ -9,9 +9,11 @@ CQuadTree::CQuadTree()
 	this->m_nodeRoot->SetID(1);
 }
 
+// Xay dung lai quadtree
 //Kiem tra neu doi tuong nao da die thi xoa no khoi quatree
 void CQuadTree::ReBuildQuadTree(std::vector<CQuadObject*>& listQuadObj)
 {
+	// Kiem tra danh sach cac doi tuong.
 	if(!listQuadObj.empty())
 	{
 		int size = listQuadObj.size();
@@ -21,9 +23,12 @@ void CQuadTree::ReBuildQuadTree(std::vector<CQuadObject*>& listQuadObj)
 			quadObj = listQuadObj.at(i);
 			if(quadObj)
 			{
+				// Neu doi tuong k con Alive, xoa doi tuong khoi node.
 				if(!quadObj->GetGameObject()->IsAlive())
 				{
+					// Xoa khoi danh sach doi tuong cua node
 					this->m_nodeRoot->DeleteObjectFromQuadNode(quadObj);
+					// Xoa khoi danh sach doi tuong
 					delete listQuadObj.at(i);
 					listQuadObj.erase(listQuadObj.begin() + i);
 				}
@@ -238,6 +243,7 @@ void CQuadTree::AddNode(CQuadNode*& node)
 	}
 }*/
 
+
 void CQuadTree::AddNode(CQuadNode*& node, CQuadNode*& nodeRoot)
 {
 	if(node->GetID() == nodeRoot->GetID())
@@ -305,11 +311,13 @@ void CQuadTree::AddNode(CQuadNode*& node, CQuadNode*& nodeRoot)
 
 }
 
+// Lay danh sach doi tuong tren man hinh viewport
 //Xen viewPort
 void CQuadTree::GetListObjectOnScreen(RECT* viewBox, CQuadNode*& node, std::vector<int>& listIDObj)
 {
 	if(viewBox && node)
 	{
+		// Xen viewPort voi node.
 		if(node->IntersectRectRS(viewBox, node->GetBound()))
 		{
 			if(node->GetNodeTL())
@@ -318,8 +326,11 @@ void CQuadTree::GetListObjectOnScreen(RECT* viewBox, CQuadNode*& node, std::vect
 				this->GetListObjectOnScreen(viewBox, node->GetNodeTR(), listIDObj);
 				this->GetListObjectOnScreen(viewBox, node->GetNodeBL(),	listIDObj );
 				this->GetListObjectOnScreen(viewBox, node->GetNodeBR(), listIDObj);
-			}else
+			}
+			// Neu node la node la'
+			else
 			{
+				// Get danh sach doi tuong cua node.
 				std::vector<int>* listItem = node->GetListObject();
 				if(listItem)
 				{
@@ -328,8 +339,10 @@ void CQuadTree::GetListObjectOnScreen(RECT* viewBox, CQuadNode*& node, std::vect
 					for (int i = 0; i < size; i++)
 					{
 						id = listItem->at(i);
+						// Kiem tra doi tuong da ton tai trong d/s doi tuong xen voi viewport hay chua.
 						if(!this->Contains(id, listIDObj))
 						{  
+							// Add danh sach doi tuong vao danh sach doi tuong tren man hinh.
 							listIDObj.push_back(id);
 						}
 					}
@@ -339,7 +352,8 @@ void CQuadTree::GetListObjectOnScreen(RECT* viewBox, CQuadNode*& node, std::vect
 	}
 }
 
-bool CQuadTree::Contains(int ID,const std::vector<int>& list)
+// Kiem tra id doi tuong, ton tai trong danh sach xen voi viewport hay chua.
+bool CQuadTree::Contains(int ID, const std::vector<int>& list)
 {
 	if(!list.empty())
 	{
