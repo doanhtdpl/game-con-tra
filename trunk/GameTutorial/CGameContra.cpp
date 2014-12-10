@@ -1,6 +1,6 @@
 #include "CGameContra.h"
 #include "CStateManagement.h"
-#include "CStateGamePlay.h"	
+#include "CStateLogo.h"	
 #include "CDevice.h"
 #include "CInput.h"
 #include "CManagementTexture.h"
@@ -16,7 +16,7 @@ void CGameContra::Init()
 	CDevice::GetInstance()->InitDirect3D();
 	CInput::GetInstance()->InitInput(CView::m_hInstance);
 	CInput::GetInstance()->InitKeyboard(CView::m_hwndWindow);
-	CStateManagement::GetInstance()->ChangeState(new CStateGamePlay());
+	CStateManagement::GetInstance()->ChangeState(new CStateLogo());
 	CManagementTexture::GetInstance()->LoadAllResourceFromFile(__OBJECT_PATH__);
 }
 
