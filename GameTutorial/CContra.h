@@ -5,7 +5,7 @@
 #include "CAnimation.h"
 #include "CBullet.h"
 #include "CSingleton.h"
-#include "CBulletS.h"
+#include "CBulletM.h"
 #include "CBulletF.h"
 
 enum ON_GROUND
@@ -53,7 +53,7 @@ public:
 	int GetShootState(){return m_stateShoot;};
 	int GetStateCurrent(){return m_stateCurrent;};
 	bool GetLocation(){return m_isUnderWater;}; //Neu con tra o duoi nuoc tra ve  true, nguoc lai tra ve false
-	void OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
+	void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	void BulletUpdate(float deltaTime);
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
