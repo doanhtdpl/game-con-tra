@@ -60,6 +60,7 @@ RECT* CQuadNode::GetBound()
 	return rect;
 }
 
+// xen' doi tuong, voi node.
 void CQuadNode::ClipObject(CQuadObject*& obj)
 {
 	CGameObject* gameObj = obj->GetGameObject();
