@@ -458,7 +458,7 @@ void CContra::BulletUpdate(float deltaTime)
 			{
 				//this->m_a = -700;
 				//this->m_vy = -400.0f;
-				rotation = -PI/4;// //Goc ban bang -45
+				rotation = -PI/6;// //Goc ban bang -45
 				break;
 			}
 		default:
@@ -478,7 +478,7 @@ void CContra::BulletUpdate(float deltaTime)
 			case ON_GROUND::IS_LYING:
 				{
 					offset.x = 25.0f;
-					offset.y = -10.0f;
+					offset.y = -25.0f;
 					break;
 				}
 			case ON_GROUND::IS_FALL: case ON_GROUND::IS_JOGGING : case ON_GROUND::IS_SHOOTING_NORMAL: case ON_GROUND::IS_STANDING:
@@ -558,7 +558,7 @@ void CContra::Update(float deltaTime, std::vector<CGameObject*> listObjectCollis
 
 }
 
-void CContra::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
+void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
 #pragma region XU_LY_VA_CHAM
 	float normalX = 0;
@@ -568,9 +568,9 @@ void CContra::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* lis
 	float timeCollision;
 	//Kiem tra va cham voi ground
 	bool checkColWithGround = false;
-	for (std::hash_map<int, CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
+	for (std::vector<CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
 	{
-		CGameObject* obj = it->second;
+		CGameObject* obj = *it;
 		//Lay thoi gian va cham
 		//Neu doi tuong la ground va dang va cham
 		if(obj->GetIDType() == 14 && !checkColWithGround)
