@@ -28,7 +28,7 @@ void CSoldier::Init()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 40.0f;//56.0f; //78
 	this->m_height = 66.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(1200.0f, 280.0f);
+	this->m_pos = D3DXVECTOR2(400.0f, 280.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -96,6 +96,8 @@ void CSoldier::MoveUpdate(float deltaTime)
 				this->m_pos.x += int(this->m_vx * deltaTime);
 			}
 		}
+
+		// test nhay cho soldier
 		m_s += int(this->m_vx * deltaTime);
 		if(m_s >= 300)
 		{
