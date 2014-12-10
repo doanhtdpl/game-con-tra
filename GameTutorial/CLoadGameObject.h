@@ -15,7 +15,7 @@ class CLoadGameObject : public CSingleton<CLoadGameObject>
 public:
 	CLoadGameObject();
 	~CLoadGameObject();
-	std::hash_map<int, CGameObject*>* GetListGameObjectOnScreen(){return this->m_listGameObject;};
+	std::vector<CGameObject*>* GetListGameObjectOnScreen(){return this->m_listGameObject;};
 	void CreateObjectOnScreen();
 	void Draw();
 	void LoadReSourceFromFile();
@@ -23,18 +23,38 @@ public:
 	void ChangeMap(const int& );
 protected:
 	//Luu danh sach doi tuong khi xen viewport
-	std::hash_map<int, CGameObject*>* m_listGameObject;
+
+	// TT
+	// Danh sach cac doi tuong dinh voi viewport.
+	// Danh sach nay de ve doi tuong ra.
+	std::vector<CGameObject*>* m_listGameObject;
+
+	// D/s tat ca cac doi tuong trong map.
+	std::hash_map<int, std::hash_map<int, CGameObject*>>* m_listAllGameObject;
+	// hash map<stt cua man`, stt cua obj trong node, doi tuong game>
+
+	// list quadtree
 	std::hash_map<int, CQuadTree*>* m_listQuadTree;
-	std::hash_map<int, std::hash_map<int, std::vector<int>>>* m_listInfoOfGameObject;
+	// <stt map, quadtree cua map>
+
+	// List id cua doi tuong tren viewPort.
 	std::vector<int> m_listIdObject;
+
 	//Luu quad tree hien tai
 	CQuadTree* m_quadTree;
-	std::hash_map<int, std::vector<int>> m_listInfoCurr;
+
+	// d/s cac doi tuong cua map hien tai.
+	std::hash_map<int, CGameObject*> m_listObjectCurr;
+
 	void LoadQuadTreeFromFile(const std::string&);
 	void LoadGameObjectFromFile(const std::string&);
 	void UpdateQuadTree(float deltaTime);
 	CGameObject* CreateObject(const std::vector<int>&);
-	std::hash_map<int, std::vector<int>> LoadGameObjectInfo(const std::string&);
+	std::hash_map<int, CGameObject*> LoadGameObjectInfo(const std::string&);
+
+	// TT
+	bool contains(std::vector<int> v, int x);
+	
 
 };
 
