@@ -20,7 +20,7 @@ CContra::CContra()
 	this->m_isJumping = true;
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
-	this->m_a = -860.0f;
+	this->m_a = -800.0f;
 	this->m_canJump = true;
 	this->m_jumpMax = 40.0f;
 	//this->m_currentJump = 0.0f;
@@ -259,6 +259,11 @@ void CContra::InputUpdate(float deltaTime)
 		//{
 			if(!this->m_isUnderWater)
 			{
+				if(this->m_stateCurrent == ON_GROUND::IS_LYING && !CInput::GetInstance()->IsKeyDown(DIK_DOWN))
+				{
+					this->m_pos.y += 20;
+					this->m_elapseTimeChangeFrame = 0.0f;
+				}
 				this->m_stateCurrent = ON_GROUND::IS_STANDING;
 			}
 			else
@@ -294,6 +299,7 @@ void CContra::InputUpdate(float deltaTime)
 			}
 			else
 			{
+				this->m_elapseTimeChangeFrame = 0.0f;
 				this->m_stateCurrent = ON_GROUND::IS_FALL;
 				//Duoc phep nhay
 				if(!this->m_isJumping)
@@ -315,7 +321,14 @@ void CContra::InputUpdate(float deltaTime)
 		if(this->m_keyDown == DIK_X || this->m_isJumping)
 		{
 			//Chuyen sang trang thai nhay
-			this->m_stateCurrent = ON_GROUND::IS_JUMPING;
+			if(this->m_stateCurrent != ON_GROUND::IS_FALL)
+			{
+				this->m_stateCurrent = ON_GROUND::IS_JUMPING;
+			}
+			else
+			{
+				this->m_stateCurrent = ON_GROUND::IS_FALL;
+			}
 		}
 		else
 		{
@@ -386,6 +399,12 @@ void CContra::InputUpdate(float deltaTime)
 				else if(CInput::GetInstance()->IsKeyDown(DIK_DOWN))
 				{
 					//Ban cheo xuong
+					//Neu trang thai truoc do la nhay pos.y +=22
+					if(this->m_stateCurrent == ON_GROUND::IS_LYING && (this->m_keyDown == DIK_LEFT || this->m_keyDown == DIK_RIGHT))
+					{
+						this->m_elapseTimeChangeFrame = 0.0f;
+						this->m_pos.y += 22;
+					}
 					this->m_stateShoot = SHOOT::IS_DIAGONAL_DOWN;
 					this->m_stateCurrent = ON_GROUND::IS_SHOOTING_DIAGONAL_DOWN;
 				}
@@ -585,14 +604,21 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					{
 						if(this->m_vy <= 0)
 						{
-							if(this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < -200)
+							if(this->m_stateCurrent == ON_GROUND::IS_JUMPING)
 							{
-
-								this->m_pos.y += 20;
+								if(this->m_vy < -200)
+								{
+									this->m_pos.y += 20;
+									this->m_elapseTimeChangeFrame = 0.0f;
+									this->m_isJumping = false;
+									this->m_currentFrame = 0;
+									this->m_stateCurrent = ON_GROUND::IS_STANDING;
+								}
+							}
+							else if(this->m_stateCurrent == ON_GROUND::IS_LYING)
+							{
+								//this->m_pos.y += 20;
 								this->m_elapseTimeChangeFrame = 0.0f;
-								this->m_isJumping = false;
-								this->m_currentFrame = 0;
-								this->m_stateCurrent = ON_GROUND::IS_STANDING;
 							}
 							else
 							{
@@ -604,6 +630,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 						if(this->m_stateCurrent == ON_GROUND::IS_FALL)
 						{
 							this->m_stateCurrent = ON_GROUND::IS_STANDING;
+							this->m_isJumping = false;
 						}
 					}else{
 						//if(this->m_vy != 0)
@@ -611,12 +638,16 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 						if(this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < 0)
 						{
 
-							this->m_pos.y += 20;
+							this->m_pos.y += 22;
 							this->m_elapseTimeChangeFrame = 0.0f;
-							this->m_isJumping = false;
 							this->m_currentFrame = 0;
-							this->m_stateCurrent = ON_GROUND::IS_STANDING;
+							if(this->m_keyDown != DIK_DOWN)
+								this->m_stateCurrent = ON_GROUND::IS_STANDING;
+							else
+								this->m_stateCurrent = ON_GROUND::IS_LYING;
+							this->m_isJumping = false;
 						}
+						
 						//	this->m_isJumping = false;
 						//	this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
 						//	this->m_vy = 0;
@@ -629,7 +660,12 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 	if(!checkColWithGround && this->m_stateCurrent != ON_GROUND::IS_JUMPING /*&& this->m_stateCurrent != ON_GROUND::IS_LYING*/)
 	{
 		if(this->m_stateCurrent == ON_GROUND::IS_LYING)
+		{
+			this->m_pos.y -= 15;
+			this->m_currentFrame = 51;
 			this->m_stateCurrent = ON_GROUND::IS_LYING;
+			this->m_isJumping = false;
+		}
 		else
 		{
 			this->m_stateCurrent = ON_GROUND::IS_FALL;
