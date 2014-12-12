@@ -20,11 +20,11 @@ CContra::CContra()
 	this->m_isJumping = true;
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
-	this->m_a = -700.0f;
+	this->m_a = -860.0f;
 	this->m_canJump = true;
 	this->m_jumpMax = 40.0f;
 	//this->m_currentJump = 0.0f;
-	this->m_vxDefault = 150.0f;
+	this->m_vxDefault = 170.0f;
 	this->m_vyDefault = 400.0f;
 	this->m_vx = 0;//this->m_vxDefault;
 	this->m_vy = -this->m_vyDefault;
@@ -38,7 +38,7 @@ CContra::CContra()
 	//Khoi tao cac thong so chuyen doi sprite
 	this->m_currentTime = 0;
 	this->m_currentFrame = 0;
-	this->m_elapseTimeChangeFrame = 0.23f;
+	this->m_elapseTimeChangeFrame = 0.3f;
 	this->m_increase = 1;
 	this->m_totalFrame = 50;
 	this->m_column = 6;
@@ -585,9 +585,21 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					{
 						if(this->m_vy <= 0)
 						{
-							this->m_isJumping = false;
-							this->m_pos.y += moveY;
-							this->m_vy = 0;
+							if(this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < -200)
+							{
+
+								this->m_pos.y += 20;
+								this->m_elapseTimeChangeFrame = 0.0f;
+								this->m_isJumping = false;
+								this->m_currentFrame = 0;
+								this->m_stateCurrent = ON_GROUND::IS_STANDING;
+							}
+							else
+							{
+								this->m_isJumping = false;
+								this->m_pos.y += moveY;
+								this->m_vy = 0;
+							}
 						}
 						if(this->m_stateCurrent == ON_GROUND::IS_FALL)
 						{
@@ -596,7 +608,15 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					}else{
 						//if(this->m_vy != 0)
 						//{
-						//	////this->m_stateCurrent = ON_GROUND::IS_STANDING;
+						if(this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < 0)
+						{
+
+							this->m_pos.y += 20;
+							this->m_elapseTimeChangeFrame = 0.0f;
+							this->m_isJumping = false;
+							this->m_currentFrame = 0;
+							this->m_stateCurrent = ON_GROUND::IS_STANDING;
+						}
 						//	this->m_isJumping = false;
 						//	this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
 						//	this->m_vy = 0;
@@ -606,10 +626,15 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			}
 		}
 	}
-	if(!checkColWithGround && this->m_stateCurrent != ON_GROUND::IS_JUMPING)
+	if(!checkColWithGround && this->m_stateCurrent != ON_GROUND::IS_JUMPING /*&& this->m_stateCurrent != ON_GROUND::IS_LYING*/)
 	{
-		this->m_stateCurrent = ON_GROUND::IS_FALL;
-		this->m_isJumping = true;
+		if(this->m_stateCurrent == ON_GROUND::IS_LYING)
+			this->m_stateCurrent = ON_GROUND::IS_LYING;
+		else
+		{
+			this->m_stateCurrent = ON_GROUND::IS_FALL;
+			this->m_isJumping = true;
+		}
 	}
 #pragma endregion 
 }
@@ -627,7 +652,54 @@ RECT* CContra::GetBound()
 
 Box CContra::GetBox()
 {
-
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
-
+	//return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+	if(!this->m_isUnderWater)
+	{
+		switch (this->m_stateCurrent)
+		{
+		case ON_GROUND::IS_FALL:
+		case ON_GROUND::IS_JOGGING:
+		case ON_GROUND::IS_SHOOTING_DIAGONAL_DOWN:
+		case ON_GROUND::IS_SHOOTING_DIAGONAL_UP:
+		case ON_GROUND::IS_SHOOTING_NORMAL:
+		case ON_GROUND::IS_STANDING:
+		case ON_GROUND::IS_SHOOTING_UP:
+			{
+				return Box(this->m_pos.x, this->m_pos.y, this->m_width - 45, this->m_height, this->m_vx, this->m_vy);
+			}
+		case ON_GROUND::IS_JUMPING:
+			{
+				return Box(this->m_pos.x, this->m_pos.y, this->m_width - 40, this->m_height - 55, this->m_vx, this->m_vy);
+			}
+		case ON_GROUND::IS_LYING:
+			{
+				return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height - 55, this->m_vx, this->m_vy);
+			}
+		
+		default:
+			{
+				break;
+			}
+		}
+	}
+	else
+	{
+		switch (this->m_stateCurrent)
+		{
+		case UNDER_WATER::IS_JOGGING_UNDER_WATER:
+			{
+				break;
+			}
+		case UNDER_WATER::IS_LYING_UNDER_WATER:
+			{
+				break;
+			}
+		case UNDER_WATER::IS_STANDING_UNDER_WATER:
+			{
+				break;
+			}
+		default:
+			break;
+		}
+	}
 }

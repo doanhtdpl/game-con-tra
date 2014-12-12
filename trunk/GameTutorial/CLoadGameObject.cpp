@@ -215,10 +215,10 @@ void CLoadGameObject::Draw()
 			++it)
 		{
 			CGameObject* gameObj = *it;
-			if(gameObj->GetIDType() != 14)
-			{
+			//if(gameObj->GetIDType() != 14)
+			//{
 				CDrawObject::GetInstance()->Draw(gameObj);
-			}
+			//}
 		}
 	}
 }

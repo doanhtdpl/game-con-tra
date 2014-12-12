@@ -21,6 +21,8 @@ public:
 	virtual Box GetBox();
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
+	//sang test va cham
+	virtual RECT* GetRectRS();
 protected:
 	HIDEN_OBJECT_TYPE m_type;
 };

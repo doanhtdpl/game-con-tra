@@ -8,6 +8,7 @@
 #include "CBulletM.h"
 #include "CBulletF.h"
 
+
 enum ON_GROUND
 {
 	IS_STANDING = 10,
@@ -77,7 +78,7 @@ protected:
 public:
 	std::vector<CBullet_F*> m_listBullet;
 //Nhung tham so dung de test
-protected:
+public:
 	float m_currentFall; // Do cao hien tai
 	float m_currentJump;//
 public:

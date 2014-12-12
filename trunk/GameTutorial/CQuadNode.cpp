@@ -77,6 +77,10 @@ void CQuadNode::ClipObject(CQuadObject*& obj)
 			}
 			else
 			{
+				// TT
+				// kiem tra co phai la nut la hay k
+				//if(this->GetHeight > )
+				//{}
 				this->m_listObject->push_back(obj->GetID());
 			}
 		}

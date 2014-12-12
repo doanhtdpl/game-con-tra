@@ -46,6 +46,7 @@ private:
 	CQuadNode* m_nodeBR;
 	//List luu giu doi tuong cua quadtree
 	std::vector<int>* m_listObject;
+	//const int MIN_SIZE_OF_NODE = 400;
 public:
 	//Dung de check giao nhau giua hai node
 	bool IntersectRectRS(RECT*, RECT*);
