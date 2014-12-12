@@ -15,6 +15,7 @@ void CAnimation::ChangeFrame(float deltaTime)
 	this->m_currentTime += deltaTime;
 	if(this->m_currentTime > this->m_elapseTimeChangeFrame)
 	{
+		//this->m_currentTime = 0.0f;
 		this->m_currentFrame += this->m_increase;
 		if(this->m_currentFrame > this->m_endFrame || this->m_currentFrame < this->m_startFrame)
 		{

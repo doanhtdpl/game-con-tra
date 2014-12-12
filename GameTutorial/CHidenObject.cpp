@@ -4,7 +4,7 @@
 CHidenObject::CHidenObject() : CStaticObject()
 {
 	this->m_id = 1;
-	this->m_idType = 20;
+	this->m_idType = 14;
 	this->m_width = 1450;
 	this->m_height = 10;
 	this->m_pos = D3DXVECTOR2(735.0f, 5.0f);
@@ -50,4 +50,16 @@ Box CHidenObject::GetBox()
 void CHidenObject::Update(float deltaTime, std::vector<CGameObject*> listObjectCollision)
 {
 
+}
+
+//Sang test
+RECT* CHidenObject::GetRectRS()
+{
+	RECT* rectRS = new RECT();
+	rectRS->left = 0;
+	rectRS->right = 64;
+	rectRS->top = 0 ;
+	rectRS->bottom = 64;
+
+	return rectRS;
 }

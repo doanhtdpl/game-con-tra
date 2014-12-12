@@ -36,7 +36,6 @@ bool CView::InitClienWindow()
 		NULL,
 		CView::m_hInstance,
 		NULL);
-	
 	if (!CView::m_hwndWindow) 
 	{ 
 		return false;
