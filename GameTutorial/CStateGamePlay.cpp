@@ -15,6 +15,9 @@ CStateGamePlay::CStateGamePlay()
 	this->wobj = new CWallTurret();
 	this->weObj = new CWeapon();
 	this->wseObj = new CSWeapon();
+
+	this->effect = new CEnemyEffect(D3DXVECTOR2(100, 100));
+	this->effect1 = new CExplosionEffect(D3DXVECTOR2(500, 100));
 }
 
 CStateGamePlay::~CStateGamePlay()
@@ -46,6 +49,10 @@ void CStateGamePlay::Update(float deltaTime)
 	wobj->Update(deltaTime);
 	weObj->Update(deltaTime);
 	wseObj->Update(deltaTime);
+	weObj->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
+
+	effect->Update(deltaTime);
+	effect1->Update(deltaTime);
 }
 
 void CStateGamePlay::Render()
@@ -53,23 +60,24 @@ void CStateGamePlay::Render()
 	
 	CLoadBackGround::GetInstance()->Draw();
 	CLoadGameObject::GetInstance()->Draw();
-	for (int i = 0; i < CContra::GetInstance()->m_listBullet.size(); i++)
-	{
-		CDrawObject::GetInstance()->Draw(CContra::GetInstance()->m_listBullet[i]);
-	}
-	for (int i = 0; i < nobj->m_listBullet.size(); i++)
-	{
-		CDrawObject::GetInstance()->Draw(nobj->m_listBullet[i]);
-	}
-	for (int i = 0; i < wobj->m_listBullet.size(); i++)
-	{
-		CDrawObject::GetInstance()->Draw(wobj->m_listBullet[i]);
-	}
+	
 	CDrawObject::GetInstance()->Draw(sObj);
 	CDrawObject::GetInstance()->Draw(nobj);
 	CDrawObject::GetInstance()->Draw(wobj);
 	CDrawObject::GetInstance()->Draw(weObj);
 	CDrawObject::GetInstance()->Draw(wseObj);
+
+	CDrawObject::GetInstance()->Draw(effect);
+	CDrawObject::GetInstance()->Draw(effect1);
+
+	if (weObj->effect != NULL){
+		CDrawObject::GetInstance()->Draw(weObj->effect);
+	}
+
+	if (weObj->item != NULL){
+		CDrawObject::GetInstance()->Draw(weObj->item);
+	}
+
 	CDrawObject::GetInstance()->Draw(CContra::GetInstance());
 }
 void CStateGamePlay::Destroy()

@@ -46,8 +46,8 @@ void CBullet_N::Init()
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
 	this->m_canJump = false;
-	this->m_vxDefault = 200.0f;
-	this->m_vyDefault = 200.0f;
+	this->m_vxDefault = 400.0f;
+	this->m_vyDefault = 400.0f;
 	if(!this->m_left)
 	{
 		//this->m_vx = this->m_vxDefault;
@@ -63,23 +63,8 @@ void CBullet_N::Init()
 		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	}
 	
-	if(!this->m_left)
-	{
-		this->m_pos += this->m_offset; //Vi tri cua vien dan
-	}
-	else
-	{
-		//Neu la ban len
-		if(this->m_rotation == PI/2)
-		{
-			this->m_pos.x += this->m_offset.x;
-		}
-		else
-		{
-			this->m_pos.x -= this->m_offset.x;
-		}
-		this->m_pos.y += this->m_offset.y;
-	}
+	this->m_pos += this->m_offset; //Vi tri cua vien dan
+	
 }
 
 void CBullet_N::MoveUpdate(float deltaTime)
@@ -122,6 +107,11 @@ void CBullet_N::Update(float deltaTime)
 }
 
 void CBullet_N::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
+{
+
+}
+
+void CBullet_N::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
 {
 
 }

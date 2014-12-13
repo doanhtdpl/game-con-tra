@@ -7,6 +7,10 @@
 #include "CSingleton.h"
 #include "CBulletM.h"
 #include "CBulletF.h"
+#include "CBulletL.h"
+#include "CBulletM.h"
+#include "CBulletN.h"
+#include "CBulletS.h"
 
 
 enum ON_GROUND
@@ -29,6 +33,14 @@ enum UNDER_WATER
 	IS_LYING_UNDER_WATER = 21,
 	IS_JOGGING_UNDER_WATER = 22,
 	IS_DIE_UNDER_WATER = 23
+};
+
+enum BULLET_TYPE{
+	BULLET_N = 0,
+	BULLET_M = 1,
+	BULLET_F = 2,
+	BULLET_L = 3,
+	BULLET_S = 4
 };
 
 //enum SHOOT
@@ -75,8 +87,9 @@ protected:
 	//Bien quan ly vien dan hien tai
 	//
 	//Tam thoi dung mot vector de giu cac vien dan
-public:
-	std::vector<CBullet_F*> m_listBullet;
+
+	int m_typeBullet; 
+	int m_bulletCount; //So luong vien dan da ban ra
 //Nhung tham so dung de test
 public:
 	float m_currentFall; // Do cao hien tai

@@ -38,8 +38,6 @@ protected:
 	bool m_isShoot;
 	//Tham so dung de test
 public:
-	//Phai co mot bien de giu nhung vien dan ma enemy da ban ra
-	std::vector<CBullet_N*> m_listBullet;
 	int m_bulletCount; //So luong vien dan da ban ra
 	float m_timeDelay;
 

@@ -12,6 +12,8 @@
 #include "CWallTurret.h"
 #include "CWeapon.h"
 #include "CSWeapon.h"
+#include "CEnemyEffect.h"
+#include "CExplosionEffect.h"
 
 class CStateGamePlay : public CState
 {
@@ -28,6 +30,9 @@ protected:
 	CWallTurret* wobj;
 	CWeapon* weObj;
 	CSWeapon* wseObj;
+
+	CEnemyEffect* effect;
+	CExplosionEffect* effect1;
 	// Test collision
 	Box first;
 	Box second;

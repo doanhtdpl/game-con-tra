@@ -35,29 +35,20 @@ CBullet_M::CBullet_M(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset, bool 
 void CBullet_M::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 1;
+	this->m_id = 0;
 	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;
-	this->m_isAnimatedSprite = true;
-	this->m_width = 18.0f;
-	this->m_height = 18.0f;
+	this->m_isAnimatedSprite = false;
+	this->m_width = 18.0f;//56.0f; //78
+	this->m_height = 18.0f; //88.0f; //84
 	//Khoi tao cac thong so di chuyen
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
 	this->m_canJump = false;
-	this->m_vxDefault = 100.0f;
+	this->m_vxDefault = 400.0f;
 	this->m_vyDefault = 400.0f;
-	this->m_vx = this->m_vxDefault;
-	this->m_vy = this->m_vyDefault;
-	this->m_pos = D3DXVECTOR2(0.0f,0.0f);
-	//Chuyen doi sprite
-	this->m_totalFrame= 3;
-	this->m_column = 3;
-	this->m_elapseTimeChangeFrame = 0.35f;
-	this->m_currentTime = 0;
-	this->m_increase = 1;
-	this->m_currentFrame = 0;
+
 	if(!this->m_left)
 	{
 		//this->m_vx = this->m_vxDefault;
@@ -73,19 +64,7 @@ void CBullet_M::Init()
 		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	}
 	
-	if(!this->m_left)
-	{
-		this->m_pos += this->m_offset; //Vi tri cua vien dan
-	}
-	else
-	{
-		//Neu la ban len
-		if(this->m_rotation == PI/2)
-		{
-			this->m_pos.x += 20.0f;
-		}
-		this->m_pos.y += this->m_offset.y;
-	}
+	this->m_pos += this->m_offset; //Vi tri cua vien dan
 }
 
 void CBullet_M::MoveUpdate(float deltaTime)
@@ -125,7 +104,6 @@ void CBullet_M::MoveUpdate(float deltaTime)
 void CBullet_M::Update(float deltaTime)
 {
 	this->MoveUpdate(deltaTime);
-	this->ChangeFrame(deltaTime);
 }
 
 void CBullet_M::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
@@ -133,24 +111,14 @@ void CBullet_M::Update(float deltaTime, std::vector<CGameObject*> _listObjectCol
 
 }
 
-void CBullet_M::ChangeFrame(float deltaTime)
+void CBullet_M::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
 {
-	this->m_currentTime += deltaTime;
-	if(this->m_currentTime > this->m_elapseTimeChangeFrame)
-	{
-		this->m_currentFrame += this->m_increase;
-		if(this->m_currentFrame > 3 || this->m_currentFrame < 0)
-		{
-			this->m_currentFrame = 0;
-		}
-		this->m_currentTime -= this->m_elapseTimeChangeFrame;
-	}
-}
 
+}
 
 RECT* CBullet_M::GetRectRS()
 {
-	return this->UpdateRectResource(this->m_height, this->m_width);
+	return nullptr;
 }
 
 RECT* CBullet_M::GetBound()

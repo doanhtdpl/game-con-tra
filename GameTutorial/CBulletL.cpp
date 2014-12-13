@@ -42,49 +42,69 @@ void CBullet_L::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
 	//
-	this->m_id = 0;
+	this->m_id = 5;
 	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 10.0f;//56.0f; //78
-	this->m_height = 10.0f; //88.0f; //84
+	this->m_width = 112.0f;//56.0f; //78
+	this->m_height = 17.63f; //88.0f; //84
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
 	this->m_canJump = false;
-	this->m_vxDefault = 150.0f;
-	this->m_vyDefault = 150.0f;
+	this->m_vxDefault = 250.0f;
+	this->m_vyDefault = 250.0f;
+	//Chuyen doi sprite
+	this->m_totalFrame = 11;
+	this->m_column = 1;
+	this->m_elapseTimeChangeFrame = 0.35f;
+	this->m_currentTime = 0;
+	this->m_increase = 1;
+	this->m_currentFrame = 0;
+
+	this->m_stateRotation = L_ROTATION::L;
 
 	if(!this->m_left)
 	{
-		//this->m_vx = this->m_vxDefault;
-		//this->m_a = 1000;
 		this->m_vx = this->m_vxDefault * cos(this->m_rotation);
 		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	}
 	else
 	{
-		//this->m_vx = -this->m_vxDefault;
-		//this->m_a = 1000;
 		this->m_vx = -this->m_vxDefault * cos(this->m_rotation);
 		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	}
 	
 	if(!this->m_left)
 	{
-		this->m_pos += this->m_offset; //Vi tri cua vien dan
+		if (this->m_rotation == (float)PI / 2)
+		{
+			this->m_stateRotation = L_ROTATION::L_PI_2;
+		}
+		else if (this->m_rotation == (float)PI / 4){
+			this->m_stateRotation = L_ROTATION::L_PI_4;
+		}
+		else if (this->m_rotation == (float)-PI / 4){
+			this->m_stateRotation = L_ROTATION::L_PI7_4;
+		}
 	}
 	else
 	{
 		//Neu la ban len
-		if(this->m_rotation == PI/2)
+		if(this->m_rotation == (float)PI/2)
 		{
-			this->m_pos.x += 20.0f;
+			this->m_stateRotation = L_ROTATION::L_PI_2;
 		}
-		this->m_pos.y += this->m_offset.y;
+		else if (this->m_rotation == (float)PI / 4){
+			this->m_stateRotation = L_ROTATION::L_PI_4;
+		}
+		else if (this->m_rotation == (float)-PI / 4){
+			this->m_stateRotation = L_ROTATION::L_PI5_4;
+		}
 	}
+	this->m_pos += this->m_offset;
 }
 
 void CBullet_L::MoveUpdate(float deltaTime)
@@ -125,9 +145,14 @@ void CBullet_L::Update(float deltaTime)
 {
 	this->MoveUpdate(deltaTime);
 	this->ChangeFrame(deltaTime);
+
+}
+void CBullet_L::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
+{
+	
 }
 
-void CBullet_L::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
+void CBullet_L::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
 {
 
 }
@@ -161,6 +186,11 @@ RECT* CBullet_L::GetBound()
 Box CBullet_L::GetBox()
 {
 	return Box();
+}
+
+int CBullet_L::getStateRotation()
+{
+	return this->m_stateRotation;
 }
 
 CBullet_L::~CBullet_L()
