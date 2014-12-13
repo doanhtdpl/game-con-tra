@@ -24,7 +24,7 @@ CContra::CContra()
 	this->m_canJump = true;
 	this->m_jumpMax = 40.0f;
 	//this->m_currentJump = 0.0f;
-	this->m_vxDefault = 170.0f;
+	this->m_vxDefault = 150.0f;
 	this->m_vyDefault = 400.0f;
 	this->m_vx = 0;//this->m_vxDefault;
 	this->m_vy = -this->m_vyDefault;
@@ -33,12 +33,12 @@ CContra::CContra()
 	this->m_stateCurrent = ON_GROUND::IS_FALL;
 	//Tren mat dat
 	this->m_isUnderWater = false;
-	this->m_isShoot = false;
+	this->m_isShoot = true;
 	this->m_stateShoot = SHOOT::IS_DIAGONAL_UP;
 	//Khoi tao cac thong so chuyen doi sprite
 	this->m_currentTime = 0;
 	this->m_currentFrame = 0;
-	this->m_elapseTimeChangeFrame = 0.3f;
+	this->m_elapseTimeChangeFrame = 0.23f;
 	this->m_increase = 1;
 	this->m_totalFrame = 50;
 	this->m_column = 6;
@@ -46,6 +46,8 @@ CContra::CContra()
 	this->m_currentFall = 0;
 	this->m_currentJump = 0;
 	
+	this->m_typeBullet = BULLET_TYPE::BULLET_N;
+	this->m_allowShoot = true;
 }
 
 CContra::CContra(const std::vector<int>& info) : CDynamicObject(info)
@@ -441,8 +443,29 @@ void CContra::InputUpdate(float deltaTime)
 		}
 	}
 #pragma endregion
+#pragma region NHAN NUT_DAU_DAN
+	if (CInput::GetInstance()->IsKeyDown(DIK_N))
+	{
+		this->m_typeBullet = BULLET_TYPE::BULLET_N;
+	}
+	else if (CInput::GetInstance()->IsKeyDown(DIK_M))
+	{
+		this->m_typeBullet = BULLET_TYPE::BULLET_M;
+	}
+	else if (CInput::GetInstance()->IsKeyDown(DIK_S))
+	{
+		this->m_typeBullet = BULLET_TYPE::BULLET_S;
+	}
+	else if (CInput::GetInstance()->IsKeyDown(DIK_F))
+	{
+		this->m_typeBullet = BULLET_TYPE::BULLET_F;
+	}
+	else if (CInput::GetInstance()->IsKeyDown(DIK_L))
+	{
+		this->m_typeBullet = BULLET_TYPE::BULLET_L;
+	}
+#pragma endregion
 }
-
 //Kiem tra co tao ra dan hay ko, sau nay add vao quadtree no se tu dong di chuyen
 #pragma region KHOI_TAO_DAU_DAN
 void CContra::BulletUpdate(float deltaTime)
@@ -477,7 +500,7 @@ void CContra::BulletUpdate(float deltaTime)
 			{
 				//this->m_a = -700;
 				//this->m_vy = -400.0f;
-				rotation = -PI/6;// //Goc ban bang -45
+				rotation = -PI/4;// //Goc ban bang -45
 				break;
 			}
 		default:
@@ -496,55 +519,390 @@ void CContra::BulletUpdate(float deltaTime)
 			{
 			case ON_GROUND::IS_LYING:
 				{
-					offset.x = 25.0f;
-					offset.y = -25.0f;
+					switch (this->m_typeBullet)
+					{
+					case BULLET_TYPE::BULLET_M:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -15.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -15.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_N:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -23.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -23.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_F:
+							if (!this->m_left){
+								offset.x = 50.0f;
+								offset.y = -30.0f;
+							}
+							else{
+								offset.x = -50.0f;
+								offset.y = -30.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_L:
+							if (!this->m_left){
+								offset.x = 85.0f;
+								offset.y = -25.0f;
+							}
+							else{
+								offset.x = -85.0f;
+								offset.y = -25.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_S:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -15.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -15.0f;
+							}
+							break;
+					}
 					break;
 				}
 			case ON_GROUND::IS_FALL: case ON_GROUND::IS_JOGGING : case ON_GROUND::IS_SHOOTING_NORMAL: case ON_GROUND::IS_STANDING:
 				{
-					offset.x = 20.0f;
-					offset.y = 3.0f;
+					switch (this->m_typeBullet)
+					{
+						case BULLET_TYPE::BULLET_M:
+							if (!this->m_left){
+								offset.x = 20.0f;
+								offset.y = 8.0f;
+							}
+							else{
+								offset.x = -20.0f;
+								offset.y = 8.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_N:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -0.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -0.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_F:
+							if (!this->m_left){
+								offset.x = 50.0f;
+								offset.y = -15.0f;
+							}
+							else{
+								offset.x = -50.0f;
+								offset.y = -15.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_L:
+							if (!this->m_left){
+								offset.x = 85.0f;
+								offset.y = 0.0f;
+							}
+							else{
+								offset.x = -85.0f;
+								offset.y = 0.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_S:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = 10.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = 10.0f;
+							}
+							break;
+					}
 					break;
 				}
 			case ON_GROUND::IS_SHOOTING_UP:
 				{
-					offset.x = 5.0f;
-					offset.y = 36.0f;
+				switch (this->m_typeBullet)
+					{
+						case BULLET_TYPE::BULLET_M:
+							if (!this->m_left){
+								offset.x = -3.0f;
+								offset.y = 50.0f;
+							}
+							else{
+								offset.x = 3.0f;
+								offset.y = 50.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_N:
+							if (!this->m_left){
+								offset.x = 3.0f;
+								offset.y = 5.0f;
+							}
+							else{
+								offset.x = -3.0f;
+								offset.y = 5.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_F:
+							if (!this->m_left){
+								offset.x = 0.0f;
+								offset.y = 50.0f;
+							}
+							else{
+								offset.x = 0.0f;
+								offset.y = 50.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_L:
+							if (!this->m_left){
+								offset.x = 5.0f;
+								offset.y = 70.0f;
+							}
+							else{
+								offset.x = -7.0f;
+								offset.y = 70.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_S:
+							if (!this->m_left){
+								offset.x = 0.0f;
+								offset.y = 40.0f;
+							}
+							else{
+								offset.x = 0.0f;
+								offset.y = 40.0f;
+							}
+							break;
+					}
 					break;
 				}
 			case ON_GROUND::IS_SHOOTING_DIAGONAL_DOWN:
 				{
-					offset.x = 25.0f;
-					offset.y = -15.0f;
+					switch (this->m_typeBullet)
+					{
+						case BULLET_TYPE::BULLET_M:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -15.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -15.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_N:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -15.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -15.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_F:
+							if (!this->m_left){
+								offset.x = 40.0f;
+								offset.y = -35.0f;
+							}
+							else{
+								offset.x = -80.0f;
+								offset.y = 0.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_L:
+							if (!this->m_left){
+								offset.x = 55.0f;
+								offset.y = -45.0f;
+							}
+							else{
+								offset.x = -55.0f;
+								offset.y = -45.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_S:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -15.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -15.0f;
+							}
+							break;
+					}
 					break;
 				}
 			case ON_GROUND::IS_SHOOTING_DIAGONAL_UP:
 				{
-					offset.x = 20.0f;
-					offset.y = 25.0f;
+				switch (this->m_typeBullet)
+					{
+						case BULLET_TYPE::BULLET_M:
+							if (!this->m_left){
+								offset.x = 20.0f;
+								offset.y = 25.0f;
+							}
+							else{
+								offset.x = -20.0f;
+								offset.y = 25.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_N:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = 25.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = 25.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_F:
+							if (!this->m_left){
+								offset.x = 50.0f;
+								offset.y = 30.0f;
+							}
+							else{
+								offset.x = -50.0f;
+								offset.y = 20.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_L:
+							if (!this->m_left){
+								offset.x = 55.0f;
+								offset.y = 50.0f;
+							}
+							else{
+								offset.x = -55.0f;
+								offset.y = 50.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_S:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = 30.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = 30.0f;
+							}
+							break;
+					}
+					
 					break;
 				}
 			case ON_GROUND::IS_JUMPING:
 				{
-					offset.x = -10.0f;
-					offset.y = 10.0f;
+				switch (this->m_typeBullet)
+					{
+						case BULLET_TYPE::BULLET_M:
+							if (!this->m_left){
+								offset.x = -10.0f;
+								offset.y = 10.0f;
+							}
+							else{
+								offset.x = 10.0f;
+								offset.y = 10.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_N:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -15.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -15.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_F:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -15.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -15.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_L:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -15.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -15.0f;
+							}
+							break;
+						case BULLET_TYPE::BULLET_S:
+							if (!this->m_left){
+								offset.x = 25.0f;
+								offset.y = -15.0f;
+							}
+							else{
+								offset.x = -25.0f;
+								offset.y = -15.0f;
+							}
+							break;
+					}
 					break;
 				}
 			}
 		}
+		CBullet* bullet;
+		switch (this->m_typeBullet)
+		{
+			case BULLET_TYPE::BULLET_M:
+				bullet = new CBullet_M(rotation, this->m_pos, offset, this->m_left);
+				this->m_listBullet.push_back(bullet);
+				break;
+			case BULLET_TYPE::BULLET_N:
+				if (this->m_isShoot)
+				{
+					if (m_bulletCount > 2)
+					{
+						this->m_bulletCount = 0;
+						this->m_isShoot = false;
+					}
+					else{
+						bullet = new CBullet_N(rotation, this->m_pos, offset, this->m_left);
+						this->m_listBullet.push_back(bullet);
+						m_bulletCount++;
+					}
+				}
+				break;
+			case BULLET_TYPE::BULLET_F:
+				bullet = new CBullet_F(rotation, this->m_pos, offset, this->m_left);
+				this->m_listBullet.push_back(bullet);
+				break;
+			case BULLET_TYPE::BULLET_L:
+				bullet = new CBullet_L(rotation, this->m_pos, offset, this->m_left);
+				this->m_listBullet.push_back(bullet);
+				break;
+			case BULLET_TYPE::BULLET_S:
+				//Them dan S.
+				CBullet_S* bulletS = new CBullet_S(rotation, this->m_pos, offset, this->m_left);
+				this->m_listBullet.push_back(bulletS->m_bullet_1);
+				this->m_listBullet.push_back(bulletS->m_bullet_2);
+				this->m_listBullet.push_back(bulletS->m_bullet_3);
+				this->m_listBullet.push_back(bulletS->m_bullet_4);
+				this->m_listBullet.push_back(bulletS->m_bullet_5);
+				break;
+		}
 
-		 //Them dan S.
-		//CBullet_S* bullet = new CBullet_S(rotation, this->m_pos, offset, this->m_left);
-		//this->m_listBullet.push_back(bullet->m_bullet_1);
-		//this->m_listBullet.push_back(bullet->m_bullet_2);
-		//this->m_listBullet.push_back(bullet->m_bullet_3);
-		//this->m_listBullet.push_back(bullet->m_bullet_4);
-		//this->m_listBullet.push_back(bullet->m_bullet_5);
-
-		CBullet_F* bulletF = new CBullet_F(rotation, this->m_pos, offset, this->m_left);
-		this->m_listBullet.push_back(bulletF);
-
-		this->m_isShoot = false;
 	}
 	//Update trang thai dan
 	D3DXVECTOR3 pos;
@@ -559,6 +917,12 @@ void CContra::BulletUpdate(float deltaTime)
 			delete this->m_listBullet.at(i);
 			this->m_listBullet.erase(this->m_listBullet.begin() + i);
 		}
+		
+	}
+
+	if (this->m_listBullet.empty())
+	{
+		this->m_isShoot = true;
 	}
 
 }
@@ -635,6 +999,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					}else{
 						//if(this->m_vy != 0)
 						//{
+
 						if(this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < 0)
 						{
 
@@ -657,7 +1022,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			}
 		}
 	}
-	if(!checkColWithGround && this->m_stateCurrent != ON_GROUND::IS_JUMPING /*&& this->m_stateCurrent != ON_GROUND::IS_LYING*/)
+	if(!checkColWithGround && this->m_stateCurrent != ON_GROUND::IS_JUMPING)
 	{
 		if(this->m_stateCurrent == ON_GROUND::IS_LYING)
 		{
@@ -688,54 +1053,7 @@ RECT* CContra::GetBound()
 
 Box CContra::GetBox()
 {
-	//return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
-	if(!this->m_isUnderWater)
-	{
-		switch (this->m_stateCurrent)
-		{
-		case ON_GROUND::IS_FALL:
-		case ON_GROUND::IS_JOGGING:
-		case ON_GROUND::IS_SHOOTING_DIAGONAL_DOWN:
-		case ON_GROUND::IS_SHOOTING_DIAGONAL_UP:
-		case ON_GROUND::IS_SHOOTING_NORMAL:
-		case ON_GROUND::IS_STANDING:
-		case ON_GROUND::IS_SHOOTING_UP:
-			{
-				return Box(this->m_pos.x, this->m_pos.y, this->m_width - 45, this->m_height, this->m_vx, this->m_vy);
-			}
-		case ON_GROUND::IS_JUMPING:
-			{
-				return Box(this->m_pos.x, this->m_pos.y, this->m_width - 40, this->m_height - 55, this->m_vx, this->m_vy);
-			}
-		case ON_GROUND::IS_LYING:
-			{
-				return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height - 55, this->m_vx, this->m_vy);
-			}
-		
-		default:
-			{
-				break;
-			}
-		}
-	}
-	else
-	{
-		switch (this->m_stateCurrent)
-		{
-		case UNDER_WATER::IS_JOGGING_UNDER_WATER:
-			{
-				break;
-			}
-		case UNDER_WATER::IS_LYING_UNDER_WATER:
-			{
-				break;
-			}
-		case UNDER_WATER::IS_STANDING_UNDER_WATER:
-			{
-				break;
-			}
-		default:
-			break;
-		}
-	}
+
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+
 }

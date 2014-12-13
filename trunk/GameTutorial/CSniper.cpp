@@ -93,6 +93,8 @@ void CSniper::Init()
 
 	this->m_bulletCount = 0;
 	this->m_timeDelay = 2.0f;
+
+	this->m_allowShoot = true;
 }
 
 void CSniper::Update(float deltaTime)
@@ -204,32 +206,62 @@ void CSniper::BulletUpdate(float deltaTime)
 	{
 	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_NORMAL:
 		{
-			offset.x = this->m_width/ 2;
-			offset.y = 20.0f;
+			if (this->m_left){
+				offset.x = this->m_width / 2;
+				offset.y = 17.0f;
+			}
+			else{
+				offset.y = 17.0f;
+				offset.x = 0;
+			}
 			break;
 		}
 	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_UP:
 		{
-			offset.x = 0;
-			offset.y = 50.0f;
+			if (this->m_left){
+				offset.x = 0;
+				offset.y = 50.0f;
+			}
+			else{
+				offset.y = 50.0f;
+				offset.x = 0;
+			}
 			break;
 		}
 	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DIAGONAL_UP:
 		{
-			offset.y = 50.0f;
-			offset.x = this->m_width/2;
+			if (this->m_left){
+				offset.y = 50.0f;
+				offset.x = this->m_width / 2;
+			}
+			else{
+				offset.y = 50.0f;
+				offset.x = -20.0f;
+			}
 			break;
 		}
 	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DOWN:
 		{
-			offset.y = 0;
-			offset.x = this->m_width/ 2;
+			if (this->m_left){
+				offset.y = 0;
+				offset.x = this->m_width / 2;
+			}
+			else{
+				offset.y = 0.0f;
+				offset.x = this->m_width / 2;
+			}
 			break;
 		}
 	case SNIPER_SHOOT_STATE::SN_IS_SHOOTING_DIAGONAL_DOWN:
 		{
-			offset.y = -8.0f;
-			offset.x = this->m_width/ 2;
+			if (this->m_left){
+				offset.y = -8.0f;
+				offset.x = this->m_width / 2;
+			}
+			else{
+				offset.y = -8.0f;
+				offset.x = -10.0f;
+			}
 			break;
 		}
 	case SNIPER_SHOOT_STATE::SN_IS_HIDING:

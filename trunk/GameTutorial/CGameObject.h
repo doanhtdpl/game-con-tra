@@ -20,7 +20,9 @@ protected:
 	RECT *m_rectRS;//NULL if object hasn't animated sprite
 
 	RECT m_rect;//xen trong Quadtree
-
+public:
+	std::vector<CGameObject*> m_listBullet;
+	bool m_allowShoot;
 public:
 	virtual std::string ClassName() = 0;
 	CGameObject(void);

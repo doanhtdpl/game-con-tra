@@ -123,8 +123,16 @@ void CBullet::Update(float deltaTime)
 	this->MoveUpdate(deltaTime);
 }
 
-
 void CBullet::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
+{
+	
+}
+
+void CBullet::ChangeFrame(float deltaTime){
+
+}
+
+void CBullet::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
 {
 
 }

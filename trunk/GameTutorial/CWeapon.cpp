@@ -1,14 +1,17 @@
-#include "CWeapon.h"
+﻿#include "CWeapon.h"
+#include "CCollision.h"
+#include "CContra.h"
+#include "CDrawObject.h"
 
 CWeapon::CWeapon(void)
 {
 	this->Init();
 }
-	
+
 CWeapon::CWeapon(const std::vector<int>& info)
 {
 	this->Init();//
-	if(!info.empty())
+	if (!info.empty())
 	{
 		this->m_id = info.at(0) % 1000;
 		this->m_idType = info.at(0) / 1000;
@@ -22,13 +25,13 @@ void CWeapon::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
 	this->m_id = 2;
-	this->m_idType = 20; 
+	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
 	this->m_width = 54.0f;//56.0f; //78
 	this->m_height = 30.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(800.0f, 400.0f);
+	this->m_pos = D3DXVECTOR2(100.0f, 200.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -48,11 +51,51 @@ void CWeapon::Init()
 void CWeapon::Update(float deltaTime)
 {
 	this->MoveUpdate(deltaTime);
+	if (this->effect != NULL){
+		this->effect->Update(deltaTime);
+		if (!this->effect->IsAlive()){
+			delete this->effect;
+			this->effect = NULL;
+		}
+	}
+
+	if (this->item != NULL){
+		this->item->Update(deltaTime);
+	}
 }
 
 void CWeapon::Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
 {
 
+}
+
+void CWeapon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
+{
+#pragma region XU_LY_VA_CHAM
+	float normalX = 0;
+	float normalY = 0;
+	float moveX = 0.0f;
+	float moveY = 0.0f;
+	float timeCollision;
+
+	//Sắp va chạm > 0 và < 1
+	//Hai Box Giao Nhau (Đã va chạm rồi) = 2 và moveX, moveY (độ lún)
+	timeCollision = CCollision::GetInstance()->Collision(this, CContra::GetInstance(), normalX, normalY, moveX, moveY, deltaTime);
+	if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+	{
+		//trên - xuống normalY = 1
+		//Trái phải normalX = -1
+		// ==0 ko va chạm theo Y, X	
+		if (this->effect == NULL){
+			this->effect = new CExplosionEffect(this->GetPos());
+		}
+
+		if (this->item == NULL){
+			this->item = new CBulletItem(this->GetPos());
+		}
+	}
+
+#pragma endregion 
 }
 
 void CWeapon::MoveUpdate(float deltaTime)
@@ -70,12 +113,17 @@ RECT* CWeapon::GetBound()
 
 RECT* CWeapon::GetRectRS()
 {
-	return nullptr;
+	RECT* rs = new RECT();
+	rs->left = 0;
+	rs->right = this->m_width;
+	rs->top = 0;
+	rs->bottom = this->m_height;
+	return rs;
 }
 
 Box CWeapon::GetBox()
 {
-	return Box();
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
 }
 
 CWeapon::~CWeapon()

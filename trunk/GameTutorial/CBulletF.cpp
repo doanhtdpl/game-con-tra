@@ -49,8 +49,8 @@ void CBullet_F::Init()
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
 	this->m_canJump = false;
-	this->m_vxDefault = 150.0f;
-	this->m_vyDefault = 150.0f;
+	this->m_vxDefault = 200.0f;
+	this->m_vyDefault = 200.0f;
 	this->m_vx = this->m_vxDefault;
 	this->m_vy = this->m_vyDefault;
 
@@ -135,6 +135,11 @@ void CBullet_F::Update(float deltaTime)
 }
 
 void CBullet_F::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
+{
+
+}
+
+void CBullet_F::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
 {
 
 }

@@ -52,6 +52,8 @@ void CWallTurret::Init()
 	this->m_direction = false;
 	this->m_totalCurr = 0;
 	this->m_oldangle = -1;
+
+	this->m_allowShoot = true;
 }
 
 void CWallTurret::Update(float deltaTime)
@@ -243,45 +245,86 @@ void CWallTurret::BulletUpdate(float deltaTime)
 	{
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_NORMAL:
 		{
-			offset.x = this->m_width/ 2;
-			offset.y = 10.0f;
+			if (this->m_direction){
+				offset.x = this->m_width / 2;
+				offset.y = 5.0f;
+			}
+			else{
+				offset.x = this->m_width / 2;
+				offset.y = 5.0f;
+			}			
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_UP:
 		{
-			offset.x = 10.0f;
-			offset.y = 50.0f;
+			if (this->m_direction){
+				offset.x = 0;
+				offset.y = this->m_height / 2;
+			}
+			else{
+				offset.x = 0;
+				offset.y = this->m_height / 2;
+			}			
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_UP_X:
 		{
-			offset.y = 30.0f;
-			offset.x = this->m_width/2;
+			if (this->m_direction){
+				offset.y = 15.0f;
+				offset.x = this->m_width / 2;
+			}
+			else{
+				offset.x = 0;
+				offset.y = 0.0f;
+			}			
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_UP_2X:
 		{
-			offset.y = 50.0f;
-			offset.x = this->m_width/2 - 15.0f;
+			if (this->m_direction){
+				offset.y = 30.0f;
+				offset.x = 0;
+			}
+			else{
+				offset.x = 0;
+				offset.y = 30.0f;
+			}			
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DOWN:
 		{
-			offset.x = -10.0f;
-			offset.y = -this->m_height / 2;
-			break;
+			if (this->m_direction){
+				offset.x = -10.0f;
+				offset.y = -this->m_height / 2;
+			}
+			else{
+				offset.x = this->m_width / 2;
+				offset.y = 10.0f;
+			}			
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_DOWN_X:
 		{
-			offset.y = -8.0f;
-			offset.x = this->m_width/ 2;
+			if (this->m_direction){
+				offset.y = -10.0f;
+				offset.x = this->m_width / 2;
+			}
+			else{
+				offset.x = this->m_width / 2;
+				offset.y = 10.0f;
+			}			
 			break;
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_DOWN_2X:
 		{
-			offset.y = -this->m_height / 2;
-			offset.x = this->m_width/ 2 - 15.0f;
+			if (this->m_direction){
+				offset.y = -this->m_height / 2;
+				offset.x = this->m_width / 2 - 15.0f;
+			}
+			else{
+				offset.x = 10.0f;
+				offset.y = 10.0f;
+			}			
 			break;
 		}
 	default:

@@ -10,6 +10,7 @@ CGameObject::CGameObject(void)
 	this->m_height = 0;
 	this->m_width = 0;
 	this->m_posZ = 0;
+	this->m_allowShoot = false;
 }
 
 CGameObject::CGameObject(const std::vector<int>& info)

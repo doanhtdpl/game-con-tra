@@ -2,6 +2,8 @@
 #define __CWEAPON_H__
 
 #include "CDynamicObject.h"
+#include "CExplosionEffect.h"
+#include "CBulletItem.h"
 
 class CWeapon : public CDynamicObject
 {
@@ -13,13 +15,16 @@ public:
 	virtual void MoveUpdate(float deltaTime);
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
+	void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	RECT* GetBound();
 	RECT* GetRectRS();
 	Box GetBox();
 protected:
 	void Init();
 	double m_angle;
-
+public:
+	CExplosionEffect* effect;
+	CBulletItem* item;
 };
 
 #endif // !__CWEAPON_H__

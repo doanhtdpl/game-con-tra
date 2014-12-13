@@ -19,22 +19,22 @@ CBullet_S::CBullet_S(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset)
 	CBullet_S();
 	this->Init();
 	this->m_rotation = rotation;
-	this->m_bullet_1 = new CBullet_S(rotation, pos, offset);
-	this->m_bullet_2 = new CBullet_S(rotation + PI/24, pos, offset);
-	this->m_bullet_3 = new CBullet_S(rotation + PI/12, pos, offset);
-	this->m_bullet_4 = new CBullet_S(rotation - PI/24, pos, offset);
-	this->m_bullet_5 = new CBullet_S(rotation - PI/12, pos, offset);
+	this->m_bullet_1 = new CBullet_M(rotation, pos, offset);
+	this->m_bullet_2 = new CBullet_M(rotation + PI / 24, pos, offset);
+	this->m_bullet_3 = new CBullet_M(rotation + PI / 12, pos, offset);
+	this->m_bullet_4 = new CBullet_M(rotation - PI / 24, pos, offset);
+	this->m_bullet_5 = new CBullet_M(rotation - PI / 12, pos, offset);
 }
 
 CBullet_S::CBullet_S(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset, bool direction)
 {
 	this->Init();
 	this->m_rotation = rotation;
-	this->m_bullet_1 = new CBullet_S(rotation, pos, offset, direction);
-	this->m_bullet_2 = new CBullet_S(rotation + PI/24, pos, offset, direction);
-	this->m_bullet_3 = new CBullet_S(rotation + PI/12, pos, offset, direction);
-	this->m_bullet_4 = new CBullet_S(rotation - PI/24, pos, offset, direction);
-	this->m_bullet_5 = new CBullet_S(rotation - PI/12, pos, offset, direction);
+	this->m_bullet_1 = new CBullet_M(rotation, pos, offset, direction);
+	this->m_bullet_2 = new CBullet_M(rotation + PI / 24, pos, offset, direction);
+	this->m_bullet_3 = new CBullet_M(rotation + PI / 12, pos, offset, direction);
+	this->m_bullet_4 = new CBullet_M(rotation - PI / 24, pos, offset, direction);
+	this->m_bullet_5 = new CBullet_M(rotation - PI / 12, pos, offset, direction);
 }
 
 void CBullet_S::Init()
@@ -136,6 +136,11 @@ RECT* CBullet_S::GetRectRS()
 }
 
 void CBullet_S::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
+{
+
+}
+
+void CBullet_S::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
 {
 
 }
