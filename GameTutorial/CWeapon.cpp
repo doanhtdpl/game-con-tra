@@ -46,6 +46,8 @@ void CWeapon::Init()
 	this->m_vy = this->m_vyDefault;
 	this->m_left = false;
 	this->m_angle = 0;
+
+	this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_M;
 }
 
 void CWeapon::Update(float deltaTime)
@@ -91,18 +93,41 @@ void CWeapon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		}
 
 		if (this->item == NULL){
+			
 			this->item = new CBulletItem(this->GetPos());
+
+			this->item->m_stateItem = this->m_stateItem;
 		}
+		this->m_isALive = false;
 	}
 
+	for (int i = 0; i < CContra::GetInstance()->m_listBullet.size(); i++)
+	{
+		timeCollision = CCollision::GetInstance()->Collision(this, CContra::GetInstance()->m_listBullet.at(i), normalX, normalY, moveX, moveY, deltaTime);
+		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+		{
+			//trên - xuống normalY = 1
+			//Trái phải normalX = -1
+			// ==0 ko va chạm theo Y, X	
+			if (this->effect == NULL){
+				this->effect = new CExplosionEffect(this->GetPos());
+			}
+
+			if (this->item == NULL){
+
+				this->item = new CBulletItem(this->GetPos());
+
+				this->item->m_stateItem = this->m_stateItem;
+			}
+			this->m_isALive = false;
+		}
+	}
 #pragma endregion 
 }
 
 void CWeapon::MoveUpdate(float deltaTime)
 {
 	this->m_angle += 4.0 * deltaTime;
-	//this->m_vx += this->m_a  * deltaTime;
-	//this->m_vy += this->m_a * deltaTime * sin(this->m_angle);
 	this->m_pos.x += this->m_vx * deltaTime;
 	this->m_pos.y += 5.0f * sin(this->m_angle);
 }

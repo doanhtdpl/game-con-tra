@@ -25,6 +25,7 @@ protected:
 public:
 	CExplosionEffect* effect;
 	CBulletItem* item;
+	STATE_BULLET_ITEM m_stateItem;
 };
 
 #endif // !__CWEAPON_H__

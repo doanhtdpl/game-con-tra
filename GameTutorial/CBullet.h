@@ -31,6 +31,7 @@ public:
 	virtual RECT* GetRectRS();
 	virtual RECT* GetBound();
 	virtual Box GetBox();
+	bool m_isContra;
 protected:
 	virtual void Init(); //Khoi tao vi tri ban dau cua vien dan
 	D3DXVECTOR2 m_offset; //Vi tri cua vien dan so voi contra

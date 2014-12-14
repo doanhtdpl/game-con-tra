@@ -341,6 +341,7 @@ void CWallTurret::BulletUpdate(float deltaTime)
 			//Chuyen ve toa do goc phan tu 1 - 2
 			temp = this->m_direction ? temp : PI - temp;
 			CBullet_N* bullet = new CBullet_N(temp, this->m_pos, offset, !this->m_direction);
+			bullet->m_isContra = false;
 			m_listBullet.push_back(bullet);
 			this->m_timeDelay = 0;
 		}

@@ -867,6 +867,7 @@ void CContra::BulletUpdate(float deltaTime)
 		{
 			case BULLET_TYPE::BULLET_M:
 				bullet = new CBullet_M(rotation, this->m_pos, offset, this->m_left);
+				bullet->m_isContra = true;
 				this->m_listBullet.push_back(bullet);
 				break;
 			case BULLET_TYPE::BULLET_N:
@@ -879,6 +880,7 @@ void CContra::BulletUpdate(float deltaTime)
 					}
 					else{
 						bullet = new CBullet_N(rotation, this->m_pos, offset, this->m_left);
+						bullet->m_isContra = true;
 						this->m_listBullet.push_back(bullet);
 						m_bulletCount++;
 					}
@@ -886,15 +888,18 @@ void CContra::BulletUpdate(float deltaTime)
 				break;
 			case BULLET_TYPE::BULLET_F:
 				bullet = new CBullet_F(rotation, this->m_pos, offset, this->m_left);
+				bullet->m_isContra = true;
 				this->m_listBullet.push_back(bullet);
 				break;
 			case BULLET_TYPE::BULLET_L:
 				bullet = new CBullet_L(rotation, this->m_pos, offset, this->m_left);
+				bullet->m_isContra = true;
 				this->m_listBullet.push_back(bullet);
 				break;
 			case BULLET_TYPE::BULLET_S:
 				//Them dan S.
 				CBullet_S* bulletS = new CBullet_S(rotation, this->m_pos, offset, this->m_left);
+				bulletS->m_isContra = true;
 				this->m_listBullet.push_back(bulletS->m_bullet_1);
 				this->m_listBullet.push_back(bulletS->m_bullet_2);
 				this->m_listBullet.push_back(bulletS->m_bullet_3);

@@ -295,6 +295,7 @@ void CSniper::BulletUpdate(float deltaTime)
 			if(this->m_timeDelay >= 0.25f)
 			{
 				CBullet_N* bullet = new CBullet_N(angle, this->m_pos, offset, !this->m_left);
+				bullet->m_isContra = false;
 				m_listBullet.push_back(bullet);
 				this->m_timeDelay = 0;
 				m_bulletCount ++;
@@ -310,6 +311,7 @@ void CSniper::BulletUpdate(float deltaTime)
 			if (m_bulletCount == 0)
 			{
 				CBullet_N* bullet = new CBullet_N(angle, this->m_pos, offset, !this->m_left);
+				bullet->m_isContra = false;
 				m_listBullet.push_back(bullet);
 				m_bulletCount ++;
 			}

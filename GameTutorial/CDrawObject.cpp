@@ -90,21 +90,21 @@ void CDrawObject::Draw(CGameObject* obj)
 					}
 					else
 					{
-						//
-						//sang test
-						/*if (typeObject == 10)
-						{*/
-							RECT* rect = new RECT();
-							rect->left = 0;
-							rect->right = 64;
-							rect->top = 0;
-							rect->bottom = 64;
-							CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 14);
-							this->m_draw->drawScale(text,
-								rect, posObjAfterTransform,
-								D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
-								D3DCOLOR_XRGB(255, 255, 255), true);
-					//	}
+						////
+						////sang test
+						//if (typeObject == 20 && idObject == 3)
+						//{
+						//	RECT* rect = new RECT();
+						//	rect->left = 0;
+						//	rect->right = 64;
+						//	rect->top = 0;
+						//	rect->bottom = 64;
+						//	CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 14);
+						//	this->m_draw->drawScale(text,
+						//		rect, posObjAfterTransform,
+						//		D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
+						//		D3DCOLOR_XRGB(255, 255, 255), true);
+						//}
 						//
 						if (!obj->GetDirection())
 						{
@@ -115,6 +115,23 @@ void CDrawObject::Draw(CGameObject* obj)
 							this->m_draw->drawFlipX(texture, obj->GetRectRS(), posObjAfterTransform, D3DCOLOR_XRGB(255, 255, 255), true);
 							//this->m_draw->drawRotation(texture, obj->GetRectRS(), posObjAfterTransform,D3DXVECTOR2(50.0f, 1.0f), 0, D3DCOLOR_XRGB(255,255,255), true);
 						}
+
+						//
+						//sang test
+						//if (typeObject == 20 && idObject == 3)
+						//{
+							RECT* rect = new RECT();
+							rect->left = 0;
+							rect->right = 64;
+							rect->top = 0;
+							rect->bottom = 64;
+							CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 14);
+							this->m_draw->drawScale(text,
+								rect, posObjAfterTransform,
+								D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
+								D3DCOLOR_XRGB(255, 255, 255), true);
+						//}
+
 					}
 				}
 			}
