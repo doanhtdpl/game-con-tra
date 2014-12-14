@@ -18,7 +18,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -71,6 +71,7 @@
     <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CBulletF.cpp" />
+    <ClCompile Include="CBulletItem.cpp" />
     <ClCompile Include="CBulletL.cpp" />
     <ClCompile Include="CBulletM.cpp" />
     <ClCompile Include="CBulletN.cpp" />
@@ -80,6 +81,7 @@
     <ClCompile Include="CContra.cpp" />
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="CDrawObject.cpp" />
+    <ClCompile Include="CExplosionEffect.cpp" />
     <ClCompile Include="CFileConfig.cpp" />
     <ClCompile Include="CGroundCannon.cpp" />
     <ClCompile Include="CSniper.cpp" />
@@ -108,6 +110,7 @@
     <ClCompile Include="CDynamicObject.cpp" />
     <ClCompile Include="CWallTurret.cpp" />
     <ClCompile Include="CWeapon.cpp" />
+    <ClCompile Include="CEnemyEffect.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CStateManagement.cpp" />
     <ClCompile Include="CStaticObject.cpp" />
@@ -116,6 +119,7 @@
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CBulletF.h" />
+    <ClInclude Include="CBulletItem.h" />
     <ClInclude Include="CBulletL.h" />
     <ClInclude Include="CBulletM.h" />
     <ClInclude Include="CBulletN.h" />
@@ -125,6 +129,7 @@
     <ClInclude Include="CContra.h" />
     <ClInclude Include="CDevice.h" />
     <ClInclude Include="CDrawObject.h" />
+    <ClInclude Include="CExplosionEffect.h" />
     <ClInclude Include="CSniper.h" />
     <ClInclude Include="CSoldier.h" />
     <ClInclude Include="CFactoryObject.h" />
@@ -159,6 +164,7 @@
     <ClInclude Include="CGroundCannon.h" />
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="CFileConfig.h" />
+    <ClInclude Include="CEnemyEffect.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

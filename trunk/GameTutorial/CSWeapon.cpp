@@ -1,4 +1,6 @@
-#include "CSWeapon.h"
+﻿#include "CSWeapon.h"
+#include "CCollision.h"
+#include "CContra.h"
 
 CSWeapon::CSWeapon(void)
 {
@@ -47,6 +49,17 @@ void CSWeapon::Update(float deltaTime)
 {
 	this->SetFrame(deltaTime);
 	this->ChangeFrame(deltaTime);
+	if (this->effect != NULL){
+		this->effect->Update(deltaTime);
+		if (!this->effect->IsAlive()){
+			delete this->effect;
+			this->effect = NULL;
+		}
+	}
+
+	if (this->item != NULL){
+		this->item->Update(deltaTime);
+	}
 }
 
 void CSWeapon::Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
@@ -85,8 +98,42 @@ RECT* CSWeapon::GetRectRS()
 
 Box CSWeapon::GetBox()
 {
-	return Box();
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height);
 }
+
+void CSWeapon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
+{
+#pragma region XU_LY_VA_CHAM
+	float normalX = 0;
+	float normalY = 0;
+	float moveX = 0.0f;
+	float moveY = 0.0f;
+	float timeCollision;
+
+	for (int i = 0; i < CContra::GetInstance()->m_listBullet.size(); i++)
+	{
+		timeCollision = CCollision::GetInstance()->Collision(this, CContra::GetInstance()->m_listBullet.at(i), normalX, normalY, moveX, moveY, deltaTime);
+		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+		{
+			//trên - xuống normalY = 1
+			//Trái phải normalX = -1
+			// ==0 ko va chạm theo Y, X	
+			if (this->effect == NULL){
+				this->effect = new CExplosionEffect(this->GetPos());
+			}
+
+			if (this->item == NULL){
+
+				this->item = new CBulletItem(this->GetPos());
+
+				this->item->m_stateItem = this->m_stateItem;
+			}
+			this->m_isALive = false;
+		}
+	}
+#pragma endregion 
+}
+
 
 CSWeapon::~CSWeapon()
 {

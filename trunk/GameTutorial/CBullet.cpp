@@ -139,7 +139,12 @@ void CBullet::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* lis
 
 RECT* CBullet::GetRectRS()
 {
-	return nullptr;
+	RECT* rs = new RECT();
+	rs->left = 0;
+	rs->right = this->m_width;
+	rs->top = 0;
+	rs->bottom = this->m_height;
+	return rs;
 }
 
 RECT* CBullet::GetBound()
@@ -149,7 +154,7 @@ RECT* CBullet::GetBound()
 
 Box CBullet::GetBox()
 {
-	return Box();
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
 }
 
 CBullet::~CBullet()
