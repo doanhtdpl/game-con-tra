@@ -4,7 +4,7 @@
 CHidenObject::CHidenObject() : CStaticObject()
 {
 	this->m_id = 1;
-	this->m_idType = 14;
+	this->m_idType = 15;
 	this->m_width = 1450;
 	this->m_height = 10;
 	this->m_pos = D3DXVECTOR2(735.0f, 5.0f);
@@ -23,8 +23,15 @@ CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 		this->m_height = info.at(4);
 		switch (info.at(0))
 		{
-		case 14001:
+		case 15001:
 			this->m_type = HIDEN_OBJECT_TYPE::ON_GROUND;
+			break;
+		case 15002:
+			this->m_type = HIDEN_OBJECT_TYPE::UNDER_WATER;
+			break;
+		case 15003:
+			this->m_type = HIDEN_OBJECT_TYPE::ON_GROUND;
+			break;
 		default:
 			break;
 		}

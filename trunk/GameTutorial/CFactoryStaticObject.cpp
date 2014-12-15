@@ -27,7 +27,8 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 		idType = info.at(0);
 		switch(idType)
 		{
-		case 14001:
+		case 15001:
+		case 15002:
 			{
 				return new CHidenObject(info);
 				break;

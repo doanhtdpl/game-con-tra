@@ -52,7 +52,6 @@ void CLoadGameObject::CreateObjectOnScreen()
 		this->m_quadTree->GetListObjectOnScreen(CCamera::GetInstance()->GetBound(), 
 			this->m_quadTree->GetRoot(),
 			m_listIdObject); 
-		std::sort(this->m_listIdObject.begin(), this->m_listIdObject.end());
 
 		if (m_listIdObject.size() != 0)
 		{
@@ -136,7 +135,7 @@ CGameObject* CLoadGameObject::CreateObject(const std::vector<int>& info)
 				return CFactoryDynamicObject::GetInstance()->CreateObject(info);
 				break;
 			}
-		case 13: case 14:
+		case 13: case 15:
 			{
 				return CFactoryStaticObject::GetInstance()->CreateObject(info);
 				break;
@@ -217,6 +216,7 @@ void CLoadGameObject::Draw()
 			CGameObject* gameObj = *it;
 			//if(gameObj->GetIDType() != 14)
 			//{
+			if(gameObj)
 				CDrawObject::GetInstance()->Draw(gameObj);
 			//}
 		}
@@ -236,7 +236,7 @@ void CLoadGameObject::Update(float deltaTime)
 			++it)
 		{
 			CGameObject* gameObj = *it;
-			if(gameObj->GetIDType() != 14)
+			if(gameObj->GetIDType() != 15)
 			{
 				gameObj->Update(deltaTime);
 			}

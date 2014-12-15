@@ -33,8 +33,8 @@ void CBulletItem::Init()
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 54.0f;//56.0f; //78
-	this->m_height = 30.0f; //88.0f; //84
+	this->m_width = 49.0f;//56.0f; //78
+	this->m_height = 27.0f; //88.0f; //84
 	this->m_pos = D3DXVECTOR2(1100.0f, 200.0f);
 	this->m_left = false;
 	this->m_a = -700.0f;
@@ -94,7 +94,7 @@ void CBulletItem::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 		CGameObject* obj = *it;
 		//Lay thoi gian va cham
 		//Neu doi tuong la ground va dang va cham
-		if (obj->GetIDType() == 14 && !checkColWithGround)
+		if (obj->GetIDType() == 15 && !checkColWithGround)
 		{
 			timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
 			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)

@@ -41,8 +41,8 @@ void CStateGamePlay::Update(float deltaTime)
 {
 	CLoadGameObject::GetInstance()->Update(deltaTime);
 	CContra::GetInstance()->Update(deltaTime);
-	//CLoadGameObject::GetInstance()->Draw();
 	CContra::GetInstance()->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
+	//CLoadGameObject::GetInstance()->Draw();
 	//Testing
 	sObj->Update(deltaTime);
 	nobj->Update(deltaTime);
