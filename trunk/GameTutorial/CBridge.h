@@ -20,6 +20,7 @@ public:
 	CBridge(const std::vector<int>& info);
 	~CBridge();
 	std::string ClassName(){ return __CLASS_NAME__(CBridge); };
+	void ChangeFrame(float deltaTime);
 	virtual void SetFrame(float deltaTime);
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
@@ -33,6 +34,8 @@ protected:
 	STATE_BRIDGE m_stateCurrent;
 public:
 	CExplosionEffect* effect;
+	CExplosionEffect* effect1;
+	CExplosionEffect* effect2;
 };
 
 #endif // !__CBRIDGE_H__

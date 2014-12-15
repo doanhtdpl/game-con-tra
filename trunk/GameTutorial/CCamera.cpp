@@ -2,7 +2,7 @@
 
 CCamera::CCamera()
 {
-	m_pos.x = 0;
+	m_pos.x = 1300;
 	m_pos.y = 448;
 	m_pos.z = 0;
 	D3DXMatrixIdentity(&m_matrixTransform);

@@ -30,13 +30,17 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
 	virtual void OnCollision(float deltaTime, std::vector<CGameObject*> listObjectCollision) = 0;
-	virtual D3DXVECTOR2 GetPos(){return this->m_pos;};
-	int GetID(){return this->m_id;};
-	int GetIDType(){return this->m_idType;};
-	bool GetDirection(){return this->m_left;};
-	float GetWidth(){return this->m_width;};
-	float GetHeight(){return this->m_height;};
-	bool IsAlive(){return this->m_isALive;};
+	virtual D3DXVECTOR2 GetPos(){ return this->m_pos; };
+	int GetID(){ return this->m_id; };
+	int GetIDType(){ return this->m_idType; };
+	bool GetDirection(){ return this->m_left; };
+	float GetWidth(){ return this->m_width; };
+	float GetHeight(){ return this->m_height; };
+	bool IsAlive(){ return this->m_isALive; };
+	virtual void SetPos(D3DXVECTOR2 pos){
+		this->m_pos = pos;
+	};
+	virtual void SetAlive(bool isAlive){ this->m_isALive = isAlive; };
 	virtual Box GetBox();
 	virtual RECT* GetBound();
 	virtual RECT* GetRectRS();

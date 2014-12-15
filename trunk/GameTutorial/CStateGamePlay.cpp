@@ -100,6 +100,12 @@ void CStateGamePlay::Render()
 	if (br->effect != NULL){
 		CDrawObject::GetInstance()->Draw(br->effect);
 	}
+	//if (br->effect1 != NULL){
+	//	CDrawObject::GetInstance()->Draw(br->effect1);
+	//}
+	//if (br->effect2 != NULL){
+	//	CDrawObject::GetInstance()->Draw(br->effect2);
+	//}
 
 	CDrawObject::GetInstance()->Draw(CContra::GetInstance());
 }
