@@ -984,7 +984,68 @@ void CContra::BulletUpdate(float deltaTime)
 					break;
 				}
 			}
+		}else{
+			switch (this->m_stateCurrent)
+			{
+			case UNDER_WATER::IS_JOGGING_UNDER_WATER:
+				{
+					if (!this->m_left){
+						offset.x = 25.0f;
+						offset.y = -15.0f;
+					}else{
+						offset.x = -25.0f;
+						offset.y = -15.0f;
+					}
+					break;
+				}
+			case UNDER_WATER::IS_LYING_UNDER_WATER:
+				{
+					
+					break;
+				}
+			case UNDER_WATER::IS_STANDING_UNDER_WATER:
+				{
+					if (!this->m_left){
+						offset.x = 25.0f;
+						offset.y = -15.0f;
+					}else{
+						offset.x = -25.0f;
+						offset.y = -15.0f;
+					}
+					break;
+				}
+			case UNDER_WATER::IS_SHOOTING_UNDER_WATER_NORMAL:
+				{
+					
+					break;
+				}
+			case UNDER_WATER::IS_SHOOTING_UNDER_WATER_UP:
+				{
+					if (!this->m_left){
+						offset.x = 25.0f;
+						offset.y = -15.0f;
+					}else{
+						offset.x = -25.0f;
+						offset.y = -15.0f;
+					}
+					break;
+				}
+			case UNDER_WATER::IS_SHOOTING_UNDER_WATER_DIAGONAL_UP:
+				{
+					if (!this->m_left){
+						offset.x = 25.0f;
+						offset.y = -15.0f;
+					}else{
+						offset.x = -25.0f;
+						offset.y = -15.0f;
+					}
+					break;
+				}
+			default:
+				break;
+			}
 		}
+
 		CBullet* bullet;
 		switch (this->m_typeBullet)
 		{
