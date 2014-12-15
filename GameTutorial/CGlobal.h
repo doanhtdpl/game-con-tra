@@ -19,7 +19,7 @@ using namespace std;
 
 #define __FRAME_RATE 60
 #define __SCREEN_WIDTH  640
-#define __SCREEN_HEIGHT 480
+#define __SCREEN_HEIGHT 448
 #define __CLASS_NAME "Contra"
 #define __CLASS_NAME__(x) #x
 

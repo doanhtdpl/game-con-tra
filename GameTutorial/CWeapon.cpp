@@ -29,9 +29,9 @@ void CWeapon::Init()
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 54.0f;//56.0f; //78
-	this->m_height = 30.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(100.0f, 200.0f);
+	this->m_width = 49.0f;//56.0f; //78
+	this->m_height = 27.0f; //88.0f; //84
+	this->m_pos = D3DXVECTOR2(0.0f, 320.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -82,24 +82,24 @@ void CWeapon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 
 	//Sắp va chạm > 0 và < 1
 	//Hai Box Giao Nhau (Đã va chạm rồi) = 2 và moveX, moveY (độ lún)
-	timeCollision = CCollision::GetInstance()->Collision(this, CContra::GetInstance(), normalX, normalY, moveX, moveY, deltaTime);
-	if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
-	{
-		//trên - xuống normalY = 1
-		//Trái phải normalX = -1
-		// ==0 ko va chạm theo Y, X	
-		if (this->effect == NULL){
-			this->effect = new CExplosionEffect(this->GetPos());
-		}
+	//timeCollision = CCollision::GetInstance()->Collision(this, CContra::GetInstance(), normalX, normalY, moveX, moveY, deltaTime);
+	//if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+	//{
+	//	//trên - xuống normalY = 1
+	//	//Trái phải normalX = -1
+	//	// ==0 ko va chạm theo Y, X	
+	//	if (this->effect == NULL){
+	//		this->effect = new CExplosionEffect(this->GetPos());
+	//	}
 
-		if (this->item == NULL){
-			
-			this->item = new CBulletItem(this->GetPos());
+	//	if (this->item == NULL){
+	//		
+	//		this->item = new CBulletItem(this->GetPos());
 
-			this->item->m_stateItem = this->m_stateItem;
-		}
-		this->m_isALive = false;
-	}
+	//		this->item->m_stateItem = this->m_stateItem;
+	//	}
+	//	this->m_isALive = false;
+	//}
 
 	for (int i = 0; i < CContra::GetInstance()->m_listBullet.size(); i++)
 	{

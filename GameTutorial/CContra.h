@@ -32,7 +32,10 @@ enum UNDER_WATER
 	IS_STANDING_UNDER_WATER = 20,
 	IS_LYING_UNDER_WATER = 21,
 	IS_JOGGING_UNDER_WATER = 22,
-	IS_DIE_UNDER_WATER = 23
+	IS_DIE_UNDER_WATER = 23,
+	IS_SHOOTING_UNDER_WATER_UP = 24,
+	IS_SHOOTING_UNDER_WATER_NORMAL = 25,
+	IS_SHOOTING_UNDER_WATER_DIAGONAL_UP = 26
 };
 
 enum BULLET_TYPE{
@@ -75,16 +78,19 @@ public:
 	Box GetBox();
 	RECT* GetRectRS();
 protected:
-	void SetFrame();
+	void SetFrame(float deltaTime);
 	//int m_startFrame; //Frame bat dau
 	//int m_endFrame; //Frame ket thuc
 	bool m_isUnderWater; // Dang o duoi nuoc
 	bool m_isShoot; // Duoc phep ban
+	bool m_isShooting; //Dang ban
 	int m_stateCurrent; // Trang thai hien tai
 	int m_stateShoot; // Huong ban
 	int m_keyDown; //Luu phim vua duoc nhan
 	int m_keyUp; //Luu phim vua duoc tha
 	//Bien quan ly vien dan hien tai
+	float m_waitForShoot; //Quan ly thoi gian cho ban
+	float m_waitChangeSprite; //Quan ly thoi gia cho chuyen sprite
 	//
 	//Tam thoi dung mot vector de giu cac vien dan
 
