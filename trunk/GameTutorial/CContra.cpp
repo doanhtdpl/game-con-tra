@@ -1079,6 +1079,8 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 	float timeCollision;
 	//Kiem tra va cham voi ground
 	bool checkColWithGround = false;
+	//Kiem tra va cham voi water
+	bool checkColWithWater = false;
 	for (std::vector<CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
 	{
 		CGameObject* obj = *it;
@@ -1091,11 +1093,23 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			{
 				if(normalY > 0)
 				{
-					checkColWithGround = true;
+#pragma region DANG VA CHAM VOI NUOC VA CHUYEN LEN MAT DAT
+					if(checkColWithWater) //Neu dang va cham voi mat nuoc
+					{
+						if(obj->GetID() == 1) //Gap mat dat
+						{
+							this->m_isUnderWater = false;
+							this->m_stateCurrent = ON_GROUND::IS_JOGGING;
+							this->m_pos.y += 30;
+						}
+					}
+#pragma endregion
+
 #pragma region VA CHAM MAT DAT
 
-					if(obj->GetID() == 1)
+					else if(obj->GetID() == 1 && !checkColWithGround)
 					{
+						checkColWithGround = true;
 						this->m_isUnderWater = false;
 						if( timeCollision == 2.0f)
 						{
@@ -1130,10 +1144,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 								this->m_isJumping = false;
 							}
 
-						}else{
+						}else if(obj->GetID() == 2){
 							//if(this->m_vy != 0)
 							//{
-
 							if(this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < 0)
 							{
 
@@ -1155,9 +1168,10 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					}
 #pragma endregion
 #pragma region VA CHAM MAT NUOC
-					else
+					else if(!checkColWithWater && obj->GetID() == 2)
 					{
 						//O duoi nuoc khong the nhay
+						checkColWithWater = true;
 						this->m_isUnderWater = true;
 						this->m_isJumping = false;
 						if( timeCollision == 2.0f)
@@ -1193,7 +1207,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			}
 		}
 	}
-	if(!checkColWithGround)
+	if(!checkColWithGround && !checkColWithWater)
 	{
 		if(this->m_isUnderWater)
 		{
