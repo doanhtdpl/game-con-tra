@@ -185,7 +185,7 @@ RECT* CBullet_L::GetBound()
 
 Box CBullet_L::GetBox()
 {
-	return Box();
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
 }
 
 int CBullet_L::getStateRotation()
