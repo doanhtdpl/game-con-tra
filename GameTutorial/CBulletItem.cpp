@@ -51,7 +51,6 @@ void CBulletItem::Init()
 
 	this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_L;
 	this->m_angle = 0;
-	this->m_isStanding = false;
 }
 
 void CBulletItem::Update(float deltaTime)
@@ -104,7 +103,6 @@ void CBulletItem::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 						this->m_vx = 0;
 						this->m_vy = 0;
 						this->m_angle = 0;
-						//this->m_isStanding = true;
 				}
 				
 			}

@@ -994,20 +994,20 @@ void CContra::BulletUpdate(float deltaTime)
 				this->m_listBullet.push_back(bullet);
 				break;
 			case BULLET_TYPE::BULLET_N:
-				if (this->m_isShoot)
+			/*	if (this->m_isShoot)
 				{
 					if (m_bulletCount > 2)
 					{
 						this->m_bulletCount = 0;
 						this->m_isShoot = false;
 					}
-					else{
+					else{*/
 						bullet = new CBullet_N(rotation, this->m_pos, offset, this->m_left);
 						bullet->m_isContra = true;
 						this->m_listBullet.push_back(bullet);
-						m_bulletCount++;
+			/*			m_bulletCount++;
 					}
-				}
+				}*/
 				break;
 			case BULLET_TYPE::BULLET_F:
 				bullet = new CBullet_F(rotation, this->m_pos, offset, this->m_left);

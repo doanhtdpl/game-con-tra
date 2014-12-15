@@ -29,8 +29,6 @@ public:
 	RECT* GetRectRS();
 	Box GetBox();
 	STATE_BULLET_ITEM m_stateItem;
-private:
-	bool m_isStanding;
 protected:
 	void Init();
 	void SetFrame();
