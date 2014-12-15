@@ -17,7 +17,7 @@ CContra::CContra()
 	this->m_height = 92.0f; //88.0f; //84
 	this->m_pos = D3DXVECTOR2(200.0f, 500.0f);
 	//Khoi tao cac thong so di chuyen
-	this->m_isJumping = true;
+	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
 	this->m_a = -800.0f;
@@ -251,8 +251,17 @@ void CContra::SetFrame(float deltaTime)
 			}
 		case UNDER_WATER::IS_STANDING_UNDER_WATER:
 			{
-				this->m_startFrame = 49;
-				this->m_endFrame = 50;
+				if(this->m_isShooting)
+				{
+					this->m_startFrame = 42;
+					this->m_endFrame = 45;
+					this->m_increase = 3;
+				}
+				else
+				{
+					this->m_startFrame = 49;
+					this->m_endFrame = 50;
+				}
 				break;
 			}
 		case UNDER_WATER::IS_SHOOTING_UNDER_WATER_NORMAL:
@@ -302,7 +311,6 @@ void CContra::SetFrame(float deltaTime)
 					this->m_increase = 0;
 				}
 				break;
-				break;
 			}
 		default:
 			break;
@@ -318,7 +326,7 @@ void CContra::InputUpdate(float deltaTime)
 	this->m_isShoot = false;
 	this->m_keyDown = CInput::GetInstance()->GetKeyDown();
 	this->m_keyUp = CInput::GetInstance()->GetKeyUp();
-	if(!this->m_isUnderWater)
+	if(!(m_isUnderWater && this->m_isShooting))
 		this->m_increase = 1;
 	if(!this->m_isJumping)
 	{
@@ -349,9 +357,7 @@ void CContra::InputUpdate(float deltaTime)
 			else
 			{
 				if(!this->m_isShooting)
-				{
 					this->m_stateCurrent = UNDER_WATER::IS_STANDING_UNDER_WATER;
-				}
 			}
 		//}
 	}
@@ -530,19 +536,28 @@ void CContra::InputUpdate(float deltaTime)
 			}
 			else //Dang nam duoi nuoc
 			{
-				if(CInput::GetInstance()->IsKeyDown(DIK_UP) && this->m_keyDown == DIK_C)
+				if(this->m_isShooting) //Neu la dang ban
 				{
-					//Ban cheo len
-					this->m_stateShoot = SHOOT::IS_DIAGONAL_UP;
-					//this->m_elapseTimeChangeFrame = 0.0f;
-					//this->m_pos.y += 26;
-					this->m_stateCurrent = UNDER_WATER::IS_SHOOTING_UNDER_WATER_DIAGONAL_UP;
-				}else if(CInput::GetInstance()->IsKeyDown(DIK_DOWN))
-				{
-					//Chuyen sang trang thai lan, khong di chuyen
-					this->m_stateCurrent = UNDER_WATER::IS_LYING_UNDER_WATER;
-					this->m_vx = 0;
-				}else
+					if(CInput::GetInstance()->IsKeyDown(DIK_UP))
+					{
+						//Ban cheo len
+						this->m_stateShoot = SHOOT::IS_DIAGONAL_UP;
+						//this->m_elapseTimeChangeFrame = 0.0f;
+						//this->m_pos.y += 26;
+						this->m_stateCurrent = UNDER_WATER::IS_SHOOTING_UNDER_WATER_DIAGONAL_UP;
+					}
+					else if(this->m_keyDown == DIK_C)
+					{
+						this->m_stateCurrent = UNDER_WATER::IS_SHOOTING_UNDER_WATER_NORMAL;
+					}
+				}
+				else if(CInput::GetInstance()->IsKeyDown(DIK_DOWN))
+					{
+						//Chuyen sang trang thai lan, khong di chuyen
+						this->m_stateCurrent = UNDER_WATER::IS_LYING_UNDER_WATER;
+						this->m_vx = 0;
+					}
+				else
 				{
 					this->m_stateCurrent = UNDER_WATER::IS_JOGGING_UNDER_WATER;
 				}
@@ -550,6 +565,7 @@ void CContra::InputUpdate(float deltaTime)
 		}
 	}
 #pragma endregion
+
 #pragma region NHAN NUT_DAU_DAN
 	if (CInput::GetInstance()->IsKeyDown(DIK_N))
 	{
@@ -1141,61 +1157,69 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 #pragma region VA CHAM MAT NUOC
 					else
 					{
+						//O duoi nuoc khong the nhay
 						this->m_isUnderWater = true;
+						this->m_isJumping = false;
 						if( timeCollision == 2.0f)
 						{
 							if(this->m_vy <= 0)
 							{
-								if(this->m_stateCurrent == ON_GROUND::IS_JUMPING)
-								{
-									if(this->m_vy < -165)
-									{
-										this->m_pos.y += 20;
-										this->m_elapseTimeChangeFrame = 0.0f;
-										this->m_isJumping = false;
-										this->m_currentFrame = 0;
-										this->m_stateCurrent = UNDER_WATER::IS_STANDING_UNDER_WATER;
-									}
-								}
-								else if(this->m_stateCurrent == UNDER_WATER::IS_LYING_UNDER_WATER)
+								if(this->m_stateCurrent == UNDER_WATER::IS_LYING_UNDER_WATER)
 								{
 									//this->m_pos.y += 20;
-									this->m_elapseTimeChangeFrame = 0.0f;
+									this->m_pos.y += moveY;
+									this->m_vy = 0;
+									//this->m_elapseTimeChangeFrame = 0.0f;
 								}
 								else
 								{
-									this->m_isJumping = false;
 									this->m_pos.y += moveY;
 									this->m_vy = 0;
 								}
 							}
-							if(this->m_stateCurrent == ON_GROUND::IS_FALL)
-							{
-								this->m_stateCurrent = ON_GROUND::IS_STANDING;
-								this->m_isJumping = false;
-							}
+							//if(this->m_stateCurrent == ON_GROUND::IS_FALL)
+							//{
+							//	this->m_stateCurrent = ON_GROUND::IS_STANDING;
+							//	this->m_isJumping = false;
+							//}
+						}
+						else
+						{
+							this->m_pos.y += -1;
 						}
 					}
+#pragma endregion 
 				}
 			}
 		}
 	}
-	if(!checkColWithGround && this->m_stateCurrent != ON_GROUND::IS_JUMPING)
+	if(!checkColWithGround)
 	{
-		if(this->m_stateCurrent == ON_GROUND::IS_LYING)
+		if(this->m_isUnderWater)
 		{
-			this->m_pos.y -= 15;
-			this->m_currentFrame = 52;
-			//this->m_stateCurrent = ON_GROUND::IS_STANDING;
-			this->m_isJumping = false;
-		}
-		else
-		{
+			this->m_isUnderWater = true;
 			this->m_stateCurrent = ON_GROUND::IS_FALL;
 			this->m_isJumping = true;
 		}
+		else
+		{
+			if(this->m_stateCurrent != ON_GROUND::IS_JUMPING)
+			{
+				if(this->m_stateCurrent == ON_GROUND::IS_LYING)
+				{
+					this->m_pos.y -= 15;
+					this->m_currentFrame = 52;
+					//this->m_stateCurrent = ON_GROUND::IS_STANDING;
+					this->m_isJumping = false;
+				}
+				else
+				{
+					this->m_stateCurrent = ON_GROUND::IS_FALL;
+					this->m_isJumping = true;
+				}										
+			}
+		}
 	}
-#pragma endregion 
 }
 		
 

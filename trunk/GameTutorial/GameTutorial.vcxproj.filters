@@ -195,6 +195,15 @@
     <ClCompile Include="CFileConfig.cpp">
       <Filter>Source Files\GameFramwork\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="CBulletItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CExplosionEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTexture.h">
@@ -334,6 +343,15 @@
     </ClInclude>
     <ClInclude Include="CFileConfig.h">
       <Filter>Source Files\GameFramwork\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CExplosionEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyEffect.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
