@@ -2,6 +2,7 @@
 
 CExplosionEffect::CExplosionEffect() : CDynamicObject(){
 	this->m_pos = D3DXVECTOR2(0.0f, 0.0f);
+	this->Init();
 }
 
 CExplosionEffect::CExplosionEffect(D3DXVECTOR2 pos){
@@ -35,6 +36,7 @@ void CExplosionEffect::ChangeFrame(float deltaTime)
 		this->m_currentFrame += this->m_increase;
 		if (this->m_currentFrame >= 3){
 			this->m_isALive = false;
+			this->m_currentFrame = 0;
 		}
 		if (this->m_currentFrame > 3 || this->m_currentFrame < 0)
 		{
