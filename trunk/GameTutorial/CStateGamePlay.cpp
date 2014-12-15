@@ -15,9 +15,7 @@ CStateGamePlay::CStateGamePlay()
 	this->wobj = new CWallTurret();
 	this->weObj = new CWeapon();
 	this->wseObj = new CSWeapon();
-
-	this->effect = new CEnemyEffect(D3DXVECTOR2(100, 100));
-	this->effect1 = new CExplosionEffect(D3DXVECTOR2(500, 100));
+	this->br = new CBridge();
 }
 
 CStateGamePlay::~CStateGamePlay()
@@ -63,8 +61,10 @@ void CStateGamePlay::Update(float deltaTime)
 		weObj->item->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 	}
 
-	effect->Update(deltaTime);
-	effect1->Update(deltaTime);
+	br->Update(deltaTime);
+	if (br->IsAlive()){
+		br->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
+	}
 }
 
 void CStateGamePlay::Render()
@@ -94,6 +94,11 @@ void CStateGamePlay::Render()
 	}
 	if (weObj->item != NULL){
 		CDrawObject::GetInstance()->Draw(weObj->item);
+	}
+	
+	CDrawObject::GetInstance()->Draw(br);
+	if (br->effect != NULL){
+		CDrawObject::GetInstance()->Draw(br->effect);
 	}
 
 	CDrawObject::GetInstance()->Draw(CContra::GetInstance());
