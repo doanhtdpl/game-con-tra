@@ -91,15 +91,16 @@ void CDrawObject::Draw(CGameObject* obj)
 					}
 					else
 					{
-
 						RECT* rect = new RECT();
 						rect->left = 0;
 						rect->right = 64;
 						rect->top = 0;
 						rect->bottom = 64;
-							CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
+						D3DXVECTOR3 pos = D3DXVECTOR3(obj->GetBox().x, obj->GetBox().y, 0);
+						D3DXVECTOR3 posObjAfterTransform1 = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
+						CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
 						this->m_draw->drawScale(text,
-							rect, posObjAfterTransform,
+							rect, posObjAfterTransform1,
 							D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
 							D3DCOLOR_XRGB(255, 255, 255), true);
 						//}
