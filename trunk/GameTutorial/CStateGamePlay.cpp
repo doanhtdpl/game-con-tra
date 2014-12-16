@@ -96,8 +96,9 @@ void CStateGamePlay::Render()
 		CDrawObject::GetInstance()->Draw(weObj->item);
 	}
 	
-	CDrawObject::GetInstance()->Draw(br);
-	if (br->effect != NULL){
+	if (br->IsAlive())
+		CDrawObject::GetInstance()->Draw(br);
+	if (br->effect != NULL && br->effect->IsAlive()){
 		CDrawObject::GetInstance()->Draw(br->effect);
 	}
 	//if (br->effect1 != NULL){

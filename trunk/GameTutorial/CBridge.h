@@ -34,8 +34,7 @@ protected:
 	STATE_BRIDGE m_stateCurrent;
 public:
 	CExplosionEffect* effect;
-	CExplosionEffect* effect1;
-	CExplosionEffect* effect2;
+	bool m_isCollisionContra;
 };
 
 #endif // !__CBRIDGE_H__
