@@ -54,13 +54,21 @@ std::hash_map<int, CTexture*>*& CManagementTexture::LoadAllTextureFromFile(const
 
 CTexture* CManagementTexture::GetTextureByID(int id, int idType)
 {
-	std::hash_map<int, CTexture*>* listTexure = this->m_listTexure->find(idType)->second;
-	if(listTexure->size() > 0)
+	std::hash_map<int, hash_map<int, CTexture*>*>::iterator its = this->m_listTexure->find(idType);
+	if(its != this->m_listTexure->end())
 	{
-		CTexture* texture = listTexure->find(idType* 1000 + id)->second;
-		if(texture)
+		std::hash_map<int, CTexture*>* listTexure = its->second;
+		if(listTexure->size() > 0)
 		{
-			return texture;
+			std::hash_map<int, CTexture*>::iterator it = listTexure->find(idType* 1000 + id);
+			if(it != listTexure->end())
+			{
+				CTexture* texture = it->second;
+				if(texture)
+				{
+					return texture;
+				}
+			}
 		}
 	}
 	return nullptr;

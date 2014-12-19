@@ -1,5 +1,9 @@
 10,..\Resource\File\Object\Contra\ContraPath.csv
-20,..\Resource\File\Object\Bullet\BulletPath.csv
-11,..\Resource\File\Object\Enemy\EnemyPath.csv
-12,..\Resource\File\Object\Effect\EffectPath.csv
+11,..\Resource\File\Object\Enemy\SEnemyPath.csv
+12,..\Resource\File\Object\Enemy\DEnemyPath.csv
+13,..\Resource\File\Object\Bullet\SItemPath.csv
+14,..\Resource\File\Object\Bullet\DItemPath.csv
 15,..\Resource\File\Object\Bullet\TestPath.csv
+16,..\Resource\File\Object\Bridge\BridgePath.csv
+18,..\Resource\File\Object\Effect\EffectPath.csv
+20,..\Resource\File\Object\Bullet\BulletPath.csv

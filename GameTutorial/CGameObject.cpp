@@ -34,7 +34,7 @@ std::string CGameObject::ClassName()
 	return __CLASS_NAME__(CGameObject);
 }
 
-void CGameObject::Update(float deltaTime, std::vector<CGameObject*> listObjectCollision)
+void CGameObject::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
 
 }
@@ -44,6 +44,15 @@ void CGameObject::Update(float deltaTime)
 
 }
 
+void CGameObject::SetPos(D3DXVECTOR2 pos)
+{
+	this->m_pos = pos;
+}
+
+void CGameObject::SetAlive(bool alive)
+{
+	this->m_isALive = alive;
+}
 //Dung de xet va cham + xen trong quad tree
 Box CGameObject::GetBox()
 {

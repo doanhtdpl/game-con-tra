@@ -25,8 +25,8 @@ public:
 	virtual void MoveUpdate(float DeltaTime);// overide IMOVE
 	virtual std::string ClassName(){return __CLASS_NAME__(CBullet);};
 	virtual void Update(float deltaTime);
-	virtual void Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision);
-	virtual void OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
+	virtual void Update(float deltaTime, std::vector<CGameObject*>* _listObjectCollision);
+	virtual void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	virtual void ChangeFrame(float deltaTime);
 	virtual RECT* GetRectRS();
 	virtual RECT* GetBound();

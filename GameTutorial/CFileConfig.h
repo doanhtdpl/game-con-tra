@@ -10,10 +10,10 @@ class CFileConfig : public CSingleton<CFileConfig>
 	friend class CSingleton<CFileConfig>;
 public:
 	~CFileConfig();
-	float Sin(float angle);
-	float Cos(float angle);
-	float Tan(float angle);
-	float Cot(float angle);
+	float Sin(double angle);
+	float Cos(double angle);
+	float Tan(double angle);
+	float Cot(double angle);
 protected:
 	CFileConfig();
 private:

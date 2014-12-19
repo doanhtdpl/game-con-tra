@@ -30,7 +30,7 @@ CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 			this->m_type = HIDEN_OBJECT_TYPE::UNDER_WATER;
 			break;
 		case 15003:
-			this->m_type = HIDEN_OBJECT_TYPE::ON_GROUND;
+			this->m_type = HIDEN_OBJECT_TYPE::CREATE_ENEMY;
 			break;
 		default:
 			break;

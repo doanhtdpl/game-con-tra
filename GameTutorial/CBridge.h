@@ -20,10 +20,10 @@ public:
 	CBridge(const std::vector<int>& info);
 	~CBridge();
 	std::string ClassName(){ return __CLASS_NAME__(CBridge); };
-	void ChangeFrame(float deltaTime);
+	//void ChangeFrame(float deltaTime);
 	virtual void SetFrame(float deltaTime);
 	virtual void Update(float deltaTime);
-	virtual void Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
+	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	RECT* GetBound();
 	RECT* GetRectRS();
@@ -33,7 +33,7 @@ protected:
 	float m_timeDelay;
 	STATE_BRIDGE m_stateCurrent;
 public:
-	CExplosionEffect* effect;
+	//CExplosionEffect* effect;
 	bool m_isCollisionContra;
 };
 

@@ -5,12 +5,12 @@
 #include "CAnimation.h"
 
 enum STATE_BULLET_ITEM{
-	BULLET_ITEM_M = 0,
-	BULLET_ITEM_B = 1,
-	BULLET_ITEM_F = 2,
-	BULLET_ITEM_S = 3,
-	BULLET_ITEM_L = 4,
-	BULLET_ITEM_R = 5
+	BULLET_ITEM_B = 130001,
+	BULLET_ITEM_F = 130002,
+	BULLET_ITEM_L = 130003,
+	BULLET_ITEM_M = 130004,
+	BULLET_ITEM_R = 130005,
+	BULLET_ITEM_S = 130006
 };
 
 class CBulletItem : public CDynamicObject, public CAnimation
@@ -18,6 +18,7 @@ class CBulletItem : public CDynamicObject, public CAnimation
 public:
 	CBulletItem(void);
 	CBulletItem(D3DXVECTOR2 pos);
+	CBulletItem(D3DXVECTOR2 pos, STATE_BULLET_ITEM state);
 	CBulletItem(const std::vector<int>& info);
 	~CBulletItem();
 	std::string ClassName(){ return __CLASS_NAME__(CBulletItem); };

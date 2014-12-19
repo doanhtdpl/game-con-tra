@@ -35,7 +35,7 @@ CBullet_M::CBullet_M(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset, bool 
 void CBullet_M::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 0;
+	this->m_id = 3;
 	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;
@@ -118,12 +118,7 @@ void CBullet_M::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* l
 
 RECT* CBullet_M::GetRectRS()
 {
-	RECT* rs = new RECT();
-	rs->left = 0;
-	rs->right = this->m_width;
-	rs->top = 0;
-	rs->bottom = this->m_height;
-	return rs;
+	return nullptr;
 }
 
 RECT* CBullet_M::GetBound()
@@ -133,7 +128,7 @@ RECT* CBullet_M::GetBound()
 
 Box CBullet_M::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
 }
 
 CBullet_M::~CBullet_M()

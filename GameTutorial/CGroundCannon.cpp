@@ -2,6 +2,9 @@
 #include "CContra.h"
 #include <math.h>
 #include "CCamera.h"
+#include "CCollision.h"
+#include "CPoolingObject.h"
+#include "CEnemyEffect.h"
 
 CGroundCanon::CGroundCanon(void)
 {
@@ -18,19 +21,20 @@ CGroundCanon::CGroundCanon(const std::vector<int>& info)
 		this->m_pos = D3DXVECTOR2(info.at(1), info.at(2));
 		this->m_width = info.at(3);
 		this->m_height = info.at(4);
+		this->m_height = 0;
 	}
 }
 
 void CGroundCanon::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 3;
+	this->m_id = 4;
 	this->m_idType = 11;
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 64.0f;//56.0f; //78
-	this->m_height = 64.0f; //88.0f; //84
+	this->m_width = 64.0f;
+	this->m_height = 64.0f; 
 	this->m_heightMax = 64.0f;
 	this->m_pos = D3DXVECTOR2(770.0f, 220.0f);
 	this->m_left = false;
@@ -38,10 +42,12 @@ void CGroundCanon::Init()
 	//Khoi tao cac thong so chuyen doi sprite
 	this->m_currentTime = 0;
 	this->m_currentFrame = 0;
-	this->m_elapseTimeChangeFrame = 0.20f;
+	this->m_elapseTimeChangeFrame = 0.25f;
 	this->m_increase = 1;
 	this->m_totalFrame = 9;
 	this->m_column = 3;
+	this->m_allowShoot = true;//cho phep ban dan
+	this->m_HP = 7;
 	//
 	this->m_isShoot = true;
 	this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_NORMAL;
@@ -52,9 +58,13 @@ void CGroundCanon::Init()
 
 void CGroundCanon::Update(float deltaTime)
 {
-	this->SetFrame();
-	this->ChangeFrame(deltaTime);
-	this->MoveUp(deltaTime);
+	if (this->m_isALive)
+	{
+		this->SetFrame();
+		this->ChangeFrame(deltaTime);
+		this->MoveUp(deltaTime);
+		this->OnCollision(deltaTime, nullptr);
+	}
 }
 
 void CGroundCanon::Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
@@ -62,6 +72,38 @@ void CGroundCanon::Update(float deltaTime, std::hash_map<int, CGameObject*>* lis
 
 }
 
+void CGroundCanon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
+{
+	float normalX = 0;
+	float normalY = 0;
+	float moveX = 0.0f;
+	float moveY = 0.0f;
+	float timeCollision;
+
+	for (std::vector<CGameObject*>::iterator it = CContra::GetInstance()->m_listBullet.begin(); it != CContra::GetInstance()->m_listBullet.end();)
+	{
+		CGameObject* obj = *it;
+		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
+		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+		{
+			if (obj->IsAlive())
+			{
+				this->m_HP--;
+				it = CContra::GetInstance()->m_listBullet.erase(it);
+			}
+
+			if (this->m_HP == 0)
+			{
+				// Gan trang thai die cho doi tuong
+				this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIE;
+			}
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
 void CGroundCanon::BulletUpdate(float deltaTime)
 {
 #pragma region THIET LAP GOC BAN
@@ -71,15 +113,26 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 	double shootAngleNormal = PI / 6;
 	double angle = 0.0f;
 	this->m_left = false;
-	
-	if (spaceX < 0)
+
+	if (spaceY + this->m_height / 2 < 0)
 	{
-		angle = atan(spaceY / abs(spaceX));		
+		this->m_allowShoot = false;
 	}
+		
 	else
 	{
-		angle = PI;
+		this->m_allowShoot = true;
+		if (spaceX < 0 && spaceY >= 0 )
+		{
+			angle = atan(spaceY / abs(spaceX));
+		}
+		else
+		{
+			angle = 0;
+		}
 	}
+	
+	
 #pragma endregion
 
 #pragma region THIET LAP TRANG THAI BAN
@@ -89,7 +142,7 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 		int space = int(angle / shootAngleNormal);
 		switch (space)
 		{
-		case 0: case 6:
+		case 0:
 			{
 				this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_NORMAL;
 				break;
@@ -104,6 +157,11 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 				this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_UP_2X;
 				break;
 			}
+		case 3:
+			{
+				this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIE;
+				break;
+			}
 		}
 	}
 #pragma endregion
@@ -114,20 +172,20 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 	{
 	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_NORMAL:
 	{
-		offset.x = this->m_width / 2;
+		offset.x = -this->m_width/2;
 		offset.y = 0.0f;
 		break;
 	}
 	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_UP_X:
 	{
 		offset.y = 20.0f;
-		offset.x = this->m_width / 2;
+		offset.x = -this->m_width / 2;
 		break;
 	}
 	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIAGONAL_UP_2X:
 	{
-		offset.y = 50.0f;
-		offset.x = this->m_width / 2;
+		offset.y = 48.0f;
+		offset.x = -this->m_width / 4 - 2;
 		break;
 	}
 	default:
@@ -174,6 +232,10 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 	{
 		this->m_isShoot = true;
 	}
+	else
+	{
+		this->m_isShoot = false;
+	}
 #pragma endregion
 
 }
@@ -219,6 +281,16 @@ void CGroundCanon::SetFrame()
 		this->m_endFrame = 8;
 		break;
 	}
+	case GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIE:
+	{
+			  this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIE;
+			  //hieu ung no
+			  CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+			  effect->SetAlive(true);
+			  effect->SetPos(this->m_pos);
+			  this->m_isALive = false;
+			  break;
+	}
 	default:
 	{
 		break;
@@ -238,7 +310,7 @@ RECT* CGroundCanon::GetRectRS()
 
 Box CGroundCanon::GetBox()
 {
-	return Box();
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
 }
 
 CGroundCanon::~CGroundCanon()

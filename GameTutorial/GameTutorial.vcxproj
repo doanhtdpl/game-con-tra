@@ -114,6 +114,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CStateManagement.cpp" />
     <ClCompile Include="CStaticObject.cpp" />
+    <ClCompile Include="CBulletDefenseCannon.cpp" />
+    <ClCompile Include="CDefenseCannon.cpp" />
+    <ClCompile Include="CDefenseCannonGun.cpp" />
+    <ClCompile Include="CDefenseCannonTurret.cpp" />
+    <ClCompile Include="CPoolingObject.cpp" />
+    <ClCompile Include="CBridge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CAnimation.h" />
@@ -165,6 +171,12 @@
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="CFileConfig.h" />
     <ClInclude Include="CEnemyEffect.h" />
+    <ClInclude Include="CBulletDefenseCannon.h" />
+    <ClInclude Include="CDefenseCannon.h" />
+    <ClInclude Include="CDefenseCannonGun.h" />
+    <ClInclude Include="CDefenseCannonTurret.h" />
+    <ClInclude Include="CPoolingObject.h" />
+    <ClCompile Include="CBridge.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

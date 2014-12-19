@@ -20,16 +20,21 @@ protected:
 	RECT *m_rectRS;//NULL if object hasn't animated sprite
 
 	RECT m_rect;//xen trong Quadtree
+	// Mau cua doi tuong
+	int m_HP;
 public:
 	std::vector<CGameObject*> m_listBullet;
 	bool m_allowShoot;
+
+	// TT
+	int m_countEffect; // Gioi han so lan xuat hien hieu ung effect
 public:
 	virtual std::string ClassName() = 0;
 	CGameObject(void);
 	CGameObject(const std::vector<int>& info);
 	virtual void Update(float deltaTime);
-	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
-	virtual void OnCollision(float deltaTime, std::vector<CGameObject*> listObjectCollision) = 0;
+	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
+	virtual void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision) = 0;
 	virtual D3DXVECTOR2 GetPos(){ return this->m_pos; };
 	int GetID(){ return this->m_id; };
 	int GetIDType(){ return this->m_idType; };
@@ -41,6 +46,9 @@ public:
 		this->m_pos = pos;
 	};
 	virtual void SetAlive(bool isAlive){ this->m_isALive = isAlive; };
+
+	virtual void SetPos(D3DXVECTOR2 pos);
+	virtual void SetAlive(bool alive);
 	virtual Box GetBox();
 	virtual RECT* GetBound();
 	virtual RECT* GetRectRS();

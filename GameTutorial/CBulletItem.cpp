@@ -12,6 +12,13 @@ CBulletItem::CBulletItem(D3DXVECTOR2 pos)
 	this->m_pos = pos;
 }
 
+CBulletItem::CBulletItem(D3DXVECTOR2 pos, STATE_BULLET_ITEM state)
+{
+	this->Init();
+	this->m_pos = pos;
+	this->m_stateItem = state;
+}
+
 CBulletItem::CBulletItem(const std::vector<int>& info)
 {
 	this->Init();//
@@ -29,16 +36,16 @@ void CBulletItem::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
 	this->m_id = 8;
-	this->m_idType = 20;
+	this->m_idType = 14;
 	this->m_idImage = 0;
-	this->m_isALive = true;
+	this->m_isALive = false;
 	this->m_isAnimatedSprite = true;
 	this->m_width = 49.0f;//56.0f; //78
 	this->m_height = 27.0f; //88.0f; //84
 	this->m_pos = D3DXVECTOR2(1100.0f, 200.0f);
 	this->m_left = false;
-	this->m_a = -700.0f;
-	this->m_vx = 100.0f;
+	this->m_a = -900.0f;
+	this->m_vx = 80.0f;
 	this->m_vy = 500.0f;
 
 	//Khoi tao cac thong so chuyen doi sprite
@@ -75,7 +82,13 @@ void CBulletItem::MoveUpdate(float deltaTime)
 
 void CBulletItem::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-
+	if(this->m_isALive)
+	{
+		this->MoveUpdate(deltaTime);
+		this->SetFrame();
+		this->ChangeFrame(deltaTime);
+		this->OnCollision(deltaTime, listObjectCollision);
+	}
 }
 
 void CBulletItem::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision){
@@ -98,13 +111,20 @@ void CBulletItem::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 			timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
 			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 			{
-				if (normalY == 1.0f){
-					this->m_pos.y += moveY;
+				if (normalY > 0.0f){
+					if(timeCollision == 2 && this->m_vy < 0)
+					{
+						this->m_pos.y += moveY;
 						this->m_vx = 0;
 						this->m_vy = 0;
 						this->m_angle = 0;
-				}
 				
+					}
+					else
+					{
+
+					}
+				}
 			}
 		}	
 	}
@@ -115,46 +135,52 @@ void CBulletItem::SetFrame()
 {
 	switch (this->m_stateItem)
 	{
-	case STATE_BULLET_ITEM::BULLET_ITEM_B:
-	{
-											 this->m_startFrame = 2;
-											 this->m_endFrame = 2;
-											 break;
-	}
-	case STATE_BULLET_ITEM::BULLET_ITEM_F:
-	{
-											 this->m_startFrame = 3;
-											 this->m_endFrame = 3;
-											 break;
-	}
-	case STATE_BULLET_ITEM::BULLET_ITEM_L:
-	{
-											 this->m_startFrame = 5;
-											 this->m_endFrame = 5;
-											 break;
-	}
-	case STATE_BULLET_ITEM::BULLET_ITEM_M:
-	{
-											 this->m_startFrame = 1;
-											 this->m_endFrame = 1;
-											 break;
-	}
-	case STATE_BULLET_ITEM::BULLET_ITEM_R:
-	{
-											 this->m_startFrame = 6;
-											 this->m_endFrame = 6;
-											 break;
-	}
-	case STATE_BULLET_ITEM::BULLET_ITEM_S:
-	{
-											 this->m_startFrame = 4;
-											 this->m_endFrame = 4;
-											 break;
-	}
-	default:
-	{
-			   break;
-	}
+		case STATE_BULLET_ITEM::BULLET_ITEM_B:
+		{
+			this->m_currentFrame = 2;
+			this->m_startFrame = 2;
+			this->m_endFrame = 2;
+			break;
+		}
+		case STATE_BULLET_ITEM::BULLET_ITEM_F:
+		{
+			this->m_currentFrame = 3;
+			this->m_startFrame = 3;
+			this->m_endFrame = 3;
+			break;
+		}
+		case STATE_BULLET_ITEM::BULLET_ITEM_L:
+		{
+			this->m_currentFrame = 5;
+			this->m_startFrame = 5;
+			this->m_endFrame = 5;
+			break;
+		}
+		case STATE_BULLET_ITEM::BULLET_ITEM_M:
+		{
+			this->m_currentFrame = 1;
+			this->m_startFrame = 1;
+			this->m_endFrame = 1;
+			break;
+		}
+		case STATE_BULLET_ITEM::BULLET_ITEM_R:
+		{
+			this->m_currentFrame = 6;
+			this->m_startFrame = 6;
+			this->m_endFrame = 6;
+			break;
+		}
+		case STATE_BULLET_ITEM::BULLET_ITEM_S:
+		{
+			this->m_currentFrame = 4;
+			this->m_startFrame = 4;
+			this->m_endFrame = 4;
+			break;
+		}
+		default:
+		{
+			break;
+		}
 	}
 }
 

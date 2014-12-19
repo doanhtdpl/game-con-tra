@@ -6,7 +6,8 @@
 enum HIDEN_OBJECT_TYPE
 {
 	ON_GROUND = 15001,
-	UNDER_WATER = 15002
+	UNDER_WATER = 15002,
+	CREATE_ENEMY = 15003
 };
 
 class CHidenObject : public CStaticObject
