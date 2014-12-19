@@ -651,51 +651,51 @@ void CContra::BulletUpdate(float deltaTime)
 					case BULLET_TYPE::BULLET_M:
 							if (!this->m_left){
 								offset.x = 25.0f;
-								offset.y = -15.0f;
+								offset.y = 0.0f;
 							}
 							else{
 								offset.x = -25.0f;
-								offset.y = -15.0f;
+								offset.y = 0.0f;
 							}
 							break;
 						case BULLET_TYPE::BULLET_N:
 							if (!this->m_left){
 								offset.x = 25.0f;
-								offset.y = -23.0f;
+								offset.y = 0.0f;
 							}
 							else{
 								offset.x = -25.0f;
-								offset.y = -23.0f;
+								offset.y = 0.0f;
 							}
 							break;
 						case BULLET_TYPE::BULLET_F:
 							if (!this->m_left){
 								offset.x = 50.0f;
-								offset.y = -30.0f;
+								offset.y = 0.0f;
 							}
 							else{
 								offset.x = -50.0f;
-								offset.y = -30.0f;
+								offset.y = 0.0f;
 							}
 							break;
 						case BULLET_TYPE::BULLET_L:
 							if (!this->m_left){
 								offset.x = 85.0f;
-								offset.y = -25.0f;
+								offset.y = 0.0f;
 							}
 							else{
 								offset.x = -85.0f;
-								offset.y = -25.0f;
+								offset.y = 0.0f;
 							}
 							break;
 						case BULLET_TYPE::BULLET_S:
 							if (!this->m_left){
 								offset.x = 25.0f;
-								offset.y = -15.0f;
+								offset.y = 10.0f;
 							}
 							else{
 								offset.x = -25.0f;
-								offset.y = -15.0f;
+								offset.y = 10.0f;
 							}
 							break;
 					}
@@ -774,12 +774,12 @@ void CContra::BulletUpdate(float deltaTime)
 							break;
 						case BULLET_TYPE::BULLET_N:
 							if (!this->m_left){
-								offset.x = 3.0f;
-								offset.y = 5.0f;
+								offset.x = 7.0f;
+								offset.y = 40.0f;
 							}
 							else{
-								offset.x = -3.0f;
-								offset.y = 5.0f;
+								offset.x = -7.0f;
+								offset.y = 40.0f;
 							}
 							break;
 						case BULLET_TYPE::BULLET_F:
@@ -795,11 +795,11 @@ void CContra::BulletUpdate(float deltaTime)
 						case BULLET_TYPE::BULLET_L:
 							if (!this->m_left){
 								offset.x = 5.0f;
-								offset.y = 70.0f;
+								offset.y = 75.0f;
 							}
 							else{
 								offset.x = -7.0f;
-								offset.y = 70.0f;
+								offset.y = 75.0f;
 							}
 							break;
 						case BULLET_TYPE::BULLET_S:
@@ -851,11 +851,11 @@ void CContra::BulletUpdate(float deltaTime)
 							break;
 						case BULLET_TYPE::BULLET_L:
 							if (!this->m_left){
-								offset.x = 55.0f;
+								offset.x = 65.0f;
 								offset.y = -45.0f;
 							}
 							else{
-								offset.x = -55.0f;
+								offset.x = -65.0f;
 								offset.y = -45.0f;
 							}
 							break;
@@ -909,11 +909,11 @@ void CContra::BulletUpdate(float deltaTime)
 						case BULLET_TYPE::BULLET_L:
 							if (!this->m_left){
 								offset.x = 55.0f;
-								offset.y = 50.0f;
+								offset.y = 45.0f;
 							}
 							else{
 								offset.x = -55.0f;
-								offset.y = 50.0f;
+								offset.y = 45.0f;
 							}
 							break;
 						case BULLET_TYPE::BULLET_S:

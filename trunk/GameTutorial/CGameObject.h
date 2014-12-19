@@ -42,10 +42,10 @@ public:
 	float GetWidth(){ return this->m_width; };
 	float GetHeight(){ return this->m_height; };
 	bool IsAlive(){ return this->m_isALive; };
-	virtual void SetPos(D3DXVECTOR2 pos){
+	/*virtual void SetPos(D3DXVECTOR2 pos){
 		this->m_pos = pos;
 	};
-	virtual void SetAlive(bool isAlive){ this->m_isALive = isAlive; };
+	virtual void SetAlive(bool isAlive){ this->m_isALive = isAlive; };*/
 
 	virtual void SetPos(D3DXVECTOR2 pos);
 	virtual void SetAlive(bool alive);
