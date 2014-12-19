@@ -14,7 +14,7 @@ public:
 	std::string ClassName(){return __CLASS_NAME__(CWeapon);};
 	virtual void MoveUpdate(float deltaTime);
 	virtual void Update(float deltaTime);
-	virtual void Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
+	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	RECT* GetBound();
 	RECT* GetRectRS();
@@ -23,8 +23,6 @@ protected:
 	void Init();
 	double m_angle;
 public:
-	CExplosionEffect* effect;
-	CBulletItem* item;
 	STATE_BULLET_ITEM m_stateItem;
 };
 

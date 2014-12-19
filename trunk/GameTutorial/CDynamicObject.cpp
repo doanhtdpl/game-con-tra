@@ -65,13 +65,13 @@ void CDynamicObject::Update(float deltaTime)
 
 }
 
-void CDynamicObject::Update(float deltaTime, std::vector<CGameObject*> listObjectCollision)
+void CDynamicObject::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
 	this->MoveUpdate(deltaTime);
 	//this->move(delta_Time);
 }
 
-void CDynamicObject::OnCollision(float deltatime, std::vector<CGameObject*> listObjectCollision)
+void CDynamicObject::OnCollision(float deltatime, std::vector<CGameObject*>* listObjectCollision)
 {
 
 }

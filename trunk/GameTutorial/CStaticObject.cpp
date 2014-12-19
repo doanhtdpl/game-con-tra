@@ -20,12 +20,12 @@ void CStaticObject::Update(float deltaTime)
 
 }
 
-void CStaticObject::Update(float deltaTime, std::vector<CGameObject*> listObjectCollision)
+void CStaticObject::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
 
 }
 
-void CStaticObject::OnCollision(float deltatime, std::vector<CGameObject*> listObjectCollision)
+void CStaticObject::OnCollision(float deltatime, std::vector<CGameObject*>* listObjectCollision)
 {
 
 }

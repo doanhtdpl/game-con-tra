@@ -38,6 +38,7 @@ typedef unsigned char	   __UINT8;
 #define __CONTRA_PATH__ "..\\Resource\\Contra\\Sprite\\contra.PNG"
 
 #define PI atan(1.0)*4
+//#define PI 3.14
 //#define PI 3.141592653589793
 //#define PI boost::math::constants::pi<double>()
 

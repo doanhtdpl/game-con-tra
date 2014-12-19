@@ -16,7 +16,7 @@ CCamera::~CCamera()
 
 void CCamera::Update(float x, float deltaTime)
 {
-	m_pos.x += x;
+	m_pos.x = x;
 }
 
 RECT*& CCamera::GetBound()

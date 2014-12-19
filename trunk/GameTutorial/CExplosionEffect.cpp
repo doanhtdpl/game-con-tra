@@ -13,15 +13,17 @@ CExplosionEffect::CExplosionEffect(D3DXVECTOR2 pos){
 void CExplosionEffect::Init(){
 	//Khoi tao cac thong so cua doi tuong
 	this->m_id = 1;
-	this->m_idType = 12;
+	this->m_idType = 18;
 	this->m_idImage = 0;
-	this->m_isALive = true;
+	this->m_isALive = false;
 	this->m_isAnimatedSprite = true;
 	this->m_width = 60.0f;//56.0f; //78
 	this->m_height = 60.0f; //88.0f; //84
 	//Chuyen doi sprite
 	this->m_totalFrame = 4;
 	this->m_column = 4;
+	this->m_startFrame = 0;
+	this->m_endFrame = 3;
 	this->m_elapseTimeChangeFrame = 0.35f;
 	this->m_currentTime = 0;
 	this->m_increase = 1;
@@ -34,13 +36,13 @@ void CExplosionEffect::ChangeFrame(float deltaTime)
 	if (this->m_currentTime > this->m_elapseTimeChangeFrame)
 	{
 		this->m_currentFrame += this->m_increase;
-		if (this->m_currentFrame >= 3){
+		if (this->m_currentFrame > this->m_endFrame){
 			this->m_isALive = false;
-			this->m_currentFrame = 0;
+			this->m_currentFrame = this->m_startFrame;
 		}
-		if (this->m_currentFrame > 3 || this->m_currentFrame < 0)
+		if (this->m_currentFrame > this->m_endFrame || this->m_currentFrame < this->m_startFrame)
 		{
-			this->m_currentFrame = 0;
+			this->m_currentFrame = this->m_startFrame;
 		}
 		this->m_currentTime -= this->m_elapseTimeChangeFrame;
 	}

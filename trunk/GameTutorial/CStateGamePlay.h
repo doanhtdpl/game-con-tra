@@ -13,8 +13,9 @@
 #include "CWeapon.h"
 #include "CSWeapon.h"
 #include "CEnemyEffect.h"
-#include "CBridge.h"
 #include "CExplosionEffect.h"
+#include "CDefenseCannon.h"
+#include "CBridge.h"
 
 class CStateGamePlay : public CState
 {
@@ -31,8 +32,10 @@ protected:
 	CWallTurret* wobj;
 	CWeapon* weObj;
 	CSWeapon* wseObj;
-	CBridge* br;
+	//
+	CDefenseCannon* defCannonObj;
 
+	CBridge* br;
 	// Test collision
 	Box first;
 	Box second;

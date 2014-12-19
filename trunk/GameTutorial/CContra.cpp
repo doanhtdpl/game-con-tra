@@ -3,6 +3,8 @@
 #include "CCamera.h"
 #include "CCollision.h"
 #include "CHidenObject.h"
+#include "CSoldier.h"
+#include "CPoolingObject.h"
 #include <cmath>
 
 CContra::CContra()
@@ -15,7 +17,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;//56.0f; //78
 	this->m_height = 92.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(1400.0f, 500.0f);
+	this->m_pos = D3DXVECTOR2(200.0f, 500.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -115,7 +117,7 @@ void CContra::MoveUpdate(float deltaTime)
 	}
 	if(this->m_pos.x > 250)
 	{
-		CCamera::GetInstance()->Update(int(this->m_vx * deltaTime), 0);
+		CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
 	}
 #pragma endregion
 }
@@ -253,9 +255,10 @@ void CContra::SetFrame(float deltaTime)
 			{
 				if(this->m_isShooting)
 				{
-					this->m_startFrame = 42;
+					this->m_stateCurrent =  UNDER_WATER::IS_SHOOTING_UNDER_WATER_NORMAL;
+					/*this->m_startFrame = 42;
 					this->m_endFrame = 45;
-					this->m_increase = 3;
+					this->m_increase = 3;*/
 				}
 				else
 				{
@@ -635,6 +638,7 @@ void CContra::BulletUpdate(float deltaTime)
 
 	//Thiet lap vi tri cua dau dan .../pos = posContra + Offset 
 	//Neu con tra o tren bo
+#pragma region _BAN DAN TREN BO
 		D3DXVECTOR2 offset;
 		if(!this->m_isUnderWater)
 		{
@@ -984,67 +988,16 @@ void CContra::BulletUpdate(float deltaTime)
 					break;
 				}
 			}
-		}else{
-			switch (this->m_stateCurrent)
-			{
-			case UNDER_WATER::IS_JOGGING_UNDER_WATER:
-				{
-					if (!this->m_left){
-						offset.x = 25.0f;
-						offset.y = -15.0f;
-					}else{
-						offset.x = -25.0f;
-						offset.y = -15.0f;
-					}
-					break;
-				}
-			case UNDER_WATER::IS_LYING_UNDER_WATER:
-				{
-					
-					break;
-				}
-			case UNDER_WATER::IS_STANDING_UNDER_WATER:
-				{
-					if (!this->m_left){
-						offset.x = 25.0f;
-						offset.y = -15.0f;
-					}else{
-						offset.x = -25.0f;
-						offset.y = -15.0f;
-					}
-					break;
-				}
-			case UNDER_WATER::IS_SHOOTING_UNDER_WATER_NORMAL:
-				{
-					
-					break;
-				}
-			case UNDER_WATER::IS_SHOOTING_UNDER_WATER_UP:
-				{
-					if (!this->m_left){
-						offset.x = 25.0f;
-						offset.y = -15.0f;
-					}else{
-						offset.x = -25.0f;
-						offset.y = -15.0f;
-					}
-					break;
-				}
-			case UNDER_WATER::IS_SHOOTING_UNDER_WATER_DIAGONAL_UP:
-				{
-					if (!this->m_left){
-						offset.x = 25.0f;
-						offset.y = -15.0f;
-					}else{
-						offset.x = -25.0f;
-						offset.y = -15.0f;
-					}
-					break;
-				}
-			default:
-				break;
-			}
 		}
+		#pragma endregion
+#pragma region _BAN DAN DUOI NUOC
+		//Trung them cho nay
+		else
+		{
+			offset.x = 0;
+			offset.y = 0;
+		}
+#pragma endregion
 
 		CBullet* bullet;
 		switch (this->m_typeBullet)
@@ -1052,43 +1005,44 @@ void CContra::BulletUpdate(float deltaTime)
 			case BULLET_TYPE::BULLET_M:
 				bullet = new CBullet_M(rotation, this->m_pos, offset, this->m_left);
 				bullet->m_isContra = true;
-				this->m_listBullet.push_back(bullet);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
+				//this->m_listBullet.push_back(bullet);
 				break;
 			case BULLET_TYPE::BULLET_N:
-			/*	if (this->m_isShoot)
+				if (this->m_isShoot)
 				{
 					if (m_bulletCount > 2)
 					{
 						this->m_bulletCount = 0;
 						this->m_isShoot = false;
 					}
-					else{*/
+					else{
 						bullet = new CBullet_N(rotation, this->m_pos, offset, this->m_left);
 						bullet->m_isContra = true;
-						this->m_listBullet.push_back(bullet);
-			/*			m_bulletCount++;
+						CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
+						m_bulletCount++;
 					}
-				}*/
+				}
 				break;
 			case BULLET_TYPE::BULLET_F:
 				bullet = new CBullet_F(rotation, this->m_pos, offset, this->m_left);
 				bullet->m_isContra = true;
-				this->m_listBullet.push_back(bullet);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				break;
 			case BULLET_TYPE::BULLET_L:
 				bullet = new CBullet_L(rotation, this->m_pos, offset, this->m_left);
 				bullet->m_isContra = true;
-				this->m_listBullet.push_back(bullet);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				break;
 			case BULLET_TYPE::BULLET_S:
 				//Them dan S.
 				CBullet_S* bulletS = new CBullet_S(rotation, this->m_pos, offset, this->m_left);
 				bulletS->m_isContra = true;
-				this->m_listBullet.push_back(bulletS->m_bullet_1);
-				this->m_listBullet.push_back(bulletS->m_bullet_2);
-				this->m_listBullet.push_back(bulletS->m_bullet_3);
-				this->m_listBullet.push_back(bulletS->m_bullet_4);
-				this->m_listBullet.push_back(bulletS->m_bullet_5);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_1);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_2);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_3);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_4);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_5);
 				break;
 		}
 
@@ -1147,28 +1101,17 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		CGameObject* obj = *it;
 		//Lay thoi gian va cham
 		//Neu doi tuong la ground va dang va cham
-		if(obj->GetIDType() == 15 && !checkColWithGround)
+		if(obj->GetIDType() == 15)
 		{
 			timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), obj, normalX, normalY, moveX, moveY, deltaTime);
 			if((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 			{
 				if(normalY > 0)
 				{
-#pragma region DANG VA CHAM VOI NUOC VA CHUYEN LEN MAT DAT
-					if(checkColWithWater) //Neu dang va cham voi mat nuoc
-					{
-						if(obj->GetID() == 1) //Gap mat dat
-						{
-							this->m_isUnderWater = false;
-							this->m_stateCurrent = ON_GROUND::IS_JOGGING;
-							this->m_pos.y += 30;
-						}
-					}
-#pragma endregion
 
 #pragma region VA CHAM MAT DAT
 
-					else if(obj->GetID() == 1 && !checkColWithGround)
+					/*else */if(obj->GetID() == 1 && !checkColWithGround)
 					{
 						checkColWithGround = true;
 						this->m_isUnderWater = false;
@@ -1205,7 +1148,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 								this->m_isJumping = false;
 							}
 
-						}else if(obj->GetID() == 2){
+						}else{
 							//if(this->m_vy != 0)
 							//{
 							if(this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < 0)
@@ -1229,7 +1172,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					}
 #pragma endregion
 #pragma region VA CHAM MAT NUOC
-					else if(!checkColWithWater && obj->GetID() == 2)
+					/*else */if(!checkColWithWater && obj->GetID() == 2 && !checkColWithGround)
 					{
 						//O duoi nuoc khong the nhay
 						checkColWithWater = true;
@@ -1252,11 +1195,6 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 									this->m_vy = 0;
 								}
 							}
-							//if(this->m_stateCurrent == ON_GROUND::IS_FALL)
-							//{
-							//	this->m_stateCurrent = ON_GROUND::IS_STANDING;
-							//	this->m_isJumping = false;
-							//}
 						}
 						else
 						{
@@ -1264,7 +1202,30 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 						}
 					}
 #pragma endregion 
+#pragma region DANG VA CHAM VOI NUOC VA CHUYEN LEN MAT DAT
+					if((checkColWithWater || this->m_stateCurrent > 19) && checkColWithGround) //Neu dang va cham voi mat nuoc
+					{
+						this->m_isUnderWater = false;
+						this->m_pos.y += 10;
+						if(this->m_left)
+						{
+							this->m_pos.x -= 10;
+						}
+						else
+						{
+							this->m_pos.x += 10;
+						}
+						this->m_stateCurrent = ON_GROUND::IS_JOGGING;
+					}
+#pragma endregion
 				}
+#pragma region VA CHAM VOI DOI TUONG SINH ENEMY
+				if(obj->GetID() == 3)
+				{
+					
+				}
+#pragma endregion
+
 			}
 		}
 	}
@@ -1272,9 +1233,10 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 	{
 		if(this->m_isUnderWater)
 		{
-			this->m_isUnderWater = true;
-			this->m_stateCurrent = ON_GROUND::IS_FALL;
-			this->m_isJumping = true;
+			//this->m_isUnderWater = false;
+			this->m_pos.y -= 10;
+			//this->m_stateCurrent = ON_GROUND::IS_FALL;
+			//this->m_isJumping = true;
 		}
 		else
 		{
@@ -1296,8 +1258,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		}
 	}
 }
-		
-
+	
 RECT* CContra::GetRectRS()
 {
 	return this->UpdateRectResource(m_height, m_width);
@@ -1323,7 +1284,7 @@ Box CContra::GetBox()
 		case ON_GROUND::IS_STANDING:
 		case ON_GROUND::IS_SHOOTING_UP:
 			{
-				return Box(this->m_pos.x, this->m_pos.y, this->m_width - 45, this->m_height, this->m_vx, this->m_vy);
+				return Box(this->m_pos.x, this->m_pos.y - 10, this->m_width - 45, this->m_height - 20, this->m_vx, this->m_vy);
 			}
 		case ON_GROUND::IS_JUMPING:
 			{
@@ -1331,7 +1292,7 @@ Box CContra::GetBox()
 			}
 		case ON_GROUND::IS_LYING:
 			{
-				return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height - 55, this->m_vx, this->m_vy);
+				return Box(this->m_pos.x, this->m_pos.y - 5, this->m_width, this->m_height - 65, this->m_vx, this->m_vy);
 			}
 		
 		default:
@@ -1349,12 +1310,16 @@ Box CContra::GetBox()
 		case UNDER_WATER::IS_LYING_UNDER_WATER:
 		case UNDER_WATER::IS_STANDING_UNDER_WATER:
 			{
-				return Box(this->m_pos.x, this->m_pos.y, this->m_width - 40, this->m_height - 50, this->m_vx, this->m_vy);
+				return Box(this->m_pos.x, this->m_pos.y - 5, this->m_width - 40, this->m_height - 60, this->m_vx, this->m_vy);
 			}
 		case UNDER_WATER::IS_SHOOTING_UNDER_WATER_DIAGONAL_UP:
 		case UNDER_WATER::IS_SHOOTING_UNDER_WATER_UP:
 			{
-				return Box(this->m_pos.x, this->m_pos.y, this->m_width - 40, this->m_height - 50, this->m_vx, this->m_vy);
+				return Box(this->m_pos.x, this->m_pos.y - 17, this->m_width - 40, this->m_height - 64, this->m_vx, this->m_vy);
+			}
+		case UNDER_WATER::IS_SHOOTING_UNDER_WATER_NORMAL:
+			{
+				return Box(this->m_pos.x, this->m_pos.y - 17, this->m_width - 40, this->m_height - 62, this->m_vx, this->m_vy);
 			}
 		default:
 			return Box(this->m_pos.x, this->m_pos.y, this->m_width - 40, this->m_height - 50, this->m_vx, this->m_vy);

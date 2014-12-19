@@ -2,6 +2,8 @@
 #include "CContra.h"
 #include <math.h>
 #include "CCamera.h"
+#include "CCollision.h"
+#include "CPoolingObject.h"
 
 CSniper::CSniper(void)
 {
@@ -26,7 +28,6 @@ CSniper::CSniper(int idType, D3DXVECTOR2 pos)
 	this->m_currentFrame = 6;
 	this->m_elapseTimeChangeFrame = 0.2f;
 
-
 	this->m_increase = 1;
 	this->m_totalFrame = 10;
 	this->m_column = 6;
@@ -39,6 +40,7 @@ CSniper::CSniper(int idType, D3DXVECTOR2 pos)
 	//
 	this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_HIDING;
 	this->m_timeDelay = 2.0f;
+	this->m_waitForChangeSprite = 0.0f;
 	if (m_idState == 1)
 	{
 		this->m_currentFrame = 0;
@@ -46,6 +48,8 @@ CSniper::CSniper(int idType, D3DXVECTOR2 pos)
 		this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_SHOOTING_NORMAL;
 	}
 	this->m_pos = pos;
+
+	this->m_allowShoot = true;
 }
 
 CSniper::CSniper(const std::vector<int>& info)
@@ -93,20 +97,49 @@ void CSniper::Init()
 
 	this->m_bulletCount = 0;
 	this->m_timeDelay = 2.0f;
+	this->m_waitForChangeSprite = 0.0f;
 
 	this->m_allowShoot = true;
 }
 
 void CSniper::Update(float deltaTime)
 {
-	this->SetFrame();
+	this->SetFrame(deltaTime);
 	this->ChangeFrame(deltaTime);
 	this->BulletUpdate(deltaTime);
+	this->OnCollision(deltaTime, nullptr);
+
 }
 
 void CSniper::Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
 {
 
+}
+
+void CSniper::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
+{
+	float normalX = 0;
+	float normalY = 0;
+	float moveX = 0.0f;
+	float moveY = 0.0f;
+	float timeCollision;
+
+	for (std::vector<CGameObject*>::iterator it = CContra::GetInstance()->m_listBullet.begin(); it != CContra::GetInstance()->m_listBullet.end();)
+	{
+		CGameObject* obj = *it;
+		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
+		if((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+		{
+			// Gan trang thai die cho doi tuong
+			this->m_stateCurrent = SN_IS_DIE;
+			// Xoa vien dan ra khoi d.s
+			it = CContra::GetInstance()->m_listBullet.erase(it);
+ 		}
+		else
+		{
+			++it;
+		}
+	}
 }
 
 void CSniper::BulletUpdate(float deltaTime)
@@ -162,7 +195,7 @@ void CSniper::BulletUpdate(float deltaTime)
 	// Normal sniper.
 	if (m_idState == 1)
 	{
-		if(this->m_isShoot)
+		if(this->m_isShoot && this->m_stateCurrent != SN_IS_DIE)
 		{
 			angle = (angle > 2 * PI) ? angle - 2*PI : angle;
 			int space = int(angle / shootAngleNormal);
@@ -354,7 +387,7 @@ void CSniper::BulletUpdate(float deltaTime)
 
 }
 
-void CSniper::SetFrame()
+void CSniper::SetFrame(float deltaTime)
 {
 	//Chuyen doi frame
 	switch (this->m_stateCurrent)
@@ -377,7 +410,6 @@ void CSniper::SetFrame()
 		{
 			if(this->m_isShoot)
 			{
-				//this->m_currentFrame = 1;
 				this->m_startFrame = 0;
 				this->m_endFrame = 1;
 			}
@@ -404,20 +436,8 @@ void CSniper::SetFrame()
 		}
 	case SNIPER_SHOOT_STATE::SN_IS_HIDING:
 		{
-			//if(this->m_isShoot)
-			//{
-			//	this->m_startFrame = 6;
-			//	this->m_endFrame = 8;
-			//}
-			//else
-			//{
-				this->m_startFrame = 6;
-				this->m_endFrame = 8;
-			//}
-			if (this->m_currentFrame == 8)
-			{
-				//this->m_increase = -1;
-			}
+			this->m_startFrame = 6;
+			this->m_endFrame = 8;
 			if (this->m_currentFrame == 6)
 			{
 				this->m_increase = 1;
@@ -429,10 +449,35 @@ void CSniper::SetFrame()
 			}
 			break;
 		}
+	case SNIPER_SHOOT_STATE::SN_IS_DIE:
+		{
+			this->m_currentFrame = 1;
+			this->m_startFrame = 1;
+			this->m_endFrame = 1;
+			// dich chuyen doi tuong.
+			if (this->m_waitForChangeSprite <= 0.2f)
+			{
+				this->m_waitForChangeSprite += deltaTime;
+				this->m_pos.y += 3;
+				this->m_pos.x -= 1;
+			}
+			else
+			{
+				// Lay doi tuong ra
+				CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+				effect->SetAlive(true);
+				effect->SetPos(this->m_pos);
+
+				this->m_isALive = false;
+			}
+
+			break;
+		}
 	default:
 		break;
 	}
 }
+
 
 RECT* CSniper::GetBound()
 {
@@ -446,7 +491,7 @@ RECT* CSniper::GetRectRS()
 
 Box CSniper::GetBox()
 {
-	return Box();
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 20, this->m_height, 0, 0);
 }
 
 CSniper::~CSniper()

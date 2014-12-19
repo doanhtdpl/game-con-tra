@@ -2,6 +2,7 @@
 #include "CCollision.h"
 #include "CContra.h"
 #include "CDrawObject.h"
+#include "CPoolingObject.h"
 
 CWeapon::CWeapon(void)
 {
@@ -19,12 +20,38 @@ CWeapon::CWeapon(const std::vector<int>& info)
 		this->m_width = info.at(3);
 		this->m_height = info.at(4);
 	}
+
+	//
+	//
+	switch (this->m_id)
+	{
+	case 1:
+		this->m_stateItem =  STATE_BULLET_ITEM::BULLET_ITEM_B;
+		break;
+	case 2:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_F;
+		break;
+	case 3:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_L;
+		break;
+	case 4:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_M;
+		break;
+	case 5:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_R;
+		break;
+	case 6:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_S;
+		break;
+	default:
+		break;
+	}
 }
 
 void CWeapon::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 2;
+	this->m_id = 10;
 	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;
@@ -48,27 +75,19 @@ void CWeapon::Init()
 	this->m_angle = 0;
 
 	this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_M;
+	//
+
 }
 
 void CWeapon::Update(float deltaTime)
 {
 	this->MoveUpdate(deltaTime);
-	if (this->effect != NULL){
-		this->effect->Update(deltaTime);
-		if (!this->effect->IsAlive()){
-			delete this->effect;
-			this->effect = NULL;
-		}
-	}
-
-	if (this->item != NULL){
-		this->item->Update(deltaTime);
-	}
 }
 
-void CWeapon::Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
+void CWeapon::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-
+	this->Update(deltaTime);
+	this->OnCollision(deltaTime, listObjectCollision);
 }
 
 void CWeapon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -101,25 +120,33 @@ void CWeapon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 	//	this->m_isALive = false;
 	//}
 
-	for (int i = 0; i < CContra::GetInstance()->m_listBullet.size(); i++)
+	for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin(); it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
 	{
-		timeCollision = CCollision::GetInstance()->Collision(this, CContra::GetInstance()->m_listBullet.at(i), normalX, normalY, moveX, moveY, deltaTime);
+		CBullet* obj = *it;
+		timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
 		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 		{
 			//trên - xuống normalY = 1
 			//Trái phải normalX = -1
 			// ==0 ko va chạm theo Y, X	
-			if (this->effect == NULL){
-				this->effect = new CExplosionEffect(this->GetPos());
-			}
+			CExplosionEffect* eff = CPoolingObject::GetInstance()->GetExplosionEffect();
+			eff->SetAlive(true);
+			eff->SetPos(this->m_pos);
 
-			if (this->item == NULL){
+			//
+			it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+			//
+			CBulletItem* bulletItem = CPoolingObject::GetInstance()->GetBulletItem();
+			bulletItem->SetAlive(true);
+			bulletItem->SetPos(this->m_pos);
+			bulletItem->m_stateItem = this->m_stateItem;
 
-				this->item = new CBulletItem(this->GetPos());
-
-				this->item->m_stateItem = this->m_stateItem;
-			}
+			
 			this->m_isALive = false;
+		}
+		else
+		{
+			++it;
 		}
 	}
 #pragma endregion 
@@ -129,7 +156,7 @@ void CWeapon::MoveUpdate(float deltaTime)
 {
 	this->m_angle += 4.0 * deltaTime;
 	this->m_pos.x += this->m_vx * deltaTime;
-	this->m_pos.y += 5.0f * sin(this->m_angle);
+	this->m_pos.y += 4.0f * sin(this->m_angle);
 }
 RECT* CWeapon::GetBound()
 {

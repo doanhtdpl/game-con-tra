@@ -31,18 +31,21 @@ CGameObject* CFactoryDynamicObject::CreateObject(const std::vector<int>& info)
 		posY = info.at(2);
 		switch(idObject)
 		{
-		case 20002:
-			{
-				return new CWeapon(info);
-			}
-		case 11000:
+		case 12001:
 			{
 				return new CSoldier(info);
 			}
-		case 11001:
+
+			//Dynamic Item
+		case 14001: //SWeapon
 			{
-				return new CSniper(info);
+				return new CWeapon(info);
 			}
+		case 14002: //Dan B
+			{
+				//return new CWeapon(info);
+			}
+		
 		}
 	}
 	return nullptr;

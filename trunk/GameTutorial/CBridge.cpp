@@ -1,6 +1,7 @@
 ﻿#include "CBridge.h"
 #include "CCollision.h"
 #include "CContra.h"
+#include "CPoolingObject.h"
 
 CBridge::CBridge(void)
 {
@@ -23,8 +24,8 @@ CBridge::CBridge(const std::vector<int>& info)
 void CBridge::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 9;
-	this->m_idType = 20;
+	this->m_id = 1;
+	this->m_idType = 16;
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
@@ -42,66 +43,63 @@ void CBridge::Init()
 	this->m_totalFrame = 5;
 	this->m_column = 1;
 	this->m_startFrame = 0;
-	this->m_endFrame = 4;
+	this->m_endFrame = 0;
 	//
-	this->m_timeDelay = 0.0f;
+	this->m_timeDelay = 1.3f;
 	
 	this->m_stateCurrent = STATE_BRIDGE::X4;
 	this->m_isCollisionContra = false;
 
-
-	//Tao hieu dung
-	this->effect = new CExplosionEffect(D3DXVECTOR2(this->m_pos.x - 5*this->m_width/8, this->m_pos.y + this->m_height/4));
-	this->effect->SetAlive(false);
 }
 
 void CBridge::Update(float deltaTime)
 {
-	//this->SetFrame(deltaTime); //Cai ham nay bo vao cho changeFrame, tuc la sau moi lan Frame thay doi thi set lai frame
-	this->ChangeFrame(deltaTime);
-	if (this->effect != NULL && this->effect->IsAlive()){
-		this->effect->Update(deltaTime);
-	}
-}
-
-void CBridge::ChangeFrame(float deltaTime)
-{
-	if (m_isCollisionContra)
+	if(this->m_isCollisionContra)
 	{
-		this->m_currentTime += deltaTime;
-		if (this->m_currentTime > this->m_elapseTimeChangeFrame)
-		{
-			this->m_currentFrame += this->m_increase;
-			if (this->m_currentFrame > this->m_endFrame){
-				this->m_isALive = false;
-				this->effect->SetAlive(false);
-				this->m_isCollisionContra = false;
-			}
-			if (this->m_currentFrame > this->m_endFrame || this->m_currentFrame < this->m_startFrame)
-			{
-				this->m_currentFrame = this->m_startFrame;
-			}
-			this->m_currentTime -= this->m_elapseTimeChangeFrame;
-			if (this->m_currentFrame > this->m_startFrame){
-				this->SetFrame(deltaTime);
-			}
-		//	this->m_pos.x += 32 * this->m_currentFrame;
-		}
+		this->SetFrame(deltaTime); //Cai ham nay bo vao cho changeFrame, tuc la sau moi lan Frame thay doi thi set lai frame
+		this->ChangeFrame(deltaTime);
 	}
 }
 
-
-void CBridge::Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
+void CBridge::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
 
 }
 
 void CBridge::SetFrame(float deltaTime)
 {
-	D3DXVECTOR2 posEff = this->effect->GetPos();
-	this->effect->SetPos(D3DXVECTOR2(posEff.x + this->m_width / 4, posEff.y));
-	this->effect->SetAlive(true);
-	
+	this->m_timeDelay += deltaTime;
+	if(m_timeDelay > 1.0f)
+	{
+		this->m_timeDelay = 0.0f;
+		this->m_currentFrame += this->m_increase;
+		if(this->m_currentFrame < 5)
+		{
+			this->m_startFrame = this->m_currentFrame;
+			this->m_endFrame = this->m_currentFrame;
+			if(this->m_isALive)
+			{
+				D3DXVECTOR2 posEff(this->GetBox().x - 5*this->GetBox().w/8, this->GetBox().y);
+				CExplosionEffect* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
+				effect->SetPos(D3DXVECTOR2(posEff.x /*+ this->m_width / 4*/, posEff.y));
+				effect->SetAlive(true);
+				//
+				CExplosionEffect* effect1 = CPoolingObject::GetInstance()->GetExplosionEffect();
+				effect1->SetPos(D3DXVECTOR2(posEff.x + 20 /*+ this->m_width / 4*/, posEff.y + 25));
+				effect1->SetAlive(true);
+
+				//
+				//
+				CExplosionEffect* effect2 = CPoolingObject::GetInstance()->GetExplosionEffect();
+				effect2->SetPos(D3DXVECTOR2(posEff.x - 20 /*+ this->m_width / 4*/, posEff.y + 25));
+				effect2->SetAlive(true);
+			}
+		}
+		else
+		{
+			this->m_isALive = false;
+		}
+	}
 }
 
 RECT* CBridge::GetBound()
@@ -127,7 +125,7 @@ Box CBridge::GetBox()
 		case 3:			
 			return Box(this->m_pos.x+32*3, this->m_pos.y, this->m_width-64*3, this->m_height);
 	}
-	return Box(this->m_pos.x, this->m_pos.y, 0, 0);
+	return Box(this->m_pos.x+32*4 - 20, this->m_pos.y, 0, 0);
 }
 
 void CBridge::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)

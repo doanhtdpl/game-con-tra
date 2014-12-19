@@ -23,8 +23,12 @@ void CDrawObject::Draw(CGameObject* obj)
 			//Kiem tra xem Id cua doi tuong no co hop le hay khong
 			if(typeObject > 0)
 			{
+				CTexture* texture;
 				//Lay ra resource anh cua doi tuongLevel1quadTree
-				CTexture* texture = CManagementTexture::GetInstance()->GetTextureByID(idObject, typeObject);
+				if(typeObject == 13) //Day la weapon tinh
+					texture = CManagementTexture::GetInstance()->GetTextureByID(1, 13);
+				else
+					texture = CManagementTexture::GetInstance()->GetTextureByID(idObject, typeObject);
 				//Neu ton tai texture 
 				if(texture && this->m_draw)
 				{
@@ -85,26 +89,25 @@ void CDrawObject::Draw(CGameObject* obj)
 					{
 						//D3DXVECTOR3 poshiden(0, 0, 0);
 					 	posObjAfterTransform = CCamera::GetInstance()->GetPointTransform(posObj.x, posObj.y);
-						/*this->m_draw->draw(texture, obj->GetRectRS(), posObjAfterTransform, D3DCOLOR_XRGB(255,255,255), true);*/
+						//this->m_draw->draw(texture, obj->GetRectRS(), posObjAfterTransform, D3DCOLOR_XRGB(255,255,255), true);
 						this->m_draw->drawScale(texture, obj->GetRectRS(), posObjAfterTransform,
 							D3DXVECTOR2(obj->GetWidth()/texture->GetImageWidth(),obj->GetHeight()/texture->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/, D3DCOLOR_XRGB(255,255,255), true);
 					}
 					else
 					{
-						RECT* rect = new RECT();
-						rect->left = 0;
-						rect->right = 64;
-						rect->top = 0;
-						rect->bottom = 64;
-						D3DXVECTOR3 pos = D3DXVECTOR3(obj->GetBox().x, obj->GetBox().y, 0);
-						D3DXVECTOR3 posObjAfterTransform1 = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-						CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
-						this->m_draw->drawScale(text,
-							rect, posObjAfterTransform1,
-							D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
-							D3DCOLOR_XRGB(255, 255, 255), true);
+
+						//RECT* rect = new RECT();
+						//rect->left = 0;
+						//rect->right = 64;
+						//rect->top = 0;
+						//rect->bottom = 64;
+						//D3DXVECTOR3 posofBox = CCamera::GetInstance()->GetPointTransform(obj->GetBox().x, obj->GetBox().y);
+						//	CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
+						//this->m_draw->drawScale(text,
+						//	rect, posofBox,
+						//	D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
+						//	D3DCOLOR_XRGB(255, 255, 255), true);
 						//}
-												////
 						////sang test
 						if (!obj->GetDirection())
 						{

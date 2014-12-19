@@ -11,8 +11,8 @@ public:
 	CStaticObject(const std::vector<int>& info);
 	~CStaticObject(void);
 	virtual void Update(float deltaTime);
-	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
-	virtual void OnCollision(float deltatime, std::vector<CGameObject*> listObjectCollision);
+	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
+	virtual void OnCollision(float deltatime, std::vector<CGameObject*>* listObjectCollision);
 };
 // ;)
 #endif

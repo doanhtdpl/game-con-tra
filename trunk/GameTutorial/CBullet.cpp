@@ -37,7 +37,7 @@ CBullet::CBullet(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset, bool dire
 void CBullet::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 1;
+	this->m_id = 4;
 	this->m_idType = 20;
 	this->m_idImage = 0;
 	this->m_isALive = true;
@@ -123,7 +123,7 @@ void CBullet::Update(float deltaTime)
 	this->MoveUpdate(deltaTime);
 }
 
-void CBullet::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
+void CBullet::Update(float deltaTime, std::vector<CGameObject*>* _listObjectCollision)
 {
 	
 }
@@ -132,7 +132,7 @@ void CBullet::ChangeFrame(float deltaTime){
 
 }
 
-void CBullet::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
+void CBullet::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
 
 }

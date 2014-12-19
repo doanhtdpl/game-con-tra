@@ -94,8 +94,14 @@ void CLoadGameObject::CreateObjectOnScreen()
 				if (!contains(m_oldListIdObject, m_listIdObject.at(i)))
 				{
 					// Them doi tuong vao d/s
-					this->m_listGameObject->push_back(
-						this->m_listObjectCurr.find(m_listIdObject.at(i))->second);
+					if(this->m_listObjectCurr.find(m_listIdObject.at(i)) != this->m_listObjectCurr.end())
+					{
+						this->m_listGameObject->push_back(this->m_listObjectCurr.find(m_listIdObject.at(i))->second);
+					}
+					else
+					{
+						int count =0;
+					}
 
 					// Ve no ra
 					this->Draw();
@@ -130,12 +136,12 @@ CGameObject* CLoadGameObject::CreateObject(const std::vector<int>& info)
 		int idTypeObj = idObj / 1000;
 		switch (idTypeObj)
 		{
-		case 10: case 11: case 12:
+		case 12: case 14:
 			{
 				return CFactoryDynamicObject::GetInstance()->CreateObject(info);
 				break;
 			}
-		case 13: case 15:
+		case 11: case 13: case 15:
 			{
 				return CFactoryStaticObject::GetInstance()->CreateObject(info);
 				break;
@@ -216,7 +222,7 @@ void CLoadGameObject::Draw()
 			CGameObject* gameObj = *it;
 			//if(gameObj->GetIDType() != 14)
 			//{
-			if(gameObj)
+			if(gameObj && gameObj->IsAlive())
 				CDrawObject::GetInstance()->Draw(gameObj);
 			//}
 		}
@@ -238,7 +244,8 @@ void CLoadGameObject::Update(float deltaTime)
 			CGameObject* gameObj = *it;
 			if(gameObj->GetIDType() != 15)
 			{
-				gameObj->Update(deltaTime);
+				///gameObj->Update(deltaTime);
+				gameObj->Update(deltaTime, this->m_listGameObject);
 			}
 		}
 	}
