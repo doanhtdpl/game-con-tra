@@ -26,14 +26,13 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
+	void Init();
 	RECT* GetBound();
 	RECT* GetRectRS();
 	Box GetBox();
 	STATE_BULLET_ITEM m_stateItem;
 protected:
-	void Init();
 	void SetFrame();
-	double m_angle;
 };
 
 #endif // !__CBulletItem_H__

@@ -64,7 +64,7 @@ void CSoldier::Init()
 	this->m_id = 0;
 	this->m_idType = 11; 
 	this->m_idImage = 0;
-	this->m_isALive = true;
+	this->m_isALive = false;
 	this->m_isAnimatedSprite = true;
 	this->m_width = 40.0f;//56.0f; //78
 	this->m_height = 66.0f; //88.0f; //84
@@ -112,10 +112,10 @@ void CSoldier::Update(float deltaTime, std::vector<CGameObject*>* listObjectColl
 {
 	if (this->IsAlive())
 	{
-		this->SetFrame(deltaTime);
 		this->ChangeFrame(deltaTime);
 		this->MoveUpdate(deltaTime);
 		this->OnCollision(deltaTime, listObjectCollision);
+		this->SetFrame(deltaTime);
 	}
 }
 

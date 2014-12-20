@@ -84,17 +84,17 @@ void CDrawObject::Draw(CGameObject* obj)
 					else
 					{
 
-						//RECT* rect = new RECT();
-						//rect->left = 0;
-						//rect->right = 64;
-						//rect->top = 0;
-						//rect->bottom = 64;
-						//D3DXVECTOR3 posofBox = CCamera::GetInstance()->GetPointTransform(obj->GetBox().x, obj->GetBox().y);
-						//	CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
-						//this->m_draw->drawScale(text,
-						//	rect, posofBox,
-						//	D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
-						//	D3DCOLOR_XRGB(255, 255, 255), true);
+						RECT* rect = new RECT();
+						rect->left = 0;
+						rect->right = 64;
+						rect->top = 0;
+						rect->bottom = 64;
+						D3DXVECTOR3 posofBox = CCamera::GetInstance()->GetPointTransform(obj->GetBox().x, obj->GetBox().y);
+							CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
+						this->m_draw->drawScale(text,
+							rect, posofBox,
+							D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
+							D3DCOLOR_XRGB(255, 255, 255), true);
 						//}
 						////sang test
 						if (!obj->GetDirection())

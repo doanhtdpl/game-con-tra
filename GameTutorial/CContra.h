@@ -38,13 +38,13 @@ enum UNDER_WATER
 	IS_SHOOTING_UNDER_WATER_DIAGONAL_UP = 26
 };
 
-enum BULLET_TYPE{
-	BULLET_N = 0,
-	BULLET_M = 1,
-	BULLET_F = 2,
-	BULLET_L = 3,
-	BULLET_S = 4
-};
+//enum BULLET_TYPE{
+//	BULLET_N = 0,
+//	BULLET_M = 1,
+//	BULLET_F = 2,
+//	BULLET_L = 3,
+//	BULLET_S = 4
+//};
 
 //enum SHOOT
 //{
@@ -101,6 +101,7 @@ public:
 	float m_currentFall; // Do cao hien tai
 	float m_currentJump;//
 public:
+	void SetTypeBullet(int _typeBullet){this->m_typeBullet = _typeBullet;};
 	void SetPosY(float posY){this->m_pos.y = posY;};
 	float GetPosY(){return this->m_pos.y;};
 

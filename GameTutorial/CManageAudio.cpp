@@ -50,6 +50,7 @@ CSound* ManageAudio::loadSound(bool loop, std::string fileName)
 
 void ManageAudio::playSound(TypeAudio _type)
 {
+	this->stopSound(_type);
 	std::hash_map<int, CSound*>::iterator it = this->listAudio.find((int)_type);
 	if (it != this->listAudio.end())
 	{

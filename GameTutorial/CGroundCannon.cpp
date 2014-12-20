@@ -34,7 +34,7 @@ void CGroundCanon::Init()
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
 	this->m_width = 64.0f;
-	this->m_height = 64.0f; 
+	this->m_height = 0.0f; 
 	this->m_heightMax = 64.0f;
 	this->m_pos = D3DXVECTOR2(770.0f, 220.0f);
 	this->m_left = false;
@@ -47,6 +47,7 @@ void CGroundCanon::Init()
 	this->m_totalFrame = 9;
 	this->m_column = 3;
 	this->m_allowShoot = true;//cho phep ban dan
+	this->m_moveUpComplete = false;
 	this->m_HP = 7;
 	//
 	this->m_isShoot = true;
@@ -67,9 +68,30 @@ void CGroundCanon::Update(float deltaTime)
 	}
 }
 
-void CGroundCanon::Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
+void CGroundCanon::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-
+	if (this->m_isALive)
+	{
+		if(abs(this->m_pos.x - CContra::GetInstance()->GetPos().x) >  250)
+		{
+			this->MoveDown(deltaTime);
+		}
+		else
+		{
+			if(abs(this->m_pos.x - CContra::GetInstance()->GetPos().x) <=  250)
+			{
+				this->m_moveUpComplete = true;
+			}
+			if(this->m_moveUpComplete)
+			{		
+				this->SetFrame();
+				this->ChangeFrame(deltaTime);
+				this->MoveUp(deltaTime);
+				this->OnCollision(deltaTime, listObjectCollision);
+			}
+		}
+		
+	}
 }
 
 void CGroundCanon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -80,7 +102,7 @@ void CGroundCanon::OnCollision(float deltaTime, std::vector<CGameObject*>* listO
 	float moveY = 0.0f;
 	float timeCollision;
 
-	for (std::vector<CGameObject*>::iterator it = CContra::GetInstance()->m_listBullet.begin(); it != CContra::GetInstance()->m_listBullet.end();)
+	for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin(); it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
 	{
 		CGameObject* obj = *it;
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
@@ -89,7 +111,7 @@ void CGroundCanon::OnCollision(float deltaTime, std::vector<CGameObject*>* listO
 			if (obj->IsAlive())
 			{
 				this->m_HP--;
-				it = CContra::GetInstance()->m_listBullet.erase(it);
+				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 			}
 
 			if (this->m_HP == 0)
@@ -241,7 +263,6 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 }
 
 void CGroundCanon::MoveUp(float deltaTime){
-
 	if (this->m_height != this->m_heightMax){
 		this->m_timeDelay += deltaTime;
 		if (this->m_timeDelay > 0.1) //0.3 co the thay tuy y cua minh
@@ -253,6 +274,19 @@ void CGroundCanon::MoveUp(float deltaTime){
 	else
 	{
 		this->BulletUpdate(deltaTime);
+	}
+
+}
+
+
+void CGroundCanon::MoveDown(float deltaTime){
+	if (this->m_height != 0){
+		this->m_timeDelay += deltaTime;
+		if (this->m_timeDelay > 0.1) //0.3 co the thay tuy y cua minh
+		{
+			this->m_timeDelay = 0;
+			this->m_height -= 8;
+		}
 	}
 
 }

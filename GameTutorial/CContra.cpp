@@ -5,6 +5,7 @@
 #include "CHidenObject.h"
 #include "CSoldier.h"
 #include "CPoolingObject.h"
+#include "CManageAudio.h"
 #include <cmath>
 
 CContra::CContra()
@@ -57,7 +58,7 @@ CContra::CContra()
 	//this->m_isUnderWater = true;
 	//this->m_startFrame = UNDER_WATER::IS_STANDING_UNDER_WATER;
 	
-	this->m_typeBullet = BULLET_TYPE::BULLET_N;
+	//this->m_typeBullet = STATE_BULLET_ITEM::BULLET_ITEM_N;
 	this->m_allowShoot = true;
 }
 
@@ -370,8 +371,10 @@ void CContra::InputUpdate(float deltaTime)
 	this->m_waitForShoot += deltaTime;
 	if(m_keyDown == DIK_C)
 	{
-		if(this->m_waitForShoot > 0.4f)
+		//Sang test audio			
+		if(this->m_waitForShoot > 0.2f)
 		{
+			ManageAudio::GetInstance()->playSound(TypeAudio::BULLET_N);
 			this->m_isShoot = true;
 			this->m_isShooting = true;
 			this->m_waitForShoot = 0.0f;
@@ -572,23 +575,23 @@ void CContra::InputUpdate(float deltaTime)
 #pragma region NHAN NUT_DAU_DAN
 	if (CInput::GetInstance()->IsKeyDown(DIK_N))
 	{
-		this->m_typeBullet = BULLET_TYPE::BULLET_N;
+		//this->m_typeBullet = STATE_BULLET_ITEM::BULLET_ITEM_N;
 	}
 	else if (CInput::GetInstance()->IsKeyDown(DIK_M))
 	{
-		this->m_typeBullet = BULLET_TYPE::BULLET_M;
+		this->m_typeBullet = STATE_BULLET_ITEM::BULLET_ITEM_M;
 	}
 	else if (CInput::GetInstance()->IsKeyDown(DIK_S))
 	{
-		this->m_typeBullet = BULLET_TYPE::BULLET_S;
+		this->m_typeBullet = STATE_BULLET_ITEM::BULLET_ITEM_S;
 	}
 	else if (CInput::GetInstance()->IsKeyDown(DIK_F))
 	{
-		this->m_typeBullet = BULLET_TYPE::BULLET_F;
+		this->m_typeBullet = STATE_BULLET_ITEM::BULLET_ITEM_F;
 	}
 	else if (CInput::GetInstance()->IsKeyDown(DIK_L))
 	{
-		this->m_typeBullet = BULLET_TYPE::BULLET_L;
+		this->m_typeBullet = STATE_BULLET_ITEM::BULLET_ITEM_L;
 	}
 #pragma endregion
 }
@@ -648,56 +651,59 @@ void CContra::BulletUpdate(float deltaTime)
 				{
 					switch (this->m_typeBullet)
 					{
-					case BULLET_TYPE::BULLET_M:
+					case STATE_BULLET_ITEM::BULLET_ITEM_M:
 							if (!this->m_left){
 								offset.x = 25.0f;
-								offset.y = 0.0f;
+								offset.y = -15.0f;
 							}
 							else{
 								offset.x = -25.0f;
-								offset.y = 0.0f;
+								offset.y = -15.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_N:
-							if (!this->m_left){
-								offset.x = 25.0f;
-								offset.y = 0.0f;
-							}
-							else{
-								offset.x = -25.0f;
-								offset.y = 0.0f;
-							}
-							break;
-						case BULLET_TYPE::BULLET_F:
+						case STATE_BULLET_ITEM::BULLET_ITEM_F:
 							if (!this->m_left){
 								offset.x = 50.0f;
-								offset.y = 0.0f;
+								offset.y = -30.0f;
 							}
 							else{
 								offset.x = -50.0f;
-								offset.y = 0.0f;
+								offset.y = -30.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_L:
+						case STATE_BULLET_ITEM::BULLET_ITEM_L:
 							if (!this->m_left){
 								offset.x = 85.0f;
-								offset.y = 0.0f;
+								offset.y = -25.0f;
 							}
 							else{
 								offset.x = -85.0f;
-								offset.y = 0.0f;
+								offset.y = -25.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_S:
+						case STATE_BULLET_ITEM::BULLET_ITEM_S:
 							if (!this->m_left){
 								offset.x = 25.0f;
-								offset.y = 10.0f;
+								offset.y = -15.0f;
 							}
 							else{
 								offset.x = -25.0f;
-								offset.y = 10.0f;
+								offset.y = -15.0f;
 							}
 							break;
+
+						default:
+							{
+								if (!this->m_left){
+									offset.x = 25.0f;
+									offset.y = -23.0f;
+								}
+								else{
+									offset.x = -25.0f;
+									offset.y = -23.0f;
+								}
+								break;
+							}
 					}
 					break;
 				}
@@ -705,7 +711,7 @@ void CContra::BulletUpdate(float deltaTime)
 				{
 					switch (this->m_typeBullet)
 					{
-						case BULLET_TYPE::BULLET_M:
+						case STATE_BULLET_ITEM::BULLET_ITEM_M:
 							if (!this->m_left){
 								offset.x = 20.0f;
 								offset.y = 8.0f;
@@ -715,17 +721,7 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 8.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_N:
-							if (!this->m_left){
-								offset.x = 25.0f;
-								offset.y = -0.0f;
-							}
-							else{
-								offset.x = -25.0f;
-								offset.y = -0.0f;
-							}
-							break;
-						case BULLET_TYPE::BULLET_F:
+						case STATE_BULLET_ITEM::BULLET_ITEM_F:
 							if (!this->m_left){
 								offset.x = 50.0f;
 								offset.y = -15.0f;
@@ -735,7 +731,7 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = -15.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_L:
+						case STATE_BULLET_ITEM::BULLET_ITEM_L:
 							if (!this->m_left){
 								offset.x = 85.0f;
 								offset.y = 0.0f;
@@ -745,7 +741,7 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 0.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_S:
+						case STATE_BULLET_ITEM::BULLET_ITEM_S:
 							if (!this->m_left){
 								offset.x = 25.0f;
 								offset.y = 10.0f;
@@ -755,6 +751,18 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 10.0f;
 							}
 							break;
+						default:
+							{
+								if (!this->m_left){
+									offset.x = 25.0f;
+									offset.y = -0.0f;
+								}
+								else{
+									offset.x = -25.0f;
+									offset.y = -0.0f;
+								}
+								break;
+							}
 					}
 					break;
 				}
@@ -762,7 +770,7 @@ void CContra::BulletUpdate(float deltaTime)
 				{
 				switch (this->m_typeBullet)
 					{
-						case BULLET_TYPE::BULLET_M:
+						case STATE_BULLET_ITEM::BULLET_ITEM_M:
 							if (!this->m_left){
 								offset.x = -3.0f;
 								offset.y = 50.0f;
@@ -772,17 +780,7 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 50.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_N:
-							if (!this->m_left){
-								offset.x = 7.0f;
-								offset.y = 40.0f;
-							}
-							else{
-								offset.x = -7.0f;
-								offset.y = 40.0f;
-							}
-							break;
-						case BULLET_TYPE::BULLET_F:
+						case STATE_BULLET_ITEM::BULLET_ITEM_F:
 							if (!this->m_left){
 								offset.x = 0.0f;
 								offset.y = 50.0f;
@@ -792,17 +790,17 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 50.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_L:
+						case STATE_BULLET_ITEM::BULLET_ITEM_L:
 							if (!this->m_left){
 								offset.x = 5.0f;
-								offset.y = 75.0f;
+								offset.y = 70.0f;
 							}
 							else{
 								offset.x = -7.0f;
-								offset.y = 75.0f;
+								offset.y = 70.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_S:
+						case STATE_BULLET_ITEM::BULLET_ITEM_S:
 							if (!this->m_left){
 								offset.x = 0.0f;
 								offset.y = 40.0f;
@@ -812,6 +810,18 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 40.0f;
 							}
 							break;
+						default:
+							{
+								if (!this->m_left){
+									offset.x = 3.0f;
+									offset.y = 5.0f;
+								}
+								else{
+									offset.x = -3.0f;
+									offset.y = 5.0f;
+								}
+								break;
+							}
 					}
 					break;
 				}
@@ -819,7 +829,7 @@ void CContra::BulletUpdate(float deltaTime)
 				{
 					switch (this->m_typeBullet)
 					{
-						case BULLET_TYPE::BULLET_M:
+						case STATE_BULLET_ITEM::BULLET_ITEM_M:
 							if (!this->m_left){
 								offset.x = 25.0f;
 								offset.y = -15.0f;
@@ -829,17 +839,7 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = -15.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_N:
-							if (!this->m_left){
-								offset.x = 25.0f;
-								offset.y = -15.0f;
-							}
-							else{
-								offset.x = -25.0f;
-								offset.y = -15.0f;
-							}
-							break;
-						case BULLET_TYPE::BULLET_F:
+						case STATE_BULLET_ITEM::BULLET_ITEM_F:
 							if (!this->m_left){
 								offset.x = 40.0f;
 								offset.y = -35.0f;
@@ -849,17 +849,17 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 0.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_L:
+						case STATE_BULLET_ITEM::BULLET_ITEM_L:
 							if (!this->m_left){
-								offset.x = 65.0f;
+								offset.x = 55.0f;
 								offset.y = -45.0f;
 							}
 							else{
-								offset.x = -65.0f;
+								offset.x = -55.0f;
 								offset.y = -45.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_S:
+						case STATE_BULLET_ITEM::BULLET_ITEM_S:
 							if (!this->m_left){
 								offset.x = 25.0f;
 								offset.y = -15.0f;
@@ -869,6 +869,18 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = -15.0f;
 							}
 							break;
+						default:
+							{
+								if (!this->m_left){
+									offset.x = 25.0f;
+									offset.y = -15.0f;
+								}
+								else{
+									offset.x = -25.0f;
+									offset.y = -15.0f;
+								}
+								break;
+							}
 					}
 					break;
 				}
@@ -876,7 +888,7 @@ void CContra::BulletUpdate(float deltaTime)
 				{
 				switch (this->m_typeBullet)
 					{
-						case BULLET_TYPE::BULLET_M:
+						case STATE_BULLET_ITEM::BULLET_ITEM_M:
 							if (!this->m_left){
 								offset.x = 20.0f;
 								offset.y = 25.0f;
@@ -886,17 +898,7 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 25.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_N:
-							if (!this->m_left){
-								offset.x = 25.0f;
-								offset.y = 25.0f;
-							}
-							else{
-								offset.x = -25.0f;
-								offset.y = 25.0f;
-							}
-							break;
-						case BULLET_TYPE::BULLET_F:
+						case STATE_BULLET_ITEM::BULLET_ITEM_F:
 							if (!this->m_left){
 								offset.x = 50.0f;
 								offset.y = 30.0f;
@@ -906,17 +908,17 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 20.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_L:
+						case STATE_BULLET_ITEM::BULLET_ITEM_L:
 							if (!this->m_left){
 								offset.x = 55.0f;
-								offset.y = 45.0f;
+								offset.y = 50.0f;
 							}
 							else{
 								offset.x = -55.0f;
-								offset.y = 45.0f;
+								offset.y = 50.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_S:
+						case STATE_BULLET_ITEM::BULLET_ITEM_S:
 							if (!this->m_left){
 								offset.x = 25.0f;
 								offset.y = 30.0f;
@@ -926,6 +928,18 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 30.0f;
 							}
 							break;
+						default:
+							{
+								if (!this->m_left){
+									offset.x = 25.0f;
+									offset.y = 25.0f;
+								}
+								else{
+									offset.x = -25.0f;
+									offset.y = 25.0f;
+								}
+								break;
+							}
 					}
 					
 					break;
@@ -934,7 +948,7 @@ void CContra::BulletUpdate(float deltaTime)
 				{
 				switch (this->m_typeBullet)
 					{
-						case BULLET_TYPE::BULLET_M:
+						case STATE_BULLET_ITEM::BULLET_ITEM_M:
 							if (!this->m_left){
 								offset.x = -10.0f;
 								offset.y = 10.0f;
@@ -944,7 +958,7 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = 10.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_N:
+						case STATE_BULLET_ITEM::BULLET_ITEM_F:
 							if (!this->m_left){
 								offset.x = 25.0f;
 								offset.y = -15.0f;
@@ -954,7 +968,7 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = -15.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_F:
+						case STATE_BULLET_ITEM::BULLET_ITEM_L:
 							if (!this->m_left){
 								offset.x = 25.0f;
 								offset.y = -15.0f;
@@ -964,7 +978,7 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = -15.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_L:
+						case STATE_BULLET_ITEM::BULLET_ITEM_S:
 							if (!this->m_left){
 								offset.x = 25.0f;
 								offset.y = -15.0f;
@@ -974,16 +988,18 @@ void CContra::BulletUpdate(float deltaTime)
 								offset.y = -15.0f;
 							}
 							break;
-						case BULLET_TYPE::BULLET_S:
-							if (!this->m_left){
-								offset.x = 25.0f;
-								offset.y = -15.0f;
+						default:
+							{
+								if (!this->m_left){
+									offset.x = 25.0f;
+									offset.y = -15.0f;
+								}
+								else{
+									offset.x = -25.0f;
+									offset.y = -15.0f;
+								}
+								break;
 							}
-							else{
-								offset.x = -25.0f;
-								offset.y = -15.0f;
-							}
-							break;
 					}
 					break;
 				}
@@ -1002,48 +1018,52 @@ void CContra::BulletUpdate(float deltaTime)
 		CBullet* bullet;
 		switch (this->m_typeBullet)
 		{
-			case BULLET_TYPE::BULLET_M:
+			case STATE_BULLET_ITEM::BULLET_ITEM_M:
 				bullet = new CBullet_M(rotation, this->m_pos, offset, this->m_left);
 				bullet->m_isContra = true;
 				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				//this->m_listBullet.push_back(bullet);
 				break;
-			case BULLET_TYPE::BULLET_N:
-				if (this->m_isShoot)
-				{
-					if (m_bulletCount > 2)
-					{
-						this->m_bulletCount = 0;
-						this->m_isShoot = false;
-					}
-					else{
-						bullet = new CBullet_N(rotation, this->m_pos, offset, this->m_left);
-						bullet->m_isContra = true;
-						CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
-						m_bulletCount++;
-					}
-				}
-				break;
-			case BULLET_TYPE::BULLET_F:
+			case STATE_BULLET_ITEM::BULLET_ITEM_F:
 				bullet = new CBullet_F(rotation, this->m_pos, offset, this->m_left);
 				bullet->m_isContra = true;
 				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				break;
-			case BULLET_TYPE::BULLET_L:
+			case STATE_BULLET_ITEM::BULLET_ITEM_L:
 				bullet = new CBullet_L(rotation, this->m_pos, offset, this->m_left);
 				bullet->m_isContra = true;
 				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				break;
-			case BULLET_TYPE::BULLET_S:
-				//Them dan S.
-				CBullet_S* bulletS = new CBullet_S(rotation, this->m_pos, offset, this->m_left);
-				bulletS->m_isContra = true;
-				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_1);
-				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_2);
-				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_3);
-				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_4);
-				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_5);
-				break;
+			case STATE_BULLET_ITEM::BULLET_ITEM_S:
+				{
+					//Them dan S.
+					CBullet_S* bulletS = new CBullet_S(rotation, this->m_pos, offset, this->m_left);
+					bulletS->m_isContra = true;
+					CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_1);
+					CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_2);
+					CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_3);
+					CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_4);
+					CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_5);
+					break;
+				}
+			default:
+				{
+					if (this->m_isShoot)
+					{
+						if (m_bulletCount > 0)
+						{
+							this->m_bulletCount = 0;
+							this->m_isShoot = false;
+						}
+						else{
+							bullet = new CBullet_N(rotation, this->m_pos, offset, this->m_left);
+							bullet->m_isContra = true;
+							CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
+							m_bulletCount++;
+						}
+					}
+					break;
+				}
 		}
 
 	}
@@ -1066,6 +1086,7 @@ void CContra::BulletUpdate(float deltaTime)
 	if (this->m_listBullet.empty())
 	{
 		this->m_isShoot = true;
+		//ManageAudio::GetInstance()->stopSound(TypeAudio::BULLET_N);
 	}
 
 }
@@ -1101,7 +1122,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		CGameObject* obj = *it;
 		//Lay thoi gian va cham
 		//Neu doi tuong la ground va dang va cham
-		if(obj->GetIDType() == 15)
+		if(obj->GetIDType() == 15 || obj->GetIDType() == 16)
 		{
 			timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), obj, normalX, normalY, moveX, moveY, deltaTime);
 			if((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
@@ -1109,9 +1130,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 				if(normalY > 0)
 				{
 
-#pragma region VA CHAM MAT DAT
+#pragma region VA CHAM MAT DAT && CAY CAU
 
-					/*else */if(obj->GetID() == 1 && !checkColWithGround)
+					/*else */if((obj->GetID() == 1 || (obj->GetID() == 1 && obj->GetIDType() == 16)) && !checkColWithGround)
 					{
 						checkColWithGround = true;
 						this->m_isUnderWater = false;
@@ -1217,15 +1238,41 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 						}
 						this->m_stateCurrent = ON_GROUND::IS_JOGGING;
 					}
+					continue;
 #pragma endregion
 				}
 #pragma region VA CHAM VOI DOI TUONG SINH ENEMY
-				if(obj->GetID() == 3)
+				if(obj->GetID() == 4)
 				{
-					
+					D3DXVECTOR2 pos = CCamera::GetInstance()->GetPointTransform(obj->GetPos().x, obj->GetPos().y);
+					pos.x = __SCREEN_WIDTH - pos.x + obj->GetPos().x;
+					pos.y = 300;
+					CSoldier* soldier = CPoolingObject::GetInstance()->GetSoliderObject();
+					soldier->SetAlive(true);
+					soldier->SetPos(obj->GetPos());
 				}
 #pragma endregion
-
+#pragma region VA CHAM DOI TUONG SINH WEAPON
+				else if(obj->GetIDType() == 14)
+				{
+					if(obj->GetID() != 8)
+					{
+						D3DXVECTOR2 pos = CCamera::GetInstance()->GetPointTransform(obj->GetPos().x, obj->GetPos().y);
+						pos.x = __SCREEN_WIDTH - pos.x + obj->GetPos().x;
+						pos.y = 300;
+						CWeapon* weapon = new CWeapon(pos, obj->GetID());
+						/*CPoolingObject::GetInstance()->m_listWeapon.push_back(new CSoldier(obj->*/
+					}
+					else
+					{
+						if(((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_B && 
+							((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_R)
+						{
+							this->m_typeBullet = ((CBulletItem*)(obj))->m_stateItem;
+						}
+					}
+				}
+#pragma endregion
 			}
 		}
 	}
@@ -1257,6 +1304,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			}
 		}
 	}
+
 }
 	
 RECT* CContra::GetRectRS()

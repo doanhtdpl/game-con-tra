@@ -136,12 +136,12 @@ CGameObject* CLoadGameObject::CreateObject(const std::vector<int>& info)
 		int idTypeObj = idObj / 1000;
 		switch (idTypeObj)
 		{
-		case 12: case 14:
+		case 12:
 			{
 				return CFactoryDynamicObject::GetInstance()->CreateObject(info);
 				break;
 			}
-		case 11: case 13: case 15:
+		case 11: case 13: case 14: case 15: case 16:
 			{
 				return CFactoryStaticObject::GetInstance()->CreateObject(info);
 				break;
@@ -222,6 +222,10 @@ void CLoadGameObject::Draw()
 			CGameObject* gameObj = *it;
 			//if(gameObj->GetIDType() != 14)
 			//{
+			if (gameObj->GetIDType() == 11 && gameObj->GetID() == 4)
+			{
+				int count = 0;
+			}
 			if(gameObj && gameObj->IsAlive())
 				CDrawObject::GetInstance()->Draw(gameObj);
 			//}

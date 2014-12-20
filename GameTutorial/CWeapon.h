@@ -9,6 +9,7 @@ class CWeapon : public CDynamicObject
 {
 public:
 	CWeapon(void);
+	CWeapon(D3DXVECTOR2 position, int id);
 	CWeapon(const std::vector<int>& info);
 	~CWeapon();
 	std::string ClassName(){return __CLASS_NAME__(CWeapon);};

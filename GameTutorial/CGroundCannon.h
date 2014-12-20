@@ -21,7 +21,7 @@ public:
 	~CGroundCanon();
 	std::string ClassName(){ return __CLASS_NAME__(CGroundCanon); };
 	virtual void Update(float deltaTime);
-	virtual void Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
+	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	RECT* GetBound();
 	RECT* GetRectRS();
@@ -33,6 +33,8 @@ protected:
 	void SetFrame();
 	bool m_isShoot;
 	void MoveUp(float deltaTime);
+	void MoveDown(float deltaTime);
+	bool m_moveUpComplete; //U sung da xuat hien
 	//Tham so dung de test
 public:
 

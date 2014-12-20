@@ -9,6 +9,36 @@ CWeapon::CWeapon(void)
 	this->Init();
 }
 
+CWeapon::CWeapon(D3DXVECTOR2 position, int id)
+{
+	this->Init();
+	this->m_pos = position;
+	this->m_id = id;
+	switch (this->m_id)
+	{
+	case 1:
+		this->m_stateItem =  STATE_BULLET_ITEM::BULLET_ITEM_B;
+		break;
+	case 2:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_F;
+		break;
+	case 3:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_L;
+		break;
+	case 4:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_M;
+		break;
+	case 5:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_R;
+		break;
+	case 6:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_S;
+		break;
+	default:
+		break;
+	}
+}
+
 CWeapon::CWeapon(const std::vector<int>& info)
 {
 	this->Init();//
@@ -51,8 +81,8 @@ CWeapon::CWeapon(const std::vector<int>& info)
 void CWeapon::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 10;
-	this->m_idType = 20;
+	this->m_id = 1;
+	this->m_idType = 14;
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;

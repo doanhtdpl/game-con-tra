@@ -50,7 +50,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;dxerr.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;dxerr.lib;dinput8.lib;winmm.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,6 +120,8 @@
     <ClCompile Include="CDefenseCannonTurret.cpp" />
     <ClCompile Include="CPoolingObject.cpp" />
     <ClCompile Include="CBridge.cpp" />
+	<ClCompile Include="CManageAudio.cpp" />
+	<ClCompile Include="CSoundUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CAnimation.h" />
@@ -176,7 +178,9 @@
     <ClInclude Include="CDefenseCannonGun.h" />
     <ClInclude Include="CDefenseCannonTurret.h" />
     <ClInclude Include="CPoolingObject.h" />
-    <ClCompile Include="CBridge.h" />
+    <ClInclude Include="CBridge.h" />
+	<ClInclude Include="CManageAudio.h" />
+    <ClInclude Include="CSoundUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
