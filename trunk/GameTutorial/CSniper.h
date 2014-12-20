@@ -21,14 +21,11 @@ class CSniper : public CStaticObject, public CAnimation
 {
 public:
 	CSniper(void);
-	// New constructor
-	CSniper(int idType, D3DXVECTOR2 pos);
-
 	CSniper(const std::vector<int>& info);
 	~CSniper();
 	std::string ClassName(){return __CLASS_NAME__(CSniper);};
 	virtual void Update(float deltaTime);
-	virtual void Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
+	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	virtual void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	RECT* GetBound();
 	RECT* GetRectRS();
@@ -47,9 +44,6 @@ public:
 	int m_bulletCount; //So luong vien dan da ban ra
 	float m_timeDelay;
 	float m_waitForChangeSprite;
-
-	// thanh thai
-	int m_idState;
 };
 
 #endif // !__CSNIPER_H__

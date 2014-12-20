@@ -10,51 +10,8 @@ CSniper::CSniper(void)
 	this->Init();
 }
 
-// Constructor
-CSniper::CSniper(int idType, D3DXVECTOR2 pos)
-{
-	this->m_id = 1;
-	this->m_idType = 11; 
-	this->m_idImage = 0;
-	this->m_isALive = true;
-	this->m_isAnimatedSprite = true;
-	this->m_width = 52.0f;//56.0f; //78
-	this->m_height = 78.0f; //88.0f; //84
-	//this->m_pos = D3DXVECTOR2(250.0f, 300.0f);
-	this->m_left = false;
-
-	//Khoi tao cac thong so chuyen doi sprite
-	this->m_currentTime = 0;
-	this->m_currentFrame = 6;
-	this->m_elapseTimeChangeFrame = 0.2f;
-
-	this->m_increase = 1;
-	this->m_totalFrame = 10;
-	this->m_column = 6;
-	//
-	this->m_isShoot = true;
-	//Test
-	this->m_bulletCount = 0;
-
-	this->m_idState = idType;
-	//
-	this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_HIDING;
-	this->m_timeDelay = 2.0f;
-	this->m_waitForChangeSprite = 0.0f;
-	if (m_idState == 1)
-	{
-		this->m_currentFrame = 0;
-		this->m_timeDelay = 0.25f;
-		this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_SHOOTING_NORMAL;
-	}
-	this->m_pos = pos;
-
-	this->m_allowShoot = true;
-}
-
 CSniper::CSniper(const std::vector<int>& info)
 {
-	this->Init();//
 	if(!info.empty())
 	{
 		this->m_id = info.at(0) % 1000;
@@ -63,6 +20,7 @@ CSniper::CSniper(const std::vector<int>& info)
 		this->m_width = info.at(3);
 		this->m_height = info.at(4);
 	}
+	this->Init();//
 }
 
 // Ham khoi tao cua linh nup
@@ -70,16 +28,12 @@ void CSniper::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
 	// TT
-	this->m_idState = 2;
 
-	this->m_id = 1;
-	this->m_idType = 11; 
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
 	this->m_width = 52.0f;//56.0f; //78
 	this->m_height = 78.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(250.0f, 300.0f);
 	this->m_left = false;
 
 	//Khoi tao cac thong so chuyen doi sprite
@@ -93,7 +47,14 @@ void CSniper::Init()
 	this->m_column = 6;
 	//
 	this->m_isShoot = true;
-	this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_HIDING;
+	if (this->m_id == 2)
+	{
+		this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_HIDING;
+	}
+	else
+	{
+		this->m_stateCurrent = SNIPER_SHOOT_STATE::SN_IS_SHOOTING_NORMAL;
+	}
 
 	this->m_bulletCount = 0;
 	this->m_timeDelay = 2.0f;
@@ -111,9 +72,18 @@ void CSniper::Update(float deltaTime)
 
 }
 
-void CSniper::Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
+void CSniper::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-
+	if (this->IsAlive())
+	{
+		this->SetFrame(deltaTime);
+		this->ChangeFrame(deltaTime);
+		this->BulletUpdate(deltaTime);
+		if (this->m_currentFrame != 6)
+		{
+			this->OnCollision(deltaTime, nullptr);
+		}
+	}
 }
 
 void CSniper::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -124,7 +94,7 @@ void CSniper::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 	float moveY = 0.0f;
 	float timeCollision;
 
-	for (std::vector<CGameObject*>::iterator it = CContra::GetInstance()->m_listBullet.begin(); it != CContra::GetInstance()->m_listBullet.end();)
+	for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin(); it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
 	{
 		CGameObject* obj = *it;
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
@@ -133,7 +103,7 @@ void CSniper::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			// Gan trang thai die cho doi tuong
 			this->m_stateCurrent = SN_IS_DIE;
 			// Xoa vien dan ra khoi d.s
-			it = CContra::GetInstance()->m_listBullet.erase(it);
+			it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
  		}
 		else
 		{
@@ -161,7 +131,7 @@ void CSniper::BulletUpdate(float deltaTime)
 	}
 
 	// check if sniper is normal sniper.
-	if (m_idState == 1)
+	if (this->m_id == 1)
 	{
 		if(spaceX != 0)
 		{
@@ -193,7 +163,7 @@ void CSniper::BulletUpdate(float deltaTime)
 #pragma region THIET LAP TRANG THAI BAN
 
 	// Normal sniper.
-	if (m_idState == 1)
+	if (this->m_id == 1)
 	{
 		if(this->m_isShoot && this->m_stateCurrent != SN_IS_DIE)
 		{
@@ -316,7 +286,7 @@ void CSniper::BulletUpdate(float deltaTime)
 #pragma region THIET LAP TOC DO DAN
 
 	// Normal sniper.
-	if (this->m_idState == 1)
+	if (this->m_id == 1)
 	{
 		if(this->m_isShoot)
 		{
