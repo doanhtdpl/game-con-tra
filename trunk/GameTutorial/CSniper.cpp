@@ -461,7 +461,14 @@ RECT* CSniper::GetRectRS()
 
 Box CSniper::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 20, this->m_height, 0, 0);
+	if (this->m_stateCurrent == SNIPER_SHOOT_STATE::SN_IS_HIDING)
+	{
+		return Box(this->m_pos.x, this->m_pos.y - 20, this->m_width - 20, this->m_height - 40, 0, 0);
+	}
+	else
+	{
+		return Box(this->m_pos.x, this->m_pos.y, this->m_width - 20, this->m_height, 0, 0);
+	}
 }
 
 CSniper::~CSniper()

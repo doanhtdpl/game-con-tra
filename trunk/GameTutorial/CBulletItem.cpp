@@ -1,5 +1,6 @@
 #include "CBulletItem.h"
 #include "CCollision.h"
+#include "CContra.h"
 
 CBulletItem::CBulletItem(void)
 {
@@ -44,9 +45,9 @@ void CBulletItem::Init()
 	this->m_height = 27.0f; //88.0f; //84
 	this->m_pos = D3DXVECTOR2(1100.0f, 200.0f);
 	this->m_left = false;
-	this->m_a = -900.0f;
+	this->m_a = -700.0f;
 	this->m_vx = 80.0f;
-	this->m_vy = 500.0f;
+	this->m_vy = 400.0f;
 
 	//Khoi tao cac thong so chuyen doi sprite
 	this->m_currentTime = 0;
@@ -57,7 +58,6 @@ void CBulletItem::Init()
 	this->m_column = 10;
 
 	this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_L;
-	this->m_angle = 0;
 }
 
 void CBulletItem::Update(float deltaTime)
@@ -101,6 +101,12 @@ void CBulletItem::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 	float timeCollision;
 	//Kiem tra va cham voi ground
 	bool checkColWithGround = false;
+	timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), this, normalX, normalY, moveX, moveY, deltaTime);
+	if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+	{
+		CContra::GetInstance()->SetTypeBullet(this->m_stateItem);
+		this->m_isALive = false;
+	}
 	for (std::vector<CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
 	{
 		CGameObject* obj = *it;
@@ -112,12 +118,12 @@ void CBulletItem::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 			{
 				if (normalY > 0.0f){
+					checkColWithGround = true;
 					if(timeCollision == 2 && this->m_vy < 0)
 					{
 						this->m_pos.y += moveY;
 						this->m_vx = 0;
 						this->m_vy = 0;
-						this->m_angle = 0;
 				
 					}
 					else
@@ -128,6 +134,7 @@ void CBulletItem::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 			}
 		}	
 	}
+
 #pragma endregion
 }
 

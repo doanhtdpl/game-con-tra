@@ -63,7 +63,12 @@ void CBridge::Update(float deltaTime)
 
 void CBridge::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-
+	this->OnCollision(deltaTime, listObjectCollision);
+	if(this->m_isCollisionContra)
+	{
+		this->SetFrame(deltaTime); //Cai ham nay bo vao cho changeFrame, tuc la sau moi lan Frame thay doi thi set lai frame
+		this->ChangeFrame(deltaTime);
+	}
 }
 
 void CBridge::SetFrame(float deltaTime)
@@ -138,7 +143,7 @@ void CBridge::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 
 	//Sắp va chạm > 0 và < 1
 	//Hai Box Giao Nhau (Đã va chạm rồi) = 2 và moveX, moveY (độ lún)
-	timeCollision = CCollision::GetInstance()->Collision(this, CContra::GetInstance(), normalX, normalY, moveX, moveY, deltaTime);
+	timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), this, normalX, normalY, moveX, moveY, deltaTime);
 	if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 	{
 		this->m_isCollisionContra = true;

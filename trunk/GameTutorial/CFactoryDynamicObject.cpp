@@ -35,12 +35,6 @@ CGameObject* CFactoryDynamicObject::CreateObject(const std::vector<int>& info)
 			{
 				return new CSoldier(info);
 			}
-
-			//Dynamic Item
-		case 14001: //SWeapon
-			{
-				return new CWeapon(info);
-			}
 		case 14002: //Dan B
 			{
 				//return new CWeapon(info);

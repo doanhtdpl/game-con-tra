@@ -50,6 +50,34 @@ void CPoolingObject::CreateExplosionEffect(int size)
 	}
 }
 
+void CPoolingObject::CreateSoliderObject(int size)
+{
+	if (this->m_listSolider.empty())
+	{
+		for (int i = 0; i < size; i++)
+		{
+			CSoldier* soldier;
+			soldier = new CSoldier();
+			this->m_listSolider.push_back(soldier);
+		}
+	}
+}
+
+CSoldier* CPoolingObject::GetSoliderObject()
+{
+	for (std::vector<CSoldier*>::iterator it = this->m_listSolider.begin();
+		it != this->m_listSolider.end();
+		++it)
+	{
+		CSoldier* obj = *it;
+		if (!obj->IsAlive())
+		{
+			return obj;
+			break;
+		}
+	}
+}
+
 
 CBulletItem* CPoolingObject::GetBulletItem()
 {
@@ -60,6 +88,7 @@ CBulletItem* CPoolingObject::GetBulletItem()
 		CBulletItem* obj = *it;
 		if (!obj->IsAlive())
 		{
+			obj->Init();
 			return obj;
 			break;
 		}
@@ -163,6 +192,32 @@ void CPoolingObject::Update(float deltaTime, std::vector<CGameObject*>* listObje
 		}
 
 	}
+
+	//Update Soldier
+	for (std::vector<CSoldier*>::iterator it = this->m_listSolider.begin();
+		it != this->m_listSolider.end();
+		++it)
+	{
+		CSoldier* obj = *it;
+		if (obj != NULL && obj->IsAlive())
+		{
+			obj->Update(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
+		}
+
+	}
+
+	//Update Weapon
+	for (std::vector<CWeapon*>::iterator it = this->m_listWeapon.begin();
+		it != this->m_listWeapon.end();
+		++it)
+	{
+		CWeapon* obj = *it;
+		if (obj != NULL && obj->IsAlive())
+		{
+			obj->Update(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
+		}
+
+	}
 }
 
 void CPoolingObject::Draw()
@@ -212,6 +267,32 @@ void CPoolingObject::Draw()
 		++it)
 	{
 		CBulletItem* obj = *it;
+		if (obj != NULL && obj->IsAlive())
+		{
+			CDrawObject::GetInstance()->Draw(obj);
+		}
+
+	}
+
+	////Draw Weapon
+	for (std::vector<CWeapon*>::iterator it = this->m_listWeapon.begin();
+		it != this->m_listWeapon.end();
+		++it)
+	{
+		CWeapon* obj = *it;
+		if (obj != NULL && obj->IsAlive())
+		{
+			CDrawObject::GetInstance()->Draw(obj);
+		}
+
+	}
+
+	//
+	for (std::vector<CSoldier*>::iterator it = this->m_listSolider.begin();
+		it != this->m_listSolider.end();
+		++it)
+	{
+		CSoldier* obj = *it;
 		if (obj != NULL && obj->IsAlive())
 		{
 			CDrawObject::GetInstance()->Draw(obj);

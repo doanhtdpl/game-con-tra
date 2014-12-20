@@ -133,35 +133,32 @@ void CWallTurret::BulletUpdate(float deltaTime)
 		this->m_oldangle = angle;
 	else
 	{
-		if (angle  * m_oldangle > 0)
+		if (angle < m_oldangle)
 		{
-			if (angle < m_oldangle)
-				temp = -1;
+			if (m_oldangle >= PI)
+				temp = 1;
 			else
 			{
-				if (posContraFlowWT.y < 0)
-				{
-					temp = -1;
-				}
-				else
+				if (m_oldangle - angle > 180)
 					temp = 1;
+				else
+					temp = -1;
 			}
+
 		}
 		else
 		{
-			if (posContraFlowWT.x>0)
+			if (angle > m_oldangle)
 			{
-				if (m_oldangle > 0 && angle < 0)
-					temp = -1;
+				if (angle >= PI)
+				{
+					if ((angle - m_oldangle) > 180)
+						temp = -1;
+					else
+						temp = 1;
+				}
 				else
 					temp = 1;
-			}
-			else
-			{
-				if (m_oldangle > 0 && angle < 0)
-					temp = 1;
-				else
-					temp = -1;
 			}
 		}
 		if (temp != 0)
@@ -171,9 +168,8 @@ void CWallTurret::BulletUpdate(float deltaTime)
 			{
 				if (this->m_totalCurr < this->m_space)
 				{
-					this->m_totalCurr += shootAngleNormal;
 					m_oldangle += temp*shootAngleNormal;
-
+					this->m_totalCurr += shootAngleNormal;
 				}
 				else
 				{
@@ -285,19 +281,19 @@ void CWallTurret::BulletUpdate(float deltaTime)
 				}
 				else{
 					offset.x = -15.0f;
-					offset.y = this->m_height / 2-25.0f;
+					offset.y = this->m_height / 2 - 150.f;
 				}
 				break;
 		}
 		case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_UP_2X:
 		{
 			if (this->m_direction){
-				offset.y = 30.0f;
-				offset.x = this->m_width / 2 - 15.0f;
+				offset.y = 20.0f;
+				offset.x = 10.0f;
 			}
 			else{
-				offset.x = -15.0f;
-				offset.y = this->m_width / 2;
+				offset.x = -10.0f;
+				offset.y = 20.0f;
 			}
 			break;
 		}
@@ -320,8 +316,8 @@ void CWallTurret::BulletUpdate(float deltaTime)
 				offset.x = this->m_width / 2;
 			}
 			else{
-				offset.x = -30.0f;
-				offset.y = this->m_width / 2 -50.0f;
+				offset.x = this->m_width / 2;
+				offset.y = 10.0f;
 			}
 			break;
 		}
@@ -332,8 +328,8 @@ void CWallTurret::BulletUpdate(float deltaTime)
 				offset.x = this->m_width / 2 - 15.0f;
 			}
 			else{
-				offset.x = - 10.0f;
-				offset.y = this->m_height / 2 - 60.0f;
+				offset.x = this->m_width / 2 - 15.0f;
+				offset.y = this->m_height / 2 ;
 			}
 			break;
 }
