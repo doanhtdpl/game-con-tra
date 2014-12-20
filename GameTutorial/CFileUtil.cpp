@@ -1,4 +1,5 @@
 #include "CFileUtil.h"
+#include "CManageAudio.h"
 
 CFileUtil::CFileUtil()
 {

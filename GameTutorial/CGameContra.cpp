@@ -4,6 +4,7 @@
 #include "CDevice.h"
 #include "CInput.h"
 #include "CManagementTexture.h"
+#include "CManageAudio.h"
 
 CGameContra::CGameContra()
 {
@@ -18,6 +19,10 @@ void CGameContra::Init()
 	CInput::GetInstance()->InitKeyboard(CView::m_hwndWindow);
 	CStateManagement::GetInstance()->ChangeState(new CStateGamePlay());
 	CManagementTexture::GetInstance()->LoadAllResourceFromFile(__OBJECT_PATH__);
+
+	//Audio
+	ManageAudio::GetInstance()->init_DirectSound(CView::m_hwndWindow);
+	ManageAudio::GetInstance()->readFileAudio();
 }
 
 void CGameContra::Destroy()

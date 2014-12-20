@@ -33,6 +33,7 @@ typedef signed char		   __INT8;
 typedef unsigned char	   __UINT8;
 
 #define __OBJECT_PATH__ "..\\Resource\\File\\Object\\ObjectPath.csv"
+#define __AUDIO_PATH__ "..\\Resource\\File\\Audio\\AudioPath.csv"
 #define __SIMON_PATH__  "..\\Resource\\simon.png"
 #define __BULLET_PATH__ "..\\Resource\\Bullet.png"
 #define __CONTRA_PATH__ "..\\Resource\\Contra\\Sprite\\contra.PNG"
