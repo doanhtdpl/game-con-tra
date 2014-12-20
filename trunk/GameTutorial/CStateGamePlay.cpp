@@ -8,6 +8,7 @@
 #include "CDrawObject.h"
 #include "CCollision.h"
 #include "CPoolingObject.h"
+#include "CManageAudio.h"
 
 CStateGamePlay::CStateGamePlay()
 {
@@ -41,6 +42,9 @@ void CStateGamePlay::Init()
 	CPoolingObject::GetInstance()->CreateEnemyEffect(15);
 	CPoolingObject::GetInstance()->CreateExplosionEffect(15);
 	CPoolingObject::GetInstance()->CreateBulletItem(3);
+
+	//Load Audio
+	ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
 }
 
 void CStateGamePlay::Update(float deltaTime)
