@@ -127,7 +127,7 @@ void CDefenseCannonGun::OnCollision(float deltaTime, std::vector<CGameObject*>* 
 	float moveY = 0.0f;
 	float timeCollision;
 
-	for (std::vector<CGameObject*>::iterator it = CContra::GetInstance()->m_listBullet.begin(); it != CContra::GetInstance()->m_listBullet.end();)
+	for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin(); it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
 	{
 		CGameObject* obj = *it;
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
@@ -136,9 +136,9 @@ void CDefenseCannonGun::OnCollision(float deltaTime, std::vector<CGameObject*>* 
 			if (obj->IsAlive())
 			{
 				this->m_HP--;
-				it = CContra::GetInstance()->m_listBullet.erase(it);
+				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 			}
-			
+
 			if (this->m_HP == 0)
 			{
 				// Gan trang thai die cho doi tuong
@@ -233,7 +233,7 @@ void CDefenseCannonGun::SetFrame(bool isGunLeft)
 {
 	switch (this->m_stateCurrent)
 	{
-		case DC_GUN_STATE::DC_GUN_NORMAL:
+	case DC_GUN_STATE::DC_GUN_NORMAL:
 		{
 			if (isGunLeft)
 			{
@@ -264,7 +264,7 @@ void CDefenseCannonGun::SetFrame(bool isGunLeft)
 			}
 			break;
 		}
-		case DC_GUN_STATE::DC_GUN_IS_DIE:
+	case DC_GUN_STATE::DC_GUN_IS_DIE:
 		{
 			if (this->m_countEffect == 0)
 			{
@@ -275,7 +275,7 @@ void CDefenseCannonGun::SetFrame(bool isGunLeft)
 				this->m_countEffect ++;
 				break;
 			}
-			
+
 		}
 	}
 }

@@ -11,7 +11,7 @@ CDefenseCannon::CDefenseCannon(void)
 
 CDefenseCannon::CDefenseCannon(const std::vector<int>& info)
 {
-	this->Init();
+	
 	if (!info.empty())
 	{
 		this->m_id = info.at(0) % 1000;
@@ -20,6 +20,7 @@ CDefenseCannon::CDefenseCannon(const std::vector<int>& info)
 		this->m_width = info.at(3);
 		this->m_height = info.at(4);
 	}
+	this->Init();
 }
 
 void CDefenseCannon::Init()
@@ -105,6 +106,38 @@ void CDefenseCannon::Update(float deltaTime)
 
 void CDefenseCannon::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
+	this->SetFrame();
+	this->ChangeFrame(deltaTime);
+	//////Update cho cac doi tuong con
+	//Co doi tuong linh nup tren dau nua
+	// update effect isalive
+	if (this->sniper->IsAlive())
+		this->sniper->Update(deltaTime);
+	//
+	this->gunLeft->Update(deltaTime);
+	//
+	this->gunRight->Update(deltaTime);
+	//
+	if (this->turrect->IsAlive())
+		this->turrect->Update(deltaTime);
+
+	// TT test
+	// 2 gun die
+	if (!this->gunLeft->IsAlive())
+	{
+		this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_GUNLEFT_DIE;
+	}
+	if (!this->gunRight->IsAlive())
+	{
+		this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_GUNRIGHT_DIE;
+	}
+
+	// Boss die
+	if (!this->turrect->IsAlive())
+	{
+		this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_IS_DIE;
+	}
+
 	this->gunLeft->Update(deltaTime, listObjectCollision);
 	this->gunRight->Update(deltaTime, listObjectCollision);
 }
@@ -115,55 +148,55 @@ void CDefenseCannon::SetFrame()
 	switch (this->m_stateCurrent)
 	{
 	case DEFENSE_CANNON_STATE::DC_NORMAL:
-	{
-		this->m_startFrame = 0;
-		this->m_endFrame = 0;
-		break;
-	}
+		{
+			this->m_startFrame = 0;
+			this->m_endFrame = 0;
+			break;
+		}
 
 	case DEFENSE_CANNON_STATE::DC_FIRE_ONE_GUN:
-	{
-		this->gunLeft->SetAlive(false) ;
-		this->m_startFrame = 1;
-		this->m_endFrame = 1;
-		break;
-	}
+		{
+			this->gunLeft->SetAlive(false) ;
+			this->m_startFrame = 1;
+			this->m_endFrame = 1;
+			break;
+		}
 	case DEFENSE_CANNON_STATE::DC_FIRE_TWO_GUN:
-	{
-		this->gunLeft->SetAlive(false);
-		this->gunRight->SetAlive(false);
-		this->m_startFrame = 2;
-		this->m_endFrame = 2;
-		break;
-	}
+		{
+			this->gunLeft->SetAlive(false);
+			this->gunRight->SetAlive(false);
+			this->m_startFrame = 2;
+			this->m_endFrame = 2;
+			break;
+		}
 	case DEFENSE_CANNON_STATE::DC_FIRE_TURRECT:
-	{
-		this->gunLeft->SetAlive(false);
-		this->gunRight->SetAlive(false);
-		this->turrect->SetAlive(false);
-		this->m_startFrame = 2;
-		this->m_endFrame = 2;
-		break;
-	}
+		{
+			this->gunLeft->SetAlive(false);
+			this->gunRight->SetAlive(false);
+			this->turrect->SetAlive(false);
+			this->m_startFrame = 2;
+			this->m_endFrame = 2;
+			break;
+		}
 
 	case DEFENSE_CANNON_STATE::DC_GUNLEFT_DIE:
-	{
-		this->m_currentFrame = 1;
-		this->m_startFrame = 1;
-		this->m_endFrame = 1;
-		break;
-	}
+		{
+			this->m_currentFrame = 1;
+			this->m_startFrame = 1;
+			this->m_endFrame = 1;
+			break;
+		}
 
 	case DEFENSE_CANNON_STATE::DC_GUNRIGHT_DIE:
-	{
-		this->m_currentFrame = 2;
-		this->m_startFrame = 2;
-		this->m_endFrame = 2;
-		break;
-	}
+		{
+			this->m_currentFrame = 2;
+			this->m_startFrame = 2;
+			this->m_endFrame = 2;
+			break;
+		}
 
 	case DEFENSE_CANNON_STATE::DC_IS_DIE:
-	{
+		{
 			this->gunLeft->SetAlive(false);
 			this->gunRight->SetAlive(false);
 			this->turrect->SetAlive(false);
@@ -198,8 +231,8 @@ void CDefenseCannon::SetFrame()
 				this->m_endFrame = 11;
 			}
 
-		break;
-	}
+			break;
+		}
 	default:
 		break;
 	}

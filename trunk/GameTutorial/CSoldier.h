@@ -17,7 +17,6 @@ class CSoldier : public CDynamicObject, public CAnimation
 public:
 	CSoldier(void);
 	CSoldier(const std::vector<int>& info);
-	CSoldier(D3DXVECTOR2 pos);
 	~CSoldier();
 	std::string ClassName(){return __CLASS_NAME__(CSoldier);};
 	virtual void Update(float deltaTime);
@@ -29,8 +28,9 @@ public:
 	RECT* GetRectRS();
 	Box GetBox();
 	void setJump(bool jump);
-protected:
 	void Init();
+protected:
+
 	void BulletUpdate(float deltaTime);
 	SOLDIER_STATE m_stateCurrent;
 	void SetFrame(float deltaTime);
@@ -38,6 +38,7 @@ protected:
 	//Tham so dung de test
 	float m_waitForChangeSprite;
 	bool m_jump;
+	int m_countRepeat;
 };
 
 #endif // !__CSOLDIER_H__

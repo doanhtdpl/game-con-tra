@@ -5,6 +5,8 @@
 #include "CGroundCannon.h"
 #include "CSniper.h"
 #include "CBridge.h"
+#include "CDefenseCannon.h"
+#include "CSoldier.h"
 
 CFactoryStaticObject::~CFactoryStaticObject()
 {
@@ -32,6 +34,10 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 		{
 		case 15001:
 		case 15002:
+		case 15003:	// sjnh weapon
+		case 15004:	// sinh enemy
+		case 15006:
+		case 15007:
 		case 14002: //Dan F
 		case 14003: //Dan L
 		case 14004: //Dan M
@@ -40,6 +46,11 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 		case 14001: //Dan S
 			{
 				return new CHidenObject(info);
+			}
+			// TT
+		case 11000:
+			{
+				return new CSoldier(info);
 			}
 		case 11001: case 11002:
 			{
@@ -53,10 +64,10 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 			{
 				return new CGroundCanon(info);
 			}
-		//case 13001: //Weapon tinh
-		//	{
-		//		return new CSWeapon(info);
-		//	}
+			//case 13001: //Weapon tinh
+			//	{
+			//		return new CSWeapon(info);
+			//	}
 		case 13002: //Dan F
 		case 13003: //Dan L
 		case 13004: //Dan M
@@ -69,6 +80,11 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 		case 16001:
 			{
 				return new CBridge(info);
+			}
+
+		case 17001://Boss map 1
+			{
+				return new CDefenseCannon(info);
 			}
 		default:
 			return nullptr;

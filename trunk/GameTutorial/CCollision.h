@@ -17,6 +17,7 @@ public:
 	bool AABBCheck(Box b1, Box b2, float& moveX, float& moveY, float& normalX, float& normalY);
 	bool AABBCheck(Box b1, Box b2);
 	float Collision(CGameObject* ObjectA, CGameObject* ObjectB, float& normalx, float& normaly, float& moveX, float& moveY, float deltaTime);
+	bool Collision(CGameObject* ObjectA, CGameObject* ObjectB);
 	CCollision();
 	~CCollision();
 private:

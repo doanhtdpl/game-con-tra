@@ -7,7 +7,10 @@ enum HIDEN_OBJECT_TYPE
 {
 	ON_GROUND = 15001,
 	UNDER_WATER = 15002,
-	CREATE_ENEMY = 15003
+	CREATE_WEAPON = 15003,
+	CREATE_ENEMY = 15004,
+	ENEMY_POS_R = 15006,
+	ENEMY_POS_L = 15007
 };
 
 class CHidenObject : public CStaticObject
@@ -22,11 +25,16 @@ public:
 	virtual void SetHidenObjectType(HIDEN_OBJECT_TYPE type){this->m_type = type;};
 	virtual Box GetBox();
 	virtual void Update(float deltaTime);
-	virtual void Update(float deltaTime, std::vector<CGameObject*> listObjectCollision);
+	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	//sang test va cham
 	virtual RECT* GetRectRS();
 protected:
 	HIDEN_OBJECT_TYPE m_type;
+	static bool m_createEnemy;
+	static bool m_createWeapon;
+	int countWeapon;
+	float m_waitForCreateEnemy;
+
 };
 
 #endif // !__CHIDEN_OBJECT_H__

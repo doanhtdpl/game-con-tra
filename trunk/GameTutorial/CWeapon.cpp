@@ -81,14 +81,12 @@ CWeapon::CWeapon(const std::vector<int>& info)
 void CWeapon::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 1;
 	this->m_idType = 14;
 	this->m_idImage = 0;
-	this->m_isALive = true;
+	this->m_isALive = false;
 	this->m_isAnimatedSprite = true;
 	this->m_width = 49.0f;//56.0f; //78
 	this->m_height = 27.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(0.0f, 320.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -104,9 +102,36 @@ void CWeapon::Init()
 	this->m_left = false;
 	this->m_angle = 0;
 
-	this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_M;
+	//this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_M;
 	//
+	switch (this->m_id)
+	{
+	case 1:
+		this->m_stateItem =  STATE_BULLET_ITEM::BULLET_ITEM_B;
+		break;
+	case 2:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_F;
+		break;
+	case 3:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_L;
+		break;
+	case 4:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_M;
+		break;
+	case 5:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_R;
+		break;
+	case 6:
+		this->m_stateItem = STATE_BULLET_ITEM::BULLET_ITEM_S;
+		break;
+	default:
+		break;
+	}
+}
 
+void CWeapon::SetID(int id)
+{
+	this->m_id = id;
 }
 
 void CWeapon::Update(float deltaTime)
@@ -116,7 +141,7 @@ void CWeapon::Update(float deltaTime)
 
 void CWeapon::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-	this->Update(deltaTime);
+	this->MoveUpdate(deltaTime);
 	this->OnCollision(deltaTime, listObjectCollision);
 }
 

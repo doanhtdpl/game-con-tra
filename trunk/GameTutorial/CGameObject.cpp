@@ -53,6 +53,12 @@ void CGameObject::SetAlive(bool alive)
 {
 	this->m_isALive = alive;
 }
+
+void CGameObject::SetLeft(bool left)
+{
+	this->m_left = left;
+}
+
 //Dung de xet va cham + xen trong quad tree
 Box CGameObject::GetBox()
 {

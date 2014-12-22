@@ -1,6 +1,7 @@
 #include "CExplosionEffect.h"
 
 CExplosionEffect::CExplosionEffect() : CDynamicObject(){
+	this->Init();
 	this->m_pos = D3DXVECTOR2(0.0f, 0.0f);
 	this->Init();
 }
@@ -37,6 +38,7 @@ void CExplosionEffect::ChangeFrame(float deltaTime)
 	{
 		this->m_currentFrame += this->m_increase;
 		if (this->m_currentFrame > this->m_endFrame){
+			this->m_currentFrame = 0;
 			this->m_isALive = false;
 			this->m_currentFrame = this->m_startFrame;
 		}
