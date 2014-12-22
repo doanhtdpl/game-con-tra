@@ -17,7 +17,7 @@ CStateGamePlay::CStateGamePlay()
 	//this->br = new CBridge();
 	//this->nobj = new CSniper();
 	//this->wobj = new CWallTurret();
-	this->weObj = new CWeapon();
+	//this->weObj = new CWeapon();
 	//this->wseObj = new CSWeapon();
 	//
 	//this->defCannonObj = new CDefenseCannon();
@@ -44,6 +44,8 @@ void CStateGamePlay::Init()
 	CPoolingObject::GetInstance()->CreateExplosionEffect(15);
 	CPoolingObject::GetInstance()->CreateBulletItem(3);
 	CPoolingObject::GetInstance()->CreateSoliderObject(10);
+	// TT
+	CPoolingObject::GetInstance()->CreateWeapon(15);
 	//Load Audio
 	ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
 }
@@ -66,10 +68,7 @@ void CStateGamePlay::Update(float deltaTime)
 	//	wseObj->item->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 	//}
 
-	weObj->Update(deltaTime);
-	if (weObj->IsAlive()){
-		weObj->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
-	}
+	
 
 	CPoolingObject::GetInstance()->Update(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 
@@ -99,9 +98,8 @@ void CStateGamePlay::Render()
 		CDrawObject::GetInstance()->Draw(wseObj->item);
 	}
 	*/
-	if (weObj->IsAlive()){
-		CDrawObject::GetInstance()->Draw(weObj);
-	}/*
+	
+	/*
 	if (weObj->effect != NULL){
 		CDrawObject::GetInstance()->Draw(weObj->effect);
 	}

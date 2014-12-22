@@ -14,7 +14,7 @@ CGameContra::CGameContra()
 void CGameContra::Init()
 {
 	CView::GetInstance()->InitClienWindow();
-	CDevice::GetInstance()->InitDerect3D();
+	CDevice::GetInstance()->InitDirect3D();
 	CInput::GetInstance()->InitInput(CView::m_hInstance);
 	CInput::GetInstance()->InitKeyboard(CView::m_hwndWindow);
 	CStateManagement::GetInstance()->ChangeState(new CStateGamePlay());

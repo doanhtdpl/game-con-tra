@@ -141,7 +141,7 @@ CGameObject* CLoadGameObject::CreateObject(const std::vector<int>& info)
 				return CFactoryDynamicObject::GetInstance()->CreateObject(info);
 				break;
 			}
-		case 11: case 13: case 14: case 15: case 16:
+		case 11: case 13: case 14: case 15: case 16: case 17:
 			{
 				return CFactoryStaticObject::GetInstance()->CreateObject(info);
 				break;
@@ -220,15 +220,8 @@ void CLoadGameObject::Draw()
 			++it)
 		{
 			CGameObject* gameObj = *it;
-			//if(gameObj->GetIDType() != 14)
-			//{
-			if (gameObj->GetIDType() == 11 && gameObj->GetID() == 4)
-			{
-				int count = 0;
-			}
 			if(gameObj && gameObj->IsAlive())
 				CDrawObject::GetInstance()->Draw(gameObj);
-			//}
 		}
 	}
 }
@@ -246,11 +239,11 @@ void CLoadGameObject::Update(float deltaTime)
 			++it)
 		{
 			CGameObject* gameObj = *it;
-			if(gameObj->GetIDType() != 15)
-			{
+			//if(gameObj->GetIDType() != 15)
+			//{
 				///gameObj->Update(deltaTime);
 				gameObj->Update(deltaTime, this->m_listGameObject);
-			}
+			//}
 		}
 	}
 }

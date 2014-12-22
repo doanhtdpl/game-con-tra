@@ -3,6 +3,7 @@
 #include "CCollision.h"
 #include "CContra.h"
 #include "CLoadGameObject.h"
+#include "CCamera.h"
 
 CSoldier::CSoldier(void)
 {
@@ -21,42 +22,6 @@ CSoldier::CSoldier(const std::vector<int>& info)
 		this->m_height = info.at(4);
 	}
 }
-CSoldier::CSoldier(D3DXVECTOR2 pos)
-{
-	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 0;
-	this->m_idType = 11; 
-	this->m_idImage = 0;
-	this->m_isALive = true;
-	this->m_isAnimatedSprite = true;
-	this->m_width = 40.0f;//56.0f; //78
-	this->m_height = 66.0f; //88.0f; //84
-	this->m_pos = pos;
-	//Khoi tao cac thong so di chuyen
-	this->m_isJumping = false;
-	this->m_isMoveLeft = false;
-	this->m_isMoveRight = true;
-	this->m_a = -700.0f;
-	this->m_canJump = true;
-	this->m_jumpMax = 40.0f;
-	//this->m_currentJump = 0.0f;
-	this->m_vxDefault = 100.0f;
-	this->m_vyDefault = 300.0f;
-	this->m_vx = this->m_vxDefault;
-	this->m_vy = 0;
-	this->m_left = false;
-
-	//Khoi tao cac thong so chuyen doi sprite
-	this->m_currentTime = 0;
-	this->m_currentFrame = 0;
-	this->m_elapseTimeChangeFrame = 0.20f;
-	this->m_increase = 1;
-	this->m_totalFrame = 6;
-	this->m_column = 6;
-	//
-	this->m_isShoot = false;
-	this->m_stateCurrent = SOLDIER_STATE::S_IS_JOGGING;
-}
 
 void CSoldier::Init()
 {
@@ -68,7 +33,6 @@ void CSoldier::Init()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 40.0f;//56.0f; //78
 	this->m_height = 66.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(200.0f, 400.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -81,7 +45,7 @@ void CSoldier::Init()
 	this->m_vyDefault = 400.0f;
 	this->m_vx = this->m_vxDefault;
 	this->m_vy = 0;
-	this->m_left = false;
+	this->m_left = true;
 
 	//Khoi tao cac thong so chuyen doi sprite
 	this->m_currentTime = 0;
@@ -94,8 +58,9 @@ void CSoldier::Init()
 	this->m_isShoot = false;
 	this->m_stateCurrent = SOLDIER_STATE::S_IS_JOGGING;
 	//Test
-	this->m_jump = false;
+	this->m_jump = true;
 	this->m_waitForChangeSprite = 0.0f;
+	this->m_countRepeat = 0;
 }
 
 void CSoldier::Update(float deltaTime)
@@ -154,26 +119,39 @@ void CSoldier::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjec
 			CGameObject* obj = *it;
 			//Lay thoi gian va cham
 			//Neu doi tuong la ground va dang va cham
-			if((obj->GetIDType() == 15 && obj->GetID() == 1) && !checkColWithGround)
+			if(((obj->GetIDType() == 15 && obj->GetID() == 1) || (obj->GetIDType() == 16 && obj->GetID() == 1)) && !checkColWithGround)
 			{
 				timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
 				if((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 				{
 					if(normalY > 0)
 					{
+
 						checkColWithGround = true;
-						this->m_stateCurrent = SOLDIER_STATE::S_IS_JOGGING;
-						if( timeCollision == 2.0f)
+						if (this->m_stateCurrent == SOLDIER_STATE::S_IS_JUMP)
 						{
-							//this->m_isJumping = false;
-							this->m_pos.y += moveY;
-							this->m_vy = 0;
-							this->m_a = 0;
+							if (this->m_vy < -200.0f)
+							{
+								this->m_stateCurrent = SOLDIER_STATE::S_IS_JOGGING;
+								if( timeCollision == 2.0f)
+								{
+									//this->m_isJumping = false;
+									this->m_pos.y += moveY;
+									this->m_vy = 0;
+									this->m_a = 0;
+								}
+							}
 						}
 						else
 						{
-							//this->m_pos.y += timeCollision*this->m_vy * deltaTime;
-							//this->m_a = 0;
+							this->m_stateCurrent = SOLDIER_STATE::S_IS_JOGGING;
+							if( timeCollision == 2.0f)
+							{
+								//this->m_isJumping = false;
+								this->m_pos.y += moveY;
+								this->m_vy = 0;
+								this->m_a = 0;
+							}
 						}
 					}
 				}
@@ -183,7 +161,7 @@ void CSoldier::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjec
 		if(!checkColWithGround)
 		{
 			this->m_a = -700.0f;
-			//this->m_left = !this->m_left;
+			
 			if (this->m_jump)
 			{
 				if(this->m_vy == 0.0f)
@@ -192,7 +170,16 @@ void CSoldier::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjec
 			}
 			else
 			{
+				// Soldier quay dau nguoc lai.
 				this->m_left = !this->m_left;
+				this->m_countRepeat ++;
+				if (m_countRepeat > 2)
+				{
+					this->m_countRepeat = 0;
+					this->m_jump = true;
+				}
+				// Xet gia tri tiep theo la nhay.
+				//this->m_jump = true;
 			}
 		}
 	}
@@ -259,14 +246,6 @@ void CSoldier::MoveUpdate(float deltaTime)
 		}
 		this->m_vy += this->m_a * deltaTime;
 		this->m_pos.y += this->m_vy * deltaTime;
-		/*if(this->m_pos.y <= this->m_s)
-		{
-			this->m_pos.y = this->m_s;
-			this->m_stateCurrent = SOLDIER_STATE::S_IS_STANDING;
-			this->m_vxDefault = 100.0f;
-			this->m_isJumping = false;
-			this->m_s = 0;
-		}*/
 	}
 #pragma endregion
 	else
@@ -277,6 +256,14 @@ void CSoldier::MoveUpdate(float deltaTime)
 	this->m_pos.x += this->m_vx * deltaTime;
 	this->m_vy += this->m_a * deltaTime;
 	this->m_pos.y += this->m_vy * deltaTime;
+
+	// Xet' alive = false khi soldier ra khoi man hinh
+	D3DXVECTOR3 pos;
+	pos = CCamera::GetInstance()->GetPointTransform(this->m_pos.x, this->m_pos.y);
+	if(pos.x > __SCREEN_WIDTH + 100 || pos.x < -100 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
+	{
+		this->m_isALive = false;
+	}
 }
 
 void CSoldier::BulletUpdate(float deltaTime)

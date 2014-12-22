@@ -22,7 +22,7 @@ void CEnemyEffect::Init(){
 	//Chuyen doi sprite
 	this->m_totalFrame = 3;
 	this->m_column = 3;
-	this->m_elapseTimeChangeFrame = 0.35f;
+	this->m_elapseTimeChangeFrame = 0.3f;
 	this->m_currentTime = 0;
 	this->m_increase = 1;
 	this->m_currentFrame = 0;

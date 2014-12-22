@@ -17,11 +17,12 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
+	void SetID(int id);
 	RECT* GetBound();
 	RECT* GetRectRS();
 	Box GetBox();
-protected:
 	void Init();
+protected:
 	double m_angle;
 public:
 	STATE_BULLET_ITEM m_stateItem;

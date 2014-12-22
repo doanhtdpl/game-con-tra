@@ -4,6 +4,7 @@
 #include "CCamera.h"
 #include "CHidenObject.h"
 #include "CBulletL.h"
+#include "CDefenseCannon.h"
 
 CDrawObject::CDrawObject()
 {
@@ -28,7 +29,14 @@ void CDrawObject::Draw(CGameObject* obj)
 				if (typeObject == 13) //Day la weapon tinh
 					texture = CManagementTexture::GetInstance()->GetTextureByID(1, 13);
 				else
-					texture = CManagementTexture::GetInstance()->GetTextureByID(idObject, typeObject);
+					if (typeObject == 14)
+					{
+						texture = CManagementTexture::GetInstance()->GetTextureByID(1, 13);
+					}
+					else
+					{
+						texture = CManagementTexture::GetInstance()->GetTextureByID(idObject, typeObject);
+					}
 				//Neu ton tai texture 
 				if (texture && this->m_draw)
 				{
@@ -116,6 +124,39 @@ void CDrawObject::Draw(CGameObject* obj)
 							CDrawObject::GetInstance()->Draw(obj->m_listBullet[i]);
 						}
 					}
+				}
+
+				//Tinh Test
+				//Neu obj co phai la boss thi tao moi 3 doi tuong kia
+				// k co box cho nong sung, sao no va cham :D=
+				if (typeObject == 17)
+				{
+					switch (idObject)
+					{
+					case 1://Boss map 1
+						{
+							CDefenseCannon* objDef = ((CDefenseCannon*)obj);
+							//ve boss
+							//Ve spiner
+							if (objDef->sniper->IsAlive())
+								CDrawObject::GetInstance()->Draw(objDef->sniper);
+							//
+							//ve u sung
+							if (objDef->turrect->IsAlive())
+							{
+								CDrawObject::GetInstance()->Draw(objDef->turrect);
+							}
+							//
+							if (objDef->gunLeft->IsAlive())
+								CDrawObject::GetInstance()->Draw(objDef->gunLeft);
+							if (objDef->gunRight->IsAlive())
+								CDrawObject::GetInstance()->Draw(objDef->gunRight);
+							break;
+						}
+					default:
+						break;
+					}
+
 				}
 			}
 

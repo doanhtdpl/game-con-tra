@@ -12,7 +12,7 @@ public:
 	static LPDIRECT3DDEVICE9 s_d3ddv;
 	static LPDIRECT3DSURFACE9 s_backBuffer;
 	static LPD3DXSPRITE s_spriteHandle;
-	bool InitDerect3D();
+	bool InitDirect3D();
 protected:
 	CDevice(){};
 };

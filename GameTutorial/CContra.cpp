@@ -7,6 +7,7 @@
 #include "CPoolingObject.h"
 #include "CManageAudio.h"
 #include <cmath>
+#include <random>
 
 CContra::CContra()
 {
@@ -18,7 +19,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;//56.0f; //78
 	this->m_height = 92.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(200.0f, 500.0f);
+	this->m_pos = D3DXVECTOR2(1000.0f, 500.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -60,6 +61,8 @@ CContra::CContra()
 	
 	//this->m_typeBullet = STATE_BULLET_ITEM::BULLET_ITEM_N;
 	this->m_allowShoot = true;
+	// TT
+	this->m_waitForCreateEnemy = 0.5f;
 }
 
 CContra::CContra(const std::vector<int>& info) : CDynamicObject(info)
@@ -1241,17 +1244,6 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					continue;
 #pragma endregion
 				}
-#pragma region VA CHAM VOI DOI TUONG SINH ENEMY
-				if(obj->GetID() == 4)
-				{
-					D3DXVECTOR2 pos = CCamera::GetInstance()->GetPointTransform(obj->GetPos().x, obj->GetPos().y);
-					pos.x = __SCREEN_WIDTH - pos.x + obj->GetPos().x;
-					pos.y = 300;
-					CSoldier* soldier = CPoolingObject::GetInstance()->GetSoliderObject();
-					soldier->SetAlive(true);
-					soldier->SetPos(obj->GetPos());
-				}
-#pragma endregion
 #pragma region VA CHAM DOI TUONG SINH WEAPON
 				else if(obj->GetIDType() == 14)
 				{

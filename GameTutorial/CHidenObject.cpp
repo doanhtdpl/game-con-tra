@@ -1,6 +1,13 @@
 #include "CHidenObject.h"
 #include "CCamera.h"
+#include "CCollision.h"
+#include "CContra.h"
+#include "CSoldier.h"
+#include "CPoolingObject.h"
 
+
+bool CHidenObject::m_createEnemy = false;
+bool CHidenObject::m_createWeapon = false;
 CHidenObject::CHidenObject() : CStaticObject()
 {
 	this->m_id = 1;
@@ -14,6 +21,8 @@ CHidenObject::CHidenObject() : CStaticObject()
 CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 {
 	this->m_isALive = true;//
+	this->m_waitForCreateEnemy = 0.5f;
+	this->countWeapon = 0;
 	if(!info.empty())
 	{
 		this->m_id = info.at(0) % 1000;
@@ -30,7 +39,16 @@ CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 			this->m_type = HIDEN_OBJECT_TYPE::UNDER_WATER;
 			break;
 		case 15003:
+			this->m_type = HIDEN_OBJECT_TYPE::CREATE_WEAPON;
+			break;
+		case 15004:
 			this->m_type = HIDEN_OBJECT_TYPE::CREATE_ENEMY;
+			break;
+		case 15006:
+			this->m_type = HIDEN_OBJECT_TYPE::ENEMY_POS_R;
+			break; 
+		case 15007:
+			this->m_type = HIDEN_OBJECT_TYPE::ENEMY_POS_L;
 			break;
 		default:
 			break;
@@ -54,9 +72,72 @@ Box CHidenObject::GetBox()
 	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
 }
 
-void CHidenObject::Update(float deltaTime, std::vector<CGameObject*> listObjectCollision)
+void CHidenObject::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
+	if (this->m_type == HIDEN_OBJECT_TYPE::CREATE_ENEMY)
+	{
+		if (CCollision::GetInstance()->Collision(CContra::GetInstance(), this))
+		{
+			CHidenObject::m_createEnemy = true;
+		}
+		else
+		{
+			CHidenObject::m_createEnemy = false;
+		}
+	}
 
+	// create enemy posision
+	if (this->m_type == HIDEN_OBJECT_TYPE::ENEMY_POS_L || this->m_type == HIDEN_OBJECT_TYPE::ENEMY_POS_R)
+	{
+		if (CHidenObject::m_createEnemy)
+		{
+			// Sinh enemy 
+			this->m_waitForCreateEnemy += deltaTime;
+
+			if (this->m_waitForCreateEnemy > 1.0f)
+			{
+				this->m_waitForCreateEnemy = 0.0f;
+
+				CSoldier* soldier = CPoolingObject::GetInstance()->GetSoliderObject();
+				if (soldier != nullptr)
+				{
+					soldier->SetAlive(true);
+					// Random jump
+					soldier->setJump(rand()%2 == 1);
+					// set left right
+					if (this->m_id == 7)
+						soldier->SetLeft(true);
+					else
+						soldier->SetLeft(false);
+					soldier->SetPos(this->m_pos);
+				}
+			}
+		}
+	}
+
+	// Create weapon
+	if (this->m_type == HIDEN_OBJECT_TYPE::CREATE_WEAPON)
+	{
+		if (CCollision::GetInstance()->Collision(CContra::GetInstance(), this))
+		{
+			CHidenObject::m_createWeapon = true;
+			// tao weapon
+		}
+	}
+
+	if (CHidenObject::m_createWeapon)
+	{
+		if (this->m_idType == 14 && this->countWeapon == 0)
+		{
+			CWeapon* weapon = CPoolingObject::GetInstance()->GetWeapon();
+			weapon->SetID(this->m_id);
+			weapon->Init();
+			weapon->SetPos(this->GetPos());
+			weapon->SetAlive(true);
+
+			this->countWeapon ++;
+		}
+	}
 }
 
 //Sang test

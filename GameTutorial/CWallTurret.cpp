@@ -465,7 +465,7 @@ void CWallTurret::SetFrame()
 		}
 	case WALLTURRET_SHOOT_STATE::W_IS_DIE://Wallturret chet
 	{
-		CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+		CExplosionEffect* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
 		effect->SetAlive(true);
 		effect->SetPos(this->m_pos);
 		this->m_isALive = false;

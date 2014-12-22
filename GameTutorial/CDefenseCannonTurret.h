@@ -21,7 +21,7 @@ public:
 	~CDefenseCannonTurret();
 	std::string ClassName(){ return __CLASS_NAME__(CDefenseCannonTurret); };
 	virtual void Update(float deltaTime);
-	virtual void Update(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
+	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	virtual void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	RECT* GetBound();
 	RECT* GetRectRS();

@@ -49,6 +49,7 @@ public:
 
 	virtual void SetPos(D3DXVECTOR2 pos);
 	virtual void SetAlive(bool alive);
+	virtual void SetLeft(bool left);
 	virtual Box GetBox();
 	virtual RECT* GetBound();
 	virtual RECT* GetRectRS();

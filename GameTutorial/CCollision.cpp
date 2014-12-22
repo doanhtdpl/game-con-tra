@@ -210,3 +210,8 @@ float CCollision::Collision(CGameObject* objectA, CGameObject* objectB, float& n
 		return 1.0f;
 	}
 }
+
+bool CCollision::Collision(CGameObject* ObjectA, CGameObject* ObjectB)
+{
+	return AABBCheck(ObjectA->GetBox(), ObjectB->GetBox());
+}

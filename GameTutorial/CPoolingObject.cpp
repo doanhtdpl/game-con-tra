@@ -63,19 +63,55 @@ void CPoolingObject::CreateSoliderObject(int size)
 	}
 }
 
+void CPoolingObject::CreateWeapon(int size)
+{
+	if (this->m_listWeapon.empty())
+	{
+		for (int i = 0; i < size; i++)
+		{
+			CWeapon* weapon;
+			weapon = new CWeapon();
+			this->m_listWeapon.push_back(weapon);
+		}
+	}
+}
+
 CSoldier* CPoolingObject::GetSoliderObject()
 {
+	CSoldier* obj = nullptr;
+	CSoldier* objCheck = nullptr;
+	int count = 0;
 	for (std::vector<CSoldier*>::iterator it = this->m_listSolider.begin();
 		it != this->m_listSolider.end();
 		++it)
 	{
-		CSoldier* obj = *it;
-		if (!obj->IsAlive())
+		objCheck = *it;
+		if (obj == nullptr)
 		{
-			return obj;
-			break;
+			obj = *it;
+			if (!obj->IsAlive())
+			{
+				obj->Init();
+			}
+			else
+			{
+				obj = nullptr;
+			}
+		}
+		if (objCheck->IsAlive())
+		{
+			count ++;
 		}
 	}
+
+	// kiem tra so luong soldier toi da tren man hinh
+	if (count < 4)
+	{
+		count = 0;
+		return obj;
+	}
+	else
+		return nullptr;
 }
 
 
@@ -117,6 +153,21 @@ CExplosionEffect* CPoolingObject::GetExplosionEffect()
 		++it)
 	{
 		CExplosionEffect* obj = *it;
+		if (!obj->IsAlive())
+		{
+			return obj;
+			break;
+		}
+	}
+}
+
+CWeapon* CPoolingObject::GetWeapon()
+{
+	for (std::vector<CWeapon*>::iterator it = this->m_listWeapon.begin();
+		it != this->m_listWeapon.end();
+		++it)
+	{
+		CWeapon* obj = *it;
 		if (!obj->IsAlive())
 		{
 			return obj;

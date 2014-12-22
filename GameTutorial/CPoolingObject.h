@@ -16,10 +16,12 @@ public:
 	CExplosionEffect* GetExplosionEffect();
 	CBulletItem* GetBulletItem();
 	CSoldier* GetSoliderObject();
+	CWeapon* GetWeapon();
 	void CreateSoliderObject(int size);
 	void CreateBulletItem(int size);
 	void CreateEnemyEffect(int size);
 	void CreateExplosionEffect(int size);
+	void CreateWeapon(int size);
 	void Update(float deltaTime, std::vector<CGameObject*>* listObjectColision);
 	std::vector<CBullet*> m_listBulletOfObject;
 	std::vector<CWeapon*> m_listWeapon; //Weapon dong

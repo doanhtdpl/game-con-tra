@@ -96,7 +96,8 @@ protected:
 
 	int m_typeBullet; 
 	int m_bulletCount; //So luong vien dan da ban ra
-//Nhung tham so dung de test
+	//Nhung tham so dung de test
+	float m_waitForCreateEnemy;
 public:
 	float m_currentFall; // Do cao hien tai
 	float m_currentJump;//
