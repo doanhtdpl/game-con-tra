@@ -8,6 +8,7 @@
 #include "CManageAudio.h"
 #include <cmath>
 #include <random>
+#include "CBridge.h"
 
 CContra::CContra()
 {
@@ -19,7 +20,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;//56.0f; //78
 	this->m_height = 92.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(1000.0f, 500.0f);
+	this->m_pos = D3DXVECTOR2(70.0f, 500.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -53,16 +54,9 @@ CContra::CContra()
 	//
 	this->m_waitForShoot = 0.4f;
 	this->m_waitChangeSprite = 0.0f;
-
-	//Test va cham mat nuoc
-	//this->m_pos = D3DXVECTOR2(200, 285);
-	//this->m_isUnderWater = true;
-	//this->m_startFrame = UNDER_WATER::IS_STANDING_UNDER_WATER;
-	
-	//this->m_typeBullet = STATE_BULLET_ITEM::BULLET_ITEM_N;
 	this->m_allowShoot = true;
 	// TT
-	this->m_waitForCreateEnemy = 0.5f;
+	this->m_bridgeEffect = false;
 }
 
 CContra::CContra(const std::vector<int>& info) : CDynamicObject(info)
@@ -1244,25 +1238,10 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					continue;
 #pragma endregion
 				}
-#pragma region VA CHAM DOI TUONG SINH WEAPON
-				else if(obj->GetIDType() == 14)
+#pragma region VA CHAM VS CAY CAU
+				else if(obj->GetIDType() == 15 && obj->GetID() == 5)
 				{
-					if(obj->GetID() != 8)
-					{
-						D3DXVECTOR2 pos = CCamera::GetInstance()->GetPointTransform(obj->GetPos().x, obj->GetPos().y);
-						pos.x = __SCREEN_WIDTH - pos.x + obj->GetPos().x;
-						pos.y = 300;
-						CWeapon* weapon = new CWeapon(pos, obj->GetID());
-						/*CPoolingObject::GetInstance()->m_listWeapon.push_back(new CSoldier(obj->*/
-					}
-					else
-					{
-						if(((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_B && 
-							((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_R)
-						{
-							this->m_typeBullet = ((CBulletItem*)(obj))->m_stateItem;
-						}
-					}
+					this->m_bridgeEffect = true;
 				}
 #pragma endregion
 			}

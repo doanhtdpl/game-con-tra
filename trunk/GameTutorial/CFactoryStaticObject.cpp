@@ -36,6 +36,7 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 		case 15002:
 		case 15003:	// sjnh weapon
 		case 15004:	// sinh enemy
+		case 15005:	// Hieu ung no cau
 		case 15006:
 		case 15007:
 		case 14002: //Dan F

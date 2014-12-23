@@ -29,9 +29,9 @@ void CDrawObject::Draw(CGameObject* obj)
 				if (typeObject == 13) //Day la weapon tinh
 					texture = CManagementTexture::GetInstance()->GetTextureByID(1, 13);
 				else
-					if (typeObject == 14)
+					if (typeObject == 14 && idObject != 8)
 					{
-						texture = CManagementTexture::GetInstance()->GetTextureByID(1, 13);
+						texture = CManagementTexture::GetInstance()->GetTextureByID(1, 14);
 					}
 					else
 					{

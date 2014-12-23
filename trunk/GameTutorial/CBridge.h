@@ -32,9 +32,6 @@ protected:
 	void Init();
 	float m_timeDelay;
 	STATE_BRIDGE m_stateCurrent;
-public:
-	//CExplosionEffect* effect;
-	bool m_isCollisionContra;
 };
 
 #endif // !__CBRIDGE_H__
