@@ -220,7 +220,7 @@ void CLoadGameObject::Draw()
 			++it)
 		{
 			CGameObject* gameObj = *it;
-			if(gameObj && gameObj->IsAlive())
+			if(gameObj && gameObj->IsAlive() && gameObj->GetIDType() != 14)
 				CDrawObject::GetInstance()->Draw(gameObj);
 		}
 	}

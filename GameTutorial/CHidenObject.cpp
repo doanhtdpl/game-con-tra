@@ -21,7 +21,7 @@ CHidenObject::CHidenObject() : CStaticObject()
 CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 {
 	this->m_isALive = true;//
-	this->m_waitForCreateEnemy = 0.5f;
+	this->m_waitForCreateEnemy = 1.0f;
 	this->countWeapon = 0;
 	if(!info.empty())
 	{
@@ -106,9 +106,12 @@ void CHidenObject::Update(float deltaTime, std::vector<CGameObject*>* listObject
 					soldier->setJump(rand()%2 == 1);
 					// set left right
 					if (this->m_id == 7)
-						soldier->SetLeft(true);
-					else
 						soldier->SetLeft(false);
+					else
+						soldier->SetLeft(true);
+					// Set vi tri cho soldier
+					D3DXVECTOR2 soldierPos = this->m_pos;
+					soldierPos.x = CContra::GetInstance()->GetPos().x + 100;
 					soldier->SetPos(this->m_pos);
 				}
 			}
@@ -136,6 +139,7 @@ void CHidenObject::Update(float deltaTime, std::vector<CGameObject*>* listObject
 			weapon->SetAlive(true);
 
 			this->countWeapon ++;
+			CHidenObject::m_createWeapon = false;
 		}
 	}
 }

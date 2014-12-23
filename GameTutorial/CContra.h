@@ -101,6 +101,9 @@ protected:
 public:
 	float m_currentFall; // Do cao hien tai
 	float m_currentJump;//
+
+	// Hieu ung no cay cau
+	bool m_bridgeEffect;
 public:
 	void SetTypeBullet(int _typeBullet){this->m_typeBullet = _typeBullet;};
 	void SetPosY(float posY){this->m_pos.y = posY;};

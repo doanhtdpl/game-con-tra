@@ -48,23 +48,23 @@ void CBridge::Init()
 	this->m_timeDelay = 1.3f;
 	
 	this->m_stateCurrent = STATE_BRIDGE::X4;
-	this->m_isCollisionContra = false;
 
 }
 
 void CBridge::Update(float deltaTime)
 {
-	if(this->m_isCollisionContra)
-	{
-		this->SetFrame(deltaTime); //Cai ham nay bo vao cho changeFrame, tuc la sau moi lan Frame thay doi thi set lai frame
-		this->ChangeFrame(deltaTime);
-	}
+	//if(CContra::GetInstance()->m_bridgeEffect)
+	//{
+	//	this->SetFrame(deltaTime); //Cai ham nay bo vao cho changeFrame, tuc la sau moi lan Frame thay doi thi set lai frame
+	//	this->ChangeFrame(deltaTime);
+	//}
 }
 
 void CBridge::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-	this->OnCollision(deltaTime, listObjectCollision);
-	if(this->m_isCollisionContra)
+	float m_distance = this->m_pos.x - CContra::GetInstance()->GetPos().x - this->m_width/2;
+
+	if(CContra::GetInstance()->m_bridgeEffect && m_distance <= 10.0f)
 	{
 		this->SetFrame(deltaTime); //Cai ham nay bo vao cho changeFrame, tuc la sau moi lan Frame thay doi thi set lai frame
 		this->ChangeFrame(deltaTime);
@@ -135,19 +135,19 @@ Box CBridge::GetBox()
 
 void CBridge::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-	float normalX = 0;
-	float normalY = 0;
-	float moveX = 0.0f;
-	float moveY = 0.0f;
-	float timeCollision;
+	//float normalX = 0;
+	//float normalY = 0;
+	//float moveX = 0.0f;
+	//float moveY = 0.0f;
+	//float timeCollision;
 
-	//Sắp va chạm > 0 và < 1
-	//Hai Box Giao Nhau (Đã va chạm rồi) = 2 và moveX, moveY (độ lún)
-	timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), this, normalX, normalY, moveX, moveY, deltaTime);
-	if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
-	{
-		this->m_isCollisionContra = true;
-	}
+	////Sắp va chạm > 0 và < 1
+	////Hai Box Giao Nhau (Đã va chạm rồi) = 2 và moveX, moveY (độ lún)
+	//timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), this, normalX, normalY, moveX, moveY, deltaTime);
+	//if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+	//{
+	//	this->m_isCollisionContra = true;
+	//}
 }
 
 
