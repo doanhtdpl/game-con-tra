@@ -55,14 +55,8 @@ void CDrawObject::Draw(CGameObject* obj)
 							if (object->getStateRotation() == L_ROTATION::L){
 								this->m_draw->draw(texture, obj->GetRectRS(), posObjAfterTransform, D3DCOLOR_XRGB(255, 255, 255), true);
 							}
-							else if (object->getStateRotation() == L_ROTATION::L_PI_2){
-								this->m_draw->drawRotation(texture, obj->GetRectRS(), posObjAfterTransform, -PI / 2, D3DCOLOR_XRGB(255, 255, 255), true);
-							}
-							else if (object->getStateRotation() == L_ROTATION::L_PI_4){
-								this->m_draw->drawRotation(texture, obj->GetRectRS(), posObjAfterTransform, -PI / 4, D3DCOLOR_XRGB(255, 255, 255), true);
-							}
-							else if (object->getStateRotation() == L_ROTATION::L_PI7_4){
-								this->m_draw->drawRotation(texture, obj->GetRectRS(), posObjAfterTransform, -7 * PI / 4, D3DCOLOR_XRGB(255, 255, 255), true);
+							else{
+								this->m_draw->drawRotation(texture, obj->GetRectRS(), posObjAfterTransform, object->getDrawRotation(), D3DCOLOR_XRGB(255, 255, 255), true);
 							}
 						}
 						else
@@ -70,14 +64,8 @@ void CDrawObject::Draw(CGameObject* obj)
 							if (object->getStateRotation() == L_ROTATION::L){
 								this->m_draw->drawFlipX(texture, obj->GetRectRS(), posObjAfterTransform, D3DCOLOR_XRGB(255, 255, 255), true);
 							}
-							else if (object->getStateRotation() == L_ROTATION::L_PI_2){
-								this->m_draw->drawRotation(texture, obj->GetRectRS(), posObjAfterTransform, -PI / 2, D3DCOLOR_XRGB(255, 255, 255), true);
-							}
-							else if (object->getStateRotation() == L_ROTATION::L_PI_4){
-								this->m_draw->drawRotation(texture, obj->GetRectRS(), posObjAfterTransform, -3 * PI / 4, D3DCOLOR_XRGB(255, 255, 255), true);
-							}
-							else if (object->getStateRotation() == L_ROTATION::L_PI5_4){
-								this->m_draw->drawRotation(texture, obj->GetRectRS(), posObjAfterTransform, -5 * PI / 4, D3DCOLOR_XRGB(255, 255, 255), true);
+							else {
+								this->m_draw->drawRotation(texture, obj->GetRectRS(), posObjAfterTransform, object->getDrawRotation(), D3DCOLOR_XRGB(255, 255, 255), true);
 							}
 						}
 					}

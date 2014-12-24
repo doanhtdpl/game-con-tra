@@ -33,12 +33,14 @@ public:
 	virtual RECT* GetBound();
 	virtual Box GetBox();
 	int getStateRotation();
+	float getDrawRotation();
 protected:
 	virtual void Init(); //Khoi tao vi tri ban dau cua vien dan
 private:
 	D3DXVECTOR2 m_offset; //Vi tri cua vien dan so voi contra
 	float m_rotation; //Goc ban
 	int m_stateRotation;
+	float m_drawRotation; //Goc xoay
 };
 
 #endif // !__CBULLET_L_H__
