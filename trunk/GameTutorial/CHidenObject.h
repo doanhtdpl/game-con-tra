@@ -35,6 +35,8 @@ protected:
 	static bool m_createWeapon;
 	int countWeapon;
 	float m_waitForCreateEnemy;
+	// TT test
+	static float m_posHiddenItem;
 
 };
 
