@@ -8,6 +8,8 @@
 
 bool CHidenObject::m_createEnemy = false;
 bool CHidenObject::m_createWeapon = false;
+float CHidenObject::m_posHiddenItem = 0.0f;
+
 CHidenObject::CHidenObject() : CStaticObject()
 {
 	this->m_id = 1;
@@ -23,6 +25,7 @@ CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 	this->m_isALive = true;//
 	this->m_waitForCreateEnemy = 1.0f;
 	this->countWeapon = 0;
+	// TT
 	if(!info.empty())
 	{
 		this->m_id = info.at(0) % 1000;
@@ -124,13 +127,14 @@ void CHidenObject::Update(float deltaTime, std::vector<CGameObject*>* listObject
 		if (CCollision::GetInstance()->Collision(CContra::GetInstance(), this))
 		{
 			CHidenObject::m_createWeapon = true;
-			// tao weapon
+			// tao weapon tai vi tri phia sau hidden item.
+			CHidenObject::m_posHiddenItem = this->m_pos.x;
 		}
 	}
 
 	if (CHidenObject::m_createWeapon)
 	{
-		if (this->m_idType == 14 && this->countWeapon == 0)
+		if (this->m_idType == 14 && this->countWeapon == 0 && this->m_pos.x < CHidenObject::m_posHiddenItem)
 		{
 			CWeapon* weapon = CPoolingObject::GetInstance()->GetWeapon();
 			weapon->SetID(this->m_id);
