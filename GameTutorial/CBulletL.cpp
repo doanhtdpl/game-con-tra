@@ -59,7 +59,7 @@ void CBullet_L::Init()
 	//Chuyen doi sprite
 	this->m_totalFrame = 11;
 	this->m_column = 1;
-	this->m_elapseTimeChangeFrame = 0.35f;
+	this->m_elapseTimeChangeFrame = 0.95f;
 	this->m_currentTime = 0;
 	this->m_increase = 1;
 	this->m_currentFrame = 0;
@@ -82,12 +82,15 @@ void CBullet_L::Init()
 		if (this->m_rotation == (float)PI / 2)
 		{
 			this->m_stateRotation = L_ROTATION::L_PI_2;
+			this->m_drawRotation = -PI / 2;
 		}
 		else if (this->m_rotation == (float)PI / 4){
 			this->m_stateRotation = L_ROTATION::L_PI_4;
+			this->m_drawRotation = -PI / 4;
 		}
 		else if (this->m_rotation == (float)-PI / 4){
 			this->m_stateRotation = L_ROTATION::L_PI7_4;
+			this->m_drawRotation = -7 * PI / 4;
 		}
 	}
 	else
@@ -96,12 +99,15 @@ void CBullet_L::Init()
 		if(this->m_rotation == (float)PI/2)
 		{
 			this->m_stateRotation = L_ROTATION::L_PI_2;
+			this->m_drawRotation = -PI / 2;
 		}
 		else if (this->m_rotation == (float)PI / 4){
 			this->m_stateRotation = L_ROTATION::L_PI_4;
+			this->m_drawRotation = -3 * PI / 4;
 		}
 		else if (this->m_rotation == (float)-PI / 4){
 			this->m_stateRotation = L_ROTATION::L_PI5_4;
+			this->m_drawRotation = -5 * PI / 4;
 		}
 	}
 	this->m_pos += this->m_offset;
@@ -164,7 +170,7 @@ void CBullet_L::ChangeFrame(float deltaTime)
 	if(this->m_currentTime > this->m_elapseTimeChangeFrame)
 	{
 		this->m_currentFrame += this->m_increase;
-		if(this->m_currentFrame > 3 || this->m_currentFrame < 0)
+		if(this->m_currentFrame > this->m_endFrame || this->m_currentFrame < this->m_startFrame)
 		{
 			this->m_currentFrame = 0;
 		}
@@ -191,6 +197,11 @@ Box CBullet_L::GetBox()
 int CBullet_L::getStateRotation()
 {
 	return this->m_stateRotation;
+}
+
+float CBullet_L::getDrawRotation()
+{
+	return this->m_drawRotation;
 }
 
 CBullet_L::~CBullet_L()
