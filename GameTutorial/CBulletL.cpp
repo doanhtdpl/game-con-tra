@@ -47,7 +47,7 @@ void CBullet_L::Init()
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 143.0f;//112.0f;//56.0f; //78
+	this->m_width = 125.0f;//112.0f;//56.0f; //78
 	this->m_height = 13.0f;//17.63f; //88.0f; //84
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
