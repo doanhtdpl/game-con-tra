@@ -55,6 +55,10 @@ void CGroundCanon::Init()
 	//Test
 	this->m_bulletCount = 0;
 	this->m_timeDelay = 0.25f;
+	this->m_waitForShoot = 0.0f;
+
+	//
+	this->SetLayer(LAYER::ENEMY);
 }
 
 void CGroundCanon::Update(float deltaTime)
@@ -108,11 +112,13 @@ void CGroundCanon::OnCollision(float deltaTime, std::vector<CGameObject*>* listO
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
 		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 		{
-			if (obj->IsAlive())
+			if (obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
 			{
 				this->m_HP--;
 				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 			}
+			else
+				++it;
 
 			if (this->m_HP == 0)
 			{
@@ -219,6 +225,12 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 
 #pragma region THIET LAP TOC DO DAN
 
+	this->m_waitForShoot += deltaTime;
+	if(this->m_waitForShoot > 1.5f)
+	{
+		this->m_waitForShoot = 0.0f;
+		this->m_isShoot = true;
+	}
 	if (this->m_isShoot && spaceX < 0)
 	{
 		if (m_bulletCount > 2)
@@ -229,35 +241,36 @@ void CGroundCanon::BulletUpdate(float deltaTime)
 		if (this->m_timeDelay >= 0.25f)
 		{
 			CBullet_N* bullet = new CBullet_N(angle, this->m_pos, offset, !this->m_left);
-			m_listBullet.push_back(bullet);
+			bullet->SetLayer(LAYER::ENEMY);
+			CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 			this->m_timeDelay = 0;
 			m_bulletCount++;
 		}
 		m_timeDelay += deltaTime;
 	}
 
-	//Update trang thai dan
-	D3DXVECTOR3 pos;
-	for (int i = 0; i < this->m_listBullet.size(); i++)
-	{
-		this->m_listBullet.at(i)->Update(deltaTime);
-		pos.x = this->m_listBullet.at(i)->GetPos().x;
-		pos.y = this->m_listBullet.at(i)->GetPos().y;
-		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-		if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
-		{
-			delete this->m_listBullet.at(i);
-			this->m_listBullet.erase(this->m_listBullet.begin() + i);
-		}
-	}
-	if (this->m_listBullet.empty())
-	{
-		this->m_isShoot = true;
-	}
-	else
-	{
-		this->m_isShoot = false;
-	}
+	////Update trang thai dan
+	//D3DXVECTOR3 pos;
+	//for (int i = 0; i < this->m_listBullet.size(); i++)
+	//{
+	//	this->m_listBullet.at(i)->Update(deltaTime);
+	//	pos.x = this->m_listBullet.at(i)->GetPos().x;
+	//	pos.y = this->m_listBullet.at(i)->GetPos().y;
+	//	pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
+	//	if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
+	//	{
+	//		delete this->m_listBullet.at(i);
+	//		this->m_listBullet.erase(this->m_listBullet.begin() + i);
+	//	}
+	//}
+	//if (this->m_listBullet.empty())
+	//{
+	//	this->m_isShoot = true;
+	//}
+	//else
+	//{
+	//	this->m_isShoot = false;
+	//}
 #pragma endregion
 
 }

@@ -58,6 +58,8 @@ void CWallTurret::Init()
 
 	this->m_allowShoot = true;
 	this->m_HP = 7;
+
+	this->SetLayer(LAYER::ENEMY);
 }
 
 void CWallTurret::Update(float deltaTime)
@@ -95,11 +97,13 @@ void CWallTurret::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
 		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 		{
-			if (obj->IsAlive() && obj->m_isContra)
+			if (obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
 			{
 				this->m_HP--;
 				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 			}
+			else
+				++it;
 
 			if (this->m_HP == 0)
 			{
@@ -345,36 +349,40 @@ void CWallTurret::BulletUpdate(float deltaTime)
 		{
 			//Goc cua vien dan da duoc chinh san
 			//Chuyen ve toa do goc phan tu 1 - 2
-			temp = this->m_direction ? temp : PI - temp;
-			CBullet_N* bullet = new CBullet_N(temp, this->m_pos, offset, !this->m_direction);
-			bullet->m_isContra = false;
-			m_listBullet.push_back(bullet);
-			this->m_timeDelay = 0;
+			this->m_timeDelay += deltaTime;
+			if(this->m_timeDelay > 0.5f)
+			{
+				temp = this->m_direction ? temp : PI - temp;
+				CBullet_N* bullet = new CBullet_N(temp, this->m_pos, offset, !this->m_direction);
+				bullet->SetLayer(LAYER::ENEMY);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
+				this->m_timeDelay = 0;
+			}
 		}
 	}
 
 	//Update trang thai dan
-	D3DXVECTOR3 pos;
-	for (int i = 0; i < this->m_listBullet.size(); i++)
-	{
-		this->m_listBullet.at(i)->Update(deltaTime);
-		pos.x = this->m_listBullet.at(i)->GetPos().x;
-		pos.y = this->m_listBullet.at(i)->GetPos().y;
-		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-		if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
-		{
-			delete this->m_listBullet.at(i);
-			this->m_listBullet.erase(this->m_listBullet.begin() + i);
-		}
-	}
-	if (this->m_listBullet.empty())
-	{
-		this->m_isShoot = true;
-	}
-	else
-	{
-		this->m_isShoot = false;
-	}
+	//D3DXVECTOR3 pos;
+	//for (int i = 0; i < this->m_listBullet.size(); i++)
+	//{
+	//	this->m_listBullet.at(i)->Update(deltaTime);
+	//	pos.x = this->m_listBullet.at(i)->GetPos().x;
+	//	pos.y = this->m_listBullet.at(i)->GetPos().y;
+	//	pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
+	//	if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
+	//	{
+	//		delete this->m_listBullet.at(i);
+	//		this->m_listBullet.erase(this->m_listBullet.begin() + i);
+	//	}
+	//}
+	//if (this->m_listBullet.empty())
+	//{
+	//	this->m_isShoot = true;
+	//}
+	//else
+	//{
+	//	this->m_isShoot = false;
+	//}
 #pragma endregion
 
 }

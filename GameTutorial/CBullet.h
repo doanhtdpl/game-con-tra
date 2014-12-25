@@ -31,9 +31,12 @@ public:
 	virtual RECT* GetRectRS();
 	virtual RECT* GetBound();
 	virtual Box GetBox();
-	bool m_isContra;
-protected:
+	void SetDirection(bool direction){this->m_left = direction;};
+	void SetOffset(D3DXVECTOR2 offset){this->m_offset = offset;};
+	void SetRotation(double rotation){this->m_rotation = rotation;};
 	virtual void Init(); //Khoi tao vi tri ban dau cua vien dan
+	//bool m_isContra;
+protected:
 	D3DXVECTOR2 m_offset; //Vi tri cua vien dan so voi contra
 	double m_rotation; //Goc ban
 };

@@ -1,6 +1,7 @@
 #include "CBulletItem.h"
 #include "CCollision.h"
 #include "CContra.h"
+#include "CCamera.h"
 
 CBulletItem::CBulletItem(void)
 {
@@ -78,6 +79,13 @@ void CBulletItem::MoveUpdate(float deltaTime)
 	this->m_pos.y += this->m_vy * deltaTime;
 	//this->m_pos.y += 5.0f * sin(this->m_angle);
  	//this->m_angle += 4.0 * deltaTime;
+	// Xet' alive = false khi soldier ra khoi man hinh
+	D3DXVECTOR3 pos;
+	pos = CCamera::GetInstance()->GetPointTransform(this->m_pos.x, this->m_pos.y);
+	if(pos.x > __SCREEN_WIDTH + 100 || pos.x < -100)
+	{
+		this->m_isALive = false;
+	}
 }
 
 void CBulletItem::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)

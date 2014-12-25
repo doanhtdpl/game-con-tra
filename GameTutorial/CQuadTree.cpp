@@ -394,6 +394,11 @@ CQuadNode*& CQuadTree::SearchNode(int iDNode, CQuadNode*& node)
 	return result;
 }
 
+void CQuadTree::Clear()
+{
+	this->m_nodeRoot->Clear();
+}
+
 void CQuadTree::BuildQuadTree()
 {
 

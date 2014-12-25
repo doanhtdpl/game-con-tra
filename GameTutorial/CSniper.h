@@ -44,6 +44,7 @@ public:
 	int m_bulletCount; //So luong vien dan da ban ra
 	float m_timeDelay;
 	float m_waitForChangeSprite;
+	float m_waitForShoot;
 };
 
 #endif // !__CSNIPER_H__

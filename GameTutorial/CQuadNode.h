@@ -32,6 +32,7 @@ public:
 	RECT* GetBound();
 	void ClipObject(CQuadObject*&);
 	void DeleteObjectFromQuadNode(CQuadObject*&);
+	void Clear();
 private:
 	//ID node
 	int m_ID;

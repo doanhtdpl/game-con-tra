@@ -20,7 +20,7 @@ public:
 	void AddGameObjectToQuadTree(CGameObject*&);
 	void AddGameObjectToQuadTree(CQuadObject* quadObj);
 	void DeleteGameObjectFromQuadTree(CQuadObject*);
-	void Clear(){this->~CQuadTree();};
+	void Clear();
 protected:
 	CQuadNode* m_nodeRoot;
 	//Doi tuong co id lon nhat trong quadtree

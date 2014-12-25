@@ -16,6 +16,7 @@ public:
 	virtual void Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision);
 	virtual void OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
 	virtual void ChangeFrame(float deltaTime);
+	virtual void SetLayer(LAYER layer);
 	virtual RECT* GetRectRS();
 	virtual RECT* GetBound();
 
@@ -24,7 +25,6 @@ public:
 	CBullet* m_bullet_3;
 	CBullet* m_bullet_4;
 	CBullet* m_bullet_5;
-protected:
 	virtual void Init(); //Khoi tao vi tri ban dau cua vien dan
 private:
 };

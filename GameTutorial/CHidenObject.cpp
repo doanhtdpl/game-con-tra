@@ -53,6 +53,9 @@ CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 		case 15007:
 			this->m_type = HIDEN_OBJECT_TYPE::ENEMY_POS_L;
 			break;
+		case 15008:
+			this->m_type = HIDEN_OBJECT_TYPE::GROUND_NO_FALL;
+			break;
 		default:
 			break;
 		}

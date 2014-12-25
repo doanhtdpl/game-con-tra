@@ -3,6 +3,12 @@
 
 #include "CGlobal.h"
 
+enum LAYER
+{
+	PLAYER = 0,
+	ENEMY = 1
+};
+
 class CGameObject
 {
 protected:
@@ -18,7 +24,7 @@ protected:
 	bool m_isAnimatedSprite;//default = false, but when object iherit IAnimatedSprite-> True;
 	bool m_left;//Direction. Default left
 	RECT *m_rectRS;//NULL if object hasn't animated sprite
-
+	LAYER m_layer; //Doi tuong thuoc mot trong 2 lop: player, enemy
 	RECT m_rect;//xen trong Quadtree
 	// Mau cua doi tuong
 	int m_HP;
@@ -36,6 +42,8 @@ public:
 	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	virtual void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision) = 0;
 	virtual D3DXVECTOR2 GetPos(){ return this->m_pos; };
+	virtual LAYER GetLayer(){return this->m_layer;};
+	virtual void SetLayer(LAYER layer){this->m_layer = layer;};
 	int GetID(){ return this->m_id; };
 	int GetIDType(){ return this->m_idType; };
 	bool GetDirection(){ return this->m_left; };

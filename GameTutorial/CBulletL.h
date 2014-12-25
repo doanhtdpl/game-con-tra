@@ -26,7 +26,7 @@ public:
 	virtual void MoveUpdate(float DeltaTime);// overide IMOVE
 	virtual std::string ClassName(){return __CLASS_NAME__(CBullet_L);};
 	virtual void Update(float deltaTime);
-	virtual void Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision);
+	virtual void Update(float deltaTime, std::vector<CGameObject*>* _listObjectCollision);
 	virtual void OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision);
 	virtual void ChangeFrame(float deltaTime);
 	virtual RECT* GetRectRS();
@@ -34,11 +34,10 @@ public:
 	virtual Box GetBox();
 	int getStateRotation();
 	float getDrawRotation();
-protected:
 	virtual void Init(); //Khoi tao vi tri ban dau cua vien dan
 private:
-	D3DXVECTOR2 m_offset; //Vi tri cua vien dan so voi contra
-	float m_rotation; //Goc ban
+	//D3DXVECTOR2 m_offset; //Vi tri cua vien dan so voi contra
+	//float m_rotation; //Goc ban
 	int m_stateRotation;
 	float m_drawRotation; //Goc xoay
 };
