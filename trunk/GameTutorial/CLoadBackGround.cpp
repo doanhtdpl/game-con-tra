@@ -4,9 +4,9 @@
 
 CLoadBackGround::CLoadBackGround()
 {
-	this->m_listBackGroundImage = new std::hash_map<int, CTexture*>();
-	this->m_listBackGroundMatrix = new std::hash_map<int, int**>();
-	this->m_listQuadTree = new std::hash_map<int, CQuadTree*>();
+	this->m_listBackGroundImage = new std::hash_map<int, std::string>();
+	this->m_listBackGroundMatrix = new std::hash_map<int, std::string>();
+	this->m_listQuadTree = new std::hash_map<int, std::string>();
 	this->m_imageCurr = new CTexture();
 	this->m_drawImg = new CSprite();
 	this->m_quadTree = new CQuadTree();
@@ -25,8 +25,8 @@ void CLoadBackGround::Draw()
 {
 	RECT rectRS;
 	D3DXVECTOR3 pos;
-	if(this->m_listBackGroundMatrix)
-		this->m_matrix = this->m_listBackGroundMatrix->find(this->m_idCurrent)->second;
+	//if(this->m_listBackGroundMatrix)
+	//	this->m_matrix = this->m_listBackGroundMatrix->find(this->m_idCurrent)->second;
 	if(this->m_matrix != nullptr)
 	{
 		std::vector<int> listIDObj;
@@ -93,7 +93,7 @@ void CLoadBackGround::LoadAllTextureFromFile(std::string filePath)
 {
 	int mapID;
 	std::string pathItem;
-	typedef pair<int, CTexture*> Pair;
+	typedef pair<int, std::string> Pair;
 	std::vector<std::string> result = CFileUtil::GetInstance()->LoadFromFile(filePath); //Load tat ca cac duong dan tu nguon
 	std::vector<std::string> item; //Lay tung item trong result
 	for (int i = 0; i < result.size(); i++)
@@ -102,11 +102,12 @@ void CLoadBackGround::LoadAllTextureFromFile(std::string filePath)
 		mapID = atoi(item.at(0).c_str());
 		pathItem = item.at(1).c_str();
 		//Tao CTexture
-		m_imageCurr = new CTexture();
-		if((m_imageCurr->LoadImageFromFile(pathItem, NULL)));
+		//m_imageCurr = new CTexture();
+		/*if((m_imageCurr->LoadImageFromFile(pathItem, NULL)));
 		{
 			this->m_listBackGroundImage->insert(Pair(mapID, m_imageCurr));
-		}
+		}*/
+		this->m_listBackGroundImage->insert(Pair(mapID, pathItem));
 	}
 }
 
@@ -114,7 +115,7 @@ void CLoadBackGround::LoadAllMatrixFromFile(std::string filePath)
 {
 	int mapID;
 	std::string pathItem;
-	typedef pair<int, int**> Pair;
+	typedef pair<int, std::string> Pair;
 	std::vector<std::string> result = CFileUtil::GetInstance()->LoadFromFile(filePath); //Load tat ca cac duong dan tu nguon
 	std::vector<std::string> item; //Lay tung item trong result
 	for (int i = 0; i < result.size(); i++)
@@ -123,8 +124,8 @@ void CLoadBackGround::LoadAllMatrixFromFile(std::string filePath)
 		mapID = atoi(item.at(0).c_str());
 		pathItem = item.at(1).c_str();
 		//Tao CTexture
-		this->LoadMatrix(pathItem);
-		this->m_listBackGroundMatrix->insert(Pair(mapID, this->m_matrix));
+		//this->LoadMatrix(pathItem);
+		this->m_listBackGroundMatrix->insert(Pair(mapID, pathItem));
 	}
 }
 
@@ -133,7 +134,7 @@ void CLoadBackGround::LoadAllQuadTreeFromFile(std::string filePath)
 {
 	int mapID;
 	std::string pathItem;
-	typedef pair<int, CQuadTree*> Pair;
+	typedef pair<int, std::string> Pair;
 	std::vector<std::string> result = CFileUtil::GetInstance()->LoadFromFile(filePath); //Load tat ca cac duong dan tu nguon
 	std::vector<std::string> item; //Lay tung item trong result
 	for (int i = 0; i < result.size(); i++)
@@ -142,27 +143,46 @@ void CLoadBackGround::LoadAllQuadTreeFromFile(std::string filePath)
 		mapID = atoi(item.at(0).c_str());
 		pathItem = item.at(1).c_str();
 		//Tao CTexture
-		this->m_quadTree->ReBuildQuadTree(pathItem);
-		this->m_listQuadTree->insert(Pair(mapID, this->m_quadTree));
+		//this->m_quadTree->ReBuildQuadTree(pathItem);
+		this->m_listQuadTree->insert(Pair(mapID, pathItem));
 	}
 }
 
 void CLoadBackGround::ChangeBackGround(int idBackGround)
 {
 	//this->LoadMatrix(filePath); //Load lai noi dung cua matrix
+	this->Clear();
+	this->m_imageCurr = new CTexture();
+	this->m_quadTree = new CQuadTree();
 	this->m_idCurrent = idBackGround;
 	if(this->m_listBackGroundImage != nullptr)
 	{
-		this->m_imageCurr = this->m_listBackGroundImage->find(idBackGround)->second;
-		if(this->m_imageCurr)
+		//Kiem tra danh sach matrix
+		std::hash_map<int, std::string>::iterator it1 = this->m_listBackGroundMatrix->find(idBackGround);
+		if(it1 != this->m_listBackGroundMatrix->end())
 		{
-			this->m_tileCols = this->m_imageCurr->GetImageWidth() / this->m_tileWidth;
-			this->m_tileRows = this->m_imageCurr->GetImageHeight() / this->m_tileHeight;
+			this->LoadMatrix(it1->second);
 		}
-	}
-	if(this->m_listQuadTree)
-	{
-		this->m_quadTree = this->m_listQuadTree->find(idBackGround)->second;
+		//
+		//Kiem tra danh sach duong dan background
+		std::hash_map<int, std::string>::iterator it = this->m_listBackGroundImage->find(idBackGround);
+		if(it != this->m_listBackGroundImage->end())
+		{
+			this->m_imageCurr->LoadImageFromFile(it->second, NULL);
+			if(this->m_imageCurr)
+			{
+				this->m_tileCols = this->m_imageCurr->GetImageWidth() / this->m_tileWidth;
+				this->m_tileRows = this->m_imageCurr->GetImageHeight() / this->m_tileHeight;
+			}
+		}
+		//
+		//Kiem tra danh sach quadtree
+		std::hash_map<int, std::string>::iterator it2 = this->m_listQuadTree->find(idBackGround);
+		if(it2 != this->m_listQuadTree->end())
+		{
+			this->m_quadTree->ReBuildQuadTree(it2->second);
+		}
+		
 	}
 }
 
@@ -182,7 +202,6 @@ bool CLoadBackGround::InitMatrix()
 
 void CLoadBackGround::LoadMatrix(std::string filePath)
 {
-	this->DeleteMatrix();
 	std::vector<std::string> value = CFileUtil::GetInstance()->LoadFromFile(filePath);
 	std::vector<std::string> result; //Luu chuoi sau khi duoc cat
 	for (int i = 0; i < value.size(); i++)
@@ -216,5 +235,22 @@ void CLoadBackGround::DeleteMatrix()
 			delete this->m_matrix[i];
 		}
 		delete this->m_matrix;
+		this->m_matrix = nullptr;
+	}
+}
+
+void CLoadBackGround::Clear()
+{
+	if(this->m_matrix)
+		this->DeleteMatrix();
+	if(this->m_quadTree)
+	{
+		this->m_quadTree->Clear();
+		this->m_quadTree =nullptr;
+	}
+	if(this->m_imageCurr)
+	{	
+		delete this->m_imageCurr;
+		this->m_imageCurr = nullptr;
 	}
 }

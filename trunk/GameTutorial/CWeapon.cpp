@@ -179,25 +179,33 @@ void CWeapon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 	{
 		CBullet* obj = *it;
 		timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
-		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+		if(obj && obj->GetLayer() == LAYER::PLAYER)
 		{
-			//trên - xuống normalY = 1
-			//Trái phải normalX = -1
-			// ==0 ko va chạm theo Y, X	
-			CExplosionEffect* eff = CPoolingObject::GetInstance()->GetExplosionEffect();
-			eff->SetAlive(true);
-			eff->SetPos(this->m_pos);
+			timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
+			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+			{
+				//trên - xuống normalY = 1
+				//Trái phải normalX = -1
+				// ==0 ko va chạm theo Y, X	
+				CExplosionEffect* eff = CPoolingObject::GetInstance()->GetExplosionEffect();
+				eff->SetAlive(true);
+				eff->SetPos(this->m_pos);
 
-			//
-			it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
-			//
-			CBulletItem* bulletItem = CPoolingObject::GetInstance()->GetBulletItem();
-			bulletItem->SetAlive(true);
-			bulletItem->SetPos(this->m_pos);
-			bulletItem->m_stateItem = this->m_stateItem;
+				//
+				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+				//
+				CBulletItem* bulletItem = CPoolingObject::GetInstance()->GetBulletItem();
+				bulletItem->SetAlive(true);
+				bulletItem->SetPos(this->m_pos);
+				bulletItem->m_stateItem = this->m_stateItem;
 
 			
-			this->m_isALive = false;
+				this->m_isALive = false;
+			}
+			else
+			{
+				++it;
+			}
 		}
 		else
 		{

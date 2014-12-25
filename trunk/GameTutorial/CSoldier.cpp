@@ -61,6 +61,8 @@ void CSoldier::Init()
 	this->m_jump = true;
 	this->m_waitForChangeSprite = 0.0f;
 	this->m_countRepeat = 0;
+	//
+	this->SetLayer(LAYER::ENEMY);
 }
 
 void CSoldier::Update(float deltaTime)
@@ -92,16 +94,26 @@ void CSoldier::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjec
 	float moveY = 0.0f;
 	float timeCollision;
 
+	if(CCollision::GetInstance()->Collision(CContra::GetInstance(), this))
+	{
+		CContra::GetInstance()->m_isDie = true;
+	}
+
 	for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin(); it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
 	{
 		CBullet* obj = *it;
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
 		if((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 		{
-			// Gan trang thai die cho doi tuong
-			this->m_stateCurrent = SOLDIER_STATE::S_IS_DIE;
-			// Xoa vien dan ra khoi d.s
-			it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+			if(obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
+			{
+				// Gan trang thai die cho doi tuong
+				this->m_stateCurrent = SOLDIER_STATE::S_IS_DIE;
+				// Xoa vien dan ra khoi d.s
+				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+			}
+			else
+				++it;
 		}
 		else
 		{
@@ -119,7 +131,7 @@ void CSoldier::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjec
 			CGameObject* obj = *it;
 			//Lay thoi gian va cham
 			//Neu doi tuong la ground va dang va cham
-			if(((obj->GetIDType() == 15 && obj->GetID() == 1) || (obj->GetIDType() == 16 && obj->GetID() == 1)) && !checkColWithGround)
+			if(((obj->GetIDType() == 15 && obj->GetID() == 1) || (obj->GetIDType() == 15 && obj->GetID() == 8) || (obj->GetIDType() == 16 && obj->GetID() == 1)) && !checkColWithGround)
 			{
 				timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
 				if((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)

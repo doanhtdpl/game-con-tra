@@ -20,7 +20,6 @@ public:
 	virtual RECT* GetRectRS();
 	virtual RECT* GetBound();
 	virtual Box GetBox();
-protected:
 	virtual void Init(); //Khoi tao vi tri ban dau cua vien dan
 private:
 	D3DXVECTOR2 m_offset; //Vi tri cua vien dan so voi contra

@@ -24,18 +24,19 @@ enum ON_GROUND
 	IS_SHOOTING_NORMAL = 16,
 	IS_SHOOTING_DIAGONAL_UP = 17,
 	IS_SHOOTING_DIAGONAL_DOWN = 18,
-	IS_DIE = 19
+	IS_DIE = 19,
+	IS_UP_GROUND = 20
 };
 
 enum UNDER_WATER
 {
-	IS_STANDING_UNDER_WATER = 20,
-	IS_LYING_UNDER_WATER = 21,
-	IS_JOGGING_UNDER_WATER = 22,
-	IS_DIE_UNDER_WATER = 23,
-	IS_SHOOTING_UNDER_WATER_UP = 24,
-	IS_SHOOTING_UNDER_WATER_NORMAL = 25,
-	IS_SHOOTING_UNDER_WATER_DIAGONAL_UP = 26
+	IS_STANDING_UNDER_WATER = 21,
+	IS_LYING_UNDER_WATER = 22,
+	IS_JOGGING_UNDER_WATER = 23,
+	IS_DIE_UNDER_WATER = 24,
+	IS_SHOOTING_UNDER_WATER_UP = 25,
+	IS_SHOOTING_UNDER_WATER_NORMAL = 26,
+	IS_SHOOTING_UNDER_WATER_DIAGONAL_UP = 27
 };
 
 //enum BULLET_TYPE{
@@ -97,11 +98,13 @@ protected:
 	int m_typeBullet; 
 	int m_bulletCount; //So luong vien dan da ban ra
 	//Nhung tham so dung de test
+	float m_waitForDie; //Thoi gian chuyen sprite khi chet
 	float m_waitForCreateEnemy;
+	bool m_allowFall; //Cho phep nhay xuong duoi
 public:
 	float m_currentFall; // Do cao hien tai
 	float m_currentJump;//
-
+	bool m_isDie; //Trang thai die
 	// Hieu ung no cay cau
 	bool m_bridgeEffect;
 public:

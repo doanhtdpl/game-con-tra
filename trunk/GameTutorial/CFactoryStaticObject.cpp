@@ -39,6 +39,7 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 		case 15005:	// Hieu ung no cau
 		case 15006:
 		case 15007:
+		case 15008:
 		case 14002: //Dan F
 		case 14003: //Dan L
 		case 14004: //Dan M

@@ -39,6 +39,7 @@ protected:
 public:
 
 	int m_bulletCount; //So luong vien dan da ban ra
+	float m_waitForShoot; // Thoi gian de duoc ban dan
 	float m_timeDelay;
 	float m_heightMax;
 };

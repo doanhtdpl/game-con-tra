@@ -47,8 +47,8 @@ void CBullet_L::Init()
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 112.0f;//56.0f; //78
-	this->m_height = 17.63f; //88.0f; //84
+	this->m_width = 143.0f;//112.0f;//56.0f; //78
+	this->m_height = 13.0f;//17.63f; //88.0f; //84
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -59,10 +59,12 @@ void CBullet_L::Init()
 	//Chuyen doi sprite
 	this->m_totalFrame = 11;
 	this->m_column = 1;
-	this->m_elapseTimeChangeFrame = 0.95f;
+	this->m_elapseTimeChangeFrame = 0.05f;
 	this->m_currentTime = 0;
 	this->m_increase = 1;
 	this->m_currentFrame = 0;
+	this->m_startFrame = 0;
+	this->m_endFrame = 10;
 
 	this->m_stateRotation = L_ROTATION::L;
 
@@ -153,9 +155,10 @@ void CBullet_L::Update(float deltaTime)
 	this->ChangeFrame(deltaTime);
 
 }
-void CBullet_L::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
+void CBullet_L::Update(float deltaTime, std::vector<CGameObject*>* _listObjectCollision)
 {
-	
+	this->MoveUpdate(deltaTime);
+	this->ChangeFrame(deltaTime);
 }
 
 void CBullet_L::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)
@@ -166,15 +169,18 @@ void CBullet_L::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* l
 
 void CBullet_L::ChangeFrame(float deltaTime)
 {
-	this->m_currentTime += deltaTime;
-	if(this->m_currentTime > this->m_elapseTimeChangeFrame)
+	if(this->m_currentFrame != this->m_endFrame)
 	{
-		this->m_currentFrame += this->m_increase;
-		if(this->m_currentFrame > this->m_endFrame || this->m_currentFrame < this->m_startFrame)
+		this->m_currentTime += deltaTime;
+		if(this->m_currentTime > this->m_elapseTimeChangeFrame)
 		{
-			this->m_currentFrame = 0;
+			this->m_currentFrame += this->m_increase;
+			if(this->m_currentFrame > this->m_endFrame || this->m_currentFrame < this->m_startFrame)
+			{
+				this->m_currentFrame = 0;
+			}
+			this->m_currentTime -= this->m_elapseTimeChangeFrame;
 		}
-		this->m_currentTime -= this->m_elapseTimeChangeFrame;
 	}
 }
 

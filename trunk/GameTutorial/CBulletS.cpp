@@ -20,15 +20,10 @@ CBullet_S::CBullet_S(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset)
 	this->Init();
 	this->m_rotation = rotation;
 	this->m_bullet_1 = new CBullet_M(rotation, pos, offset);
-	m_bullet_1->m_isContra = this->m_isContra;
 	this->m_bullet_2 = new CBullet_M(rotation + PI / 24, pos, offset);
-	m_bullet_2->m_isContra = this->m_isContra;
 	this->m_bullet_3 = new CBullet_M(rotation + PI / 12, pos, offset);
-	m_bullet_3->m_isContra = this->m_isContra;
 	this->m_bullet_4 = new CBullet_M(rotation - PI / 24, pos, offset);
-	m_bullet_4->m_isContra = this->m_isContra;
 	this->m_bullet_5 = new CBullet_M(rotation - PI / 12, pos, offset);
-	m_bullet_5->m_isContra = this->m_isContra;
 }
 
 CBullet_S::CBullet_S(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset, bool direction)
@@ -36,15 +31,19 @@ CBullet_S::CBullet_S(double rotation, D3DXVECTOR2 pos, D3DXVECTOR2 offset, bool 
 	this->Init();
 	this->m_rotation = rotation;
 	this->m_bullet_1 = new CBullet_M(rotation, pos, offset, direction);
-	m_bullet_1->m_isContra = this->m_isContra;
 	this->m_bullet_2 = new CBullet_M(rotation + PI / 24, pos, offset, direction);
-	m_bullet_2->m_isContra = this->m_isContra;
 	this->m_bullet_3 = new CBullet_M(rotation + PI / 12, pos, offset, direction);
-	m_bullet_3->m_isContra = this->m_isContra;
 	this->m_bullet_4 = new CBullet_M(rotation - PI / 24, pos, offset, direction);
-	m_bullet_4->m_isContra = this->m_isContra;
 	this->m_bullet_5 = new CBullet_M(rotation - PI / 12, pos, offset, direction);
-	m_bullet_5->m_isContra = this->m_isContra;
+}
+
+void CBullet_S::SetLayer(LAYER layer)
+{
+	m_bullet_1->SetLayer(layer);
+	m_bullet_2->SetLayer(layer);
+	m_bullet_3->SetLayer(layer);
+	m_bullet_4->SetLayer(layer);
+	m_bullet_5->SetLayer(layer);
 }
 
 void CBullet_S::Init()

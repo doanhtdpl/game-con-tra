@@ -138,3 +138,23 @@ bool CQuadNode::IntersectRectRS(RECT* rectFirst, RECT* rectSecond)
 	return false;
 }
 
+void CQuadNode::Clear()
+{
+	if(this->m_nodeTL)
+		this->m_nodeTL->Clear();
+	if(this->m_nodeTR)
+		this->m_nodeTR->Clear();
+	if(this->m_nodeBL)
+		this->m_nodeBL->Clear();
+	if(this->m_nodeBR)
+		this->m_nodeBR->Clear();
+	if(!this->m_nodeTL&&
+		!this->m_nodeTR &&
+		!this->m_nodeBL &&
+		!this->m_nodeBR)
+	{
+		//delete this;
+		return;
+	}
+}
+

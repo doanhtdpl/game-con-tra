@@ -27,22 +27,7 @@ public:
 	void Render();
 	void Destroy();
 protected:
-	CSoldier* sObj;
-	CSniper* nobj;
-	CWallTurret* wobj;
-	CWeapon* weObj;
-	CSWeapon* wseObj;
-	//
-	CDefenseCannon* defCannonObj;
 
-	CBridge* br;
-	// Test collision
-	Box first;
-	Box second;
-	Box broadphaseBox;
-	bool isCollision;
-	float collisiontime;
-	float increse;
 };
 
 #endif // !__CStateGamePlay_H__

@@ -18,7 +18,6 @@ public:
 	virtual RECT* GetRectRS();
 	virtual RECT* GetBound();
 	virtual Box GetBox();
-protected:
 	virtual void Init(); // khoi tao vi tri ban dau cua vien dan.
 private:
 	double m_angle;
