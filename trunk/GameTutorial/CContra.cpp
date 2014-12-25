@@ -388,11 +388,11 @@ void CContra::InputUpdate(float deltaTime)
 		//{
 			if(!this->m_isUnderWater)
 			{
-				if(this->m_stateCurrent == ON_GROUND::IS_LYING && !CInput::GetInstance()->IsKeyDown(DIK_DOWN))
-				{
-					//this->m_pos.y += 20;
-					this->m_elapseTimeChangeFrame = 0.0f;
-				}
+				//if(this->m_stateCurrent == ON_GROUND::IS_LYING && !CInput::GetInstance()->IsKeyDown(DIK_DOWN))
+				//{
+				//	//this->m_pos.y += 20;
+				//	this->m_elapseTimeChangeFrame = 0.0f;
+				//}
 				this->m_stateCurrent = ON_GROUND::IS_STANDING;
 			}
 			else
@@ -440,7 +440,7 @@ void CContra::InputUpdate(float deltaTime)
 				{
 					if(this->m_allowFall)
 					{
-						this->m_elapseTimeChangeFrame = 0.0f;
+						//this->m_elapseTimeChangeFrame = 0.0f;
 						this->m_stateCurrent = ON_GROUND::IS_FALL;
 						//Duoc phep nhay, kiem tra them va cham voi doi tuong nen dat cho phep nhay
 						if(!this->m_isJumping)
@@ -560,11 +560,11 @@ void CContra::InputUpdate(float deltaTime)
 				{
 					//Ban cheo xuong
 					//Neu trang thai truoc do la nhay pos.y +=22
-					if(this->m_stateCurrent == ON_GROUND::IS_LYING && (this->m_keyDown == DIK_LEFT || this->m_keyDown == DIK_RIGHT))
-					{
-						this->m_elapseTimeChangeFrame = 0.0f;
-						//this->m_pos.y += 22;
-					}
+					//if(this->m_stateCurrent == ON_GROUND::IS_LYING && (this->m_keyDown == DIK_LEFT || this->m_keyDown == DIK_RIGHT))
+					//{
+					//	//this->m_elapseTimeChangeFrame = 0.0f;
+					//	//this->m_pos.y += 22;
+					//}
 					this->m_stateShoot = SHOOT::IS_DIAGONAL_DOWN;
 					this->m_stateCurrent = ON_GROUND::IS_SHOOTING_DIAGONAL_DOWN;
 				}
@@ -1263,11 +1263,11 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 										this->m_stateCurrent = ON_GROUND::IS_STANDING;
 									}
 								}
-								else if(this->m_stateCurrent == ON_GROUND::IS_LYING)
-								{
-									//this->m_pos.y += 20;
-									this->m_elapseTimeChangeFrame = 0.0f;
-								}
+								//else if(this->m_stateCurrent == ON_GROUND::IS_LYING)
+								//{
+								//	//this->m_pos.y += 20;
+								//	//this->m_elapseTimeChangeFrame = 0.0f;
+								//}
 								else
 								{
 									this->m_isJumping = false;
@@ -1310,6 +1310,10 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					{
 						//O duoi nuoc khong the nhay
 						checkColWithWater = true;
+						if(this->m_stateCurrent == ON_GROUND::IS_FALL)
+						{
+							this->m_stateCurrent = UNDER_WATER::IS_LYING_UNDER_WATER;
+						}
 						this->m_isUnderWater = true;
 						this->m_isJumping = false;
 						if( timeCollision == 2.0f)
@@ -1325,13 +1329,13 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 										return;
 									}
 								}
-								if(this->m_stateCurrent == UNDER_WATER::IS_LYING_UNDER_WATER)
-								{
-									//this->m_pos.y += 20;
-									this->m_pos.y += moveY;
-									this->m_vy = 0;
-									//this->m_elapseTimeChangeFrame = 0.0f;
-								}
+								//if(this->m_stateCurrent == UNDER_WATER::IS_LYING_UNDER_WATER)
+								//{
+								//	//this->m_pos.y += 20;
+								//	this->m_pos.y += moveY;
+								//	this->m_vy = 0;
+								//	//this->m_elapseTimeChangeFrame = 0.0f;
+								//}
 								else
 								{
 									this->m_pos.y += moveY;
