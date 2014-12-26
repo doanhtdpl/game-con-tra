@@ -32,7 +32,6 @@ void CDefenseCannon::Init()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 224.0f;
 	this->m_height = 368.0f;
-	this->m_pos = D3DXVECTOR2(500.0f, 290.0f);
 	this->m_left = false;
 
 	//Khoi tao cac thong so chuyen doi sprite
@@ -54,7 +53,7 @@ void CDefenseCannon::Init()
 
 	//Khoi tao cac doi tuong con
 	std::vector<int> info;
-	info.push_back(11001);
+	info.push_back(11002);
 	info.push_back(this->m_pos.x - 70);
 	info.push_back(this->m_pos.y + 133);
 	info.push_back(52);
@@ -70,37 +69,6 @@ void CDefenseCannon::Init()
 
 void CDefenseCannon::Update(float deltaTime)
 {
-	this->SetFrame();
-	this->ChangeFrame(deltaTime);
-	//////Update cho cac doi tuong con
-	//Co doi tuong linh nup tren dau nua
-	// update effect isalive
-	if (this->sniper->IsAlive())
-		this->sniper->Update(deltaTime);
-	//
-	this->gunLeft->Update(deltaTime);
-	//
-	this->gunRight->Update(deltaTime);
-	//
-	if (this->turrect->IsAlive())
-		this->turrect->Update(deltaTime);
-
-	// TT test
-	// 2 gun die
-	if (!this->gunLeft->IsAlive())
-	{
-		this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_GUNLEFT_DIE;
-	}
-	if (!this->gunRight->IsAlive())
-	{
-		this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_GUNRIGHT_DIE;
-	}
-
-	// Boss die
-	if (!this->turrect->IsAlive())
-	{
-		this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_IS_DIE;
-	}
 }
 
 void CDefenseCannon::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -118,7 +86,7 @@ void CDefenseCannon::Update(float deltaTime, std::vector<CGameObject*>* listObje
 	this->gunRight->Update(deltaTime);
 	//
 	if (this->turrect->IsAlive())
-		this->turrect->Update(deltaTime);
+		this->turrect->Update(deltaTime, listObjectCollision);
 
 	// TT test
 	// 2 gun die
