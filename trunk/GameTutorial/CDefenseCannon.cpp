@@ -11,7 +11,7 @@ CDefenseCannon::CDefenseCannon(void)
 
 CDefenseCannon::CDefenseCannon(const std::vector<int>& info)
 {
-	this->Init();
+	
 	if (!info.empty())
 	{
 		this->m_id = info.at(0) % 1000;
@@ -20,6 +20,7 @@ CDefenseCannon::CDefenseCannon(const std::vector<int>& info)
 		//this->m_width = info.at(3);
 		//this->m_height = info.at(4);
 	}
+	this->Init();
 }
 
 void CDefenseCannon::Init()
