@@ -106,7 +106,8 @@ void CBullet_DefenseCannon::OnCollision(float deltaTime, std::vector<CGameObject
 	{
 		CGameObject* obj = *it;
 		// Neu doi tuong la ground
-		if (obj->GetIDType() == 14 && obj->GetID() == 1)
+		float bossY = obj->GetPos().y;
+		if (obj->GetIDType() == 15 && obj->GetID() == 1 && bossY <= 45)
 		{
 			timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
 			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
@@ -127,7 +128,12 @@ void CBullet_DefenseCannon::OnCollision(float deltaTime, std::vector<CGameObject
 
 RECT* CBullet_DefenseCannon::GetRectRS()
 {
-	return nullptr;
+	RECT* rs = new RECT();
+	rs->left = 0;
+	rs->right = this->m_width;
+	rs->top = 0;
+	rs->bottom = this->m_height;
+	return rs;
 }
 
 RECT* CBullet_DefenseCannon::GetBound()
