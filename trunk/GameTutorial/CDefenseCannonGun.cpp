@@ -10,6 +10,7 @@
 #include "CEnemyEffect.h"
 #include "CPoolingObject.h"
 #include <vector>
+#include "CLoadGameObject.h"
 
 CDefenseCannonGun::CDefenseCannonGun(bool isGunLeft)
 {
@@ -214,6 +215,7 @@ void CDefenseCannonGun::BulletUpdate(float deltaTime)
 	for (int i = 0; i < this->m_listBullet.size(); i++)
 	{
 		this->m_listBullet.at(i)->Update(deltaTime);
+		this->m_listBullet.at(i)->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 		pos.x = this->m_listBullet.at(i)->GetPos().x;
 		pos.y = this->m_listBullet.at(i)->GetPos().y;
 		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
