@@ -64,6 +64,24 @@
     <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Artillery">
       <UniqueIdentifier>{96fa7e07-36a2-42d5-a798-7509455b0ebc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground">
+      <UniqueIdentifier>{f58af164-888f-4bf9-bd76-adabcfd533e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\StaticObject\Effect">
+      <UniqueIdentifier>{e4c892cf-dbfc-408b-b72f-8082b7912350}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Item">
+      <UniqueIdentifier>{8c3dc9a1-1a15-457f-a9a2-e5f61ea16c89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss">
+      <UniqueIdentifier>{b6e987c8-8bdb-4691-bdb6-0b2c40ccaf9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1">
+      <UniqueIdentifier>{ebead2be-3cfa-4a53-aba0-45efcba3fe35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\LoadResource">
+      <UniqueIdentifier>{e937bcb4-36c8-4357-a000-6ca72b21bd21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTexture.cpp">
@@ -111,9 +129,6 @@
     <ClCompile Include="CFileUtil.cpp">
       <Filter>Source Files\GameFramwork\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="CLoadBackGround.cpp">
-      <Filter>Source Files\GameLoop\InitGame</Filter>
-    </ClCompile>
     <ClCompile Include="CManagementTexture.cpp">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClCompile>
@@ -140,9 +155,6 @@
     </ClCompile>
     <ClCompile Include="CQuadTree.cpp">
       <Filter>Source Files\GameLoop\InitGame\QuadTree</Filter>
-    </ClCompile>
-    <ClCompile Include="CLoadGameObject.cpp">
-      <Filter>Source Files\GameLoop\InitGame</Filter>
     </ClCompile>
     <ClCompile Include="CFactoryDynamicObject.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject</Filter>
@@ -195,35 +207,44 @@
     <ClCompile Include="CFileConfig.cpp">
       <Filter>Source Files\GameFramwork\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="CBulletItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CExplosionEffect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CEnemyEffect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CBulletDefenseCannon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CDefenseCannon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CDefenseCannonGun.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CDefenseCannonTurret.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="CBridge.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
     </ClCompile>
     <ClCompile Include="CPoolingObject.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GameFramwork\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="CBridge.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="CManageAudio.cpp">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClCompile>
-    <ClCompile Include="CBridge.h">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="CExplosionEffect.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyEffect.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundUtil.cpp">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletItem.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CDefenseCannonTurret.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="CDefenseCannonGun.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="CDefenseCannon.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletDefenseCannon.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="CLoadGameObject.cpp">
+      <Filter>Source Files\GameLoop\InitGame\LoadResource</Filter>
+    </ClCompile>
+    <ClCompile Include="CLoadBackGround.cpp">
+      <Filter>Source Files\GameLoop\InitGame\LoadResource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,9 +302,6 @@
     <ClInclude Include="CFileUtil.h">
       <Filter>Source Files\GameFramwork\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="CLoadBackGround.h">
-      <Filter>Source Files\GameLoop\InitGame</Filter>
-    </ClInclude>
     <ClInclude Include="CManagementTexture.h">
       <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClInclude>
@@ -313,9 +331,6 @@
     </ClInclude>
     <ClInclude Include="CQuadTree.h">
       <Filter>Source Files\GameLoop\InitGame\QuadTree</Filter>
-    </ClInclude>
-    <ClInclude Include="CLoadGameObject.h">
-      <Filter>Source Files\GameLoop\InitGame</Filter>
     </ClInclude>
     <ClInclude Include="CFactoryDynamicObject.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject</Filter>
@@ -365,29 +380,44 @@
     <ClInclude Include="CFileConfig.h">
       <Filter>Source Files\GameFramwork\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="CBulletItem.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CBridge.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
     </ClInclude>
-    <ClInclude Include="CExplosionEffect.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CSoundUtil.h">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClInclude>
-    <ClInclude Include="CEnemyEffect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CBulletDefenseCannon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CDefenseCannon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CDefenseCannonGun.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CDefenseCannonTurret.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CManageAudio.h">
+      <Filter>Source Files\GameFramwork\Direct_X</Filter>
     </ClInclude>
     <ClInclude Include="CPoolingObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\GameFramwork\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CExplosionEffect.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyEffect.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletItem.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CDefenseCannonTurret.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="CDefenseCannonGun.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="CDefenseCannon.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletDefenseCannon.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="CLoadGameObject.h">
+      <Filter>Source Files\GameLoop\InitGame\LoadResource</Filter>
+    </ClInclude>
+    <ClInclude Include="CLoadBackGround.h">
+      <Filter>Source Files\GameLoop\InitGame\LoadResource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

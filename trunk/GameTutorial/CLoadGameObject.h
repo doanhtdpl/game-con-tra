@@ -30,11 +30,11 @@ protected:
 	std::vector<CGameObject*>* m_listGameObject;
 
 	// D/s tat ca cac doi tuong trong map.
-	std::hash_map<int, std::hash_map<int, CGameObject*>>* m_listAllGameObject;
+	std::hash_map<int, std::string>* m_listAllGameObject;
 	// hash map<stt cua man`, stt cua obj trong node, doi tuong game>
 
 	// list quadtree
-	std::hash_map<int, CQuadTree*>* m_listQuadTree;
+	std::hash_map<int, std::string>* m_listQuadTree;
 	// <stt map, quadtree cua map>
 
 	// List id cua doi tuong tren viewPort.
