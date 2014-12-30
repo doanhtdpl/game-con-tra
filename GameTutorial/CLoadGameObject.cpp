@@ -9,8 +9,8 @@
 CLoadGameObject::CLoadGameObject()
 {
 	this->m_listGameObject = new std::vector<CGameObject*>();
-	this->m_listQuadTree = new std::hash_map<int, CQuadTree*>();
-	this->m_listAllGameObject = new std::hash_map<int, std::hash_map<int, CGameObject*>>();
+	this->m_listQuadTree = new std::hash_map<int, std::string>();
+	this->m_listAllGameObject = new std::hash_map<int,std::string>();
 	this->m_quadTree = new CQuadTree();
 }
 
@@ -24,7 +24,7 @@ void CLoadGameObject::LoadQuadTreeFromFile(const std::string& filePath)
 {
 	int mapID;
 	std::string pathItem;
-	typedef pair<int, CQuadTree*> Pair;
+	typedef pair<int, std::string> Pair;
 	std::vector<std::string> result = CFileUtil::GetInstance()->LoadFromFile(filePath); //Load tat ca cac duong dan tu nguon
 	std::vector<std::string> item; //Lay tung item trong result
 	for (int i = 0; i < result.size(); i++)
@@ -33,8 +33,8 @@ void CLoadGameObject::LoadQuadTreeFromFile(const std::string& filePath)
 		mapID = atoi(item.at(0).c_str());
 		pathItem = item.at(1).c_str();
 		//Tao CTexture
-		this->m_quadTree->ReBuildQuadTree(pathItem);
-		this->m_listQuadTree->insert(Pair(mapID, this->m_quadTree));
+		//this->m_quadTree->ReBuildQuadTree(pathItem);
+		this->m_listQuadTree->insert(Pair(mapID, pathItem));
 	}
 }
 
@@ -108,7 +108,8 @@ void CLoadGameObject::CreateObjectOnScreen()
 				} 
 				else // Co trong cu, va co trong moi, thuc hien update
 				{
-
+					// Ve no ra
+					//this->Draw();
 				}
 
 			}
@@ -252,7 +253,7 @@ void CLoadGameObject::LoadGameObjectFromFile(const std::string& filePath)
 {
 	int mapID;
 	std::string pathItem;
-	typedef pair<int, std::hash_map<int, CGameObject*>> Pair;
+	typedef pair<int, std::string> Pair;
 	std::vector<std::string> result = CFileUtil::GetInstance()->LoadFromFile(filePath); //Load tat ca cac duong dan tu nguon
 	std::vector<std::string> item; //Lay tung item trong result
 	std::vector<std::string> data; //Luu du lieu lay len tu mot file
@@ -262,8 +263,8 @@ void CLoadGameObject::LoadGameObjectFromFile(const std::string& filePath)
 		mapID = atoi(item.at(0).c_str());
 		pathItem = item.at(1).c_str();
 		//Load thong tin info
-		std::hash_map<int, CGameObject*> listInfo = this->LoadGameObjectInfo(pathItem);
-		this->m_listAllGameObject->insert(Pair(mapID, listInfo));
+		//std::hash_map<int, CGameObject*> listInfo = this->LoadGameObjectInfo(pathItem);
+		this->m_listAllGameObject->insert(Pair(mapID, pathItem));
 	}
 }
 
@@ -304,11 +305,31 @@ void CLoadGameObject::ChangeMap(const int& idMap)
 {
 	if(this->m_listQuadTree)
 	{
-		this->m_quadTree = this->m_listQuadTree->find(idMap)->second;
+		this->m_quadTree->Clear();
+		this->m_quadTree = nullptr;
+		this->m_quadTree = new CQuadTree();
+		std::hash_map<int, std::string>::iterator it = this->m_listQuadTree->find(idMap);
+		if(it != this->m_listQuadTree->end())
+		{
+			this->m_quadTree->ReBuildQuadTree(it->second);
+		}
+		else
+		{
+			throw;
+		}
 	}
 	if(this->m_listAllGameObject)
 	{
-		this->m_listObjectCurr = this->m_listAllGameObject->find(idMap)->second;
+		this->m_listObjectCurr.clear();
+		std::hash_map<int, std::string>::iterator it = this->m_listAllGameObject->find(idMap);
+		if(it != this->m_listAllGameObject->end())
+		{
+			this->m_listObjectCurr = this->LoadGameObjectInfo(it->second);
+		}
+		else
+		{
+			throw;
+		}
 	}
 }
 
