@@ -19,7 +19,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;
 	this->m_height = 92.0f; 
-	this->m_pos = D3DXVECTOR2(100.0f, 350.0f);
+	this->m_pos = D3DXVECTOR2(6000.0f, 350.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;

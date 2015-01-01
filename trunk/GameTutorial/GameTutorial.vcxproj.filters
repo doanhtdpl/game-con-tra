@@ -94,6 +94,9 @@
     <Filter Include="Source Files\GameLoop\InitGame\LoadResource\EffectBackground">
       <UniqueIdentifier>{5b39a3bf-cd32-40e2-83a6-acdc43ce128c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameLoop\SceneManager">
+      <UniqueIdentifier>{509f0fd8-3ef2-4397-b418-8e0cb4637d51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTexture.cpp">
@@ -302,6 +305,9 @@
     </ClCompile>
     <ClCompile Include="CBridgeStone.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneManagement.cpp">
+      <Filter>Source Files\GameLoop\SceneManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -520,6 +526,9 @@
     </ClInclude>
     <ClInclude Include="CBridgeStone.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneManagement.h">
+      <Filter>Source Files\GameLoop\SceneManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

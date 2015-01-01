@@ -94,6 +94,7 @@
     <ClCompile Include="CFireBridge.cpp" />
     <ClCompile Include="CGroundCannon.cpp" />
     <ClCompile Include="CGunner.cpp" />
+    <ClCompile Include="CSceneManagement.cpp" />
     <ClCompile Include="CScubaSolider.cpp" />
     <ClCompile Include="CSniper.cpp" />
     <ClCompile Include="CSoldier.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="CExplosionEffect.h" />
     <ClInclude Include="CFireBridge.h" />
     <ClInclude Include="CGunner.h" />
+    <ClInclude Include="CSceneManagement.h" />
     <ClInclude Include="CScubaSolider.h" />
     <ClInclude Include="CSniper.h" />
     <ClInclude Include="CSoldier.h" />
