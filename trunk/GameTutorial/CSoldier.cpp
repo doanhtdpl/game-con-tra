@@ -26,8 +26,8 @@ CSoldier::CSoldier(const std::vector<int>& info)
 void CSoldier::Init()
 {
 	//Khoi tao cac thong so cua doi tuong
-	this->m_id = 0;
-	this->m_idType = 11; 
+	this->m_id = 2;
+	this->m_idType = 12; 
 	this->m_idImage = 0;
 	this->m_isALive = false;
 	this->m_isAnimatedSprite = true;

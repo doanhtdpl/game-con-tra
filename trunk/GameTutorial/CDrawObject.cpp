@@ -5,6 +5,8 @@
 #include "CHidenObject.h"
 #include "CBulletL.h"
 #include "CDefenseCannon.h"
+#include "CBridgeFire.h"
+#include "CBigCapsule.h"
 
 CDrawObject::CDrawObject()
 {
@@ -21,6 +23,12 @@ void CDrawObject::Draw(CGameObject* obj)
 		{
 			int typeObject = obj->GetIDType();
 			int idObject = obj->GetID();
+
+			if (typeObject == 16 && idObject == 4)
+			{
+				int x = 0;
+			}
+
 			//Kiem tra xem Id cua doi tuong no co hop le hay khong
 			if (typeObject > 0)
 			{
@@ -37,6 +45,10 @@ void CDrawObject::Draw(CGameObject* obj)
 					{
 						texture = CManagementTexture::GetInstance()->GetTextureByID(idObject, typeObject);
 					}
+				if (typeObject == 15)
+				{
+					texture = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
+				}
 				//Neu ton tai texture 
 				if (texture && this->m_draw)
 				{
@@ -71,26 +83,26 @@ void CDrawObject::Draw(CGameObject* obj)
 					}
 					else if (typeObject == 15)
 					{
-						//D3DXVECTOR3 poshiden(0, 0, 0);
-						posObjAfterTransform = CCamera::GetInstance()->GetPointTransform(posObj.x, posObj.y);
-						//this->m_draw->draw(texture, obj->GetRectRS(), posObjAfterTransform, D3DCOLOR_XRGB(255,255,255), true);
-						this->m_draw->drawScale(texture, obj->GetRectRS(), posObjAfterTransform,
-							D3DXVECTOR2(obj->GetWidth() / texture->GetImageWidth(), obj->GetHeight() / texture->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/, D3DCOLOR_XRGB(255, 255, 255), true);
+						////D3DXVECTOR3 poshiden(0, 0, 0);
+						//posObjAfterTransform = CCamera::GetInstance()->GetPointTransform(posObj.x, posObj.y);
+						////this->m_draw->draw(texture, obj->GetRectRS(), posObjAfterTransform, D3DCOLOR_XRGB(255,255,255), true);
+						//this->m_draw->drawScale(texture, obj->GetRectRS(), posObjAfterTransform,
+						//	D3DXVECTOR2(obj->GetWidth() / texture->GetImageWidth(), obj->GetHeight() / texture->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/, D3DCOLOR_XRGB(255, 255, 255), true);
 					}
 					else
 					{
 
-						RECT* rect = new RECT();
-						rect->left = 0;
-						rect->right = 64;
-						rect->top = 0;
-						rect->bottom = 64;
-						D3DXVECTOR3 posofBox = CCamera::GetInstance()->GetPointTransform(obj->GetBox().x, obj->GetBox().y);
-							CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
-						this->m_draw->drawScale(text,
-							rect, posofBox,
-							D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
-							D3DCOLOR_XRGB(255, 255, 255), true);
+						//RECT* rect = new RECT();
+						//rect->left = 0;
+						//rect->right = 64;
+						//rect->top = 0;
+						//rect->bottom = 64;
+						//D3DXVECTOR3 posofBox = CCamera::GetInstance()->GetPointTransform(obj->GetBox().x, obj->GetBox().y);
+						//	CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
+						//this->m_draw->drawScale(text,
+						//	rect, posofBox,
+						//	D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
+						//	D3DCOLOR_XRGB(255, 255, 255), true);
 						//}
 						////sang test
 						if (!obj->GetDirection())
@@ -113,7 +125,29 @@ void CDrawObject::Draw(CGameObject* obj)
 						}
 					}
 				}
+				//Tinh Test
+				//Ve cay cau lua
+				if (typeObject == 16)
+				{
+					switch (idObject)
+					{
+					case 2://cau lua
+					{
+							   CBridgeFire* objBridgeFire = ((CBridgeFire*)obj);
+							   //Ve cuc lua trai
+							   if (objBridgeFire->fireLeft->IsAlive())
+								   CDrawObject::GetInstance()->Draw(objBridgeFire->fireLeft);
+							   //Ve cuc lua phai
+							   if (objBridgeFire->fireRight->IsAlive())
+								   CDrawObject::GetInstance()->Draw(objBridgeFire->fireRight);
+							   //
+							   break;
+					}
+					default:
+						break;
+					}
 
+				}
 				//Tinh Test
 				//Neu obj co phai la boss thi tao moi 3 doi tuong kia
 				// k co box cho nong sung, sao no va cham :D=

@@ -17,6 +17,7 @@ protected:
 	int m_startFrame;
 	int m_endFrame;
 	int m_column;
+public:
 	virtual void ChangeFrame(float deltaTime);		// ham chuyen frame.
 	virtual RECT*& UpdateRectResource(int rsHeight, int rsWidth);	//cap nhat lai vi tri rect resources.
 };

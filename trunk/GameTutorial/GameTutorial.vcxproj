@@ -18,7 +18,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -69,21 +69,32 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CAnimation.cpp" />
+    <ClCompile Include="CBigCapsule.cpp" />
+    <ClCompile Include="CBigstone.cpp" />
+    <ClCompile Include="CBridgeFire.cpp" />
     <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CBulletCapsule.cpp" />
     <ClCompile Include="CBulletF.cpp" />
     <ClCompile Include="CBulletItem.cpp" />
     <ClCompile Include="CBulletL.cpp" />
+    <ClCompile Include="CBulletLaze.cpp" />
     <ClCompile Include="CBulletM.cpp" />
+    <ClCompile Include="CBulletMechanicalAlien.cpp" />
     <ClCompile Include="CBulletN.cpp" />
     <ClCompile Include="CBulletS.cpp" />
+    <ClCompile Include="CBulletScubaSolider.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCollision.cpp" />
     <ClCompile Include="CContra.cpp" />
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="CDrawObject.cpp" />
+    <ClCompile Include="CEffectBackground.cpp" />
     <ClCompile Include="CExplosionEffect.cpp" />
     <ClCompile Include="CFileConfig.cpp" />
+    <ClCompile Include="CFireBridge.cpp" />
     <ClCompile Include="CGroundCannon.cpp" />
+    <ClCompile Include="CGunner.cpp" />
+    <ClCompile Include="CScubaSolider.cpp" />
     <ClCompile Include="CSniper.cpp" />
     <ClCompile Include="CSoldier.cpp" />
     <ClCompile Include="CFactoryDynamicObject.cpp" />
@@ -100,11 +111,14 @@
     <ClCompile Include="CQuadNode.cpp" />
     <ClCompile Include="CQuadObject.cpp" />
     <ClCompile Include="CQuadTree.cpp" />
+    <ClCompile Include="CSoldierShoot.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CStateGamePlay.cpp" />
     <ClCompile Include="CStateMenu.cpp" />
+    <ClCompile Include="CBridgeStone.cpp" />
     <ClCompile Include="CSWeapon.cpp" />
+    <ClCompile Include="CTank.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CView.cpp" />
     <ClCompile Include="CDynamicObject.cpp" />
@@ -120,24 +134,37 @@
     <ClCompile Include="CDefenseCannonTurret.cpp" />
     <ClCompile Include="CPoolingObject.cpp" />
     <ClCompile Include="CBridge.cpp" />
-	<ClCompile Include="CManageAudio.cpp" />
-	<ClCompile Include="CSoundUtil.cpp" />
+    <ClCompile Include="CManageAudio.cpp" />
+    <ClCompile Include="CSoundUtil.cpp" />
+    <ClCompile Include="CCapsuleBoss.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CAnimation.h" />
+    <ClInclude Include="CBigCapsule.h" />
+    <ClInclude Include="CBigStone.h" />
+    <ClInclude Include="CBridgeFire.h" />
     <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CBulletCapsule.h" />
     <ClInclude Include="CBulletF.h" />
     <ClInclude Include="CBulletItem.h" />
     <ClInclude Include="CBulletL.h" />
+    <ClInclude Include="CBulletLaze.h" />
     <ClInclude Include="CBulletM.h" />
+    <ClInclude Include="CBulletMechanicalAlien.h" />
     <ClInclude Include="CBulletN.h" />
     <ClInclude Include="CBulletS.h" />
+    <ClInclude Include="CBulletScubaSolider.h" />
     <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CCapsuleBoss.h" />
     <ClInclude Include="CCollision.h" />
     <ClInclude Include="CContra.h" />
     <ClInclude Include="CDevice.h" />
     <ClInclude Include="CDrawObject.h" />
+    <ClInclude Include="CEffectBackground.h" />
     <ClInclude Include="CExplosionEffect.h" />
+    <ClInclude Include="CFireBridge.h" />
+    <ClInclude Include="CGunner.h" />
+    <ClInclude Include="CScubaSolider.h" />
     <ClInclude Include="CSniper.h" />
     <ClInclude Include="CSoldier.h" />
     <ClInclude Include="CFactoryObject.h" />
@@ -157,12 +184,15 @@
     <ClInclude Include="CQuadObject.h" />
     <ClInclude Include="CQuadTree.h" />
     <ClInclude Include="CSingleton.h" />
+    <ClInclude Include="CSoldierShoot.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CStateGamePlay.h" />
     <ClInclude Include="CStateManagement.h" />
     <ClInclude Include="CStateMenu.h" />
+    <ClInclude Include="CBridgeStone.h" />
     <ClInclude Include="CSWeapon.h" />
+    <ClInclude Include="CTank.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CView.h" />
     <ClInclude Include="CDynamicObject.h" />
@@ -179,7 +209,7 @@
     <ClInclude Include="CDefenseCannonTurret.h" />
     <ClInclude Include="CPoolingObject.h" />
     <ClInclude Include="CBridge.h" />
-	<ClInclude Include="CManageAudio.h" />
+    <ClInclude Include="CManageAudio.h" />
     <ClInclude Include="CSoundUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
