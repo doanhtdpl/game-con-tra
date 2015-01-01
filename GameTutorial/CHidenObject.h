@@ -12,7 +12,13 @@ enum HIDEN_OBJECT_TYPE
 	BRIDGE_EFFECT = 15005,
 	ENEMY_POS_R = 15006,
 	ENEMY_POS_L = 15007,
-	GROUND_NO_FALL = 15008
+	GROUND_NO_FALL = 15008,
+	ENEMY_SHOOT_L = 15009, 
+	ENEMY_SHOOT_R = 15010,
+	H_BIG_STONE = 15011,
+	CREATE_STONE = 15012,
+	CREATE_LAZE = 15013,
+	H_BULLET_LAZE = 15014
 };
 
 class CHidenObject : public CStaticObject
@@ -34,8 +40,13 @@ protected:
 	HIDEN_OBJECT_TYPE m_type;
 	static bool m_createEnemy;
 	static bool m_createWeapon;
+	static bool m_createBigStone;
+	static bool m_createBulletLaze;
 	int countWeapon;
 	float m_waitForCreateEnemy;
+	float m_waitForCreateSoliderShoot;
+	float m_waitForCreateBigStone;
+	float m_waitForCreateBulletLaze;
 	// TT test
 	static float m_posHiddenItem;
 

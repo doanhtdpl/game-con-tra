@@ -1,9 +1,11 @@
 #include "CLoadBackGround.h"
 #include "CFileUtil.h"
 #include "CCamera.h"
+#include "CDrawObject.h"
 
 CLoadBackGround::CLoadBackGround()
 {
+	this->m_listEffectBackground = new std::hash_map<int, CEffect_Background*>();
 	this->m_listBackGroundImage = new std::hash_map<int, std::string>();
 	this->m_listBackGroundMatrix = new std::hash_map<int, std::string>();
 	this->m_listQuadTree = new std::hash_map<int, std::string>();
@@ -63,6 +65,14 @@ void CLoadBackGround::Draw()
 				this->m_drawImg->draw(this->m_imageCurr, &rectRS, pos, D3DCOLOR_XRGB(255,255,225), false);
 			}
 		}
+
+		//Ve hieu ung ra man hinh
+		if (this->m_backGroundEffectCurr)
+		{
+			CDrawObject::GetInstance()->Draw(this->m_backGroundEffectCurr);
+		}
+	
+
 		//for (int i = 0; i < this->m_rows; i++)
 		//{
 		//	for (int j = 0; j < this->m_cols; j++)
@@ -87,6 +97,7 @@ void CLoadBackGround::LoadAllResourceFromFile()
 	LoadAllTextureFromFile(__Level_Image__);
 	LoadAllMatrixFromFile(__Level_Map__);
 	LoadAllQuadTreeFromFile(__Level_QuadTree__);
+	CreateBackGroundEffect();
 }
 
 void CLoadBackGround::LoadAllTextureFromFile(std::string filePath)
@@ -182,8 +193,41 @@ void CLoadBackGround::ChangeBackGround(int idBackGround)
 		{
 			this->m_quadTree->ReBuildQuadTree(it2->second);
 		}
+
+		//
+		//Kiem tra danh sach Effect
+		std::hash_map<int, CEffect_Background*>::iterator it3 = this->m_listEffectBackground->find(idBackGround);
+		if (it3 != this->m_listEffectBackground->end())
+		{
+			this->m_backGroundEffectCurr = it3->second;
+		}
 		
 	}
+}
+
+void CLoadBackGround::CreateBackGroundEffect()
+{
+	//Hien tai minh chi co 3 cai effect, nen chi tao 3 cai thoi, may hieu chinh cho nay di
+	//Hinh nhu effect 1 vs 2 co 1 cot ma, phai ko 1, 3 chi co 1 cot, 2 hang, con 2 thi 3 cot 1 hang
+	CEffect_Background* eff = new CEffect_Background();
+	eff->Init(1, 2, 6528, 448, 0, 1, 1);
+	eff->SetPos(D3DXVECTOR2(eff->GetWidth()/2, eff->GetHeight()/2));
+	CEffect_Background* eff1 = new CEffect_Background();
+	eff1->Init(3, 3, 512, 4352,0, 2, 2);
+	eff1->SetPos(D3DXVECTOR2(eff1->GetWidth() / 2, eff1->GetHeight() / 2));
+	CEffect_Background* eff2 = new CEffect_Background();
+	eff2->Init(1, 2, 4224, 448, 0, 1, 3);
+	eff2->SetPos(D3DXVECTOR2(eff2->GetWidth() / 2, eff2->GetHeight() / 2));
+	typedef pair<int, CEffect_Background*> Pair;
+	this->m_listEffectBackground->insert(Pair(10, eff));
+	this->m_listEffectBackground->insert(Pair(11, eff1));
+	this->m_listEffectBackground->insert(Pair(12, eff2));
+}
+
+void CLoadBackGround::Update(float deltaTime)
+{
+	if (this->m_backGroundEffectCurr)
+		this->m_backGroundEffectCurr->Update(deltaTime);
 }
 
 bool CLoadBackGround::InitMatrix()

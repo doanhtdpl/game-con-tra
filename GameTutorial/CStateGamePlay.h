@@ -8,6 +8,7 @@
 #include "CDynamicObject.h"
 #include "CHidenObject.h"
 #include "CSoldier.h"
+#include "CSoldierShoot.h"
 #include "CSniper.h"
 #include "CWallTurret.h"
 #include "CWeapon.h"
@@ -15,6 +16,7 @@
 #include "CEnemyEffect.h"
 #include "CExplosionEffect.h"
 #include "CDefenseCannon.h"
+#include "CBigCapsule.h"
 #include "CBridge.h"
 
 class CStateGamePlay : public CState

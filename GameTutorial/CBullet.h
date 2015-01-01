@@ -27,7 +27,6 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*>* _listObjectCollision);
 	virtual void OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
-	virtual void ChangeFrame(float deltaTime);
 	virtual RECT* GetRectRS();
 	virtual RECT* GetBound();
 	virtual Box GetBox();
@@ -35,7 +34,8 @@ public:
 	void SetOffset(D3DXVECTOR2 offset){this->m_offset = offset;};
 	void SetRotation(double rotation){this->m_rotation = rotation;};
 	virtual void Init(); //Khoi tao vi tri ban dau cua vien dan
-	//bool m_isContra;
+	bool m_isContra;
+	void SetV(float _vx, float _vy);
 protected:
 	D3DXVECTOR2 m_offset; //Vi tri cua vien dan so voi contra
 	double m_rotation; //Goc ban

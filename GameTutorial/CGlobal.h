@@ -18,7 +18,7 @@ using namespace std;
 //extern HINSTANCE e_hInstance = nullptr;
 
 #define __FRAME_RATE 60
-#define __SCREEN_WIDTH  640
+#define __SCREEN_WIDTH  512
 #define __SCREEN_HEIGHT 448
 #define __CLASS_NAME "Contra"
 #define __CLASS_NAME__(x) #x

@@ -7,6 +7,11 @@
 #include "CBridge.h"
 #include "CDefenseCannon.h"
 #include "CSoldier.h"
+#include "CGunner.h"
+#include "CScubaSolider.h"
+#include "CBridgeFire.h"
+#include "CBridgeStone.h"
+#include "CBigCapsule.h"
 
 CFactoryStaticObject::~CFactoryStaticObject()
 {
@@ -32,14 +37,20 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 		idType = info.at(0);
 		switch(idType)
 		{
-		case 15001:
-		case 15002:
+		case 15001://Ground
+		case 15002://Water
 		case 15003:	// sjnh weapon
 		case 15004:	// sinh enemy
 		case 15005:	// Hieu ung no cau
-		case 15006:
-		case 15007:
-		case 15008:
+		case 15006://Soldier_right :
+		case 15007://Soldier_left: 
+		case 15008://Ground no falling
+		case 15009://Soldier_Shoot_left: 
+		case 15010://Soldier_Shoot_right: 
+		case 15011://Hidden ve BigStone
+		case 15012://Create BigStone
+		case 15013://Create Bullet Laze
+		case 15014://Hidden ve Bullet laze
 		case 14002: //Dan F
 		case 14003: //Dan L
 		case 14004: //Dan M
@@ -66,10 +77,14 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 			{
 				return new CGroundCanon(info);
 			}
-			//case 13001: //Weapon tinh
-			//	{
-			//		return new CSWeapon(info);
-			//	}
+		case 11005: //Scuba Soldier
+			{
+				return new CScubaSolider(info);
+			}
+		case 11006: //Gunner
+			{
+				return new CGunner(info);
+			}
 		case 13002: //Dan F
 		case 13003: //Dan L
 		case 13004: //Dan M
@@ -83,11 +98,22 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 			{
 				return new CBridge(info);
 			}
-
+		case 16002:
+			{
+				return new CBridgeFire(info);
+			}
+		case 16003:
+			{
+				return new CBridgeStone(info);
+			}
 		case 17001://Boss map 1
 			{
 				return new CDefenseCannon(info);
 			}
+		case 17010://Boss map 5
+		{
+			return new CBigCapsule(info);
+		}
 		default:
 			return nullptr;
 		}

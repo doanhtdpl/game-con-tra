@@ -82,6 +82,18 @@
     <Filter Include="Source Files\GameLoop\InitGame\LoadResource">
       <UniqueIdentifier>{e937bcb4-36c8-4357-a000-6ca72b21bd21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2">
+      <UniqueIdentifier>{92e00522-d271-4b33-ab48-cf259dad5ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss3">
+      <UniqueIdentifier>{9d822572-b4a1-4744-a787-dc29466d7e4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Tank">
+      <UniqueIdentifier>{f8f74317-4229-4110-8910-c8dbde3b3dc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\LoadResource\EffectBackground">
+      <UniqueIdentifier>{5b39a3bf-cd32-40e2-83a6-acdc43ce128c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTexture.cpp">
@@ -245,6 +257,51 @@
     </ClCompile>
     <ClCompile Include="CLoadBackGround.cpp">
       <Filter>Source Files\GameLoop\InitGame\LoadResource</Filter>
+    </ClCompile>
+    <ClCompile Include="CGunner.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
+    </ClCompile>
+    <ClCompile Include="CScubaSolider.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletScubaSolider.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletMechanicalAlien.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoldierShoot.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
+    </ClCompile>
+    <ClCompile Include="CBridgeFire.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="CFireBridge.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletLaze.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CCapsuleBoss.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss3</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletCapsule.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss3</Filter>
+    </ClCompile>
+    <ClCompile Include="CBigCapsule.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss3</Filter>
+    </ClCompile>
+    <ClCompile Include="CTank.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Tank</Filter>
+    </ClCompile>
+    <ClCompile Include="CBigstone.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffectBackground.cpp">
+      <Filter>Source Files\GameLoop\InitGame\LoadResource\EffectBackground</Filter>
+    </ClCompile>
+    <ClCompile Include="CBridgeStone.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +475,51 @@
     </ClInclude>
     <ClInclude Include="CLoadBackGround.h">
       <Filter>Source Files\GameLoop\InitGame\LoadResource</Filter>
+    </ClInclude>
+    <ClInclude Include="CGunner.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
+    </ClInclude>
+    <ClInclude Include="CScubaSolider.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletScubaSolider.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletMechanicalAlien.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
+    </ClInclude>
+    <ClInclude Include="CSoldierShoot.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
+    </ClInclude>
+    <ClInclude Include="CBridgeFire.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="CFireBridge.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletLaze.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CCapsuleBoss.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss3</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletCapsule.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss3</Filter>
+    </ClInclude>
+    <ClInclude Include="CBigCapsule.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss3</Filter>
+    </ClInclude>
+    <ClInclude Include="CTank.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Tank</Filter>
+    </ClInclude>
+    <ClInclude Include="CBigStone.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Enemy\Infantry</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffectBackground.h">
+      <Filter>Source Files\GameLoop\InitGame\LoadResource\EffectBackground</Filter>
+    </ClInclude>
+    <ClInclude Include="CBridgeStone.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

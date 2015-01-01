@@ -3,11 +3,14 @@
 #include "CCollision.h"
 #include "CContra.h"
 #include "CSoldier.h"
+#include "CSoldierShoot.h"
 #include "CPoolingObject.h"
+#include "CBulletLaze.h"
 
-
+bool CHidenObject::m_createBigStone = false;
 bool CHidenObject::m_createEnemy = false;
 bool CHidenObject::m_createWeapon = false;
+bool CHidenObject::m_createBulletLaze = false;
 float CHidenObject::m_posHiddenItem = 0.0f;
 
 CHidenObject::CHidenObject() : CStaticObject()
@@ -24,6 +27,9 @@ CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 {
 	this->m_isALive = true;//
 	this->m_waitForCreateEnemy = 1.0f;
+	this->m_waitForCreateSoliderShoot = 1.40f;
+	this->m_waitForCreateBigStone = 6.0f;
+	this->m_waitForCreateBulletLaze = 0.90f;
 	this->countWeapon = 0;
 	// TT
 	if(!info.empty())
@@ -55,6 +61,24 @@ CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 			break;
 		case 15008:
 			this->m_type = HIDEN_OBJECT_TYPE::GROUND_NO_FALL;
+			break;
+		case 15009:
+			this->m_type = HIDEN_OBJECT_TYPE::ENEMY_SHOOT_L;
+			break;
+		case 15010:
+			this->m_type = HIDEN_OBJECT_TYPE::ENEMY_SHOOT_R;
+			break;
+		case 15011:
+			this->m_type = HIDEN_OBJECT_TYPE::H_BIG_STONE;
+			break;
+		case 15012:
+			this->m_type = HIDEN_OBJECT_TYPE::CREATE_STONE;
+			break;
+		case 15013:
+			this->m_type = HIDEN_OBJECT_TYPE::CREATE_LAZE;
+			break;
+		case 15014:
+			this->m_type = HIDEN_OBJECT_TYPE::H_BULLET_LAZE;
 			break;
 		default:
 			break;
@@ -119,6 +143,104 @@ void CHidenObject::Update(float deltaTime, std::vector<CGameObject*>* listObject
 					D3DXVECTOR2 soldierPos = this->m_pos;
 					soldierPos.x = CContra::GetInstance()->GetPos().x + 100;
 					soldier->SetPos(this->m_pos);
+				}
+			}
+		}
+	}
+
+	// create solider shoot posision
+	if (this->m_type == HIDEN_OBJECT_TYPE::ENEMY_SHOOT_L || this->m_type == HIDEN_OBJECT_TYPE::ENEMY_SHOOT_R)
+	{
+		if (CHidenObject::m_createEnemy)
+		{
+			// Sinh enemy 
+			this->m_waitForCreateSoliderShoot += deltaTime;
+
+			if (this->m_waitForCreateSoliderShoot > 1.4f)
+			{
+				this->m_waitForCreateSoliderShoot = 0.0f;
+
+				CSoldierShoot* soldierShoot = CPoolingObject::GetInstance()->GetSoliderShootObject();
+				if (soldierShoot != nullptr)
+				{
+					soldierShoot->SetAlive(true);
+					// Random jump
+					soldierShoot->setJump(rand() % 2 == 1);
+					// set left right
+					if (this->m_id == 7)
+						soldierShoot->SetLeft(false);
+					else
+						soldierShoot->SetLeft(true);
+					// Set vi tri cho soldier
+					D3DXVECTOR2 soldierPos = this->m_pos;
+					soldierPos.x = CContra::GetInstance()->GetPos().x + 100;
+					soldierShoot->SetPos(this->m_pos);
+				}
+			}
+		}
+	}
+
+	//Kiem tra co va cham vs cuc cho phep da roi
+	if (this->m_type == HIDEN_OBJECT_TYPE::CREATE_STONE)
+	{
+		if (CCollision::GetInstance()->Collision(CContra::GetInstance(), this))
+		{
+			CHidenObject::m_createBigStone = true;
+		}
+		else
+		{
+			CHidenObject::m_createBigStone = false;
+		}
+	}
+
+	//Sinh da tri vi ri nay
+	if (this->m_type == HIDEN_OBJECT_TYPE::H_BIG_STONE)
+	{
+		if (CHidenObject::m_createBigStone)
+		{
+			this->m_waitForCreateBigStone += deltaTime;
+
+			if (this->m_waitForCreateBigStone > 6.0f)
+			{
+				this->m_waitForCreateBigStone = 0.0f;
+				CBigStone* bigStone = CPoolingObject::GetInstance()->GetBigStone();
+				if (bigStone != nullptr)
+				{
+					bigStone->SetAlive(true);
+					bigStone->SetPos(this->m_pos);
+				}
+			}
+		}
+	}
+	
+	//Kiem tra co va cham vs Hiden cho phep sinh Laze
+	if (this->m_type == HIDEN_OBJECT_TYPE::CREATE_LAZE)
+	{
+		if (CCollision::GetInstance()->Collision(CContra::GetInstance(), this))
+		{
+			CHidenObject::m_createBulletLaze = true;
+		}
+		else
+		{
+			CHidenObject::m_createBulletLaze = false;
+		}
+	}
+
+	//Sinh Laze tri vi ri nay
+	if (this->m_type == HIDEN_OBJECT_TYPE::H_BULLET_LAZE)
+	{
+		if (CHidenObject::m_createBulletLaze)
+		{
+			this->m_waitForCreateBulletLaze += deltaTime;
+
+			if (this->m_waitForCreateBulletLaze > 0.90f)
+			{
+				this->m_waitForCreateBulletLaze = 0.0f;
+				CBulletLaze* laze = CPoolingObject::GetInstance()->GetBulletLaze();
+				if (laze != nullptr)
+				{
+					laze->SetAlive(true);
+					laze->SetPos(this->m_pos);
 				}
 			}
 		}

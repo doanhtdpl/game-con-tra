@@ -17,9 +17,9 @@ CContra::CContra()
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 72.0f;//56.0f; //78
-	this->m_height = 92.0f; //88.0f; //84
-	this->m_pos = D3DXVECTOR2(200.0f, 200.0f);
+	this->m_width = 72.0f;
+	this->m_height = 92.0f; 
+	this->m_pos = D3DXVECTOR2(100.0f, 350.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -133,22 +133,22 @@ void CContra::MoveUpdate(float deltaTime)
 		}
 		if(this->m_pos.x > 250)
 		{
-			if(this->m_pos.y > 200)
+			/*if(this->m_pos.y > 200)
 			{
 				CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
 			}
 			else
-			{
-				//CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
-			}
+			{*/
+				CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
+			//}
 		}
-		else
+		/*else
 		{
 			if(this->m_pos.y > 200)
 			{
 				CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
 			}
-		}
+		}*/
 	}
 #pragma endregion
 }
@@ -1242,7 +1242,75 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			{
 				if(normalY > 0)
 				{
+#pragma region VA CHAM VS CUC DA
+					if (obj->GetIDType() == 16 && obj->GetID() == 3 && !checkColWithGround)
+					{
+						checkColWithGround = true;
 
+						this->m_pos.x = obj->GetPos().x;
+
+						if (timeCollision == 2.0f)
+						{
+							if (this->m_vy <= 0)
+							{
+								if ((this->m_stateCurrent == ON_GROUND::IS_DIE))
+								{
+									if (this->m_isDie && this->m_vy < -165)
+									{
+										this->m_currentFrame = this->m_endFrame;
+										this->m_isALive = false;
+										return;
+									}
+								}
+								else if (this->m_stateCurrent == ON_GROUND::IS_JUMPING)
+								{
+									if (this->m_vy < -165)
+									{
+										//this->m_pos.y += 20;
+										this->m_elapseTimeChangeFrame = 0.0f;
+										this->m_isJumping = false;
+										this->m_currentFrame = 0;
+										this->m_stateCurrent = ON_GROUND::IS_STANDING;
+									}
+								}
+								else
+								{
+									this->m_isJumping = false;
+									this->m_pos.y += moveY;
+									this->m_vy = 0;
+								}
+							}
+							if (this->m_stateCurrent == ON_GROUND::IS_FALL)
+							{
+								this->m_stateCurrent = ON_GROUND::IS_STANDING;
+								this->m_isJumping = false;
+							}
+
+						}
+						else{
+							//if(this->m_vy != 0)
+							//{
+							if (this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < 0)
+							{
+
+								//this->m_pos.y += 22;
+								this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
+								this->m_elapseTimeChangeFrame = 0.0f;
+								this->m_currentFrame = 0;
+								if (this->m_keyDown != DIK_DOWN)
+									this->m_stateCurrent = ON_GROUND::IS_STANDING;
+								else
+									this->m_stateCurrent = ON_GROUND::IS_LYING;
+								this->m_isJumping = false;
+							}
+
+							//	this->m_isJumping = false;
+							//	this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
+							//	this->m_vy = 0;
+							//}
+						}
+					}
+#pragma endregion
 #pragma region VA CHAM MAT DAT && CAY CAU
 
 					/*else */if((obj->GetID() == 1 || obj->GetID() == 8 ||  (obj->GetID() == 1 && obj->GetIDType() == 16)) && !checkColWithGround)
@@ -1381,6 +1449,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					}
 					continue;
 #pragma endregion
+					//TT
 				}
 #pragma region VA CHAM DOI TUONG SINH WEAPON
 				else if(obj->GetIDType() == 14 

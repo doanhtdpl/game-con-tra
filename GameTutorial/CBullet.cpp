@@ -128,10 +128,6 @@ void CBullet::Update(float deltaTime, std::vector<CGameObject*>* _listObjectColl
 	
 }
 
-void CBullet::ChangeFrame(float deltaTime){
-
-}
-
 void CBullet::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
 
@@ -160,4 +156,10 @@ Box CBullet::GetBox()
 CBullet::~CBullet()
 {
 
+}
+
+void CBullet::SetV(float _vx, float _vy)
+{
+	this->m_vxDefault = _vx;
+	this->m_vyDefault = _vy;
 }

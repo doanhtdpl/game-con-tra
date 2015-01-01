@@ -40,7 +40,7 @@ void CWallTurret::Init()
 	//Khoi tao cac thong so chuyen doi sprite
 	this->m_currentTime = 0;
 	this->m_currentFrame = 0;
-	this->m_elapseTimeChangeFrame = 0.35f;
+	this->m_elapseTimeChangeFrame = 0.4f;
 	this->m_increase = 1;
 	this->m_totalFrame = 42;
 	this->m_column = 6;
@@ -49,7 +49,7 @@ void CWallTurret::Init()
 	this->m_stateCurrent = WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_START;
 	//Test
 	this->m_bulletCount = 0;
-	this->m_timeDelay = 0.25f;
+	this->m_timeDelay = 0.5f;
 
 	this->m_IsCre = false;
 	this->m_direction = false;
@@ -82,6 +82,8 @@ void CWallTurret::Update(float deltaTime, std::vector<CGameObject*>* listObjectC
 		this->BulletUpdate(deltaTime);
 		this->OnCollision(deltaTime, listObjectCollision);
 	}
+	else
+		this->BulletUpdate(deltaTime);
 }
 void CWallTurret::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
@@ -139,24 +141,27 @@ void CWallTurret::BulletUpdate(float deltaTime)
 	{
 		if (angle < m_oldangle)
 		{
-			if (m_oldangle >= PI)
-				temp = 1;
+			if (round2(m_oldangle) <= round2(PI))
+				temp = -1;
 			else
 			{
-				if (m_oldangle - angle > 180)
+				if (round2(m_oldangle - angle) >= round2(PI))
+				{
 					temp = 1;
+					if (round2(m_oldangle) == round2(2 * PI))
+						m_oldangle = 0;
+				}
 				else
 					temp = -1;
 			}
-
 		}
 		else
 		{
 			if (angle > m_oldangle)
 			{
-				if (angle >= PI)
+				if (round2(angle) >= round2(PI))
 				{
-					if ((angle - m_oldangle) > 180)
+					if (round2(angle - m_oldangle) >= round2(PI))
 						temp = -1;
 					else
 						temp = 1;
@@ -168,10 +173,20 @@ void CWallTurret::BulletUpdate(float deltaTime)
 		if (temp != 0)
 		{
 			this->m_timeDelay += deltaTime;
-			if (this->m_timeDelay >	0.25f)
+			if (this->m_timeDelay >	0.5f)
 			{
 				if (this->m_totalCurr < this->m_space)
 				{
+					if (temp > 0)
+					{
+						if (round2(m_oldangle) == round2(2 * PI))
+							m_oldangle = 0;
+					}
+					else
+					{
+						if (m_oldangle == 0)
+							m_oldangle = 2 * PI;
+					}
 					m_oldangle += temp*shootAngleNormal;
 					this->m_totalCurr += shootAngleNormal;
 				}
@@ -253,20 +268,20 @@ void CWallTurret::BulletUpdate(float deltaTime)
 		D3DXVECTOR2 offset;
 		switch (this->m_stateCurrent)
 		{
-		case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_NORMAL:
-		{
+			case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_NORMAL:
+			{
 				if (this->m_direction){
 					offset.x = this->m_width / 2;
-					offset.y = 5.0f;
+					offset.y = 0.0f;
 				}
 				else{
-					offset.x = this->m_width / 2;
-					offset.y = 5.0f;
+					offset.x = -this->m_width / 2;
+					offset.y = 0.0f;
 				}
 				break;
-		}
-		case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_UP:
-		{
+			}
+			case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_UP:
+			{
 				if (this->m_direction){
 					offset.x = 0;
 					offset.y = this->m_height / 2;
@@ -276,71 +291,71 @@ void CWallTurret::BulletUpdate(float deltaTime)
 					offset.y = 0;
 				}
 				break;
-		}
-		case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_UP_X:
-		{
+			}
+			case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_UP_X:
+			{
 				if (this->m_direction){
 					offset.y = 15.0f;
 					offset.x = this->m_width / 2;
 				}
 				else{
-					offset.x = -15.0f;
-					offset.y = this->m_height / 2 - 150.f;
+					offset.x = -this->m_width / 2;
+					offset.y = this->m_height / 2 - 17.0f;
 				}
 				break;
-		}
-		case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_UP_2X:
-		{
-			if (this->m_direction){
-				offset.y = 20.0f;
-				offset.x = 10.0f;
 			}
-			else{
-				offset.x = -10.0f;
-				offset.y = 20.0f;
+			case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_UP_2X:
+			{
+				if (this->m_direction){
+					offset.y = 20.0f;
+					offset.x = 10.0f;
+				}
+				else{
+					offset.x = -10.0f;
+					offset.y = 20.0f;
+				}
+				break;
 			}
-			break;
-		}
-		case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DOWN:
-		{
-			if (this->m_direction){
-				offset.x = 0.0f;
-				offset.y = -this->m_height / 2;
+			case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DOWN:
+			{
+				if (this->m_direction){
+					offset.x = 0.0f;
+					offset.y = -this->m_height / 2;
+				}
+				else{
+					offset.x = -this->m_width / 2;
+					offset.y = 15.0f;
+				}
+				break;
 			}
-			else{
-				offset.x = this->m_width / 2;
-				offset.y = 15.0f;
+			case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_DOWN_X:
+			{
+				if (this->m_direction){
+					offset.y = -10.0f;
+					offset.x = this->m_width / 2;
+				}
+				else{
+					offset.x = -this->m_width / 2;
+					offset.y = -this->m_height / 2 + 10;
+				}
+				break;
 			}
-			break;
-		}
-		case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_DOWN_X:
-		{
-			if (this->m_direction){
-				offset.y = -10.0f;
-				offset.x = this->m_width / 2;
+			case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_DOWN_2X:
+			{
+				if (this->m_direction){
+					offset.y = -this->m_height / 2;
+					offset.x = this->m_width / 2 - 15.0f;
+				}
+				else{
+					offset.x = -this->m_width / 2 + 17.0f;
+					offset.y = -this->m_height / 2 + 5;
+				}
+				break;
 			}
-			else{
-				offset.x = this->m_width / 2;
-				offset.y = 10.0f;
+			default:
+			{
+				break;
 			}
-			break;
-		}
-		case WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_DIAGONAL_DOWN_2X:
-		{
-			if (this->m_direction){
-				offset.y = -this->m_height / 2;
-				offset.x = this->m_width / 2 - 15.0f;
-			}
-			else{
-				offset.x = this->m_width / 2 - 15.0f;
-				offset.y = this->m_height / 2 ;
-			}
-			break;
-}
-		default:
-		{
-				   break;
-		}
 		}
 #pragma endregion
 
@@ -354,35 +369,36 @@ void CWallTurret::BulletUpdate(float deltaTime)
 			{
 				temp = this->m_direction ? temp : PI - temp;
 				CBullet_N* bullet = new CBullet_N(temp, this->m_pos, offset, !this->m_direction);
-				bullet->SetLayer(LAYER::ENEMY);
-				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
+				this->m_listBullet.push_back(bullet);
+			/*	bullet->SetLayer(LAYER::ENEMY);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);*/
 				this->m_timeDelay = 0;
 			}
 		}
 	}
 
 	//Update trang thai dan
-	//D3DXVECTOR3 pos;
-	//for (int i = 0; i < this->m_listBullet.size(); i++)
-	//{
-	//	this->m_listBullet.at(i)->Update(deltaTime);
-	//	pos.x = this->m_listBullet.at(i)->GetPos().x;
-	//	pos.y = this->m_listBullet.at(i)->GetPos().y;
-	//	pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-	//	if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
-	//	{
-	//		delete this->m_listBullet.at(i);
-	//		this->m_listBullet.erase(this->m_listBullet.begin() + i);
-	//	}
-	//}
-	//if (this->m_listBullet.empty())
-	//{
-	//	this->m_isShoot = true;
-	//}
-	//else
-	//{
-	//	this->m_isShoot = false;
-	//}
+	D3DXVECTOR3 pos;
+	for (int i = 0; i < this->m_listBullet.size(); i++)
+	{
+		this->m_listBullet.at(i)->Update(deltaTime);
+		pos.x = this->m_listBullet.at(i)->GetPos().x;
+		pos.y = this->m_listBullet.at(i)->GetPos().y;
+		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
+		if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
+		{
+			delete this->m_listBullet.at(i);
+			this->m_listBullet.erase(this->m_listBullet.begin() + i);
+		}
+	}
+	if (this->m_listBullet.empty())
+	{
+		this->m_isShoot = true;
+	}
+	else
+	{
+		this->m_isShoot = false;
+	}
 #pragma endregion
 
 }
