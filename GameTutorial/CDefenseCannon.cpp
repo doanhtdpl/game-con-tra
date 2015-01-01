@@ -198,7 +198,7 @@ void CDefenseCannon::SetFrame()
 				this->m_startFrame = 11;
 				this->m_endFrame = 11;
 			}
-
+			//Cho 1 khoang thoi gian rui chuyen sang map 2
 			break;
 		}
 	default:

@@ -162,7 +162,7 @@ void CCapsuleBoss::OnCollision(float deltaTime, std::vector<CGameObject*>* listO
 		CGameObject* obj = *it;
 		//Lay thoi gian va cham
 		//Neu doi tuong la ground va dang va cham
-		if (((obj->GetIDType() == 15 && obj->GetID() == 1) || (obj->GetIDType() == 16 && obj->GetID() == 1)))
+		if (((obj->GetIDType() == 15 && (obj->GetID() == 1 || obj->GetID() == 8)) || (obj->GetIDType() == 16 && obj->GetID() == 1)))
 		{
 			timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
 			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)

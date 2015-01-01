@@ -89,6 +89,7 @@ void CBullet_DefenseCannon::Update(float deltaTime)
 void CBullet_DefenseCannon::Update(float deltaTime, std::vector<CGameObject*>* _listObjectCollision)
 {
 	// collion
+	this->MoveUpdate(deltaTime);
 }
 
 void CBullet_DefenseCannon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -106,8 +107,8 @@ void CBullet_DefenseCannon::OnCollision(float deltaTime, std::vector<CGameObject
 	{
 		CGameObject* obj = *it;
 		// Neu doi tuong la ground
-		float bossY = obj->GetPos().y;
-		if (obj->GetIDType() == 15 && obj->GetID() == 1 && bossY <= 45)
+		float possY = obj->GetPos().y;
+		if (obj->GetIDType() == 15 && (obj->GetID() == 1 || obj->GetID() == 8) && possY <= 45)
 		{
 			timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
 			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)

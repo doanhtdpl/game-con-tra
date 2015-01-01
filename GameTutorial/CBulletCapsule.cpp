@@ -133,7 +133,7 @@ void CBullet_Capsule::OnCollision(float deltaTime, std::vector<CGameObject*>* li
 	{
 		CGameObject* obj = *it;
 		// Neu doi tuong la ground
-		if (obj->GetIDType() == 15 && obj->GetID() == 1)
+		if (obj->GetIDType() == 15 && (obj->GetID() == 1 || obj->GetID() == 8))
 		{
 			timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
 			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
