@@ -131,17 +131,17 @@ void CBulletLaze::SetFrame()
 	{
 	case LAZE_STATE::LAZ_IS_NORMAL:
 	{
-									  this->m_startFrame = 0;
-									  this->m_endFrame = 3;
-									  break;
+		this->m_startFrame = 0;
+		this->m_endFrame = 3;
+		break;
 	}
 	case LAZE_STATE::LAZ_IS_DIE:
 	{
-								   CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
-								   effect->SetAlive(true);
-								   effect->SetPos(this->m_pos);
-								   this->m_isALive = false;
-								   break;
+		CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+		effect->SetAlive(true);
+		effect->SetPos(this->m_pos);
+		this->m_isALive = false;
+		break;
 	}
 	}
 }
@@ -155,6 +155,7 @@ void CBulletLaze::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 
 	std::vector<CGameObject*>::iterator it;
 
+	// va cham voi ground
 	for (it = listObjectCollision->begin();
 		it != listObjectCollision->end(); ++it)
 	{
@@ -169,6 +170,8 @@ void CBulletLaze::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 			}
 		}
 	}
+	// va cham voi contra
+
 }
 
 RECT* CBulletLaze::GetRectRS()

@@ -19,7 +19,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;
 	this->m_height = 92.0f; 
-	this->m_pos = D3DXVECTOR2(6300.0f, 350.0f);
+	this->m_pos = D3DXVECTOR2(100.0f, 350.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -1231,11 +1231,53 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		else
 			++it;
 	}
+
+	// va cham voi laze
+	for (std::vector<CBulletLaze*>::iterator itLaze = CPoolingObject::GetInstance()->m_listBulletLaze.begin();
+		itLaze != CPoolingObject::GetInstance()->m_listBulletLaze.end();)
+	{
+		CBulletLaze* bullet = *itLaze;
+		if(bullet->IsAlive())
+		{
+			if(CCollision::GetInstance()->Collision(this, bullet))
+			{
+				if(m_isUnderWater)
+				{
+					this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+				}
+				else
+				{
+					this->m_stateCurrent = ON_GROUND::IS_DIE;
+				}
+				if(!this->m_isDie)
+				{
+					if(this->m_left)
+						this->m_vx = this->m_vxDefault;
+					else
+						this->m_vx = -this->m_vxDefault;
+					this->m_vy = this->m_vyDefault;
+					this->m_isDie = true;
+					this->m_elapseTimeChangeFrame = 0.23f;
+				}
+
+				CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+				effect->SetAlive(true);
+				effect->SetPos(bullet->GetPos());
+				itLaze = CPoolingObject::GetInstance()->m_listBulletLaze.erase(itLaze);
+			}
+			else
+				++itLaze;
+		}
+		else
+			++itLaze;
+	}
+
 	for (std::vector<CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
 	{
 		CGameObject* obj = *it;
 		//Lay thoi gian va cham
 		//Neu doi tuong la ground va dang va cham
+
 		if(obj->GetIDType() == 15 || obj->GetIDType() == 16)
 		{
 			timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), obj, normalX, normalY, moveX, moveY, deltaTime);
