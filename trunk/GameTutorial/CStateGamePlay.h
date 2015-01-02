@@ -2,22 +2,10 @@
 #define __CStateGamePlay_H__
 #include "CState.h"
 #include <iostream>
-#include "CSprite.h"
-#include "CTexture.h"
 #include "CContra.h"
 #include "CDynamicObject.h"
-#include "CHidenObject.h"
-#include "CSoldier.h"
-#include "CSoldierShoot.h"
-#include "CSniper.h"
-#include "CWallTurret.h"
-#include "CWeapon.h"
-#include "CSWeapon.h"
-#include "CEnemyEffect.h"
-#include "CExplosionEffect.h"
-#include "CDefenseCannon.h"
-#include "CBigCapsule.h"
-#include "CBridge.h"
+#include "CSubArm.h"
+#include "CBossArm.h"
 
 class CStateGamePlay : public CState
 {
@@ -29,7 +17,8 @@ public:
 	void Render();
 	void Destroy();
 protected:
-
+	CSubArm* subArm;
+	CBossArm* bossArm;
 };
 
 #endif // !__CStateGamePlay_H__

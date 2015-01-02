@@ -83,7 +83,7 @@
       <UniqueIdentifier>{e937bcb4-36c8-4357-a000-6ca72b21bd21}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2">
-      <UniqueIdentifier>{92e00522-d271-4b33-ab48-cf259dad5ada}</UniqueIdentifier>
+      <UniqueIdentifier>{05ce45b6-25a7-42cd-9056-462522481b62}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss3">
       <UniqueIdentifier>{9d822572-b4a1-4744-a787-dc29466d7e4c}</UniqueIdentifier>
@@ -93,9 +93,6 @@
     </Filter>
     <Filter Include="Source Files\GameLoop\InitGame\LoadResource\EffectBackground">
       <UniqueIdentifier>{5b39a3bf-cd32-40e2-83a6-acdc43ce128c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameLoop\SceneManager">
-      <UniqueIdentifier>{509f0fd8-3ef2-4397-b418-8e0cb4637d51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -285,6 +282,9 @@
     <ClCompile Include="CBulletLaze.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="CBossArm.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
+    </ClCompile>
     <ClCompile Include="CCapsuleBoss.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss3</Filter>
     </ClCompile>
@@ -306,8 +306,8 @@
     <ClCompile Include="CBridgeStone.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
     </ClCompile>
-    <ClCompile Include="CSceneManagement.cpp">
-      <Filter>Source Files\GameLoop\SceneManager</Filter>
+    <ClCompile Include="CSubArm.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -506,6 +506,9 @@
     <ClInclude Include="CBulletLaze.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="CBossArm.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
+    </ClInclude>
     <ClInclude Include="CCapsuleBoss.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss3</Filter>
     </ClInclude>
@@ -527,8 +530,8 @@
     <ClInclude Include="CBridgeStone.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground</Filter>
     </ClInclude>
-    <ClInclude Include="CSceneManagement.h">
-      <Filter>Source Files\GameLoop\SceneManager</Filter>
+    <ClInclude Include="CSubArm.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

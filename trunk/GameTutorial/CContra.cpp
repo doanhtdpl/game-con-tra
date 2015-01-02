@@ -422,8 +422,9 @@ void CContra::InputUpdate(float deltaTime)
 	this->m_waitForShoot += deltaTime;
 	if(m_keyDown == DIK_C)
 	{
+		
 		//Sang test audio			
-		if(this->m_waitForShoot > 0.2f)
+		if(this->m_waitForShoot > 0.1f)
 		{
 			ManageAudio::GetInstance()->playSound(TypeAudio::BULLET_N);
 			this->m_isShoot = true;
@@ -870,11 +871,11 @@ void CContra::BulletUpdate(float deltaTime)
 							{
 								if (!this->m_left){
 									offset.x = 3.0f;
-									offset.y = 5.0f;
+									offset.y = 50.0f;
 								}
 								else{
 									offset.x = -3.0f;
-									offset.y = 5.0f;
+									offset.y = 50.0f;
 								}
 								break;
 							}

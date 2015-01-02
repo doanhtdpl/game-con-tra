@@ -39,7 +39,15 @@ void CStateGamePlay::Init()
 	// TT
 	CPoolingObject::GetInstance()->CreateWeapon(15);
 	//Load Audio
-	//ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
+	ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
+
+	///Sang test boss 2
+	this->subArm = new CSubArm();
+	this->subArm->SetArmType(SUB_ARM_TYPE::SUB_ARM_FIRST);
+	this->subArm->Init();
+
+	//
+	this->bossArm = new CBossArm();
 }
 
 void CStateGamePlay::Update(float deltaTime)
@@ -47,20 +55,23 @@ void CStateGamePlay::Update(float deltaTime)
 	CLoadGameObject::GetInstance()->Update(deltaTime);
 	CContra::GetInstance()->Update(deltaTime);
 	CContra::GetInstance()->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
-	CLoadGameObject::GetInstance()->Draw();
 	CPoolingObject::GetInstance()->Update(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 	CLoadBackGround::GetInstance()->Update(deltaTime);
+
+	this->bossArm->Update(deltaTime);
 }
 
 void CStateGamePlay::Render()
 {
-	
 	CLoadBackGround::GetInstance()->Draw();
 	CLoadGameObject::GetInstance()->Draw();
 	//if(CContra::GetInstance()->IsAlive())
 	CDrawObject::GetInstance()->Draw(CContra::GetInstance());
 	// Draw enemy effect
 	CPoolingObject::GetInstance()->Draw();
+	///
+	//CDrawObject::GetInstance()->Draw(this->subArm);
+	this->bossArm->Draw();
 }
 void CStateGamePlay::Destroy()
 {
