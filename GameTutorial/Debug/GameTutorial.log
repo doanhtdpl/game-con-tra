@@ -1,30 +1,83 @@
-﻿Build started 1/2/2015 12:16:25 AM.
-     1>Project "G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\GameTutorial.vcxproj" on node 2 (Build target(s)).
+﻿Build started 1/2/2015 1:25:00 AM.
+     1>Project "E:\SEMESTER_7\Nhap mon game\Do An\GameTutorial\GameTutorial.vcxproj" on node 2 (Build target(s)).
+       Project file contains ToolsVersion="12.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CContra.cpp
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt CBulletCapsule.cpp CContra.cpp CSceneManagement.cpp CHidenObject.cpp CStateGamePlay.cpp CBulletDefenseCannon.cpp CDefenseCannon.cpp CCapsuleBoss.cpp
+         CCapsuleBoss.cpp
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccapsuleboss.cpp(19): warning C4244: 'argument' : conversion from 'const int' to 'FLOAT', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccapsuleboss.cpp(34): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccapsuleboss.cpp(35): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccapsuleboss.cpp(224): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         CDefenseCannon.cpp
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cdefensecannon.cpp(19): warning C4244: 'argument' : conversion from 'const int' to 'FLOAT', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cdefensecannon.cpp(34): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cdefensecannon.cpp(35): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cdefensecannon.cpp(58): warning C4244: 'argument' : conversion from 'FLOAT' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cdefensecannon.cpp(59): warning C4244: 'argument' : conversion from 'FLOAT' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cdefensecannon.cpp(63): warning C4244: 'argument' : conversion from 'FLOAT' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cdefensecannon.cpp(64): warning C4244: 'argument' : conversion from 'FLOAT' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cdefensecannon.cpp(65): warning C4244: 'argument' : conversion from 'FLOAT' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cdefensecannon.cpp(176): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+         CBulletDefenseCannon.cpp
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletdefensecannon.cpp(44): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletdefensecannon.cpp(45): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletdefensecannon.cpp(60): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletdefensecannon.cpp(61): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletdefensecannon.cpp(65): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletdefensecannon.cpp(66): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletdefensecannon.cpp(80): warning C4244: '+=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletdefensecannon.cpp(81): warning C4244: '+=' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletdefensecannon.cpp(147): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         CStateGamePlay.cpp
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+         CHidenObject.cpp
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\chidenobject.cpp(39): warning C4244: 'argument' : conversion from 'const int' to 'FLOAT', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\chidenobject.cpp(102): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         CSceneManagement.cpp
          CContra.cpp
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
-         c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(20): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(21): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(671): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(676): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(681): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(688): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1563): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1567): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1571): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1575): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1579): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1596): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1601): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1605): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1609): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1612): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1616): warning C4715: 'CContra::GetBox' : not all control paths return a value
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+         c:\program files\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(20): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(21): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(672): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(677): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(682): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(689): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1564): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1568): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1572): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1576): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1580): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1597): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1602): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1606): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1610): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1613): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         CBulletCapsule.cpp
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletcapsule.cpp(44): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletcapsule.cpp(45): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletcapsule.cpp(64): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletcapsule.cpp(65): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletcapsule.cpp(69): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletcapsule.cpp(70): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\semester_7\nhap mon game\do an\gametutorial\cbulletcapsule.cpp(184): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         Generating Code...
+     1>e:\semester_7\nhap mon game\do an\gametutorial\ccontra.cpp(1617): warning C4715: 'CContra::GetBox' : not all control paths return a value
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\Debug\GameTutorial.exe" /INCREMENTAL /NOLOGO d3d9.lib d3dx9.lib dxguid.lib dxerr.lib dinput8.lib winmm.lib dsound.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\Debug\GameTutorial.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\Debug\GameTutorial.lib" /MACHINE:X86 Debug\CAnimation.obj
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\SEMESTER_7\Nhap mon game\Do An\Debug\GameTutorial.exe" /INCREMENTAL /NOLOGO d3d9.lib d3dx9.lib dxguid.lib dxerr.lib dinput8.lib winmm.lib dsound.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\SEMESTER_7\Nhap mon game\Do An\Debug\GameTutorial.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\SEMESTER_7\Nhap mon game\Do An\Debug\GameTutorial.lib" /MACHINE:X86 Debug\CAnimation.obj
+         Debug\CBossArm.obj
          Debug\CBigCapsule.obj
          Debug\CBigstone.obj
          Debug\CBridgeFire.obj
@@ -73,6 +126,7 @@
          Debug\CState.obj
          Debug\CStateGamePlay.obj
          Debug\CStateMenu.obj
+         Debug\CSubArm.obj
          Debug\CBridgeStone.obj
          Debug\CSWeapon.obj
          Debug\CTank.obj
@@ -94,9 +148,9 @@
          Debug\CManageAudio.obj
          Debug\CSoundUtil.obj
          Debug\CCapsuleBoss.obj
-         GameTutorial.vcxproj -> G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\Debug\GameTutorial.exe
-     1>Done Building Project "G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\GameTutorial.vcxproj" (Build target(s)).
+         GameTutorial.vcxproj -> E:\SEMESTER_7\Nhap mon game\Do An\Debug\GameTutorial.exe
+     1>Done Building Project "E:\SEMESTER_7\Nhap mon game\Do An\GameTutorial\GameTutorial.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.09
+Time Elapsed 00:00:35.52

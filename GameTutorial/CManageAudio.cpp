@@ -58,11 +58,13 @@ void ManageAudio::playSound(TypeAudio _type)
 
 		if (sound->loop)
 		{
-			sound->Play();
+			   sound->Reset();
+			   sound->Play(0, DSBPLAY_LOOPING);
 			//sound->Play(0, DSSCL_PRIORITY);
 		}
 		else
 		{
+			sound->Reset();
 			sound->Play();
 		}
 	}
