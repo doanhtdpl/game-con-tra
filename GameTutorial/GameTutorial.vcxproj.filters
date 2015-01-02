@@ -309,6 +309,9 @@
     <ClCompile Include="CSubArm.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClCompile>
+    <ClCompile Include="CSceneManagement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTexture.h">
@@ -532,6 +535,9 @@
     </ClInclude>
     <ClInclude Include="CSubArm.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneManagement.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
