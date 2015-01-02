@@ -394,10 +394,6 @@ void CPoolingObject::Update(float deltaTime, std::vector<CGameObject*>* listObje
 		if (obj != NULL && obj->IsAlive())
 		{
 			//obj->Update(deltaTime);
-			if (obj->GetIDType() == 20 && obj->GetID() == 9)
-			{
-				int x = 0;
-			}
 			obj->Update(deltaTime, listObjectCollision);
 			D3DXVECTOR3 pos;
 			pos.x = obj->GetPos().x;
