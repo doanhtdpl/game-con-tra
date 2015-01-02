@@ -39,6 +39,7 @@ public:
 	void Update(float deltaTime, std::vector<CGameObject*>* listObjectColision);
 	std::vector<CBullet*> m_listBulletOfObject;
 	std::vector<CWeapon*> m_listWeapon; //Weapon dong
+	std::vector<CBulletLaze*> m_listBulletLaze;
 	void Draw();
 
 protected:
@@ -50,7 +51,6 @@ protected:
 	std::vector<CSoldier*> m_listSolider;
 	std::vector<CSoldierShoot*> m_listSoliderShoot;
 	std::vector<CBigStone*> m_listBigStone;
-	std::vector<CBulletLaze*> m_listBulletLaze;
 	//Con boss map 5
 	std::vector<CCapsuleBoss*> m_listCapsuleBoss;
 private:
