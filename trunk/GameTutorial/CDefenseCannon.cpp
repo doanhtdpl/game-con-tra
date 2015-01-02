@@ -80,11 +80,7 @@ void CDefenseCannon::Update(float deltaTime, std::vector<CGameObject*>* listObje
 	//Co doi tuong linh nup tren dau nua
 	// update effect isalive
 	if (this->sniper->IsAlive())
-		this->sniper->Update(deltaTime);
-	//
-	this->gunLeft->Update(deltaTime);
-	//
-	this->gunRight->Update(deltaTime);
+		this->sniper->Update(deltaTime, listObjectCollision);
 	//
 	if (this->turrect->IsAlive())
 		this->turrect->Update(deltaTime, listObjectCollision);

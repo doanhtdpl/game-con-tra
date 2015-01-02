@@ -19,7 +19,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;
 	this->m_height = 92.0f; 
-	this->m_pos = D3DXVECTOR2(100.0f, 350.0f);
+	this->m_pos = D3DXVECTOR2(6300.0f, 350.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -711,11 +711,11 @@ void CContra::BulletUpdate(float deltaTime)
 					case STATE_BULLET_ITEM::BULLET_ITEM_M:
 							if (!this->m_left){
 								offset.x = 25.0f;
-								offset.y = -15.0f;
+								offset.y = -27.0f;
 							}
 							else{
 								offset.x = -25.0f;
-								offset.y = -15.0f;
+								offset.y = -27.0f;
 							}
 							break;
 						case STATE_BULLET_ITEM::BULLET_ITEM_F:
@@ -771,11 +771,11 @@ void CContra::BulletUpdate(float deltaTime)
 						case STATE_BULLET_ITEM::BULLET_ITEM_M:
 							if (!this->m_left){
 								offset.x = 20.0f;
-								offset.y = 8.0f;
+								offset.y = 0.0f;
 							}
 							else{
 								offset.x = -20.0f;
-								offset.y = 8.0f;
+								offset.y = 0.0f;
 							}
 							break;
 						case STATE_BULLET_ITEM::BULLET_ITEM_F:

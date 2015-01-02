@@ -79,8 +79,6 @@ void CSoldierShoot::Update(float deltaTime)
 		this->MoveUpdate(deltaTime);
 		this->SetFrame(deltaTime);
 	}
-	else
-		this->BulletUpdate(deltaTime);
 }
 
 void CSoldierShoot::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -109,15 +107,18 @@ void CSoldierShoot::OnCollision(float deltaTime, std::vector<CGameObject*>* list
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
 		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 		{
-			// Gan trang thai die cho doi tuong
-			this->m_stateCurrent = SOLDIER_SHOOT_STATE::SS_IS_DIE;
-			// Xoa vien dan ra khoi d.s
-			it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+			if(obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
+			{
+				// Gan trang thai die cho doi tuong
+				this->m_stateCurrent = SOLDIER_SHOOT_STATE::SS_IS_DIE;
+				// Xoa vien dan ra khoi d.s
+				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+			}
+			else
+				++it;
 		}
 		else
-		{
 			++it;
-		}
 	}
 
 	if (this->m_stateCurrent != SOLDIER_SHOOT_STATE::SS_IS_DIE)
@@ -333,8 +334,8 @@ void CSoldierShoot::BulletUpdate(float deltaTime)
 					this->m_timeDelayBullet = 0.10f;
 
 					CBullet_N* bullet = new CBullet_N(PI, this->m_pos, offset, !this->m_left);
-					bullet->m_isContra = false;
-					m_listBullet.push_back(bullet);
+					bullet->SetLayer(LAYER::ENEMY);
+					CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 					m_bulletCount++;
 				}
 				else
@@ -342,20 +343,6 @@ void CSoldierShoot::BulletUpdate(float deltaTime)
 					this->m_timeDelayBullet -= deltaTime;
 				}
 			}
-		}
-	}
-	//Update trang thai dan
-	D3DXVECTOR3 pos;
-	for (int i = 0; i < this->m_listBullet.size(); i++)
-	{
-		this->m_listBullet.at(i)->Update(deltaTime);
-		pos.x = this->m_listBullet.at(i)->GetPos().x;
-		pos.y = this->m_listBullet.at(i)->GetPos().y;
-		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-		if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
-		{
-			delete this->m_listBullet.at(i);
-			this->m_listBullet.erase(this->m_listBullet.begin() + i);
 		}
 	}
 #pragma endregion
