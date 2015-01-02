@@ -101,33 +101,38 @@ void CTank::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCo
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
 		if((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 		{
-			this->m_HP --;
-			// Xoa vien dan ra khoi d.s
-			it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
-			
-			if (this->m_HP >= 15)
+			if(obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
 			{
-				this->m_stateCurrent = TANK_STATE::TANK_IS_NORMAL;
-			}
-			else if (this->m_HP <= 14 && this->m_HP >= 10)
-			{
-				this->m_stateCurrent = TANK_STATE::TANK_IS_DIE1;
-			}
-			else if (this->m_HP <=9 && this->m_HP >= 5)
-			{
-				this->m_stateCurrent = TANK_STATE::TANK_IS_DIE2;
-			}
-			else if (this->m_HP > 0)
-			{
-				// Gan trang thai die cho doi tuong
-				this->m_stateCurrent = TANK_STATE::TANK_IS_DIE3;
+				this->m_HP --;
+				// Xoa vien dan ra khoi d.s
+				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+
+				if (this->m_HP >= 15)
+				{
+					this->m_stateCurrent = TANK_STATE::TANK_IS_NORMAL;
+				}
+				else if (this->m_HP <= 14 && this->m_HP >= 10)
+				{
+					this->m_stateCurrent = TANK_STATE::TANK_IS_DIE1;
+				}
+				else if (this->m_HP <=9 && this->m_HP >= 5)
+				{
+					this->m_stateCurrent = TANK_STATE::TANK_IS_DIE2;
+				}
+				else if (this->m_HP > 0)
+				{
+					// Gan trang thai die cho doi tuong
+					this->m_stateCurrent = TANK_STATE::TANK_IS_DIE3;
+				}
+				else if (this->m_HP == 0)
+				{
+					this->m_vy = 0;
+					this->m_a = 0;
+					this->m_stateCurrent = TANK_STATE::TANK_IS_DIE;
+				}
 			}
 			else
-			{
-				this->m_vy = 0;
-				this->m_a = 0;
-				this->m_stateCurrent = TANK_STATE::TANK_IS_DIE;
-			}
+				++it;
 		}
 		else
 		{
@@ -271,27 +276,13 @@ void CTank::BulletUpdate(float deltaTime)
 			if (this->m_timeDelayWaitShoot >= 0.25f)
 			{
 				CBullet_M* bullet = new CBullet_M(angle, this->m_pos, offset, !this->m_left);
-				m_listBullet.push_back(bullet);
+				bullet->SetLayer(LAYER::ENEMY);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				this->m_timeDelayWaitShoot = 0;
 				m_bulletCount++;
 				CTank::m_shooted = true;
 			}
 			m_timeDelayWaitShoot += deltaTime;
-		}
-	}
-
-	//Update trang thai dan
-	D3DXVECTOR3 pos;
-	for (int i = 0; i < this->m_listBullet.size(); i++)
-	{
-		this->m_listBullet.at(i)->Update(deltaTime);
-		pos.x = this->m_listBullet.at(i)->GetPos().x;
-		pos.y = this->m_listBullet.at(i)->GetPos().y;
-		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-		if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
-		{
-			delete this->m_listBullet.at(i);
-			this->m_listBullet.erase(this->m_listBullet.begin() + i);
 		}
 	}
 #pragma endregion
