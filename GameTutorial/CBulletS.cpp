@@ -146,7 +146,20 @@ RECT* CBullet_S::GetRectRS()
 
 void CBullet_S::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
 {
-
+#pragma region CAP_NHAT_THONG_TIN_TUNG_VIEN_DAN
+	this->m_bullet_1->MoveUpdate(deltaTime);
+	this->m_bullet_2->MoveUpdate(deltaTime);
+	this->m_bullet_3->MoveUpdate(deltaTime);
+	this->m_bullet_4->MoveUpdate(deltaTime);
+	this->m_bullet_5->MoveUpdate(deltaTime);
+#pragma endregion
+#pragma region CAP_NHAT_TRANG_THAI_TUNG_VIEN_DAN
+	this->m_bullet_1->ChangeFrame(deltaTime);
+	this->m_bullet_2->ChangeFrame(deltaTime);
+	this->m_bullet_3->ChangeFrame(deltaTime);
+	this->m_bullet_4->ChangeFrame(deltaTime);
+	this->m_bullet_5->ChangeFrame(deltaTime);
+#pragma endregion
 }
 
 void CBullet_S::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)

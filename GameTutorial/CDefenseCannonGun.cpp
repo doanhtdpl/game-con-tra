@@ -93,30 +93,17 @@ void CDefenseCannonGun::Update(float deltaTime)
 		this->BulletUpdate(deltaTime);
 		this->OnCollision(deltaTime, nullptr);
 	}
-	else
-	{
-		// Nguoc lai chi update dan thoi.
-		this->BulletUpdate(deltaTime);
-	}
 }
 
 void CDefenseCannonGun::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-	std::vector<CGameObject*>::iterator it;
-	for (it = this->m_listBullet.begin(); it != this->m_listBullet.end();)
+	// Neu alive thi update dan va chuyen frame
+	if (this->IsAlive())
 	{
-		CGameObject*obj = *it;
-		// Cuoi cung, la a xet va cham list đạn cua ụ súng.
-		obj->OnCollision(deltaTime, listObjectCollision);
-		if(!obj->IsAlive())  //Dang le ra thi cho nay phai duoc chu. nó
-		{
-			delete *it;
-			it = this->m_listBullet.erase(it);
-		}
-		else
-		{
-			++it;
-		}
+		this->SetFrame(this->m_IsGunLeft);
+		this->ChangeFrame(deltaTime);
+		this->BulletUpdate(deltaTime);
+		this->OnCollision(deltaTime, listObjectCollision);
 	}
 }
 
@@ -134,11 +121,13 @@ void CDefenseCannonGun::OnCollision(float deltaTime, std::vector<CGameObject*>* 
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
 		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 		{
-			if (obj->IsAlive())
+			if(obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
 			{
 				this->m_HP--;
 				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 			}
+			else
+				++it;
 
 			if (this->m_HP == 0)
 			{
@@ -147,17 +136,15 @@ void CDefenseCannonGun::OnCollision(float deltaTime, std::vector<CGameObject*>* 
 			}
 		}
 		else
-		{
 			++it;
-		}
 	}
+
+
 }
 
 void CDefenseCannonGun::BulletUpdate(float deltaTime)
 {
 	// Kiem tra, neu Gun alive thi tao dan, nguoc lai chi update ma thoi.
-	if (this->IsAlive())
-	{
 #pragma region THIET LAP TRANG THAI BAN
 #pragma endregion
 
@@ -174,7 +161,6 @@ void CDefenseCannonGun::BulletUpdate(float deltaTime)
 			if (m_bulletCount > 4)
 			{
 				this->m_bulletCount = 0;
-				this->m_isShoot = false;
 			}
 #pragma region THIET LAP GOC BAN
 
@@ -201,34 +187,14 @@ void CDefenseCannonGun::BulletUpdate(float deltaTime)
 			{
 
 				CBullet_DefenseCannon* bullet = new CBullet_DefenseCannon(angle, this->m_pos, offset, !this->m_left);
-				m_listBullet.push_back(bullet);
+				bullet->SetLayer(LAYER::ENEMY);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				this->m_timeDelay = 0;
 				m_bulletCount++;
 			}
 
 			m_timeDelay += deltaTime;
 		}
-
-	}
-	//Update trang thai dan
-	D3DXVECTOR3 pos;
-	for (int i = 0; i < this->m_listBullet.size(); i++)
-	{
-		this->m_listBullet.at(i)->Update(deltaTime);
-		this->m_listBullet.at(i)->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
-		pos.x = this->m_listBullet.at(i)->GetPos().x;
-		pos.y = this->m_listBullet.at(i)->GetPos().y;
-		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-		if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
-		{
-			delete this->m_listBullet.at(i);
-			this->m_listBullet.erase(this->m_listBullet.begin() + i);
-		}
-	}
-	if (this->m_listBullet.empty())
-	{
-		this->m_isShoot = true;
-	}
 #pragma endregion
 }
 void CDefenseCannonGun::SetFrame(bool isGunLeft)

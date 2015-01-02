@@ -64,10 +64,6 @@ void CGunner::Update(float deltaTime)
 		this->BulletUpdate(deltaTime);
 		this->OnCollision(deltaTime, nullptr);
 	}
-	else
-	{
-		this->BulletUpdate(deltaTime);
-	}
 
 }
 
@@ -79,10 +75,6 @@ void CGunner::Update(float deltaTime, std::vector<CGameObject*>* listObjectColli
 		this->ChangeFrame(deltaTime);
 		this->BulletUpdate(deltaTime);
 		this->OnCollision(deltaTime, listObjectCollision);
-	}
-	else
-	{
-		this->BulletUpdate(deltaTime);
 	}
 }
 
@@ -100,11 +92,13 @@ void CGunner::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
 		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 		{
-			if (obj->IsAlive())
+			if(obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
 			{
 				this->m_HP--;
 				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 			}
+			else
+				++it;
 
 			if (this->m_HP == 0)
 			{
@@ -142,8 +136,8 @@ void CGunner::BulletUpdate(float deltaTime)
 		if (m_bulletCount == 0)
 		{
 			CBullet_M* bullet = new CBullet_M(0, this->m_pos, offset, !this->m_left);
-			bullet->m_isContra = false;
-			m_listBullet.push_back(bullet);
+			bullet->SetLayer(LAYER::ENEMY);
+			CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 			m_bulletCount++;
 		}
 		//
@@ -156,24 +150,6 @@ void CGunner::BulletUpdate(float deltaTime)
 		{
 			this->m_waitForShoot -= deltaTime;
 		}
-	}
-	//Update trang thai dan
-	D3DXVECTOR3 pos;
-	for (int i = 0; i < this->m_listBullet.size(); i++)
-	{
-		this->m_listBullet.at(i)->Update(deltaTime);
-		pos.x = this->m_listBullet.at(i)->GetPos().x;
-		pos.y = this->m_listBullet.at(i)->GetPos().y;
-		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-		if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
-		{
-			delete this->m_listBullet.at(i);
-			this->m_listBullet.erase(this->m_listBullet.begin() + i);
-		}
-	}
-	if (this->m_listBullet.empty())
-	{
-		this->m_isShoot = true;
 	}
 #pragma endregion
 

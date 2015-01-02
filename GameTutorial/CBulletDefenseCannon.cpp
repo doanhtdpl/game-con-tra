@@ -88,8 +88,11 @@ void CBullet_DefenseCannon::Update(float deltaTime)
 
 void CBullet_DefenseCannon::Update(float deltaTime, std::vector<CGameObject*>* _listObjectCollision)
 {
-	// collion
-	this->MoveUpdate(deltaTime);
+	if (this->IsAlive())
+	{
+		this->MoveUpdate(deltaTime);
+		this->OnCollision(deltaTime, _listObjectCollision);
+	}
 }
 
 void CBullet_DefenseCannon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -113,18 +116,14 @@ void CBullet_DefenseCannon::OnCollision(float deltaTime, std::vector<CGameObject
 			timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
 			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 			{
-				//it = CContra::GetInstance()->m_listBullet.erase(it);
-				//obj = CDeffen
-				// Gan trang thai die cho doi tuong
 				CGameObject* obj =  CPoolingObject::GetInstance()->GetExplosionEffect();
 				obj->SetAlive(true);
 				obj->SetPos(this->m_pos);
 				this->m_isALive = false;
-				//delete
-				//int count = 0; 
+
 			}
 		}
-	}
+	} 
 }
 
 RECT* CBullet_DefenseCannon::GetRectRS()

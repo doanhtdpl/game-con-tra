@@ -62,9 +62,12 @@ void CDefenseCannonTurret::Update(float deltaTime)
 
 void CDefenseCannonTurret::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-	this->SetFrame();
-	this->ChangeFrame(deltaTime);
-	this->OnCollision(deltaTime, listObjectCollision);
+	if (this->m_isALive)
+	{
+		this->SetFrame();
+		this->ChangeFrame(deltaTime);
+		this->OnCollision(deltaTime, listObjectCollision);
+	}
 }
 
 void CDefenseCannonTurret::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -81,11 +84,13 @@ void CDefenseCannonTurret::OnCollision(float deltaTime, std::vector<CGameObject*
 		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
 		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 		{
-			if (obj->IsAlive())
+			if(obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
 			{
 				this->m_HP--;
 				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 			}
+			else
+				++it;
 
 			if (this->m_HP == 0)
 			{

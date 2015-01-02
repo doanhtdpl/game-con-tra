@@ -82,8 +82,6 @@ void CWallTurret::Update(float deltaTime, std::vector<CGameObject*>* listObjectC
 		this->BulletUpdate(deltaTime);
 		this->OnCollision(deltaTime, listObjectCollision);
 	}
-	else
-		this->BulletUpdate(deltaTime);
 }
 void CWallTurret::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
@@ -114,9 +112,7 @@ void CWallTurret::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 			}
 		}
 		else
-		{
 			++it;
-		}
 	}
 }
 
@@ -364,40 +360,22 @@ void CWallTurret::BulletUpdate(float deltaTime)
 		{
 			//Goc cua vien dan da duoc chinh san
 			//Chuyen ve toa do goc phan tu 1 - 2
-			this->m_timeDelay += deltaTime;
-			if(this->m_timeDelay > 0.5f)
+			if(m_bulletCount > 2)
+			{
+				this->m_bulletCount = 0;
+			}
+
+			if(this->m_timeDelay > 1.5f)
 			{
 				temp = this->m_direction ? temp : PI - temp;
 				CBullet_N* bullet = new CBullet_N(temp, this->m_pos, offset, !this->m_direction);
-				this->m_listBullet.push_back(bullet);
-			/*	bullet->SetLayer(LAYER::ENEMY);
-				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);*/
+				bullet->SetLayer(LAYER::ENEMY);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				this->m_timeDelay = 0;
+				m_bulletCount++;
 			}
+			this->m_timeDelay += deltaTime;
 		}
-	}
-
-	//Update trang thai dan
-	D3DXVECTOR3 pos;
-	for (int i = 0; i < this->m_listBullet.size(); i++)
-	{
-		this->m_listBullet.at(i)->Update(deltaTime);
-		pos.x = this->m_listBullet.at(i)->GetPos().x;
-		pos.y = this->m_listBullet.at(i)->GetPos().y;
-		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-		if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
-		{
-			delete this->m_listBullet.at(i);
-			this->m_listBullet.erase(this->m_listBullet.begin() + i);
-		}
-	}
-	if (this->m_listBullet.empty())
-	{
-		this->m_isShoot = true;
-	}
-	else
-	{
-		this->m_isShoot = false;
 	}
 #pragma endregion
 

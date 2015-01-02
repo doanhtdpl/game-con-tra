@@ -108,7 +108,7 @@ void CBullet_N::Update(float deltaTime)
 
 void CBullet_N::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision)
 {
-
+	this->MoveUpdate(deltaTime);
 }
 
 void CBullet_N::OnCollision(float deltaTime, std::hash_map<int, CGameObject*>* listObjectCollision)

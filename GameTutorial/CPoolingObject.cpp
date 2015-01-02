@@ -393,13 +393,18 @@ void CPoolingObject::Update(float deltaTime, std::vector<CGameObject*>* listObje
 		CBullet* obj = *it;
 		if (obj != NULL && obj->IsAlive())
 		{
-			obj->Update(deltaTime);
-			//obj->Update(deltaTime, listObjectCollision);
+			//obj->Update(deltaTime);
+			if (obj->GetIDType() == 20 && obj->GetID() == 9)
+			{
+				int x = 0;
+			}
+			obj->Update(deltaTime, listObjectCollision);
 			D3DXVECTOR3 pos;
 			pos.x = obj->GetPos().x;
 			pos.y = obj->GetPos().y;
 			pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-			if(pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
+			if(pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0
+				|| !obj->IsAlive())
 			{
 				delete obj;
 				it = this->m_listBulletOfObject.erase(it);
@@ -409,7 +414,6 @@ void CPoolingObject::Update(float deltaTime, std::vector<CGameObject*>* listObje
 				++it;
 			}
 		}
-
 	}
 
 	//Update BulletItem
@@ -541,7 +545,6 @@ void CPoolingObject::Draw()
 		{
 			CDrawObject::GetInstance()->Draw(obj);
 		}
-
 	}
 
 	//
