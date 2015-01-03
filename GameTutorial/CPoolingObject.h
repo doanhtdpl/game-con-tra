@@ -9,6 +9,7 @@
 #include "CCapsuleBoss.h"
 #include "CBigStone.h"
 #include "CBulletLaze.h"
+#include "CBulletScubaSolider.h"
 
 #ifndef __CEnemyDie_H__
 #define __CEnemyDie_H__
@@ -40,6 +41,9 @@ public:
 	std::vector<CBullet*> m_listBulletOfObject;
 	std::vector<CWeapon*> m_listWeapon; //Weapon dong
 	std::vector<CBulletLaze*> m_listBulletLaze;
+	std::vector<CBullet_ScubaSolider*> m_listBulletScubaSolider;
+	std::vector<CBigStone*> m_listBigStone;
+	std::vector<CCapsuleBoss*> m_listCapsuleBoss;
 	void Draw();
 
 protected:
@@ -50,9 +54,7 @@ protected:
 	std::vector<CBulletItem*> m_listBulletItem;
 	std::vector<CSoldier*> m_listSolider;
 	std::vector<CSoldierShoot*> m_listSoliderShoot;
-	std::vector<CBigStone*> m_listBigStone;
-	//Con boss map 5
-	std::vector<CCapsuleBoss*> m_listCapsuleBoss;
+
 private:
 };
 

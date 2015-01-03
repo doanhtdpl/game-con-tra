@@ -19,7 +19,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;
 	this->m_height = 92.0f; 
-	this->m_pos = D3DXVECTOR2(100.0f, 350.0f);
+	this->m_pos = D3DXVECTOR2(300.0f, 200.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -132,23 +132,28 @@ void CContra::MoveUpdate(float deltaTime)
 			}
 		}
 		if(this->m_pos.x > 250)
-		{/*
+		{
 			if(this->m_pos.y > 200)
 			{
 				CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
 			}
-			else
-			{*/
-				CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
+			//else
+			//{
+				//CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
+				////Tinh code test
+				//if (this->m_pos.x >= 9600.0f)//map 5
+				//{
+				//	CCamera::GetInstance()->Update(9664.0f, 0);
+				//}
 		///	}
 		}
-		//else
-		//{
-		//	if(this->m_pos.y > 200)
-		//	{
-		//		CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
-		//	}
-		//}
+		else
+		{
+			if(this->m_pos.y > 200)
+			{
+				CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
+			}
+		}
 	}
 #pragma endregion
 }
@@ -740,24 +745,24 @@ void CContra::BulletUpdate(float deltaTime)
 							break;
 						case STATE_BULLET_ITEM::BULLET_ITEM_S:
 							if (!this->m_left){
-								offset.x = 25.0f;
-								offset.y = -15.0f;
+								offset.x = 30.0f;
+								offset.y = -25.0f;
 							}
 							else{
-								offset.x = -25.0f;
-								offset.y = -15.0f;
+								offset.x = -30.0f;
+								offset.y = -25.0f;
 							}
 							break;
 
 						default:
 							{
 								if (!this->m_left){
-									offset.x = 25.0f;
-									offset.y = -23.0f;
+									offset.x = 30.0f;
+									offset.y = -25.0f;
 								}
 								else{
-									offset.x = -25.0f;
-									offset.y = -23.0f;
+									offset.x = -30.0f;
+									offset.y = -25.0f;
 								}
 								break;
 							}
@@ -1067,8 +1072,45 @@ void CContra::BulletUpdate(float deltaTime)
 		//Trung them cho nay
 		else
 		{
-			offset.x = 0;
-			offset.y = 0;
+			switch (this->m_stateCurrent)
+			{
+				case UNDER_WATER::IS_SHOOTING_UNDER_WATER_NORMAL:
+				{
+					if (!this->m_left){
+						offset.x = 20.0f;
+						offset.y = -35.0f;
+					}
+					else{
+						offset.x = -20.0f;
+						offset.y = -35.0f;
+					}
+					break;
+				}
+				case UNDER_WATER::IS_SHOOTING_UNDER_WATER_UP:
+				{
+					if (!this->m_left){
+						offset.x = 10.0f;
+						offset.y = 5.0f;
+					}
+					else{
+						offset.x = -10.0f;
+						offset.y = 5.0f;
+					}
+					break;
+				}
+				case UNDER_WATER::IS_SHOOTING_UNDER_WATER_DIAGONAL_UP:
+				{
+					if (!this->m_left){
+						offset.x = 17.0f;
+						offset.y = -10.0f;
+					}
+					else{
+						offset.x = -17.0f;
+						offset.y = -10.0f;
+					}
+					break;
+				}
+			}
 		}
 #pragma endregion
 
@@ -1271,7 +1313,127 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		else
 			++itLaze;
 	}
+	//Xet va cham voi Scuba bullet
+	for (std::vector<CBullet_ScubaSolider*>::iterator itScuba = CPoolingObject::GetInstance()->m_listBulletScubaSolider.begin();
+		itScuba != CPoolingObject::GetInstance()->m_listBulletScubaSolider.end();)
+	{
+		CBullet_ScubaSolider* bullet = *itScuba;
+		if (bullet->IsAlive())
+		{
+			if (CCollision::GetInstance()->Collision(this, bullet))
+			{
+				if (m_isUnderWater)
+				{
+					this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+				}
+				else
+				{
+					this->m_stateCurrent = ON_GROUND::IS_DIE;
+				}
+				if (!this->m_isDie)
+				{
+					if (this->m_left)
+						this->m_vx = this->m_vxDefault;
+					else
+						this->m_vx = -this->m_vxDefault;
+					this->m_vy = this->m_vyDefault;
+					this->m_isDie = true;
+					this->m_elapseTimeChangeFrame = 0.23f;
+				}
 
+				CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+				effect->SetAlive(true);
+				effect->SetPos(bullet->GetPos());
+				itScuba = CPoolingObject::GetInstance()->m_listBulletScubaSolider.erase(itScuba);
+			}
+			else
+				++itScuba;
+		}
+		else
+			++itScuba;
+	}
+
+	//Va cham voi Big Stone
+	for (std::vector<CBigStone*>::iterator itStone = CPoolingObject::GetInstance()->m_listBigStone.begin();
+		itStone != CPoolingObject::GetInstance()->m_listBigStone.end();)
+	{
+		CBigStone* stone = *itStone;
+		if (stone->IsAlive())
+		{
+			if (CCollision::GetInstance()->Collision(this, stone))
+			{
+				if (m_isUnderWater)
+				{
+					this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+				}
+				else
+				{
+					this->m_stateCurrent = ON_GROUND::IS_DIE;
+				}
+				if (!this->m_isDie)
+				{
+					if (this->m_left)
+						this->m_vx = this->m_vxDefault;
+					else
+						this->m_vx = -this->m_vxDefault;
+					this->m_vy = this->m_vyDefault;
+					this->m_isDie = true;
+					this->m_elapseTimeChangeFrame = 0.23f;
+				}
+
+				CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+				effect->SetAlive(true);
+				effect->SetPos(stone->GetPos());
+				itStone = CPoolingObject::GetInstance()->m_listBigStone.erase(itStone);
+			}
+			else
+				++itStone;
+		}
+		else
+			++itStone;
+	}
+
+	//Va cham voi Capsule cua boss map 5
+	for (std::vector<CCapsuleBoss*>::iterator itCapsule = CPoolingObject::GetInstance()->m_listCapsuleBoss.begin();
+		itCapsule != CPoolingObject::GetInstance()->m_listCapsuleBoss.end();)
+	{
+		CCapsuleBoss* capsule = *itCapsule;
+		if (capsule->IsAlive())
+		{
+			if (CCollision::GetInstance()->Collision(this, capsule))
+			{
+				if (m_isUnderWater)
+				{
+					this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+				}
+				else
+				{
+					this->m_stateCurrent = ON_GROUND::IS_DIE;
+				}
+				if (!this->m_isDie)
+				{
+					if (this->m_left)
+						this->m_vx = this->m_vxDefault;
+					else
+						this->m_vx = -this->m_vxDefault;
+					this->m_vy = this->m_vyDefault;
+					this->m_isDie = true;
+					this->m_elapseTimeChangeFrame = 0.23f;
+				}
+
+				CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+				effect->SetAlive(true);
+				effect->SetPos(capsule->GetPos());
+				itCapsule = CPoolingObject::GetInstance()->m_listCapsuleBoss.erase(itCapsule);
+			}
+			else
+				++itCapsule;
+		}
+		else
+			++itCapsule;
+	}
+
+	////
 	for (std::vector<CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
 	{
 		CGameObject* obj = *it;

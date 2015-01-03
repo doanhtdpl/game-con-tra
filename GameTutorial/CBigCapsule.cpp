@@ -114,13 +114,13 @@ void CBigCapsule::BulletUpdate(float deltaTime, std::vector<CGameObject*>* listO
 				this->m_isShoot = false;
 			}
 #pragma region THIET LAP GOC BAN
-			//Thiet lap vi tri cua 3 vien dan
 #pragma endregion
 			if (this->m_timeDelayShootBullet >= 0.90f)
 			{
 				CBullet_Capsule* bullet = new CBullet_Capsule(-PI / 2, this->m_pos, offset, this->m_left);
-				m_listBullet.push_back(bullet);
-
+			//	m_listBullet.push_back(bullet);
+				bullet->SetLayer(LAYER::ENEMY);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				this->m_timeDelayShootBullet = 0;
 				m_bulletCount++;
 			}
@@ -128,20 +128,20 @@ void CBigCapsule::BulletUpdate(float deltaTime, std::vector<CGameObject*>* listO
 		}
 
 	}
-	//Update trang thai dan
-	D3DXVECTOR3 pos;
-	for (int i = 0; i < this->m_listBullet.size(); i++)
-	{
-		this->m_listBullet.at(i)->Update(deltaTime, listObjectCollision);
-		pos.x = this->m_listBullet.at(i)->GetPos().x;
-		pos.y = this->m_listBullet.at(i)->GetPos().y;
-		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-		if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0 || !this->m_listBullet.at(i)->IsAlive())
-		{
-			delete this->m_listBullet.at(i);
-			this->m_listBullet.erase(this->m_listBullet.begin() + i);
-		}
-	}
+	////Update trang thai dan
+	//D3DXVECTOR3 pos;
+	//for (int i = 0; i < this->m_listBullet.size(); i++)
+	//{
+	//	this->m_listBullet.at(i)->Update(deltaTime, listObjectCollision);
+	//	pos.x = this->m_listBullet.at(i)->GetPos().x;
+	//	pos.y = this->m_listBullet.at(i)->GetPos().y;
+	//	pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
+	//	if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0 || !this->m_listBullet.at(i)->IsAlive())
+	//	{
+	//		delete this->m_listBullet.at(i);
+	//		this->m_listBullet.erase(this->m_listBullet.begin() + i);
+	//	}
+	//}
 #pragma endregion
 }
 
@@ -168,11 +168,13 @@ void CBigCapsule::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 			timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
 			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 			{
-				if (obj->IsAlive())
+				if (obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
 				{
 					this->m_HP--;
 					it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 				}
+				else
+					++it;
 
 				if (this->m_HP == 0)
 				{

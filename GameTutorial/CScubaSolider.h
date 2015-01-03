@@ -38,11 +38,7 @@ public:
 	float m_timeDelay;
 	float m_timeDelay1;
 	float m_waitForChangeSprite;
-	//
-	CBullet_ScubaSolider* m_bullet_1;
-	CBullet_ScubaSolider* m_bullet_2;
-	CBullet_ScubaSolider* m_bullet_3;
-	CBullet_ScubaSolider* m_bullet_4;
+
 	bool m_isBullectExplosive;
 	float m_maxYRandom;
 };

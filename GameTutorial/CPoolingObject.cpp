@@ -502,6 +502,19 @@ void CPoolingObject::Update(float deltaTime, std::vector<CGameObject*>* listObje
 		}
 
 	}
+
+	//Update Bullet of scuba solider 
+	for (std::vector<CBullet_ScubaSolider*>::iterator it = this->m_listBulletScubaSolider.begin();
+		it != this->m_listBulletScubaSolider.end();
+		++it)
+	{
+		CBullet_ScubaSolider* obj = *it;
+		if (obj != NULL && obj->IsAlive())
+		{
+			obj->Update(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
+		}
+
+	}
 }
 
 void CPoolingObject::Draw()
@@ -628,6 +641,19 @@ void CPoolingObject::Draw()
 		++it)
 	{
 		CBulletLaze* obj = *it;
+		if (obj != NULL && obj->IsAlive())
+		{
+			CDrawObject::GetInstance()->Draw(obj);
+		}
+
+	}
+
+	//Bullet of Scuba Solider
+	for (std::vector<CBullet_ScubaSolider*>::iterator it = this->m_listBulletScubaSolider.begin();
+		it != this->m_listBulletScubaSolider.end();
+		++it)
+	{
+		CBullet_ScubaSolider* obj = *it;
 		if (obj != NULL && obj->IsAlive())
 		{
 			CDrawObject::GetInstance()->Draw(obj);

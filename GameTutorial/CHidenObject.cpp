@@ -29,7 +29,7 @@ CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 	this->m_waitForCreateEnemy = 1.0f;
 	this->m_waitForCreateSoliderShoot = 1.40f;
 	this->m_waitForCreateBigStone = 6.0f;
-	this->m_waitForCreateBulletLaze = 2.0f;
+	this->m_waitForCreateBulletLaze = 2.4f;
 	this->countWeapon = 0;
 	// TT
 	if(!info.empty())
@@ -233,7 +233,7 @@ void CHidenObject::Update(float deltaTime, std::vector<CGameObject*>* listObject
 		{
 			this->m_waitForCreateBulletLaze += deltaTime;
 
-			if (this->m_waitForCreateBulletLaze > 2.0f)
+			if (this->m_waitForCreateBulletLaze > 2.4f)
 			{
 				this->m_waitForCreateBulletLaze = 0.0f;
 				CBulletLaze* laze = CPoolingObject::GetInstance()->GetBulletLaze();

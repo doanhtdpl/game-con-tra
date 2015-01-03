@@ -185,7 +185,6 @@ void CDefenseCannonGun::BulletUpdate(float deltaTime)
 #pragma endregion
 			if (this->m_timeDelay >= 0.75f)
 			{
-
 				CBullet_DefenseCannon* bullet = new CBullet_DefenseCannon(angle, this->m_pos, offset, !this->m_left);
 				bullet->SetLayer(LAYER::ENEMY);
 				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);

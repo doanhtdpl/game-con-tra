@@ -1,30 +1,30 @@
-﻿Build started 1/2/2015 09:53:38 AM.
-     1>Project "G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\GameTutorial.vcxproj" on node 2 (Build target(s)).
+﻿Build started 1/3/2015 09:49:33 AM.
+     1>Project "G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGameFinal\GameTutorial\GameTutorial.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CContra.cpp
          CContra.cpp
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
          c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(20): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(21): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(672): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(677): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(682): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(689): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1564): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1568): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1572): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1576): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1580): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1597): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1602): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1606): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1610): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1613): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragame3012\trunk\gametutorial\ccontra.cpp(1617): warning C4715: 'CContra::GetBox' : not all control paths return a value
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(20): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(21): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(677): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(682): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(687): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(694): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1768): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1772): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1776): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1780): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1784): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1801): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1806): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1810): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1814): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1817): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\ccontra.cpp(1821): warning C4715: 'CContra::GetBox' : not all control paths return a value
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\Debug\GameTutorial.exe" /INCREMENTAL /NOLOGO d3d9.lib d3dx9.lib dxguid.lib dxerr.lib dinput8.lib winmm.lib dsound.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\Debug\GameTutorial.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\Debug\GameTutorial.lib" /MACHINE:X86 Debug\CAnimation.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGameFinal\GameTutorial\Debug\GameTutorial.exe" /INCREMENTAL /NOLOGO d3d9.lib d3dx9.lib dxguid.lib dxerr.lib dinput8.lib winmm.lib dsound.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGameFinal\GameTutorial\Debug\GameTutorial.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGameFinal\GameTutorial\Debug\GameTutorial.lib" /MACHINE:X86 Debug\CAnimation.obj
          Debug\CBossArm.obj
          Debug\CBigCapsule.obj
          Debug\CBigstone.obj
@@ -96,9 +96,9 @@
          Debug\CManageAudio.obj
          Debug\CSoundUtil.obj
          Debug\CCapsuleBoss.obj
-         GameTutorial.vcxproj -> G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\Debug\GameTutorial.exe
-     1>Done Building Project "G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGame3012\trunk\GameTutorial\GameTutorial.vcxproj" (Build target(s)).
+         GameTutorial.vcxproj -> G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGameFinal\GameTutorial\Debug\GameTutorial.exe
+     1>Done Building Project "G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGameFinal\GameTutorial\GameTutorial.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.99
+Time Elapsed 00:00:02.13

@@ -24,9 +24,9 @@ protected:
 	virtual void Init(); // khoi tao vi tri ban dau cua vien dan.
 	D3DXVECTOR2 m_offset;//Vi tri cua vien dan so voi Sung
 	double m_rotation;//Goc ban dan
-	double m_time;
-
 	bool m_isFirstBullet;	// co phai la vien dan dau tien k.
+public:
+	double m_time;
 };
 
 #endif // !__CBulletScubaSolider_H__

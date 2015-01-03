@@ -62,15 +62,6 @@ void CScubaSolider::Init()
 
 void CScubaSolider::Update(float deltaTime)
 {
-	/*if (this->IsAlive())
-	{
-		this->SetFrame(deltaTime);
-		this->ChangeFrame(deltaTime);
-		this->BulletUpdate(deltaTime);
-		this->OnCollision(deltaTime, nullptr);
-	}
-	else
-		this->BulletUpdate(deltaTime);*/
 
 }
 
@@ -118,10 +109,10 @@ void CScubaSolider::OnCollision(float deltaTime, std::vector<CGameObject*>* list
 					it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 				}
 				else
-				{
 					++it;
-				}
 			}
+			else
+				++it;
 		}
 	}
 }
@@ -159,71 +150,87 @@ void CScubaSolider::BulletUpdate(float deltaTime, std::vector<CGameObject*>* lis
 	{
 		if (this->m_currentFrame == 3)
 		{
-			if (this->m_bulletCount == 0)
+			// tai vi no k chay vo day ne
+			if (CPoolingObject::GetInstance()->m_listBulletScubaSolider.size() == 0)
 			{
-				this->m_bullet_1 = new CBullet_ScubaSolider(PI / 2, this->m_pos, offset);
-				m_bullet_1->m_isContra = false;
-				this->m_bullet_1->SetAlive(true);
-				this->m_bullet_1->SetV(0.0f, 8.0f);
-				this->m_bullet_1->SetIsFirstBullet(true);
+				CPoolingObject::GetInstance()->m_listBulletScubaSolider.clear();
 				//
-				this->m_listBullet.push_back(this->m_bullet_1);
-				m_bulletCount++;
+				CBullet_ScubaSolider* m_bullet_1 = new CBullet_ScubaSolider(PI / 2, this->m_pos, offset);
+				m_bullet_1->m_isContra = false;
+				m_bullet_1->SetAlive(true);
+				m_bullet_1->SetV(0.0f, 7.0f);
+				m_bullet_1->SetIsFirstBullet(true);
+				m_bullet_1->m_time = 0;
+
+				m_bullet_1->SetLayer(LAYER::ENEMY);
+				CPoolingObject::GetInstance()->m_listBulletScubaSolider.push_back(m_bullet_1);
+				this->m_isBullectExplosive = false;
 			}
 		}
 	}
 	//Update trang thai dan
-	D3DXVECTOR3 pos;
-	if (this->m_listBullet.size() == 0)
-		this->m_isBullectExplosive = false;
-	for (int i = 0; i < this->m_listBullet.size(); i++)
+	D3DXVECTOR3 pos, pos1;
+	if (CPoolingObject::GetInstance()->m_listBulletScubaSolider.size() != 0)
 	{
-		if (this->m_listBullet.at(i)->IsAlive())
+		for (int i = 0; i < CPoolingObject::GetInstance()->m_listBulletScubaSolider.size(); i++)
 		{
-			// Ham updte nay cho nao ta game o
-			this->m_listBullet.at(i)->Update(deltaTime, listObjectCollision);
-
-			pos.x = this->m_listBullet.at(i)->GetPos().x;
-			pos.y = this->m_listBullet.at(i)->GetPos().y;
-			if (pos.y >= this->m_maxYRandom && !m_isBullectExplosive)
+			if (CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(i)->IsAlive())
 			{
-				//tao hieu ung no
-				CExplosionEffect* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
-				effect->SetAlive(true);
-				effect->SetPos(this->m_listBullet.at(i)->GetPos());
-				this->m_bullet_1->SetAlive(false);
+				pos.x = CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(i)->GetPos().x;
+				pos.y = CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(i)->GetPos().y;
 
-				//Tao moi 3 vien dan kia
-				this->m_bullet_2 = new CBullet_ScubaSolider(PI / 2, this->m_bullet_1->GetPos(), offset);
-				m_bullet_2->m_isContra = false;
-				this->m_bullet_2->SetV(0.0f, -7.0f);
-				this->m_bullet_2->SetAlive(true);
-				this->m_bullet_2->SetIsFirstBullet(false);
-				//
-				this->m_bullet_3 = new CBullet_ScubaSolider(PI / 6, this->m_bullet_1->GetPos(), offset);
-				m_bullet_3->m_isContra = false;
-				this->m_bullet_3->SetV(3.0f, -15.50f);
-				this->m_bullet_3->SetAlive(true);
-				this->m_bullet_3->SetIsFirstBullet(false);
+				if (pos.y >= this->m_maxYRandom && !m_isBullectExplosive)
+				{
+					//tao hieu ung no
+					CExplosionEffect* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
+					effect->SetAlive(true);
+					effect->SetPos(CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(0)->GetPos());
+					CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(0)->SetAlive(false);
 
-				this->m_bullet_4 = new CBullet_ScubaSolider(5 * PI / 6, this->m_bullet_1->GetPos(), offset);
-				m_bullet_4->m_isContra = false;
-				this->m_bullet_4->SetV(3.0f, -15.50f);
-				this->m_bullet_4->SetAlive(true);
-				this->m_bullet_4->SetIsFirstBullet(false);
-				//
-				this->m_listBullet.push_back(this->m_bullet_2);
-				this->m_listBullet.push_back(this->m_bullet_3);
-				this->m_listBullet.push_back(this->m_bullet_4);
-				//
-				this->m_isBullectExplosive = true;
+					//Tao moi 3 vien dan kia
+					CBullet_ScubaSolider* m_bullet_2 = new CBullet_ScubaSolider(PI / 2, CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(0)->GetPos(), D3DXVECTOR2(0, 0));
+					m_bullet_2->m_isContra = false;
+					m_bullet_2->SetV(0.0f, -7.0f);
+					m_bullet_2->SetAlive(true);
+					m_bullet_2->SetIsFirstBullet(false);
+					m_bullet_2->SetLayer(LAYER::ENEMY);
+					m_bullet_2->m_time = 0;
+					//
+					CBullet_ScubaSolider* m_bullet_3 = new CBullet_ScubaSolider(PI / 6, CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(0)->GetPos(), D3DXVECTOR2(0, 0));
+					m_bullet_3->m_isContra = false;
+					m_bullet_3->SetV(3.0f, -15.50f);
+					m_bullet_3->SetAlive(true);
+					m_bullet_3->SetIsFirstBullet(false);
+					m_bullet_3->SetLayer(LAYER::ENEMY);
+					m_bullet_3->m_time = 0;
+
+					CBullet_ScubaSolider* m_bullet_4 = new CBullet_ScubaSolider(5 * PI / 6, CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(0)->GetPos(), D3DXVECTOR2(0, 0));
+					m_bullet_4->m_isContra = false;
+					m_bullet_4->SetV(3.0f, -15.50f);
+					m_bullet_4->SetAlive(true);
+					m_bullet_4->SetIsFirstBullet(false);
+					m_bullet_4->SetLayer(LAYER::ENEMY);
+					m_bullet_4->m_time = 0;
+
+					//xoa khoi list & gan gia tri 
+					this->m_isBullectExplosive = true;
+					delete CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(0);
+					CPoolingObject::GetInstance()->m_listBulletScubaSolider.clear();
+
+					//
+					CPoolingObject::GetInstance()->m_listBulletScubaSolider.push_back(m_bullet_2);
+					CPoolingObject::GetInstance()->m_listBulletScubaSolider.push_back(m_bullet_3);
+					CPoolingObject::GetInstance()->m_listBulletScubaSolider.push_back(m_bullet_4);
+					//
+				}
 			}
 
-			pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-			if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0 || !this->m_listBullet.at(i)->IsAlive())
+			pos1 = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
+			if (pos1.x > __SCREEN_WIDTH || pos1.x < 0 || pos1.y > __SCREEN_HEIGHT || pos1.y < 0 ||
+				!CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(i)->IsAlive())
 			{
-				delete this->m_listBullet.at(i);
-				this->m_listBullet.erase(this->m_listBullet.begin() + i);
+				delete CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(i);
+				CPoolingObject::GetInstance()->m_listBulletScubaSolider.erase(CPoolingObject::GetInstance()->m_listBulletScubaSolider.begin() + i);
 			}
 		}
 	}
