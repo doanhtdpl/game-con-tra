@@ -88,6 +88,10 @@ void CDefenseCannonTurret::OnCollision(float deltaTime, std::vector<CGameObject*
 			{
 				this->m_HP--;
 				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+
+				CBulletEffect* effect = CPoolingObject::GetInstance()->GetBulletEffect();
+				effect->SetAlive(true);
+				effect->SetPos(obj->GetPos());
 			}
 			else
 				++it;

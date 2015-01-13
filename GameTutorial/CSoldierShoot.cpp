@@ -434,8 +434,9 @@ RECT* CSoldierShoot::GetRectRS()
 
 Box CSoldierShoot::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 26, this->m_height - 6, this->m_vx, this->m_vy);
 }
+	
 
 void CSoldierShoot::setJump(bool jump)
 {

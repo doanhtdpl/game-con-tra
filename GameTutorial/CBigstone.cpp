@@ -56,6 +56,7 @@ void CBigStone::Init()
 	this->m_totalFrame = 5;
 	this->m_column = 5;
 
+	this->m_HP = 3;
 	this->m_currentState = STATE_STONE::STANDING;
 
 	this->m_timeDelay = 0.0f;
@@ -117,11 +118,15 @@ void CBigStone::OnCollision(float deltaTime, std::vector<CGameObject*>* listObje
 			if (CCollision::GetInstance()->Collision(bObj, this))
 			{
 				cit = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(cit);
+				this->m_HP--;
 
-				CGameObject* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
-				effect->SetAlive(true);
-				effect->SetPos(this->m_pos);
-				this->m_isALive = false;
+				if (this->m_HP == 0)
+				{
+					CGameObject* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
+					effect->SetAlive(true);
+					effect->SetPos(this->m_pos);
+					this->m_isALive = false;
+				}
 			}
 			else
 				++cit;

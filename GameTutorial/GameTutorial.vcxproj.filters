@@ -94,6 +94,9 @@
     <Filter Include="Source Files\GameLoop\InitGame\LoadResource\EffectBackground">
       <UniqueIdentifier>{5b39a3bf-cd32-40e2-83a6-acdc43ce128c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense">
+      <UniqueIdentifier>{f2d44d41-2533-4c2a-8a44-2f78d8e48a3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTexture.cpp">
@@ -310,7 +313,22 @@
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClCompile>
     <ClCompile Include="CSceneManagement.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GameLoop\StateGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CMenuGame.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    </ClCompile>
+    <ClCompile Include="CWinScense.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletEffect.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CHeadBoss.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
+    </ClCompile>
+    <ClCompile Include="CMechanicalAlien.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -537,7 +555,22 @@
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClInclude>
     <ClInclude Include="CSceneManagement.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\GameLoop\StateGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CMenuGame.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    </ClInclude>
+    <ClInclude Include="CWinScense.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletEffect.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CHeadBoss.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
+    </ClInclude>
+    <ClInclude Include="CMechanicalAlien.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

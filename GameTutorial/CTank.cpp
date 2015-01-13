@@ -107,6 +107,10 @@ void CTank::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCo
 				// Xoa vien dan ra khoi d.s
 				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 
+				CBulletEffect* effect = CPoolingObject::GetInstance()->GetBulletEffect();
+				effect->SetAlive(true);
+				effect->SetPos(obj->GetPos());
+
 				if (this->m_HP >= 15)
 				{
 					this->m_stateCurrent = TANK_STATE::TANK_IS_NORMAL;

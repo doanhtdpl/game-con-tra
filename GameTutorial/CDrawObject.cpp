@@ -7,6 +7,7 @@
 #include "CDefenseCannon.h"
 #include "CBridgeFire.h"
 #include "CBigCapsule.h"
+#include "CMechanicalAlien.h"
 
 CDrawObject::CDrawObject()
 {
@@ -91,14 +92,13 @@ void CDrawObject::Draw(CGameObject* obj)
 					}
 					else
 					{
-
 						//RECT* rect = new RECT();
 						//rect->left = 0;
 						//rect->right = 64;
 						//rect->top = 0;
 						//rect->bottom = 64;
 						//D3DXVECTOR3 posofBox = CCamera::GetInstance()->GetPointTransform(obj->GetBox().x, obj->GetBox().y);
-						//	CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
+						//CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
 						//this->m_draw->drawScale(text,
 						//	rect, posofBox,
 						//	D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
@@ -175,6 +175,22 @@ void CDrawObject::Draw(CGameObject* obj)
 								CDrawObject::GetInstance()->Draw(objDef->gunRight);
 							break;
 						}
+					case 5://Boss map 2
+					{
+							   CMechanicalAlien* objMec = ((CMechanicalAlien*)obj);
+							   //ve boss
+							   //Ve dau boss
+							   if (objMec->m_Head->IsAlive())
+								   CDrawObject::GetInstance()->Draw(objMec->m_Head);
+							   //
+							   //ve tay ben trai
+							   if (objMec->m_ArmLeft->IsAlive())
+								   objMec->m_ArmLeft->Draw();
+							   //Ve tay ben phai
+							   if (objMec->m_ArmRight->IsAlive())
+								   objMec->m_ArmRight->Draw();  
+							   break;
+					}
 					default:
 						break;
 					}

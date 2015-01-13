@@ -94,11 +94,6 @@ void CSoldier::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjec
 	float moveY = 0.0f;
 	float timeCollision;
 
-	if(CCollision::GetInstance()->Collision(CContra::GetInstance(), this))
-	{
-		CContra::GetInstance()->m_isDie = true;
-	}
-
 	for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin(); it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
 	{
 		CBullet* obj = *it;
@@ -349,7 +344,7 @@ RECT* CSoldier::GetRectRS()
 
 Box CSoldier::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 26, this->m_height - 8, this->m_vx, this->m_vy);
 }
 
 void CSoldier::setJump(bool jump)

@@ -4,6 +4,7 @@
 #include "CCollision.h"
 #include "CHidenObject.h"
 #include "CSoldier.h"
+#include "CSoldierShoot.h"
 #include "CPoolingObject.h"
 #include "CManageAudio.h"
 #include <cmath>
@@ -19,7 +20,7 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;
 	this->m_height = 92.0f; 
-	this->m_pos = D3DXVECTOR2(300.0f, 200.0f);
+	this->m_pos = D3DXVECTOR2(150.0f, 350.0f);
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
@@ -133,27 +134,27 @@ void CContra::MoveUpdate(float deltaTime)
 		}
 		if(this->m_pos.x > 250)
 		{
-			if(this->m_pos.y > 200)
-			{
-				CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
-			}
+			//if(this->m_pos.y > 200)
+			//{
+			//	CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
+			//}
 			//else
 			//{
-				//CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
+				CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
 				////Tinh code test
 				//if (this->m_pos.x >= 9600.0f)//map 5
 				//{
 				//	CCamera::GetInstance()->Update(9664.0f, 0);
 				//}
-		///	}
+			//}
 		}
-		else
+		/*else
 		{
 			if(this->m_pos.y > 200)
 			{
 				CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
 			}
-		}
+		}*/
 	}
 #pragma endregion
 }
@@ -1274,7 +1275,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			++it;
 	}
 
-	// va cham voi laze
+	#pragma region _va cham voi laze_
 	for (std::vector<CBulletLaze*>::iterator itLaze = CPoolingObject::GetInstance()->m_listBulletLaze.begin();
 		itLaze != CPoolingObject::GetInstance()->m_listBulletLaze.end();)
 	{
@@ -1313,7 +1314,85 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		else
 			++itLaze;
 	}
-	//Xet va cham voi Scuba bullet
+#pragma endregion
+
+	#pragma region _va cham voi Solider_
+		for (std::vector<CSoldier*>::iterator itLaze = CPoolingObject::GetInstance()->m_listSolider.begin();
+			itLaze != CPoolingObject::GetInstance()->m_listSolider.end();)
+		{
+			CSoldier* soldier = *itLaze;
+			if (soldier->IsAlive())
+			{
+				if (CCollision::GetInstance()->Collision(this, soldier))
+				{
+					if (m_isUnderWater)
+					{
+						this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+					}
+					else
+					{
+						this->m_stateCurrent = ON_GROUND::IS_DIE;
+					}
+					if (!this->m_isDie)
+					{
+						if (this->m_left)
+							this->m_vx = this->m_vxDefault;
+						else
+							this->m_vx = -this->m_vxDefault;
+						this->m_vy = this->m_vyDefault;
+						this->m_isDie = true;
+						this->m_elapseTimeChangeFrame = 0.23f;
+					}
+					else
+						++itLaze;
+				}
+				else
+					++itLaze;
+			}
+			else
+				++itLaze;
+		}
+	#pragma endregion
+
+	#pragma region _va cham voi Solider Shoot_
+		for (std::vector<CSoldierShoot*>::iterator itLaze = CPoolingObject::GetInstance()->m_listSoliderShoot.begin();
+			itLaze != CPoolingObject::GetInstance()->m_listSoliderShoot.end();)
+		{
+			CSoldierShoot* soldierS = *itLaze;
+			if (soldierS->IsAlive())
+			{
+				if (CCollision::GetInstance()->Collision(this, soldierS))
+				{
+					if (m_isUnderWater)
+					{
+						this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+					}
+					else
+					{
+						this->m_stateCurrent = ON_GROUND::IS_DIE;
+					}
+					if (!this->m_isDie)
+					{
+						if (this->m_left)
+							this->m_vx = this->m_vxDefault;
+						else
+							this->m_vx = -this->m_vxDefault;
+						this->m_vy = this->m_vyDefault;
+						this->m_isDie = true;
+						this->m_elapseTimeChangeFrame = 0.23f;
+					}
+					else
+						++itLaze;
+				}
+				else
+					++itLaze;
+			}
+			else
+				++itLaze;
+		}
+	#pragma endregion
+
+	#pragma region Xet va cham voi Scuba bullet
 	for (std::vector<CBullet_ScubaSolider*>::iterator itScuba = CPoolingObject::GetInstance()->m_listBulletScubaSolider.begin();
 		itScuba != CPoolingObject::GetInstance()->m_listBulletScubaSolider.end();)
 	{
@@ -1352,8 +1431,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		else
 			++itScuba;
 	}
-
-	//Va cham voi Big Stone
+	#pragma endregion
+	
+	#pragma region Va cham voi Big Stone
 	for (std::vector<CBigStone*>::iterator itStone = CPoolingObject::GetInstance()->m_listBigStone.begin();
 		itStone != CPoolingObject::GetInstance()->m_listBigStone.end();)
 	{
@@ -1392,8 +1472,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		else
 			++itStone;
 	}
+	#pragma endregion
 
-	//Va cham voi Capsule cua boss map 5
+	#pragma region Va cham voi Capsule cua boss map 5
 	for (std::vector<CCapsuleBoss*>::iterator itCapsule = CPoolingObject::GetInstance()->m_listCapsuleBoss.begin();
 		itCapsule != CPoolingObject::GetInstance()->m_listCapsuleBoss.end();)
 	{
@@ -1432,14 +1513,13 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 		else
 			++itCapsule;
 	}
-
+	#pragma endregion
 	////
 	for (std::vector<CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
 	{
 		CGameObject* obj = *it;
 		//Lay thoi gian va cham
 		//Neu doi tuong la ground va dang va cham
-
 		if(obj->GetIDType() == 15 || obj->GetIDType() == 16)
 		{
 			timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), obj, normalX, normalY, moveX, moveY, deltaTime);
@@ -1447,7 +1527,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			{
 				if(normalY > 0)
 				{
-#pragma region VA CHAM VS CUC DA
+	#pragma region VA CHAM VS Cay cau da
 					if (obj->GetIDType() == 16 && obj->GetID() == 3 && !checkColWithGround)
 					{
 						checkColWithGround = true;
@@ -1516,9 +1596,10 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 						}
 					}
 #pragma endregion
-#pragma region VA CHAM MAT DAT && CAY CAU
 
-					/*else */if((obj->GetID() == 1 || obj->GetID() == 8 ||  (obj->GetID() == 1 && obj->GetIDType() == 16)) && !checkColWithGround)
+	#pragma region VA CHAM MAT DAT && CAY CAU
+
+					if((obj->GetID() == 1 || obj->GetID() == 8 ||  (obj->GetID() == 1 && obj->GetIDType() == 16)) && !checkColWithGround)
 					{
 						if(obj->GetID() == 8 && obj->GetIDType() == 15)
 							this->m_allowFall = false;
@@ -1592,7 +1673,8 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 						}
 					}
 #pragma endregion
-#pragma region VA CHAM MAT NUOC
+
+	#pragma region VA CHAM MAT NUOC
 					/*else */if(!checkColWithWater && obj->GetID() == 2 && !checkColWithGround)
 					{
 						//O duoi nuoc khong the nhay
@@ -1636,7 +1718,8 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 						}
 					}
 #pragma endregion 
-#pragma region DANG VA CHAM VOI NUOC VA CHUYEN LEN MAT DAT
+
+	#pragma region DANG VA CHAM VOI NUOC VA CHUYEN LEN MAT DAT
 					if((checkColWithWater || this->m_stateCurrent > 20) && checkColWithGround) //Neu dang va cham voi mat nuoc
 					{
 						this->m_isUnderWater = false;
@@ -1653,35 +1736,41 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 						this->m_stateCurrent = ON_GROUND::IS_UP_GROUND;
 					}
 					continue;
-#pragma endregion
+	#pragma endregion
 					//TT
 				}
-#pragma region VA CHAM DOI TUONG SINH WEAPON
-				else if(obj->GetIDType() == 14 
-					&& (this->m_stateCurrent != ON_GROUND::IS_DIE && this->m_stateCurrent != UNDER_WATER::IS_DIE_UNDER_WATER))
+	#pragma region VA CHAM VS CAY CAU
+				else if (obj->GetIDType() == 15 && obj->GetID() == 5)
 				{
-					if(obj->GetID() != 8)
+					this->m_bridgeEffect = true;
+				}
+	#pragma endregion
+	#pragma region VA CHAM DOI TUONG SINH WEAPON
+					else if(obj->GetIDType() == 14 
+						&& (this->m_stateCurrent != ON_GROUND::IS_DIE && this->m_stateCurrent != UNDER_WATER::IS_DIE_UNDER_WATER))
 					{
-						D3DXVECTOR2 pos = CCamera::GetInstance()->GetPointTransform(obj->GetPos().x, obj->GetPos().y);
-						pos.x = __SCREEN_WIDTH - pos.x + obj->GetPos().x;
-						pos.y = 300;
-						CWeapon* weapon = new CWeapon(pos, obj->GetID());
-						/*CPoolingObject::GetInstance()->m_listWeapon.push_back(new CSoldier(obj->*/
-					}
-					else
-					{
-						if(((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_B && 
-							((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_R)
+						if(obj->GetID() != 8)
 						{
-							this->m_typeBullet = ((CBulletItem*)(obj))->m_stateItem;
+							D3DXVECTOR2 pos = CCamera::GetInstance()->GetPointTransform(obj->GetPos().x, obj->GetPos().y);
+							pos.x = __SCREEN_WIDTH - pos.x + obj->GetPos().x;
+							pos.y = 300;
+							CWeapon* weapon = new CWeapon(pos, obj->GetID());
+							/*CPoolingObject::GetInstance()->m_listWeapon.push_back(new CSoldier(obj->*/
+						}
+						else
+						{
+							if(((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_B && 
+								((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_R)
+							{
+								this->m_typeBullet = ((CBulletItem*)(obj))->m_stateItem;
+							}
 						}
 					}
-				}
-#pragma endregion
+	#pragma endregion
 
 			}
 		}
-#pragma region VA CHAM VOI ENEMY
+	#pragma region VA CHAM VOI ENEMY
 		if(obj->GetLayer() == LAYER::ENEMY && obj->IsAlive() 
 			&& (this->m_stateCurrent != ON_GROUND::IS_DIE && this->m_stateCurrent != UNDER_WATER::IS_DIE_UNDER_WATER))
 		{
@@ -1737,7 +1826,6 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			}
 		}
 	}
-
 }
 	
 RECT* CContra::GetRectRS()

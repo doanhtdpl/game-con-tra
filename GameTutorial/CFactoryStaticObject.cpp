@@ -12,6 +12,7 @@
 #include "CBridgeFire.h"
 #include "CBridgeStone.h"
 #include "CBigCapsule.h"
+#include "CMechanicalAlien.h"
 
 CFactoryStaticObject::~CFactoryStaticObject()
 {
@@ -110,10 +111,14 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 			{
 				return new CDefenseCannon(info);
 			}
+		case 17005://Boss map 3
+			{
+				return new CMechanicalAlien(info);
+			}
 		case 17010://Boss map 5
-		{
-			return new CBigCapsule(info);
-		}
+			{
+				return new CBigCapsule(info);
+			}
 		default:
 			return nullptr;
 		}

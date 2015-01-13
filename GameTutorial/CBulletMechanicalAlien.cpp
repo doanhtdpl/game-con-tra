@@ -48,8 +48,8 @@ void CBulletMechanicalAlien::Init()
 	this->m_isMoveLeft = true;
 	this->m_isMoveRight = false;
 	this->m_canJump = false;
-	this->m_vxDefault = 110.0f;
-	this->m_vyDefault = 110.0f;
+	this->m_vxDefault = 130.0f;
+	this->m_vyDefault = 130.0f;
 	this->m_vx = this->m_vxDefault;
 	this->m_vy = this->m_vyDefault;
 	this->m_a = 22.0f;
@@ -124,7 +124,12 @@ void CBulletMechanicalAlien::Update(float deltaTime)
 
 void CBulletMechanicalAlien::Update(float deltaTime, std::vector<CGameObject*>* _listObjectCollision)
 {
-	// collion
+	if (this->IsAlive())
+	{
+		this->SetFrame();
+		this->ChangeFrame(deltaTime);
+		this->MoveUpdate(deltaTime);
+	}
 }
 void CBulletMechanicalAlien::SetFrame()
 {
@@ -134,36 +139,7 @@ void CBulletMechanicalAlien::SetFrame()
 }
 void CBulletMechanicalAlien::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-	float normalX = 0;
-	float normalY = 0;
-	float moveX = 0.0f;
-	float moveY = 0.0f;
-	float timeCollision;
 
-	std::vector<CGameObject*>::iterator it;
-
-	for (it = listObjectCollision->begin();
-		it != listObjectCollision->end(); ++it)
-	{
-		CGameObject* obj = *it;
-		// Neu doi tuong la ground
-		if (obj->GetIDType() == 14 && obj->GetID() == 1)
-		{
-			timeCollision = CCollision::GetInstance()->Collision(this, obj, normalX, normalY, moveX, moveY, deltaTime);
-			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
-			{
-				//it = CContra::GetInstance()->m_listBullet.erase(it);
-				//obj = CDeffen
-				// Gan trang thai die cho doi tuong
-				CGameObject* obj = CPoolingObject::GetInstance()->GetExplosionEffect();
-				obj->SetAlive(true);
-				obj->SetPos(this->m_pos);
-				this->m_isALive = false;
-				//delete
-				//int count = 0; 
-			}
-		}
-	}
 }
 
 RECT* CBulletMechanicalAlien::GetRectRS()

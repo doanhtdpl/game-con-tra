@@ -1,6 +1,7 @@
 #include "CSingleton.h"
 #include "CEnemyEffect.h"
 #include "CExplosionEffect.h"
+#include "CBulletEffect.h"
 #include "CBullet.h"
 #include "CBulletItem.h"
 #include "CSoldier.h"
@@ -20,6 +21,7 @@ class CPoolingObject : public CSingleton<CPoolingObject>
 public:
 	CEnemyEffect* GetEnemyEffect();
 	CExplosionEffect* GetExplosionEffect();
+	CBulletEffect* GetBulletEffect();
 	CBulletItem* GetBulletItem();
 	CSoldier* GetSoliderObject();
 	CSoldierShoot* GetSoliderShootObject();
@@ -33,6 +35,7 @@ public:
 	void CreateBulletItem(int size);
 	void CreateEnemyEffect(int size);
 	void CreateExplosionEffect(int size);
+	void CreateBulletEffect(int size);
 	void CreateWeapon(int size);
 	void CreateCapsuleBoss(int size);
 	void CreateBigStone(int size);
@@ -44,6 +47,8 @@ public:
 	std::vector<CBullet_ScubaSolider*> m_listBulletScubaSolider;
 	std::vector<CBigStone*> m_listBigStone;
 	std::vector<CCapsuleBoss*> m_listCapsuleBoss;
+	std::vector<CSoldier*> m_listSolider;
+	std::vector<CSoldierShoot*> m_listSoliderShoot;
 	void Draw();
 
 protected:
@@ -51,9 +56,8 @@ protected:
 	~CPoolingObject();
 	std::vector<CEnemyEffect*> m_enemyEffect;
 	std::vector<CExplosionEffect*> m_explosionEffect;
+	std::vector<CBulletEffect*> m_bulletEffect;
 	std::vector<CBulletItem*> m_listBulletItem;
-	std::vector<CSoldier*> m_listSolider;
-	std::vector<CSoldierShoot*> m_listSoliderShoot;
 
 private:
 };
