@@ -75,6 +75,7 @@
     <ClCompile Include="CBridgeFire.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CBulletCapsule.cpp" />
+    <ClCompile Include="CBulletEffect.cpp" />
     <ClCompile Include="CBulletF.cpp" />
     <ClCompile Include="CBulletItem.cpp" />
     <ClCompile Include="CBulletL.cpp" />
@@ -95,6 +96,9 @@
     <ClCompile Include="CFireBridge.cpp" />
     <ClCompile Include="CGroundCannon.cpp" />
     <ClCompile Include="CGunner.cpp" />
+    <ClCompile Include="CHeadBoss.cpp" />
+    <ClCompile Include="CMechanicalAlien.cpp" />
+    <ClCompile Include="CMenuGame.cpp" />
     <ClCompile Include="CSceneManagement.cpp" />
     <ClCompile Include="CScubaSolider.cpp" />
     <ClCompile Include="CSniper.cpp" />
@@ -128,6 +132,7 @@
     <ClCompile Include="CWallTurret.cpp" />
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="CEnemyEffect.cpp" />
+    <ClCompile Include="CWinScense.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CStateManagement.cpp" />
     <ClCompile Include="CStaticObject.cpp" />
@@ -148,6 +153,7 @@
     <ClInclude Include="CBridgeFire.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CBulletCapsule.h" />
+    <ClInclude Include="CBulletEffect.h" />
     <ClInclude Include="CBulletF.h" />
     <ClInclude Include="CBulletItem.h" />
     <ClInclude Include="CBulletL.h" />
@@ -168,6 +174,9 @@
     <ClInclude Include="CExplosionEffect.h" />
     <ClInclude Include="CFireBridge.h" />
     <ClInclude Include="CGunner.h" />
+    <ClInclude Include="CHeadBoss.h" />
+    <ClInclude Include="CMechanicalAlien.h" />
+    <ClInclude Include="CMenuGame.h" />
     <ClInclude Include="CSceneManagement.h" />
     <ClInclude Include="CScubaSolider.h" />
     <ClInclude Include="CSniper.h" />
@@ -217,6 +226,7 @@
     <ClInclude Include="CBridge.h" />
     <ClInclude Include="CManageAudio.h" />
     <ClInclude Include="CSoundUtil.h" />
+    <ClInclude Include="CWinScense.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

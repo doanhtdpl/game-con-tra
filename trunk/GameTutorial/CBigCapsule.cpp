@@ -118,7 +118,6 @@ void CBigCapsule::BulletUpdate(float deltaTime, std::vector<CGameObject*>* listO
 			if (this->m_timeDelayShootBullet >= 0.90f)
 			{
 				CBullet_Capsule* bullet = new CBullet_Capsule(-PI / 2, this->m_pos, offset, this->m_left);
-			//	m_listBullet.push_back(bullet);
 				bullet->SetLayer(LAYER::ENEMY);
 				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				this->m_timeDelayShootBullet = 0;
@@ -128,20 +127,6 @@ void CBigCapsule::BulletUpdate(float deltaTime, std::vector<CGameObject*>* listO
 		}
 
 	}
-	////Update trang thai dan
-	//D3DXVECTOR3 pos;
-	//for (int i = 0; i < this->m_listBullet.size(); i++)
-	//{
-	//	this->m_listBullet.at(i)->Update(deltaTime, listObjectCollision);
-	//	pos.x = this->m_listBullet.at(i)->GetPos().x;
-	//	pos.y = this->m_listBullet.at(i)->GetPos().y;
-	//	pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-	//	if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0 || !this->m_listBullet.at(i)->IsAlive())
-	//	{
-	//		delete this->m_listBullet.at(i);
-	//		this->m_listBullet.erase(this->m_listBullet.begin() + i);
-	//	}
-	//}
 #pragma endregion
 }
 
@@ -172,6 +157,10 @@ void CBigCapsule::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 				{
 					this->m_HP--;
 					it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+
+					CBulletEffect* effect = CPoolingObject::GetInstance()->GetBulletEffect();
+					effect->SetAlive(true);
+					effect->SetPos(obj->GetPos());
 				}
 				else
 					++it;

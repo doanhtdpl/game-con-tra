@@ -14,6 +14,11 @@ CStateGamePlay::CStateGamePlay()
 {
 }
 
+CStateGamePlay::CStateGamePlay(int mapId)
+{
+	this->m_mapId = mapId;
+}
+
 CStateGamePlay::~CStateGamePlay()
 {
 
@@ -23,31 +28,43 @@ void CStateGamePlay::Init()
 {
 	//CCamera::GetInstance()->Update(CContra::GetInstance()->GetPos().x - 400, 0.0f);
 	CLoadBackGround::GetInstance()->LoadAllResourceFromFile();
-	CLoadBackGround::GetInstance()->ChangeBackGround(11);
 	CLoadGameObject::GetInstance()->LoadReSourceFromFile();
-	CLoadGameObject::GetInstance()->ChangeMap(11);
-
+	//Tinh
+	CLoadBackGround::GetInstance()->ChangeBackGround(this->m_mapId);
+	CLoadGameObject::GetInstance()->ChangeMap(this->m_mapId);
+	
 	// Khoi tao enemy effect
-	CPoolingObject::GetInstance()->CreateEnemyEffect(20);
-	CPoolingObject::GetInstance()->CreateExplosionEffect(20);
+	CPoolingObject::GetInstance()->CreateEnemyEffect(30);
+	CPoolingObject::GetInstance()->CreateExplosionEffect(30);
+	CPoolingObject::GetInstance()->CreateBulletEffect(40);
 	CPoolingObject::GetInstance()->CreateBulletItem(20);
-	CPoolingObject::GetInstance()->CreateSoliderObject(10);
-	CPoolingObject::GetInstance()->CreateSoliderShootObject(10);
-	CPoolingObject::GetInstance()->CreateBigStone(10);
-	CPoolingObject::GetInstance()->CreateCapsuleBoss(20);
-	CPoolingObject::GetInstance()->CreateBulletLaze(10);
-	// TT
+
+	// Tinh
+	switch (this->m_mapId)
+	{
+	case 10:
+	{
+			   CPoolingObject::GetInstance()->CreateSoliderObject(10);
+			   break;
+	}
+	case 11:
+	{
+			   CPoolingObject::GetInstance()->CreateSoliderShootObject(10);
+			   CPoolingObject::GetInstance()->CreateBigStone(10);
+			   break;
+	}
+	case 12:
+	{
+			   CPoolingObject::GetInstance()->CreateSoliderShootObject(10);
+			   CPoolingObject::GetInstance()->CreateCapsuleBoss(20);
+			   CPoolingObject::GetInstance()->CreateBulletLaze(10);
+			   break;
+	}
+	}
+	//TT
 	CPoolingObject::GetInstance()->CreateWeapon(15);
 	//Load Audio
 	//ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
-
-	///Sang test boss 2
-	this->subArm = new CSubArm();
-	this->subArm->SetArmType(SUB_ARM_TYPE::SUB_ARM_FIRST);
-	this->subArm->Init();
-
-	//
-	this->bossArm = new CBossArm();
 }
 
 void CStateGamePlay::Update(float deltaTime)
@@ -57,21 +74,17 @@ void CStateGamePlay::Update(float deltaTime)
 	CContra::GetInstance()->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 	CPoolingObject::GetInstance()->Update(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 	CLoadBackGround::GetInstance()->Update(deltaTime);
-
-	this->bossArm->Update(deltaTime);
 }
 
 void CStateGamePlay::Render()
 {
 	CLoadBackGround::GetInstance()->Draw();
 	CLoadGameObject::GetInstance()->Draw();
-	//if(CContra::GetInstance()->IsAlive())
+	//Draw Object
 	CDrawObject::GetInstance()->Draw(CContra::GetInstance());
-	// Draw enemy effect
+	// Draw Pooling Object
 	CPoolingObject::GetInstance()->Draw();
 	///
-	//CDrawObject::GetInstance()->Draw(this->subArm);
-	this->bossArm->Draw();
 }
 void CStateGamePlay::Destroy()
 {

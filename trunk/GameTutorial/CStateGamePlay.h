@@ -11,14 +11,14 @@ class CStateGamePlay : public CState
 {
 public:
 	CStateGamePlay();
+	CStateGamePlay(int mapId);
 	virtual ~CStateGamePlay();
 	void Init();
 	void Update(float deltaTime);
 	void Render();
 	void Destroy();
-protected:
-	CSubArm* subArm;
-	CBossArm* bossArm;
+public:
+	int m_mapId;
 };
 
 #endif // !__CStateGamePlay_H__

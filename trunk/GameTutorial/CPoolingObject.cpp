@@ -51,6 +51,19 @@ void CPoolingObject::CreateExplosionEffect(int size)
 	}
 }
 
+void CPoolingObject::CreateBulletEffect(int size)
+{
+	if (this->m_bulletEffect.empty())
+	{
+		for (int i = 0; i < size; i++)
+		{
+			CBulletEffect* effectTemp;
+			effectTemp = new CBulletEffect();
+			this->m_bulletEffect.push_back(effectTemp);
+		}
+	}
+}
+
 void CPoolingObject::CreateSoliderObject(int size)
 {
 	if (this->m_listSolider.empty())
@@ -288,6 +301,21 @@ CExplosionEffect* CPoolingObject::GetExplosionEffect()
 	}
 }
 
+CBulletEffect* CPoolingObject::GetBulletEffect()
+{
+	for (std::vector<CBulletEffect*>::iterator it = this->m_bulletEffect.begin();
+		it != this->m_bulletEffect.end();
+		++it)
+	{
+		CBulletEffect* obj = *it;
+		if (!obj->IsAlive())
+		{
+			return obj;
+			break;
+		}
+	}
+}
+
 CWeapon* CPoolingObject::GetWeapon()
 {
 	for (std::vector<CWeapon*>::iterator it = this->m_listWeapon.begin();
@@ -379,6 +407,19 @@ void CPoolingObject::Update(float deltaTime, std::vector<CGameObject*>* listObje
 		++it)
 	{
 		CExplosionEffect* obj = *it;
+		if (obj != NULL && obj->IsAlive())
+		{
+			obj->Update(deltaTime);
+		}
+
+	}
+	// Update bulletEffect
+
+	for (std::vector<CBulletEffect*>::iterator it = this->m_bulletEffect.begin();
+		it != this->m_bulletEffect.end();
+		++it)
+	{
+		CBulletEffect* obj = *it;
 		if (obj != NULL && obj->IsAlive())
 		{
 			obj->Update(deltaTime);
@@ -543,7 +584,17 @@ void CPoolingObject::Draw()
 		}
 	}
 
-
+	// Draw bulletEffect
+	for (std::vector<CBulletEffect*>::iterator it = this->m_bulletEffect.begin();
+		it != this->m_bulletEffect.end();
+		++it)
+	{
+		CBulletEffect* obj = *it;
+		if (obj != NULL && obj->IsAlive())
+		{
+			CDrawObject::GetInstance()->Draw(obj);
+		}
+	}
 	////Draw bullet
 	for (std::vector<CBullet*>::iterator it = this->m_listBulletOfObject.begin();
 		it != this->m_listBulletOfObject.end();
