@@ -3,6 +3,8 @@
 #include "CStateGamePlay.h"
 #include "CStateManagement.h"
 
+int CMenuGame::m_mapId = 11;
+
 CMenuGame::CMenuGame(void)
 {
 	this->Init();
@@ -63,7 +65,7 @@ void CMenuGame::Move(float deltaTime)
 	{
 		if (CInput::GetInstance()->GetKeyDown() == DIK_RETURN)
 		{
-			CStateManagement::GetInstance()->ChangeState(new CStateGamePlay(12));
+			CStateManagement::GetInstance()->ChangeState(new CStateGamePlay(this->m_mapId));
 		}
 		else
 		if (CInput::GetInstance()->GetKeyDown() == DIK_ESCAPE)

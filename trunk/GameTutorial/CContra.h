@@ -25,7 +25,8 @@ enum ON_GROUND
 	IS_SHOOTING_DIAGONAL_UP = 17,
 	IS_SHOOTING_DIAGONAL_DOWN = 18,
 	IS_DIE = 19,
-	IS_UP_GROUND = 20
+	IS_UP_GROUND = 20,
+	IS_HIDDING = 21
 };
 
 enum UNDER_WATER
@@ -101,12 +102,19 @@ protected:
 	float m_waitForDie; //Thoi gian chuyen sprite khi chet
 	float m_waitForCreateEnemy;
 	bool m_allowFall; //Cho phep nhay xuong duoi
+	//
 public:
 	float m_currentFall; // Do cao hien tai
 	float m_currentJump;//
 	bool m_isDie; //Trang thai die
+	bool m_isGameOver; //Het mang choi
+	//diem contra tai man hien tai & so mang cua contra
+	int m_countAlive;//mac dinh la 3 mang
+	int m_scoreCurrentMap;//mac dinh la 0
 	// Hieu ung no cay cau
 	bool m_bridgeEffect;
+	//Bien luu vi tri truoc khi chet
+	D3DXVECTOR2 m_posCurrent;
 public:
 	void SetTypeBullet(int _typeBullet){this->m_typeBullet = _typeBullet;};
 	void SetPosY(float posY){this->m_pos.y = posY;};

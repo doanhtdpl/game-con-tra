@@ -1,28 +1,11 @@
-﻿Build started 1/13/2015 07:57:48 PM.
+﻿Build started 1/14/2015 08:12:33 PM.
      1>Project "G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGameFinal\GameTutorial\GameTutorial.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CDrawObject.cpp CSoldier.cpp CSoldierShoot.cpp
-         CSoldierShoot.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CStateGamePlay.cpp
+         CStateGamePlay.cpp
      1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
      1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\csoldiershoot.cpp(20): warning C4244: 'argument' : conversion from 'const int' to 'FLOAT', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\csoldiershoot.cpp(34): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\csoldiershoot.cpp(35): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\csoldiershoot.cpp(314): warning C4244: '=' : conversion from 'int' to 'FLOAT', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\csoldiershoot.cpp(319): warning C4244: '=' : conversion from 'int' to 'FLOAT', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\csoldiershoot.cpp(437): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-         CSoldier.cpp
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\csoldier.cpp(20): warning C4244: 'argument' : conversion from 'const int' to 'FLOAT', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\csoldier.cpp(34): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\csoldier.cpp(35): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\csoldier.cpp(347): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-         CDrawObject.cpp
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\cgameobject.h(50): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\cgameobject.h(51): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\cdrawobject.cpp(122): warning C4018: '<' : signed/unsigned mismatch
-         Generating Code...
+     1>g:\tai lieu hoc tap\uit\hkvii\game\contragamefinal\gametutorial\cstategameplay.cpp(92): warning C4018: '<' : signed/unsigned mismatch
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGameFinal\GameTutorial\Debug\GameTutorial.exe" /INCREMENTAL /NOLOGO d3d9.lib d3dx9.lib dxguid.lib dxerr.lib dinput8.lib winmm.lib dsound.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGameFinal\GameTutorial\Debug\GameTutorial.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\ContraGameFinal\GameTutorial\Debug\GameTutorial.lib" /MACHINE:X86 Debug\CAnimation.obj
          Debug\CBossArm.obj
@@ -50,12 +33,14 @@
          Debug\CExplosionEffect.obj
          Debug\CFileConfig.obj
          Debug\CFireBridge.obj
+         Debug\CGameOverItem.obj
          Debug\CGroundCannon.obj
          Debug\CGunner.obj
          Debug\CHeadBoss.obj
+         Debug\CLifeItem.obj
          Debug\CMechanicalAlien.obj
          Debug\CMenuGame.obj
-         Debug\CSceneManagement.obj
+         Debug\CScoreScense.obj
          Debug\CScubaSolider.obj
          Debug\CSniper.obj
          Debug\CSoldier.obj
@@ -106,4 +91,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.27
+Time Elapsed 00:00:01.91

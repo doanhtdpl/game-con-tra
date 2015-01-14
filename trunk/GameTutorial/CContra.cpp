@@ -7,6 +7,8 @@
 #include "CSoldierShoot.h"
 #include "CPoolingObject.h"
 #include "CManageAudio.h"
+#include "CMenuGame.h"
+#include "CGameOverItem.h"
 #include <cmath>
 #include <random>
 
@@ -20,11 +22,22 @@ CContra::CContra()
 	this->m_isAnimatedSprite = true;
 	this->m_width = 72.0f;
 	this->m_height = 92.0f; 
-	this->m_pos = D3DXVECTOR2(150.0f, 350.0f);
+	//Set vi tri contra theo map
+	switch (CMenuGame::m_mapId)
+	{
+		case 10:
+			this->m_pos = D3DXVECTOR2(150.0f, 400.0f);
+			break;
+		case 11:
+			this->m_pos = D3DXVECTOR2(150.0f, 4100.0f);
+			break;
+		case 12:
+			this->m_pos = D3DXVECTOR2(100.0f, 350.0f);
+			break;
+	}
 	//Khoi tao cac thong so di chuyen
 	this->m_isJumping = false;
 	this->m_isMoveLeft = false;
-	this->m_isMoveRight = true;
 	this->m_a = -700.0f;
 	this->m_canJump = true;
 	this->m_jumpMax = 40.0f;
@@ -53,7 +66,7 @@ CContra::CContra()
 	this->m_currentFall = 0;
 	this->m_currentJump = 0;
 	//
-	this->m_waitForDie = 0.0f;
+	this->m_waitForDie = 1.0f;
 	this->m_waitForShoot = 0.4f;
 	this->m_waitChangeSprite = 0.0f;
 
@@ -67,6 +80,9 @@ CContra::CContra()
 	// TT
 	this->m_waitForCreateEnemy = 0.5f;
 	this->m_allowFall = true;
+	///
+	this->m_countAlive = 3;
+	this->m_scoreCurrentMap = 0;
 }
 
 CContra::CContra(const std::vector<int>& info) : CDynamicObject(info)
@@ -81,7 +97,7 @@ CContra::~CContra()
 
 void CContra::MoveUpdate(float deltaTime)
 {
-#pragma region __XU_LY_CHUYEN_DONG__
+	#pragma region __XU_LY_CHUYEN_DONG__
 	//Kiem tra doi tuong co nhay duoc hay ko
 	if(this->m_stateCurrent == ON_GROUND::IS_DIE || 
 		this->m_stateCurrent == UNDER_WATER::IS_DIE_UNDER_WATER)
@@ -132,29 +148,37 @@ void CContra::MoveUpdate(float deltaTime)
 				this->m_pos.x += int(this->m_vx * deltaTime);
 			}
 		}
-		if(this->m_pos.x > 250)
+		//Thiet lao camera theo map
+		switch (CMenuGame::m_mapId)
 		{
-			//if(this->m_pos.y > 200)
-			//{
-			//	CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
-			//}
-			//else
-			//{
-				CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
-				////Tinh code test
-				//if (this->m_pos.x >= 9600.0f)//map 5
-				//{
-				//	CCamera::GetInstance()->Update(9664.0f, 0);
-				//}
-			//}
-		}
-		/*else
-		{
-			if(this->m_pos.y > 200)
+		case 10:
+			CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
+			break;
+		case 11:
+			if (this->m_pos.x > 250)
 			{
-				CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
+				if (this->m_pos.y > 250)
+				{
+					CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
+				}
 			}
-		}*/
+			else
+			{
+				if (this->m_pos.y > 250)
+				{
+					CCamera::GetInstance()->Update(0, __SCREEN_HEIGHT + this->m_pos.y - 200);
+				}
+			}
+			break;
+		case 12:
+			CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
+			//Tinh code test
+			if (this->m_pos.x >= 9600.0f)//map 5
+			{
+				CCamera::GetInstance()->Update(9664.0f, 0);
+			}
+			break;
+		}
 	}
 #pragma endregion
 }
@@ -659,7 +683,7 @@ void CContra::InputUpdate(float deltaTime)
 #pragma endregion
 }
 //Kiem tra co tao ra dan hay ko, sau nay add vao quadtree no se tu dong di chuyen
-#pragma region KHOI_TAO_DAU_DAN
+
 void CContra::BulletUpdate(float deltaTime)
 {
 	if(this->m_isShoot)
@@ -1207,16 +1231,43 @@ void CContra::BulletUpdate(float deltaTime)
 	//}
 
 }
-#pragma endregion
+
 void CContra::Update(float deltaTime)
 {
-	if(this->IsAlive())
+	if(this->m_isALive)
 	{
 		//this->InputUpdate(deltaTime);
 		this->SetFrame(deltaTime);
 		this->ChangeFrame(deltaTime);
 		this->MoveUpdate(deltaTime);
 		this->BulletUpdate(deltaTime);
+	}
+	else
+	{
+		if (this->m_currentFrame == 40){
+			//kiem tra mang
+			if (this->m_countAlive == 0)
+			{
+				this->m_isGameOver = true;//Game Over Screen
+				this->m_isALive = false;
+				this->m_isDie = true;
+				//goi man hinh game over
+			}
+			else
+			{
+				//Cho 2s set trang thai contra lai 
+				if (this->m_waitForDie < 0)
+				{
+					this->m_isALive = true;
+					this->m_isDie = false;
+					this->m_stateCurrent = ON_GROUND::IS_JOGGING;
+					//set lai vi tri contra
+					this->m_pos = D3DXVECTOR2(this->m_posCurrent.x, this->m_posCurrent.y + 100);
+					this->m_waitForDie = 1.0f;
+				}
+				this->m_waitForDie -= deltaTime;
+			}
+		}
 	}
 	if(this->m_stateCurrent != ON_GROUND::IS_DIE && this->m_stateCurrent != UNDER_WATER::IS_DIE_UNDER_WATER)
 		this->InputUpdate(deltaTime);
@@ -1239,281 +1290,289 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 	bool checkColWithGround = false;
 	//Kiem tra va cham voi water
 	bool checkColWithWater = false;
-		//Neu trang thai la die, khong xet va cham nua
-	for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin();
-		it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
+	//Neu trang thai la die, khong xet va cham nua
+	if (!this->m_isDie)//Neu da chet hoac dang o trang thai hiden thi ko xet va cham
 	{
-		CBullet* bullet = *it;
-		if(bullet->IsAlive() && bullet->GetLayer() == LAYER::ENEMY)
-		{
-			if(CCollision::GetInstance()->Collision(this, bullet))
-			{
-				if(m_isUnderWater)
+		#pragma region Va cham dan enemy voi contra
+				for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin();
+					it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
 				{
-					this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
-				}
-				else
-				{
-					this->m_stateCurrent = ON_GROUND::IS_DIE;
-				}
-				if(!this->m_isDie)
-				{
-					if(this->m_left)
-						this->m_vx = this->m_vxDefault;
-					else
-						this->m_vx = -this->m_vxDefault;
-					this->m_vy = this->m_vyDefault;
-					this->m_isDie = true;
-					this->m_elapseTimeChangeFrame = 0.23f;
-				}
-				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
-			}
-			else
-				++it;
-		}
-		else
-			++it;
-	}
-
-	#pragma region _va cham voi laze_
-	for (std::vector<CBulletLaze*>::iterator itLaze = CPoolingObject::GetInstance()->m_listBulletLaze.begin();
-		itLaze != CPoolingObject::GetInstance()->m_listBulletLaze.end();)
-	{
-		CBulletLaze* bullet = *itLaze;
-		if(bullet->IsAlive())
-		{
-			if(CCollision::GetInstance()->Collision(this, bullet))
-			{
-				if(m_isUnderWater)
-				{
-					this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
-				}
-				else
-				{
-					this->m_stateCurrent = ON_GROUND::IS_DIE;
-				}
-				if(!this->m_isDie)
-				{
-					if(this->m_left)
-						this->m_vx = this->m_vxDefault;
-					else
-						this->m_vx = -this->m_vxDefault;
-					this->m_vy = this->m_vyDefault;
-					this->m_isDie = true;
-					this->m_elapseTimeChangeFrame = 0.23f;
-				}
-
-				CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
-				effect->SetAlive(true);
-				effect->SetPos(bullet->GetPos());
-				itLaze = CPoolingObject::GetInstance()->m_listBulletLaze.erase(itLaze);
-			}
-			else
-				++itLaze;
-		}
-		else
-			++itLaze;
-	}
-#pragma endregion
-
-	#pragma region _va cham voi Solider_
-		for (std::vector<CSoldier*>::iterator itLaze = CPoolingObject::GetInstance()->m_listSolider.begin();
-			itLaze != CPoolingObject::GetInstance()->m_listSolider.end();)
-		{
-			CSoldier* soldier = *itLaze;
-			if (soldier->IsAlive())
-			{
-				if (CCollision::GetInstance()->Collision(this, soldier))
-				{
-					if (m_isUnderWater)
+					CBullet* bullet = *it;
+					if (bullet->IsAlive() && bullet->GetLayer() == LAYER::ENEMY)
 					{
-						this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
-					}
-					else
-					{
-						this->m_stateCurrent = ON_GROUND::IS_DIE;
-					}
-					if (!this->m_isDie)
-					{
-						if (this->m_left)
-							this->m_vx = this->m_vxDefault;
+						if (CCollision::GetInstance()->Collision(this, bullet))
+						{
+							if (m_isUnderWater)
+							{
+								this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+							}
+							else
+							{
+								this->m_stateCurrent = ON_GROUND::IS_DIE;
+							}
+							if (!this->m_isDie)
+							{
+								this->m_countAlive--;
+								this->m_posCurrent = this->m_pos;
+								//
+								if (this->m_left)
+									this->m_vx = this->m_vxDefault;
+								else
+									this->m_vx = -this->m_vxDefault;
+								this->m_vy = this->m_vyDefault;
+								this->m_isDie = true;
+								this->m_elapseTimeChangeFrame = 0.23f;
+							}
+							it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+						}
 						else
-							this->m_vx = -this->m_vxDefault;
-						this->m_vy = this->m_vyDefault;
-						this->m_isDie = true;
-						this->m_elapseTimeChangeFrame = 0.23f;
+							++it;
+					}
+					else
+						++it;
+				}
+		#pragma endregion
+
+		#pragma region _va cham voi laze_
+				for (std::vector<CBulletLaze*>::iterator itLaze = CPoolingObject::GetInstance()->m_listBulletLaze.begin();
+					itLaze != CPoolingObject::GetInstance()->m_listBulletLaze.end();)
+				{
+					CBulletLaze* bullet = *itLaze;
+					if (bullet->IsAlive())
+					{
+						if (CCollision::GetInstance()->Collision(this, bullet))
+						{
+							if (m_isUnderWater)
+							{
+								this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+							}
+							else
+							{
+								this->m_stateCurrent = ON_GROUND::IS_DIE;
+							}
+							if (!this->m_isDie)
+							{
+								if (this->m_left)
+									this->m_vx = this->m_vxDefault;
+								else
+									this->m_vx = -this->m_vxDefault;
+								this->m_vy = this->m_vyDefault;
+								this->m_isDie = true;
+								this->m_elapseTimeChangeFrame = 0.23f;
+							}
+
+							CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+							effect->SetAlive(true);
+							effect->SetPos(bullet->GetPos());
+							itLaze = CPoolingObject::GetInstance()->m_listBulletLaze.erase(itLaze);
+						}
+						else
+							++itLaze;
 					}
 					else
 						++itLaze;
 				}
-				else
-					++itLaze;
-			}
-			else
-				++itLaze;
-		}
-	#pragma endregion
+		#pragma endregion
 
-	#pragma region _va cham voi Solider Shoot_
-		for (std::vector<CSoldierShoot*>::iterator itLaze = CPoolingObject::GetInstance()->m_listSoliderShoot.begin();
-			itLaze != CPoolingObject::GetInstance()->m_listSoliderShoot.end();)
-		{
-			CSoldierShoot* soldierS = *itLaze;
-			if (soldierS->IsAlive())
-			{
-				if (CCollision::GetInstance()->Collision(this, soldierS))
+		#pragma region _va cham voi Solider_
+				for (std::vector<CSoldier*>::iterator itLaze = CPoolingObject::GetInstance()->m_listSolider.begin();
+					itLaze != CPoolingObject::GetInstance()->m_listSolider.end();)
 				{
-					if (m_isUnderWater)
+					CSoldier* soldier = *itLaze;
+					if (soldier->IsAlive())
 					{
-						this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
-					}
-					else
-					{
-						this->m_stateCurrent = ON_GROUND::IS_DIE;
-					}
-					if (!this->m_isDie)
-					{
-						if (this->m_left)
-							this->m_vx = this->m_vxDefault;
+						if (CCollision::GetInstance()->Collision(this, soldier))
+						{
+							if (m_isUnderWater)
+							{
+								this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+							}
+							else
+							{
+								this->m_stateCurrent = ON_GROUND::IS_DIE;
+							}
+							if (!this->m_isDie)
+							{
+								if (this->m_left)
+									this->m_vx = this->m_vxDefault;
+								else
+									this->m_vx = -this->m_vxDefault;
+								this->m_vy = this->m_vyDefault;
+								this->m_isDie = true;
+								this->m_elapseTimeChangeFrame = 0.23f;
+							}
+							else
+								++itLaze;
+						}
 						else
-							this->m_vx = -this->m_vxDefault;
-						this->m_vy = this->m_vyDefault;
-						this->m_isDie = true;
-						this->m_elapseTimeChangeFrame = 0.23f;
+							++itLaze;
 					}
 					else
 						++itLaze;
 				}
-				else
-					++itLaze;
-			}
-			else
-				++itLaze;
-		}
-	#pragma endregion
+		#pragma endregion
 
-	#pragma region Xet va cham voi Scuba bullet
-	for (std::vector<CBullet_ScubaSolider*>::iterator itScuba = CPoolingObject::GetInstance()->m_listBulletScubaSolider.begin();
-		itScuba != CPoolingObject::GetInstance()->m_listBulletScubaSolider.end();)
-	{
-		CBullet_ScubaSolider* bullet = *itScuba;
-		if (bullet->IsAlive())
-		{
-			if (CCollision::GetInstance()->Collision(this, bullet))
-			{
-				if (m_isUnderWater)
+		#pragma region _va cham voi Solider Shoot_
+				for (std::vector<CSoldierShoot*>::iterator itLaze = CPoolingObject::GetInstance()->m_listSoliderShoot.begin();
+					itLaze != CPoolingObject::GetInstance()->m_listSoliderShoot.end();)
 				{
-					this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
-				}
-				else
-				{
-					this->m_stateCurrent = ON_GROUND::IS_DIE;
-				}
-				if (!this->m_isDie)
-				{
-					if (this->m_left)
-						this->m_vx = this->m_vxDefault;
+					CSoldierShoot* soldierS = *itLaze;
+					if (soldierS->IsAlive())
+					{
+						if (CCollision::GetInstance()->Collision(this, soldierS))
+						{
+							if (m_isUnderWater)
+							{
+								this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+							}
+							else
+							{
+								this->m_stateCurrent = ON_GROUND::IS_DIE;
+							}
+							if (!this->m_isDie)
+							{
+								if (this->m_left)
+									this->m_vx = this->m_vxDefault;
+								else
+									this->m_vx = -this->m_vxDefault;
+								this->m_vy = this->m_vyDefault;
+								this->m_isDie = true;
+								this->m_elapseTimeChangeFrame = 0.23f;
+							}
+							else
+								++itLaze;
+						}
+						else
+							++itLaze;
+					}
 					else
-						this->m_vx = -this->m_vxDefault;
-					this->m_vy = this->m_vyDefault;
-					this->m_isDie = true;
-					this->m_elapseTimeChangeFrame = 0.23f;
+						++itLaze;
 				}
+		#pragma endregion
 
-				CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
-				effect->SetAlive(true);
-				effect->SetPos(bullet->GetPos());
-				itScuba = CPoolingObject::GetInstance()->m_listBulletScubaSolider.erase(itScuba);
-			}
-			else
-				++itScuba;
-		}
-		else
-			++itScuba;
-	}
-	#pragma endregion
-	
-	#pragma region Va cham voi Big Stone
-	for (std::vector<CBigStone*>::iterator itStone = CPoolingObject::GetInstance()->m_listBigStone.begin();
-		itStone != CPoolingObject::GetInstance()->m_listBigStone.end();)
-	{
-		CBigStone* stone = *itStone;
-		if (stone->IsAlive())
-		{
-			if (CCollision::GetInstance()->Collision(this, stone))
-			{
-				if (m_isUnderWater)
+		#pragma region Xet va cham voi Scuba bullet
+				for (std::vector<CBullet_ScubaSolider*>::iterator itScuba = CPoolingObject::GetInstance()->m_listBulletScubaSolider.begin();
+					itScuba != CPoolingObject::GetInstance()->m_listBulletScubaSolider.end();)
 				{
-					this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
-				}
-				else
-				{
-					this->m_stateCurrent = ON_GROUND::IS_DIE;
-				}
-				if (!this->m_isDie)
-				{
-					if (this->m_left)
-						this->m_vx = this->m_vxDefault;
+					CBullet_ScubaSolider* bullet = *itScuba;
+					if (bullet->IsAlive())
+					{
+						if (CCollision::GetInstance()->Collision(this, bullet))
+						{
+							if (m_isUnderWater)
+							{
+								this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+							}
+							else
+							{
+								this->m_stateCurrent = ON_GROUND::IS_DIE;
+							}
+							if (!this->m_isDie)
+							{
+								if (this->m_left)
+									this->m_vx = this->m_vxDefault;
+								else
+									this->m_vx = -this->m_vxDefault;
+								this->m_vy = this->m_vyDefault;
+								this->m_isDie = true;
+								this->m_elapseTimeChangeFrame = 0.23f;
+							}
+
+							CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+							effect->SetAlive(true);
+							effect->SetPos(bullet->GetPos());
+							itScuba = CPoolingObject::GetInstance()->m_listBulletScubaSolider.erase(itScuba);
+						}
+						else
+							++itScuba;
+					}
 					else
-						this->m_vx = -this->m_vxDefault;
-					this->m_vy = this->m_vyDefault;
-					this->m_isDie = true;
-					this->m_elapseTimeChangeFrame = 0.23f;
+						++itScuba;
 				}
+		#pragma endregion
 
-				CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
-				effect->SetAlive(true);
-				effect->SetPos(stone->GetPos());
-				itStone = CPoolingObject::GetInstance()->m_listBigStone.erase(itStone);
-			}
-			else
-				++itStone;
-		}
-		else
-			++itStone;
-	}
-	#pragma endregion
+		#pragma region Va cham voi Big Stone
+				for (std::vector<CBigStone*>::iterator itStone = CPoolingObject::GetInstance()->m_listBigStone.begin();
+					itStone != CPoolingObject::GetInstance()->m_listBigStone.end();)
+				{
+					CBigStone* stone = *itStone;
+					if (stone->IsAlive())
+					{
+						if (CCollision::GetInstance()->Collision(this, stone))
+						{
+							if (m_isUnderWater)
+							{
+								this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+							}
+							else
+							{
+								this->m_stateCurrent = ON_GROUND::IS_DIE;
+							}
+							if (!this->m_isDie)
+							{
+								if (this->m_left)
+									this->m_vx = this->m_vxDefault;
+								else
+									this->m_vx = -this->m_vxDefault;
+								this->m_vy = this->m_vyDefault;
+								this->m_isDie = true;
+								this->m_elapseTimeChangeFrame = 0.23f;
+							}
 
-	#pragma region Va cham voi Capsule cua boss map 5
-	for (std::vector<CCapsuleBoss*>::iterator itCapsule = CPoolingObject::GetInstance()->m_listCapsuleBoss.begin();
-		itCapsule != CPoolingObject::GetInstance()->m_listCapsuleBoss.end();)
-	{
-		CCapsuleBoss* capsule = *itCapsule;
-		if (capsule->IsAlive())
-		{
-			if (CCollision::GetInstance()->Collision(this, capsule))
-			{
-				if (m_isUnderWater)
-				{
-					this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
-				}
-				else
-				{
-					this->m_stateCurrent = ON_GROUND::IS_DIE;
-				}
-				if (!this->m_isDie)
-				{
-					if (this->m_left)
-						this->m_vx = this->m_vxDefault;
+							CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+							effect->SetAlive(true);
+							effect->SetPos(stone->GetPos());
+							itStone = CPoolingObject::GetInstance()->m_listBigStone.erase(itStone);
+						}
+						else
+							++itStone;
+					}
 					else
-						this->m_vx = -this->m_vxDefault;
-					this->m_vy = this->m_vyDefault;
-					this->m_isDie = true;
-					this->m_elapseTimeChangeFrame = 0.23f;
+						++itStone;
 				}
+		#pragma endregion
 
-				CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
-				effect->SetAlive(true);
-				effect->SetPos(capsule->GetPos());
-				itCapsule = CPoolingObject::GetInstance()->m_listCapsuleBoss.erase(itCapsule);
-			}
-			else
-				++itCapsule;
-		}
-		else
-			++itCapsule;
+		#pragma region Va cham voi Capsule cua boss map 5
+				for (std::vector<CCapsuleBoss*>::iterator itCapsule = CPoolingObject::GetInstance()->m_listCapsuleBoss.begin();
+					itCapsule != CPoolingObject::GetInstance()->m_listCapsuleBoss.end();)
+				{
+					CCapsuleBoss* capsule = *itCapsule;
+					if (capsule->IsAlive())
+					{
+						if (CCollision::GetInstance()->Collision(this, capsule))
+						{
+							if (m_isUnderWater)
+							{
+								this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+							}
+							else
+							{
+								this->m_stateCurrent = ON_GROUND::IS_DIE;
+							}
+							if (!this->m_isDie)
+							{
+								if (this->m_left)
+									this->m_vx = this->m_vxDefault;
+								else
+									this->m_vx = -this->m_vxDefault;
+								this->m_vy = this->m_vyDefault;
+								this->m_isDie = true;
+								this->m_elapseTimeChangeFrame = 0.23f;
+							}
+
+							CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+							effect->SetAlive(true);
+							effect->SetPos(capsule->GetPos());
+							itCapsule = CPoolingObject::GetInstance()->m_listCapsuleBoss.erase(itCapsule);
+						}
+						else
+							++itCapsule;
+					}
+					else
+						++itCapsule;
+				}
+		#pragma endregion
 	}
-	#pragma endregion
 	////
 	for (std::vector<CGameObject*>::iterator it = listObjectCollision->begin(); it != listObjectCollision->end(); it++)
 	{
@@ -1527,276 +1586,280 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			{
 				if(normalY > 0)
 				{
-	#pragma region VA CHAM VS Cay cau da
-					if (obj->GetIDType() == 16 && obj->GetID() == 3 && !checkColWithGround)
-					{
-						checkColWithGround = true;
-
-						this->m_pos.x = obj->GetPos().x;
-
-						if (timeCollision == 2.0f)
-						{
-							if (this->m_vy <= 0)
-							{
-								if ((this->m_stateCurrent == ON_GROUND::IS_DIE))
-								{
-									if (this->m_isDie && this->m_vy < -165)
+					#pragma region VA CHAM VS Cay cau da
+									if (obj->GetIDType() == 16 && obj->GetID() == 3 && !checkColWithGround)
 									{
-										this->m_currentFrame = this->m_endFrame;
-										this->m_isALive = false;
-										return;
+										checkColWithGround = true;
+
+										this->m_pos.x = obj->GetPos().x;
+
+										if (timeCollision == 2.0f)
+										{
+											if (this->m_vy <= 0)
+											{
+												if ((this->m_stateCurrent == ON_GROUND::IS_DIE))
+												{
+													if (this->m_isDie && this->m_vy < -165)
+													{
+														this->m_currentFrame = this->m_endFrame;
+														this->m_isALive = false;
+														return;
+													}
+												}
+												else if (this->m_stateCurrent == ON_GROUND::IS_JUMPING)
+												{
+													if (this->m_vy < -165)
+													{
+														//this->m_pos.y += 20;
+														this->m_elapseTimeChangeFrame = 0.0f;
+														this->m_isJumping = false;
+														this->m_currentFrame = 0;
+														this->m_stateCurrent = ON_GROUND::IS_STANDING;
+													}
+												}
+												else
+												{
+													this->m_isJumping = false;
+													this->m_pos.y += moveY;
+													this->m_vy = 0;
+												}
+											}
+											if (this->m_stateCurrent == ON_GROUND::IS_FALL)
+											{
+												this->m_stateCurrent = ON_GROUND::IS_STANDING;
+												this->m_isJumping = false;
+											}
+
+										}
+										else{
+											//if(this->m_vy != 0)
+											//{
+											if (this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < 0)
+											{
+
+												//this->m_pos.y += 22;
+												this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
+												this->m_elapseTimeChangeFrame = 0.0f;
+												this->m_currentFrame = 0;
+												if (this->m_keyDown != DIK_DOWN)
+													this->m_stateCurrent = ON_GROUND::IS_STANDING;
+												else
+													this->m_stateCurrent = ON_GROUND::IS_LYING;
+												this->m_isJumping = false;
+											}
+
+											//	this->m_isJumping = false;
+											//	this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
+											//	this->m_vy = 0;
+											//}
+										}
 									}
-								}
-								else if (this->m_stateCurrent == ON_GROUND::IS_JUMPING)
-								{
-									if (this->m_vy < -165)
+				#pragma endregion
+
+					#pragma region VA CHAM MAT DAT && CAY CAU
+
+									if((obj->GetID() == 1 || obj->GetID() == 8 ||  (obj->GetID() == 1 && obj->GetIDType() == 16)) && !checkColWithGround)
 									{
-										//this->m_pos.y += 20;
-										this->m_elapseTimeChangeFrame = 0.0f;
-										this->m_isJumping = false;
-										this->m_currentFrame = 0;
-										this->m_stateCurrent = ON_GROUND::IS_STANDING;
-									}
-								}
-								else
-								{
-									this->m_isJumping = false;
-									this->m_pos.y += moveY;
-									this->m_vy = 0;
-								}
-							}
-							if (this->m_stateCurrent == ON_GROUND::IS_FALL)
-							{
-								this->m_stateCurrent = ON_GROUND::IS_STANDING;
-								this->m_isJumping = false;
-							}
+										if(obj->GetID() == 8 && obj->GetIDType() == 15)
+											this->m_allowFall = false;
+										else
+											this->m_allowFall = true;
+										checkColWithGround = true;
+										this->m_isUnderWater = false;
+										if( timeCollision == 2.0f)
+										{
+											if(this->m_vy <= 0)
+											{
+												if((this->m_stateCurrent == ON_GROUND::IS_DIE || this->m_stateCurrent == UNDER_WATER::IS_DIE_UNDER_WATER))
+												{
+													if(this->m_isDie && this->m_vy < -165)
+													{
+														this->m_currentFrame = this->m_endFrame;
+														this->m_isALive = false;
+														return;
+													}
+												}
+												else if(this->m_stateCurrent == ON_GROUND::IS_JUMPING)
+												{
+													if(this->m_vy < -165)
+													{
+														//this->m_pos.y += 20;
+														this->m_elapseTimeChangeFrame = 0.0f;
+														this->m_isJumping = false;
+														this->m_currentFrame = 0;
+														this->m_stateCurrent = ON_GROUND::IS_STANDING;
+													}
+												}
+												//else if(this->m_stateCurrent == ON_GROUND::IS_LYING)
+												//{
+												//	//this->m_pos.y += 20;
+												//	//this->m_elapseTimeChangeFrame = 0.0f;
+												//}
+												else
+												{
+													this->m_isJumping = false;
+													this->m_pos.y += moveY;
+													this->m_vy = 0;
+												}
+											}
+											if(this->m_stateCurrent == ON_GROUND::IS_FALL)
+											{
+												this->m_stateCurrent = ON_GROUND::IS_STANDING;
+												this->m_isJumping = false;
+											}
 
-						}
-						else{
-							//if(this->m_vy != 0)
-							//{
-							if (this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < 0)
-							{
+										}else{
+											//if(this->m_vy != 0)
+											//{
+											if(this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < 0)
+											{
 
-								//this->m_pos.y += 22;
-								this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
-								this->m_elapseTimeChangeFrame = 0.0f;
-								this->m_currentFrame = 0;
-								if (this->m_keyDown != DIK_DOWN)
-									this->m_stateCurrent = ON_GROUND::IS_STANDING;
-								else
-									this->m_stateCurrent = ON_GROUND::IS_LYING;
-								this->m_isJumping = false;
-							}
-
-							//	this->m_isJumping = false;
-							//	this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
-							//	this->m_vy = 0;
-							//}
-						}
-					}
-#pragma endregion
-
-	#pragma region VA CHAM MAT DAT && CAY CAU
-
-					if((obj->GetID() == 1 || obj->GetID() == 8 ||  (obj->GetID() == 1 && obj->GetIDType() == 16)) && !checkColWithGround)
-					{
-						if(obj->GetID() == 8 && obj->GetIDType() == 15)
-							this->m_allowFall = false;
-						else
-							this->m_allowFall = true;
-						checkColWithGround = true;
-						this->m_isUnderWater = false;
-						if( timeCollision == 2.0f)
-						{
-							if(this->m_vy <= 0)
-							{
-								if((this->m_stateCurrent == ON_GROUND::IS_DIE || this->m_stateCurrent == UNDER_WATER::IS_DIE_UNDER_WATER))
-								{
-									if(this->m_isDie && this->m_vy < -165)
-									{
-										this->m_currentFrame = this->m_endFrame;
-										this->m_isALive = false;
-										return;
-									}
-								}
-								else if(this->m_stateCurrent == ON_GROUND::IS_JUMPING)
-								{
-									if(this->m_vy < -165)
-									{
-										//this->m_pos.y += 20;
-										this->m_elapseTimeChangeFrame = 0.0f;
-										this->m_isJumping = false;
-										this->m_currentFrame = 0;
-										this->m_stateCurrent = ON_GROUND::IS_STANDING;
-									}
-								}
-								//else if(this->m_stateCurrent == ON_GROUND::IS_LYING)
-								//{
-								//	//this->m_pos.y += 20;
-								//	//this->m_elapseTimeChangeFrame = 0.0f;
-								//}
-								else
-								{
-									this->m_isJumping = false;
-									this->m_pos.y += moveY;
-									this->m_vy = 0;
-								}
-							}
-							if(this->m_stateCurrent == ON_GROUND::IS_FALL)
-							{
-								this->m_stateCurrent = ON_GROUND::IS_STANDING;
-								this->m_isJumping = false;
-							}
-
-						}else{
-							//if(this->m_vy != 0)
-							//{
-							if(this->m_stateCurrent == ON_GROUND::IS_JUMPING && this->m_vy < 0)
-							{
-
-								//this->m_pos.y += 22;
-								this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
-								this->m_elapseTimeChangeFrame = 0.0f;
-								this->m_currentFrame = 0;
-								if(this->m_keyDown != DIK_DOWN)
-									this->m_stateCurrent = ON_GROUND::IS_STANDING;
-								else
-									this->m_stateCurrent = ON_GROUND::IS_LYING;
-								this->m_isJumping = false;
-							}
+												//this->m_pos.y += 22;
+												this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
+												this->m_elapseTimeChangeFrame = 0.0f;
+												this->m_currentFrame = 0;
+												if(this->m_keyDown != DIK_DOWN)
+													this->m_stateCurrent = ON_GROUND::IS_STANDING;
+												else
+													this->m_stateCurrent = ON_GROUND::IS_LYING;
+												this->m_isJumping = false;
+											}
 						
-							//	this->m_isJumping = false;
-							//	this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
-							//	this->m_vy = 0;
-							//}
-						}
-					}
-#pragma endregion
-
-	#pragma region VA CHAM MAT NUOC
-					/*else */if(!checkColWithWater && obj->GetID() == 2 && !checkColWithGround)
-					{
-						//O duoi nuoc khong the nhay
-						checkColWithWater = true;
-						if(this->m_stateCurrent == ON_GROUND::IS_FALL)
-						{
-							this->m_stateCurrent = UNDER_WATER::IS_LYING_UNDER_WATER;
-						}
-						this->m_isUnderWater = true;
-						this->m_isJumping = false;
-						if( timeCollision == 2.0f)
-						{
-							if(this->m_vy <= 0)
-							{
-								if((this->m_stateCurrent == ON_GROUND::IS_DIE || this->m_stateCurrent == UNDER_WATER::IS_DIE_UNDER_WATER))
-								{
-									if(this->m_isDie && this->m_vy < -165)
-									{
-										this->m_currentFrame = this->m_endFrame;
-										this->m_isALive = false;
-										return;
+											//	this->m_isJumping = false;
+											//	this->m_pos.y += (this->m_vy /** timeCollision*/) * deltaTime;
+											//	this->m_vy = 0;
+											//}
+										}
 									}
-								}
-								//if(this->m_stateCurrent == UNDER_WATER::IS_LYING_UNDER_WATER)
-								//{
-								//	//this->m_pos.y += 20;
-								//	this->m_pos.y += moveY;
-								//	this->m_vy = 0;
-								//	//this->m_elapseTimeChangeFrame = 0.0f;
-								//}
-								else
-								{
-									this->m_pos.y += moveY;
-									this->m_vy = 0;
-								}
-							}
-						}
-						else
-						{
-							this->m_pos.y += -1;
-						}
-					}
-#pragma endregion 
+				#pragma endregion
 
-	#pragma region DANG VA CHAM VOI NUOC VA CHUYEN LEN MAT DAT
-					if((checkColWithWater || this->m_stateCurrent > 20) && checkColWithGround) //Neu dang va cham voi mat nuoc
-					{
-						this->m_isUnderWater = false;
-						//this->m_pos.y += 10;
-						if(this->m_left)
-						{
-							this->m_pos.x -= 0;
-						}
-						else
-						{
-							this->m_pos.x += 0;
-						}
-						this->m_elapseTimeChangeFrame = 0.3f;
-						this->m_stateCurrent = ON_GROUND::IS_UP_GROUND;
-					}
-					continue;
-	#pragma endregion
+					#pragma region VA CHAM MAT NUOC
+									/*else */if(!checkColWithWater && obj->GetID() == 2 && !checkColWithGround)
+									{
+										//O duoi nuoc khong the nhay
+										checkColWithWater = true;
+										if(this->m_stateCurrent == ON_GROUND::IS_FALL)
+										{
+											this->m_stateCurrent = UNDER_WATER::IS_LYING_UNDER_WATER;
+										}
+										this->m_isUnderWater = true;
+										this->m_isJumping = false;
+										if( timeCollision == 2.0f)
+										{
+											if(this->m_vy <= 0)
+											{
+												if((this->m_stateCurrent == ON_GROUND::IS_DIE || this->m_stateCurrent == UNDER_WATER::IS_DIE_UNDER_WATER))
+												{
+													if(this->m_isDie && this->m_vy < -165)
+													{
+														this->m_currentFrame = this->m_endFrame;
+														this->m_isALive = false;
+														return;
+													}
+												}
+												//if(this->m_stateCurrent == UNDER_WATER::IS_LYING_UNDER_WATER)
+												//{
+												//	//this->m_pos.y += 20;
+												//	this->m_pos.y += moveY;
+												//	this->m_vy = 0;
+												//	//this->m_elapseTimeChangeFrame = 0.0f;
+												//}
+												else
+												{
+													this->m_pos.y += moveY;
+													this->m_vy = 0;
+												}
+											}
+										}
+										else
+										{
+											this->m_pos.y += -1;
+										}
+									}
+				#pragma endregion 
+
+					#pragma region DANG VA CHAM VOI NUOC VA CHUYEN LEN MAT DAT
+									if((checkColWithWater || this->m_stateCurrent > 20) && checkColWithGround) //Neu dang va cham voi mat nuoc
+									{
+										this->m_isUnderWater = false;
+										//this->m_pos.y += 10;
+										if(this->m_left)
+										{
+											this->m_pos.x -= 0;
+										}
+										else
+										{
+											this->m_pos.x += 0;
+										}
+										this->m_elapseTimeChangeFrame = 0.3f;
+										this->m_stateCurrent = ON_GROUND::IS_UP_GROUND;
+									}
+									continue;
+					#pragma endregion
 					//TT
 				}
-	#pragma region VA CHAM VS CAY CAU
-				else if (obj->GetIDType() == 15 && obj->GetID() == 5)
-				{
-					this->m_bridgeEffect = true;
-				}
-	#pragma endregion
-	#pragma region VA CHAM DOI TUONG SINH WEAPON
-					else if(obj->GetIDType() == 14 
-						&& (this->m_stateCurrent != ON_GROUND::IS_DIE && this->m_stateCurrent != UNDER_WATER::IS_DIE_UNDER_WATER))
-					{
-						if(obj->GetID() != 8)
-						{
-							D3DXVECTOR2 pos = CCamera::GetInstance()->GetPointTransform(obj->GetPos().x, obj->GetPos().y);
-							pos.x = __SCREEN_WIDTH - pos.x + obj->GetPos().x;
-							pos.y = 300;
-							CWeapon* weapon = new CWeapon(pos, obj->GetID());
-							/*CPoolingObject::GetInstance()->m_listWeapon.push_back(new CSoldier(obj->*/
-						}
-						else
-						{
-							if(((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_B && 
-								((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_R)
+				#pragma region VA CHAM VS CAY CAU NO
+							else if (obj->GetIDType() == 15 && obj->GetID() == 5)
 							{
-								this->m_typeBullet = ((CBulletItem*)(obj))->m_stateItem;
+								this->m_bridgeEffect = true;
 							}
-						}
-					}
-	#pragma endregion
+				#pragma endregion
+	
+				#pragma region VA CHAM DOI TUONG SINH WEAPON
+								else if(obj->GetIDType() == 14 
+									&& (this->m_stateCurrent != ON_GROUND::IS_DIE && this->m_stateCurrent != UNDER_WATER::IS_DIE_UNDER_WATER))
+								{
+									if(obj->GetID() != 8)
+									{
+										D3DXVECTOR2 pos = CCamera::GetInstance()->GetPointTransform(obj->GetPos().x, obj->GetPos().y);
+										pos.x = __SCREEN_WIDTH - pos.x + obj->GetPos().x;
+										pos.y = 300;
+										CWeapon* weapon = new CWeapon(pos, obj->GetID());
+										/*CPoolingObject::GetInstance()->m_listWeapon.push_back(new CSoldier(obj->*/
+									}
+									else
+									{
+										if(((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_B && 
+											((CBulletItem*)(obj))->m_stateItem != STATE_BULLET_ITEM::BULLET_ITEM_R)
+										{
+											this->m_typeBullet = ((CBulletItem*)(obj))->m_stateItem;
+										}
+									}
+								}
+				#pragma endregion
 
 			}
 		}
-	#pragma region VA CHAM VOI ENEMY
-		if(obj->GetLayer() == LAYER::ENEMY && obj->IsAlive() 
-			&& (this->m_stateCurrent != ON_GROUND::IS_DIE && this->m_stateCurrent != UNDER_WATER::IS_DIE_UNDER_WATER))
+		if (!this->m_isDie)//Neu da chet hoac dang o trang thai hiden thi ko xet va cham
 		{
-			if(CCollision::GetInstance()->Collision(CContra::GetInstance(), obj))
-			{
-				if(m_isUnderWater)
-				{
-					this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
-				}
-				else
-				{
-					this->m_stateCurrent = ON_GROUND::IS_DIE;
-				}
-				if(!this->m_isDie)
-				{
-					if(this->m_left)
-						this->m_vx = this->m_vxDefault;
-					else
-						this->m_vx = -this->m_vxDefault;
-					this->m_vy = this->m_vyDefault;
-					this->m_isDie = true;
-					this->m_elapseTimeChangeFrame = 0.23f;
-				}
-			}
+			#pragma region VA CHAM VOI ENEMY
+						if (obj->GetLayer() == LAYER::ENEMY && obj->IsAlive()
+							&& (this->m_stateCurrent != ON_GROUND::IS_DIE && this->m_stateCurrent != UNDER_WATER::IS_DIE_UNDER_WATER))
+						{
+							if (CCollision::GetInstance()->Collision(CContra::GetInstance(), obj))
+							{
+								if (m_isUnderWater)
+								{
+									this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+								}
+								else
+								{
+									this->m_stateCurrent = ON_GROUND::IS_DIE;
+								}
+								if (!this->m_isDie)
+								{
+									if (this->m_left)
+										this->m_vx = this->m_vxDefault;
+									else
+										this->m_vx = -this->m_vxDefault;
+									this->m_vy = this->m_vyDefault;
+									this->m_isDie = true;
+									this->m_elapseTimeChangeFrame = 0.23f;
+								}
+							}
+						}
+			#pragma endregion
 		}
-#pragma endregion
 	}
 	if(!checkColWithGround && !checkColWithWater && this->m_stateCurrent != UNDER_WATER::IS_DIE_UNDER_WATER && this->m_stateCurrent != ON_GROUND::IS_DIE)
 	{
