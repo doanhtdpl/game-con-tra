@@ -312,9 +312,6 @@
     <ClCompile Include="CSubArm.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClCompile>
-    <ClCompile Include="CSceneManagement.cpp">
-      <Filter>Source Files\GameLoop\StateGame</Filter>
-    </ClCompile>
     <ClCompile Include="CMenuGame.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
     </ClCompile>
@@ -329,6 +326,15 @@
     </ClCompile>
     <ClCompile Include="CMechanicalAlien.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameOverItem.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    </ClCompile>
+    <ClCompile Include="CLifeItem.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    </ClCompile>
+    <ClCompile Include="CScoreScense.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -554,9 +560,6 @@
     <ClInclude Include="CSubArm.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClInclude>
-    <ClInclude Include="CSceneManagement.h">
-      <Filter>Source Files\GameLoop\StateGame</Filter>
-    </ClInclude>
     <ClInclude Include="CMenuGame.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
     </ClInclude>
@@ -571,6 +574,15 @@
     </ClInclude>
     <ClInclude Include="CMechanicalAlien.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameOverItem.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    </ClInclude>
+    <ClInclude Include="CLifeItem.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    </ClInclude>
+    <ClInclude Include="CScoreScense.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

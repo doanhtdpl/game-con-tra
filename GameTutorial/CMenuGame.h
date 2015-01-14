@@ -17,6 +17,8 @@ public:
 protected:
 	void Init();
 	float m_timeDelay;
+public: 
+	static int m_mapId;
 };
 
 #endif // !__CMENU_GAME_H__

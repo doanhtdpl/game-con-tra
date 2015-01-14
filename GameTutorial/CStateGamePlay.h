@@ -6,6 +6,8 @@
 #include "CDynamicObject.h"
 #include "CSubArm.h"
 #include "CBossArm.h"
+#include "CLifeItem.h"
+#include "CGameOverItem.h"
 
 class CStateGamePlay : public CState
 {
@@ -19,6 +21,9 @@ public:
 	void Destroy();
 public:
 	int m_mapId;
+	std::vector<CLifeItem*> m_listLifeItem;
+	CLifeItem* life;
+	CGameOverItem* m_gameOverItem;
 };
 
 #endif // !__CStateGamePlay_H__

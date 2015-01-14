@@ -39,3 +39,7 @@ D3DXVECTOR3 CCamera::GetPointTransform(float x, float y)
 	D3DXVec3Transform(&posResult, &posCurr, &m_matrixTransform);
 	return D3DXVECTOR3(posResult.x, posResult.y, posResult.z);
 }
+D3DXVECTOR3 CCamera::GetCameraPos()
+{
+	return this->m_pos;
+}

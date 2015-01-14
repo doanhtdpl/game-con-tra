@@ -51,7 +51,7 @@ void CSubArm::Init()
 			this->m_allowShoot = true;
 			this->m_isShoot = false;
 			this->m_bulletCount = 0;
-			this->m_timeDelayWaitShoot = 2.5f;
+			this->m_timeDelayWaitShoot = 3.20f;
 			break;
 		}
 	case SUB_ARM_TYPE::SUB_ARM_COMPONENT:
@@ -118,7 +118,7 @@ void CSubArm::BulletUpdate(float deltaTime)
 #pragma region THIET LAP GOC BAN
 			//Thiet lap vi tri cua 3 vien dan
 #pragma endregion
-			if (this->m_timeDelayWaitShoot >= 2.5f)
+			if (this->m_timeDelayWaitShoot >= 3.20f)
 			{
 				CBulletMechanicalAlien* bullet = new CBulletMechanicalAlien(this->m_angle, this->m_pos, offset, !this->m_left);
 				bullet->SetLayer(LAYER::ENEMY);

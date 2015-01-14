@@ -172,6 +172,8 @@ void CBossArm::MoveUpdate(float deltaTime, std::vector<CGameObject*>* listObject
 		case	BOSS_ARM_STATE::BAS_IS_ROTATE:
 		{
 			#pragma region TRANG THAI XOAY TRON
+			//set cho phep ban
+			this->subArms[4]->m_isShoot = false;
 			if (this->m_isArmLeft)//tay ben trai
 			{
 				if (this->subArms[0]->IsAlive())
