@@ -3,7 +3,7 @@
 #include "CStateGamePlay.h"
 #include "CStateManagement.h"
 
-int CMenuGame::m_mapId = 11;
+int CMenuGame::m_mapId = 10;
 
 CMenuGame::CMenuGame(void)
 {

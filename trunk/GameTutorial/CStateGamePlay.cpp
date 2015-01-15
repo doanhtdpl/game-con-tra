@@ -80,7 +80,7 @@ void CStateGamePlay::Init()
 
 void CStateGamePlay::Update(float deltaTime)
 {
-	if (!CContra::GetInstance()->m_isGameOver)//Tinh test 14/1
+	if (!CContra::GetInstance()->m_isGameOver || !CContra::GetInstance()->m_isDie)//Tinh test 14/1
 	{
 		CLoadGameObject::GetInstance()->Update(deltaTime);
 		CContra::GetInstance()->Update(deltaTime);
@@ -123,20 +123,23 @@ void CStateGamePlay::Update(float deltaTime)
 		//this->m_gameOverItem->m_timeDelay -= deltaTime;
 	}
 	//Van update binh thuong cac doi tuong pooling
-	CPoolingObject::GetInstance()->Update(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
+	if (!CContra::GetInstance()->m_isDie || CContra::GetInstance()->m_isGameOver)//Tinh test 14/1
+		CPoolingObject::GetInstance()->Update(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 }
 
 void CStateGamePlay::Render()
 {
 	CLoadBackGround::GetInstance()->Draw();
 	CLoadGameObject::GetInstance()->Draw();
-	//Draw Object
-	if (!CContra::GetInstance()->m_isGameOver)//Tinh test 14/1
-		CDrawObject::GetInstance()->Draw(CContra::GetInstance());
-	// Draw Pooling Object
-	CPoolingObject::GetInstance()->Draw();
-	///
 
+	if (!CContra::GetInstance()->m_isGameOver)//Tinh test 14/1
+	{
+		//Draw Object
+		CDrawObject::GetInstance()->Draw(CContra::GetInstance());
+		// Draw Pooling Object
+		CPoolingObject::GetInstance()->Draw();
+	}
+	//
 	//TT
 	int i = 0;
 	if (CContra::GetInstance()->m_countAlive > 0)

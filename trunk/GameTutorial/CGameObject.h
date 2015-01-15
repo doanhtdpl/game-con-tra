@@ -47,8 +47,8 @@ public:
 	int GetID(){ return this->m_id; };
 	int GetIDType(){ return this->m_idType; };
 	bool GetDirection(){ return this->m_left; };
-	float GetWidth(){ return this->m_width; };
-	float GetHeight(){ return this->m_height; };
+	int GetWidth(){ return this->m_width; };
+	int GetHeight(){ return this->m_height; };
 	bool IsAlive(){ return this->m_isALive; };
 	/*virtual void SetPos(D3DXVECTOR2 pos){
 		this->m_pos = pos;

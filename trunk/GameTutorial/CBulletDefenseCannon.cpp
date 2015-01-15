@@ -57,13 +57,13 @@ void CBullet_DefenseCannon::Init()
 
 	if (!this->m_left)
 	{
-		this->m_vx = -this->m_vxDefault * cos(this->m_rotation);
-		this->m_vy = -this->m_vyDefault * sin(this->m_rotation);
+		this->m_vx = (float)-this->m_vxDefault * cos(this->m_rotation);
+		this->m_vy = (float)-this->m_vyDefault * sin(this->m_rotation);
 	}
 	else
 	{
-		this->m_vx = this->m_vxDefault * cos(this->m_rotation);
-		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
+		this->m_vx = (float)this->m_vxDefault * cos(this->m_rotation);
+		this->m_vy = (float)this->m_vyDefault * sin(this->m_rotation);
 	}
 
 	if (!this->m_left)
@@ -77,8 +77,8 @@ void CBullet_DefenseCannon::MoveUpdate(float deltaTime)
 #pragma region ___SET_TOA_DO_DAN__
 	m_time += deltaTime;
 
-	this->m_pos.x += this->m_vx * m_time;
-	this->m_pos.y += 3.0f + this->m_vy*m_time - this->m_a * m_time*m_time / 2;
+	this->m_pos.x += (float)this->m_vx * m_time;
+	this->m_pos.y += (float)(3.0f + this->m_vy*m_time - this->m_a * m_time*m_time / 2);
 #pragma endregion
 }
 void CBullet_DefenseCannon::Update(float deltaTime)
