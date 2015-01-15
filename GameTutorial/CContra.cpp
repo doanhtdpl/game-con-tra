@@ -20,8 +20,8 @@ CContra::CContra()
 	this->m_idImage = 0;
 	this->m_isALive = true;
 	this->m_isAnimatedSprite = true;
-	this->m_width = 72.0f;
-	this->m_height = 92.0f; 
+	this->m_width = 72;
+	this->m_height = 92; 
 	//Set vi tri contra theo map
 	switch (CMenuGame::m_mapId)
 	{
@@ -29,7 +29,7 @@ CContra::CContra()
 			this->m_pos = D3DXVECTOR2(150.0f, 400.0f);
 			break;
 		case 11:
-			this->m_pos = D3DXVECTOR2(150.0f, 4100.0f);
+			this->m_pos = D3DXVECTOR2(150.0f, 200.0f);
 			break;
 		case 12:
 			this->m_pos = D3DXVECTOR2(100.0f, 350.0f);
@@ -50,6 +50,7 @@ CContra::CContra()
 	//Trang thai ban dau la dang dung yen
 	this->m_stateCurrent = ON_GROUND::IS_FALL;
 	//Tren mat dat
+	this->m_isGameOver = false;
 	this->m_isDie = false;
 	this->m_isUnderWater = false;
 	this->m_isShoot = true;
@@ -148,11 +149,15 @@ void CContra::MoveUpdate(float deltaTime)
 				this->m_pos.x += int(this->m_vx * deltaTime);
 			}
 		}
-		//Thiet lao camera theo map
+		float tempx = 0;
+		//Thiet lap camera theo map
 		switch (CMenuGame::m_mapId)
 		{
 		case 10:
-			CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
+			if (this->m_pos.x > 250)
+			{
+				CCamera::GetInstance()->Update(this->m_pos.x - 250, 0);
+			}
 			break;
 		case 11:
 			if (this->m_pos.x > 250)
@@ -699,24 +704,22 @@ void CContra::BulletUpdate(float deltaTime)
 			}
 		case SHOOT::IS_UP:
 			{
-				rotation = PI/2; //Goc ban bang 90
+				rotation = (float)PI/2; //Goc ban bang 90
 				break;
 			}
 		case SHOOT::IS_DOWN:
 			{
-				rotation = -PI/2;
+				rotation = -(float)PI / 2;
 				break;
 			}
 		case SHOOT::IS_DIAGONAL_UP:
 			{ 
-				rotation = PI/4; //Goc ban bang 45
+				rotation = (float)PI / 4; //Goc ban bang 45
 				break;
 			}
 		case SHOOT::IS_DIAGONAL_DOWN:
 			{
-				//this->m_a = -700;
-				//this->m_vy = -400.0f;
-				rotation = -PI/4;// //Goc ban bang -45
+				rotation = -(float)PI / 4;// //Goc ban bang -45
 				break;
 			}
 		default:
@@ -1208,28 +1211,6 @@ void CContra::BulletUpdate(float deltaTime)
 		}
 
 	}
-	//Update trang thai dan
-	//D3DXVECTOR3 pos;
-	//for (int i = 0; i < this->m_listBullet.size(); i++)
-	//{
-	//	this->m_listBullet.at(i)->Update(deltaTime);
-	//	pos.x = this->m_listBullet.at(i)->GetPos().x;
-	//	pos.y = this->m_listBullet.at(i)->GetPos().y;
-	//	pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-	//	if(pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0)
-	//	{
-	//		delete this->m_listBullet.at(i);
-	//		this->m_listBullet.erase(this->m_listBullet.begin() + i);
-	//	}
-	//	
-	//}
-
-	//if (this->m_listBullet.empty())
-	//{
-	//	this->m_isShoot = true;
-	//	//ManageAudio::GetInstance()->stopSound(TypeAudio::BULLET_N);
-	//}
-
 }
 
 void CContra::Update(float deltaTime)
@@ -1251,19 +1232,20 @@ void CContra::Update(float deltaTime)
 				this->m_isGameOver = true;//Game Over Screen
 				this->m_isALive = false;
 				this->m_isDie = true;
-				//goi man hinh game over
 			}
 			else
 			{
 				//Cho 2s set trang thai contra lai 
-				if (this->m_waitForDie < 0)
+				if (this->m_waitForDie <= 0)
 				{
 					this->m_isALive = true;
 					this->m_isDie = false;
 					this->m_stateCurrent = ON_GROUND::IS_JOGGING;
 					//set lai vi tri contra
-					this->m_pos = D3DXVECTOR2(this->m_posCurrent.x, this->m_posCurrent.y + 100);
+					this->m_pos = D3DXVECTOR2(CCamera::GetInstance()->GetCameraPos().x + 180, CCamera::GetInstance()->GetCameraPos().y - 160);
 					this->m_waitForDie = 1.0f;
+					//Xet lai dan cua contra la Normal(Bullet N)
+					this->m_typeBullet = STATE_BULLET_ITEM::BULLET_ITEM_N;
 				}
 				this->m_waitForDie -= deltaTime;
 			}
@@ -1271,6 +1253,31 @@ void CContra::Update(float deltaTime)
 	}
 	if(this->m_stateCurrent != ON_GROUND::IS_DIE && this->m_stateCurrent != UNDER_WATER::IS_DIE_UNDER_WATER)
 		this->InputUpdate(deltaTime);
+
+	//Tinh
+	//Xet ko cho contra di ra khoi man hinh chi voi map 3
+	switch (CMenuGame::m_mapId)
+	{
+	case 10: case 12:
+		if (this->m_pos.x - this->GetWidth()/2 < CCamera::GetInstance()->GetCameraPos().x)
+		{
+			this->m_pos = D3DXVECTOR2(CCamera::GetInstance()->GetCameraPos().x + this->GetWidth() / 2, this->m_pos.y);
+		}
+		break;
+	case 11:
+		if (this->m_pos.x + this->GetWidth() / 4 > __SCREEN_WIDTH)
+		{
+			this->m_pos = D3DXVECTOR2(__SCREEN_WIDTH - this->GetWidth() / 4, this->m_pos.y);
+		}
+		else
+		{
+			if (this->m_pos.x - this->GetWidth() / 4 < 0)
+			{
+				this->m_pos = D3DXVECTOR2(this->GetWidth() / 4, this->m_pos.y);
+			}
+		}
+		break;
+	}
 }
 
 void CContra::Update(float deltaTime, std::vector<CGameObject*> listObjectCollision)
@@ -1293,6 +1300,29 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 	//Neu trang thai la die, khong xet va cham nua
 	if (!this->m_isDie)//Neu da chet hoac dang o trang thai hiden thi ko xet va cham
 	{
+		#pragma region Va cham voi canh duoi camera
+		if (CMenuGame::m_mapId == 11)
+		{
+			if ((this->m_pos.y - this->m_height) <= (CCamera::GetInstance()->GetCameraPos().y - 1.12f*__SCREEN_HEIGHT))
+			{
+				this->m_stateCurrent = ON_GROUND::IS_DIE;
+				if (!this->m_isDie)
+				{
+					this->m_countAlive--;
+					this->m_posCurrent = this->m_pos;
+					//
+					if (this->m_left)
+						this->m_vx = this->m_vxDefault;
+					else
+						this->m_vx = -this->m_vxDefault;
+					this->m_vy = this->m_vyDefault;
+					this->m_isDie = true;
+					this->m_elapseTimeChangeFrame = 0.23f;
+				}
+			}
+		}
+		#pragma endregion
+
 		#pragma region Va cham dan enemy voi contra
 				for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin();
 					it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
@@ -1352,6 +1382,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 							}
 							if (!this->m_isDie)
 							{
+								this->m_countAlive--;
+								this->m_posCurrent = this->m_pos;
+								//
 								if (this->m_left)
 									this->m_vx = this->m_vxDefault;
 								else
@@ -1393,6 +1426,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 							}
 							if (!this->m_isDie)
 							{
+								this->m_countAlive--;
+								this->m_posCurrent = this->m_pos;
+								//
 								if (this->m_left)
 									this->m_vx = this->m_vxDefault;
 								else
@@ -1431,6 +1467,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 							}
 							if (!this->m_isDie)
 							{
+								this->m_countAlive--;
+								this->m_posCurrent = this->m_pos;
+								//
 								if (this->m_left)
 									this->m_vx = this->m_vxDefault;
 								else
@@ -1469,6 +1508,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 							}
 							if (!this->m_isDie)
 							{
+								this->m_countAlive--;
+								this->m_posCurrent = this->m_pos;
+								//
 								if (this->m_left)
 									this->m_vx = this->m_vxDefault;
 								else
@@ -1510,6 +1552,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 							}
 							if (!this->m_isDie)
 							{
+								this->m_countAlive--;
+								this->m_posCurrent = this->m_pos;
+								//
 								if (this->m_left)
 									this->m_vx = this->m_vxDefault;
 								else
@@ -1551,6 +1596,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 							}
 							if (!this->m_isDie)
 							{
+								this->m_countAlive--;
+								this->m_posCurrent = this->m_pos;
+								//
 								if (this->m_left)
 									this->m_vx = this->m_vxDefault;
 								else
@@ -1559,7 +1607,6 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 								this->m_isDie = true;
 								this->m_elapseTimeChangeFrame = 0.23f;
 							}
-
 							CEnemyEffect* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
 							effect->SetAlive(true);
 							effect->SetPos(capsule->GetPos());
@@ -1848,6 +1895,9 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 								}
 								if (!this->m_isDie)
 								{
+									this->m_countAlive--;
+									this->m_posCurrent = this->m_pos;
+									//
 									if (this->m_left)
 										this->m_vx = this->m_vxDefault;
 									else
@@ -1916,15 +1966,15 @@ Box CContra::GetBox()
 		case ON_GROUND::IS_STANDING:
 		case ON_GROUND::IS_SHOOTING_UP:
 			{
-				return Box(this->m_pos.x, this->m_pos.y - 10, this->m_width - 45, this->m_height - 20, this->m_vx, this->m_vy);
+				return Box(this->m_pos.x, this->m_pos.y - 10.0f, this->m_width - 45, this->m_height - 20, this->m_vx, this->m_vy);
 			}
 		case ON_GROUND::IS_JUMPING:
 			{
-				return Box(this->m_pos.x, this->m_pos.y - 28, this->m_width - 40, this->m_height - 55, this->m_vx, this->m_vy);
+				return Box(this->m_pos.x, this->m_pos.y - 28.0f, this->m_width - 40, this->m_height - 55, this->m_vx, this->m_vy);
 			}
 		case ON_GROUND::IS_LYING:
 			{
-				return Box(this->m_pos.x, this->m_pos.y - 34, this->m_width, this->m_height - 65, this->m_vx, this->m_vy);
+				return Box(this->m_pos.x, this->m_pos.y - 34.0f, this->m_width, this->m_height - 65, this->m_vx, this->m_vy);
 			}
 		case ON_GROUND::IS_UP_GROUND:
 			{
@@ -1932,7 +1982,7 @@ Box CContra::GetBox()
 			}
 		case ON_GROUND::IS_DIE:
 			{
-				return Box(this->m_pos.x, this->m_pos.y - 34, this->m_width, this->m_height - 65, this->m_vx, this->m_vy);
+				return Box(this->m_pos.x, this->m_pos.y - 34.0f, this->m_width, this->m_height - 65, this->m_vx, this->m_vy);
 			}
 		default:
 			{
