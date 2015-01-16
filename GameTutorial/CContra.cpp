@@ -1322,7 +1322,7 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 	if (!this->m_isDie && !this->m_isHiding)//Neu da chet hoac dang o trang thai hiden thi ko xet va cham
 	{
 		#pragma region Va cham voi canh duoi camera
-		if (CMenuGame::m_mapId == 11)
+		if (CMenuGame::m_mapId == 11 || CMenuGame::m_mapId == 12)
 		{
 			if ((this->m_pos.y - this->m_height) <= (CCamera::GetInstance()->GetCameraPos().y - 1.13f*__SCREEN_HEIGHT))
 			{

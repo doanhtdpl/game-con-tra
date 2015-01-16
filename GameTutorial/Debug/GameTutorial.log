@@ -1,10 +1,12 @@
-﻿Build started 1/16/2015 04:26:19 PM.
+﻿Build started 1/17/2015 03:24:15 AM.
      1>Project "G:\TAI LIEU HOC TAP\UIT\HKVII\Game\SourceGameContraFinal\trunk\GameTutorial\GameTutorial.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CHidenObject.cpp
-         CHidenObject.cpp
-     1>g:\tai lieu hoc tap\uit\hkvii\game\sourcegamecontrafinal\trunk\gametutorial\chidenobject.cpp(39): warning C4244: 'argument' : conversion from 'const int' to 'FLOAT', possible loss of data
-     1>g:\tai lieu hoc tap\uit\hkvii\game\sourcegamecontrafinal\trunk\gametutorial\chidenobject.cpp(102): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CMenuGame.cpp
+         CMenuGame.cpp
+         c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+     1>g:\tai lieu hoc tap\uit\hkvii\game\sourcegamecontrafinal\trunk\gametutorial\cmenugame.cpp(22): warning C4244: 'argument' : conversion from 'const int' to 'FLOAT', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\sourcegamecontrafinal\trunk\gametutorial\cmenugame.cpp(37): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>g:\tai lieu hoc tap\uit\hkvii\game\sourcegamecontrafinal\trunk\gametutorial\cmenugame.cpp(38): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\SourceGameContraFinal\trunk\GameTutorial\Debug\GameTutorial.exe" /INCREMENTAL /NOLOGO d3d9.lib d3dx9.lib dxguid.lib dxerr.lib dinput8.lib winmm.lib dsound.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\SourceGameContraFinal\trunk\GameTutorial\Debug\GameTutorial.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:\TAI LIEU HOC TAP\UIT\HKVII\Game\SourceGameContraFinal\trunk\GameTutorial\Debug\GameTutorial.lib" /MACHINE:X86 Debug\CAnimation.obj
          Debug\CBossArm.obj
@@ -24,6 +26,7 @@
          Debug\CBulletS.obj
          Debug\CBulletScubaSolider.obj
          Debug\CCamera.obj
+         Debug\CChooseItem.obj
          Debug\CCollision.obj
          Debug\CContra.obj
          Debug\CDevice.obj
@@ -91,4 +94,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.13
+Time Elapsed 00:00:02.46

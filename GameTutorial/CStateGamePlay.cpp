@@ -42,24 +42,24 @@ void CStateGamePlay::Init()
 	// Tinh
 	switch (this->m_mapId)
 	{
-	case 10:
-	{
-			   CPoolingObject::GetInstance()->CreateSoliderObject(10);
-			   break;
-	}
-	case 11:
-	{
-			   CPoolingObject::GetInstance()->CreateSoliderShootObject(10);
-			   CPoolingObject::GetInstance()->CreateBigStone(10);
-			   break;
-	}
-	case 12:
-	{
-			   CPoolingObject::GetInstance()->CreateSoliderShootObject(10);
-			   CPoolingObject::GetInstance()->CreateCapsuleBoss(20);
-			   CPoolingObject::GetInstance()->CreateBulletLaze(10);
-			   break;
-	}
+		case 10:
+		{
+				   CPoolingObject::GetInstance()->CreateSoliderObject(10);
+				   break;
+		}
+		case 11:
+		{
+				   CPoolingObject::GetInstance()->CreateSoliderShootObject(10);
+				   CPoolingObject::GetInstance()->CreateBigStone(10);
+				   break;
+		}
+		case 12:
+		{
+				   CPoolingObject::GetInstance()->CreateSoliderShootObject(10);
+				   CPoolingObject::GetInstance()->CreateCapsuleBoss(20);
+				   CPoolingObject::GetInstance()->CreateBulletLaze(10);
+				   break;
+		}
 	}
 	//TT
 	CPoolingObject::GetInstance()->CreateWeapon(15);
@@ -67,8 +67,9 @@ void CStateGamePlay::Init()
 	ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
 	//Tinh--> gameover item
 	this->m_gameOverItem = new CGameOverItem();
-	//Tinh --> man hinh diem
-	this->m_scoreScense = new CScoreScense();
+	//Tinh --> man hinh game over = true
+	this->m_scoreScense = new CScoreScense(true);
+	//Tinh--> neu boss map hien tai chet vs contra con song thi goi man hinh diem = false
 }
 
 void CStateGamePlay::Update(float deltaTime)
@@ -93,7 +94,10 @@ void CStateGamePlay::Update(float deltaTime)
 		else
 			this->m_gameOverItem->m_timeDelay -= deltaTime;
 		if (this->m_isGameOverred)
+		{
 			this->m_scoreScense->Update(deltaTime);
+		}
+			
 	}
 	//Van update binh thuong cac doi tuong pooling
 	if (!CContra::GetInstance()->m_isGameOver)//Tinh test 14/1
@@ -122,9 +126,6 @@ void CStateGamePlay::Render()
 	}
 	else
 	{
-		//Tinh-> ve game over item
-		this->m_gameOverItem->Draw();
-
 		if (this->m_isGameOverred)
 		{
 			///Ve man hinh diem
@@ -132,9 +133,21 @@ void CStateGamePlay::Render()
 			this->m_scoreScense->SetPos(D3DXVECTOR2(cameraPos.x + this->m_scoreScense->GetWidth() / 2, cameraPos.y - this->m_scoreScense->GetHeight() / 2));
 			//
 			this->m_scoreScense->InitScore(89712315);
-			this->m_scoreScense->InitNameStage(CMenuGame::m_mapId);
+			this->m_scoreScense->InitHightScore(200000);
+			if (!this->m_scoreScense->IsScenseGameOver())//neu la man hinh diem thi hien thi
+			{
+				this->m_scoreScense->InitNameStage(CMenuGame::m_mapId);
+				this->m_scoreScense->InitCountAlive(CContra::GetInstance()->m_countAlive);
+				this->m_scoreScense->InitStageNumber(CMenuGame::m_mapId);
+			}
 			this->m_scoreScense->Draw();
 		}
+		else
+		{
+			//Tinh-> ve game over item
+			this->m_gameOverItem->Draw();
+		}
+
 	}
 	//
 	CLifeItem::GetInstance()->Draw();

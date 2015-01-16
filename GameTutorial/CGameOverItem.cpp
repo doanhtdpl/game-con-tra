@@ -39,5 +39,4 @@ void CGameOverItem::SetPos(D3DXVECTOR3 pos)
 
 CGameOverItem::~CGameOverItem()
 {
-
 }

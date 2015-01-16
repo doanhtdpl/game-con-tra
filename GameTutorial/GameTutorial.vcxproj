@@ -86,6 +86,7 @@
     <ClCompile Include="CBulletS.cpp" />
     <ClCompile Include="CBulletScubaSolider.cpp" />
     <ClCompile Include="CCamera.cpp" />
+    <ClCompile Include="CChooseItem.cpp" />
     <ClCompile Include="CCollision.cpp" />
     <ClCompile Include="CContra.cpp" />
     <ClCompile Include="CDevice.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="CBossArm.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCapsuleBoss.h" />
+    <ClInclude Include="CChooseItem.h" />
     <ClInclude Include="CCollision.h" />
     <ClInclude Include="CContra.h" />
     <ClInclude Include="CDevice.h" />
