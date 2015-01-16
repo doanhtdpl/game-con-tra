@@ -88,7 +88,7 @@ RECT* CBridgeFire::GetRectRS()
 
 Box CBridgeFire::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height - 10);
 }
 
 void CBridgeFire::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)

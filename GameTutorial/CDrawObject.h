@@ -13,6 +13,7 @@ public:
 	CDrawObject();
 	~CDrawObject();
 	void Draw(CGameObject*);
+	void Draw(CGameObject*, D3DCOLOR );
 private:
 	//Khoi tao bien thanh vien
 	CSprite* m_draw; //quan ly viec ve

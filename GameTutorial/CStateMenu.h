@@ -2,6 +2,7 @@
 #define __CSTATEMENU_H__
 #include "CState.h"
 #include "CMenuGame.h"
+#include "CScoreScense.h"
 
 class CStateMenu : public CState
 {
@@ -14,6 +15,7 @@ public:
 	void Destroy();
 protected:
 	CMenuGame* mainMenu;
+	CScoreScense* scoreScense;
 };
 
 #endif // !__CSTATEMENU_H__

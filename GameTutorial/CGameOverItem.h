@@ -15,8 +15,6 @@ public:
 	~CGameOverItem();
 	std::string ClassName(){ return __CLASS_NAME__(CGameOverItem); };
 	void Draw(); 
-	void Update(float deltaTime);
-	void LoadAllTextureFromFile();
 	void SetPos(D3DXVECTOR3 pos);
 protected:
 	void Init();

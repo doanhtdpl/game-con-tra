@@ -18,6 +18,7 @@ protected:
 	D3DXMATRIX m_matrixTransform;
 public:
 	D3DXVECTOR3 GetCameraPos();
+	void SetPos(D3DXVECTOR3);
 };
 
 #endif // !__CCAMERA_H__

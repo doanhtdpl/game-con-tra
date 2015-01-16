@@ -1,5 +1,6 @@
 #include "CLifeItem.h"
 #include "CCamera.h"
+#include "CContra.h"
 
 CLifeItem::CLifeItem(void)
 {
@@ -19,23 +20,19 @@ void CLifeItem::Init()
 	this->m_drawImg = new CSprite();
 }
 
-void CLifeItem::LoadAllTextureFromFile()
-{
-}
-
 void CLifeItem::Draw()
 {
-	if (this->m_isAlive){
+	for (int i = 0; i < CContra::GetInstance()->m_countAlive; i++)
+	{
 		RECT rectRS;
-		D3DXVECTOR3 posObj(this->m_pos.x, this->m_pos.y, 0);
-		D3DXVECTOR3 posObjAfterTransform = CCamera::GetInstance()->GetPointTransform(posObj.x, posObj.y);
+		D3DXVECTOR3 posObj(20.0f + (i * 25), 10.0f, 0);
 
 		rectRS.left = 0;
 		rectRS.right = rectRS.left + 16;
 		rectRS.top = 0;
 		rectRS.bottom = rectRS.top + 32;
 
-		this->m_drawImg->draw(this->m_imageCurr, &rectRS, posObjAfterTransform, D3DCOLOR_XRGB(255, 255, 225), false);
+		this->m_drawImg->draw(this->m_imageCurr, &rectRS, posObj, D3DCOLOR_XRGB(255, 255, 225), false);
 	}
 }
 

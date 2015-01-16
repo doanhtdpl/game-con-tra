@@ -52,7 +52,8 @@ void CFireBridge::Init()
 	//
 	this->m_vx = 80.0f;
 	this->m_timeDelay = 0.40f;
-
+	//	
+	this->SetLayer(LAYER::ENEMY);
 }
 
 void CFireBridge::Update(float deltaTime)
@@ -67,6 +68,7 @@ void CFireBridge::Update(float deltaTime, std::vector<CGameObject*>* listObjectC
 	this->SetFrame(deltaTime);
 	this->ChangeFrame(deltaTime);
 	this->MoveUpdate(deltaTime);
+	this->OnCollision(deltaTime, listObjectCollision);
 }
 void CFireBridge::MoveUpdate(float deltaTime)
 {
@@ -104,9 +106,8 @@ Box CFireBridge::GetBox()
 
 void CFireBridge::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-
+	
 }
-
 
 CFireBridge::~CFireBridge()
 {

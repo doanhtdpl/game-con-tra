@@ -135,6 +135,7 @@
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="CEnemyEffect.cpp" />
     <ClCompile Include="CWinScense.cpp" />
+    <ClCompile Include="CWord.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CStateManagement.cpp" />
     <ClCompile Include="CStaticObject.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="CManageAudio.h" />
     <ClInclude Include="CSoundUtil.h" />
     <ClInclude Include="CWinScense.h" />
+    <ClInclude Include="CWord.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
