@@ -102,12 +102,18 @@ protected:
 	float m_waitForDie; //Thoi gian chuyen sprite khi chet
 	float m_waitForCreateEnemy;
 	bool m_allowFall; //Cho phep nhay xuong duoi
+	//Bien luu vi tri ban dau khi khoi tao contra
+	D3DXVECTOR2 m_posStart;
 	//
 public:
 	float m_currentFall; // Do cao hien tai
 	float m_currentJump;//
 	bool m_isDie; //Trang thai die
 	bool m_isGameOver; //Het mang choi
+	bool m_isHiding;//Trang thai an ko bi chet
+	bool m_isHided;
+	float m_timeHided;
+	float m_timeHiding;
 	//diem contra tai man hien tai & so mang cua contra
 	int m_countAlive;//mac dinh la 3 mang
 	int m_scoreCurrentMap;//mac dinh la 0
@@ -119,7 +125,7 @@ public:
 	void SetTypeBullet(int _typeBullet){this->m_typeBullet = _typeBullet;};
 	void SetPosY(float posY){this->m_pos.y = posY;};
 	float GetPosY(){return this->m_pos.y;};
-
+	void Reset();
 };
 
 #endif // !__CCONTRA_H__

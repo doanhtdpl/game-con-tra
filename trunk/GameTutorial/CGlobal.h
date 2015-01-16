@@ -37,7 +37,11 @@ typedef unsigned char	   __UINT8;
 #define __SIMON_PATH__  "..\\Resource\\simon.png"
 #define __BULLET_PATH__ "..\\Resource\\Bullet.png"
 #define __CONTRA_PATH__ "..\\Resource\\Contra\\Sprite\\contra.PNG"
-
+//
+#define __NAME_MAP_1__ "JUNGLE"
+#define __NAME_MAP_3__ "WATERFALL"
+#define __NAME_MAP_5__ "SNOW FIELD"
+//
 #define PI atan(1.0)*4
 //#define PI 3.14
 //#define PI 3.141592653589793

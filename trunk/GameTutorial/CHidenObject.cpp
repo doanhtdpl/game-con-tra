@@ -26,10 +26,10 @@ CHidenObject::CHidenObject() : CStaticObject()
 CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 {
 	this->m_isALive = true;//
-	this->m_waitForCreateEnemy = 1.0f;
-	this->m_waitForCreateSoliderShoot = 1.40f;
-	this->m_waitForCreateBigStone = 6.0f;
-	this->m_waitForCreateBulletLaze = 2.4f;
+	this->m_waitForCreateEnemy = 1.20f;
+	this->m_waitForCreateSoliderShoot = 1.60f;
+	this->m_waitForCreateBigStone = 7.0f;
+	this->m_waitForCreateBulletLaze = 2.8f;
 	this->countWeapon = 0;
 	// TT
 	if(!info.empty())

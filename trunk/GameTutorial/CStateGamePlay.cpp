@@ -64,109 +64,80 @@ void CStateGamePlay::Init()
 	//TT
 	CPoolingObject::GetInstance()->CreateWeapon(15);
 	//Load Audio
-	//ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
-
-	// Init life //TT
-	for (int i = 0; i < CContra::GetInstance()->m_countAlive; i++)
-	{
-		CLifeItem* lifeItem = new CLifeItem();
-		lifeItem->SetAlive(true);
-		this->m_listLifeItem.push_back(lifeItem);
-	}
+	ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
 	//Tinh--> gameover item
 	this->m_gameOverItem = new CGameOverItem();
-
+	//Tinh --> man hinh diem
+	this->m_scoreScense = new CScoreScense();
 }
 
 void CStateGamePlay::Update(float deltaTime)
 {
-	if (!CContra::GetInstance()->m_isGameOver || !CContra::GetInstance()->m_isDie)//Tinh test 14/1
+	if (!CContra::GetInstance()->m_isGameOver)//Tinh test 14/1
 	{
 		CLoadGameObject::GetInstance()->Update(deltaTime);
 		CContra::GetInstance()->Update(deltaTime);
 		CContra::GetInstance()->OnCollision(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 		CLoadBackGround::GetInstance()->Update(deltaTime);
 
-		//TT
-		//Cap nhat giam item mang theo mang contra //Tinh
-		if (CContra::GetInstance()->m_countAlive < this->m_listLifeItem.size())
-		{
-			int count = this->m_listLifeItem.size() - CContra::GetInstance()->m_countAlive;
-			if (count > 0)
-			{
-				for (std::vector<CLifeItem*>::iterator it = this->m_listLifeItem.end() - 1; it != this->m_listLifeItem.begin(); --it)
-				{
-					if (count != 0)
-					{
-						CLifeItem* obj = *it;
-						obj->SetAlive(false);
-						count--;
-					}
-				}
-			}
-		}
-		for (std::vector<CLifeItem*>::iterator it = this->m_listLifeItem.begin(); it != this->m_listLifeItem.end(); ++it)
-		{
-			CLifeItem* obj = *it;
-			obj->Update(deltaTime);
-		}
 	}
 	else
 	{
-		////Sau do cho 1 thoi gian ve man hinh diem
-		//if (this->m_gameOverItem->m_timeDelay <= 0)
-		//{
-		//	this->m_gameOverItem->m_timeDelay = 3.0f;
-		//	//Load man hinh diem so len
-		//	
-		//}
-		//this->m_gameOverItem->m_timeDelay -= deltaTime;
+		//Sau do cho 1 thoi gian ve man hinh diem
+		if (this->m_gameOverItem->m_timeDelay <= 0 && !this->m_isGameOverred)
+		{
+			this->m_gameOverItem->m_timeDelay = 0.80f;
+			//Load man hinh diem so len
+			this->m_isGameOverred = true;
+		}
+		else
+			this->m_gameOverItem->m_timeDelay -= deltaTime;
+		if (this->m_isGameOverred)
+			this->m_scoreScense->Update(deltaTime);
 	}
 	//Van update binh thuong cac doi tuong pooling
-	if (!CContra::GetInstance()->m_isDie || CContra::GetInstance()->m_isGameOver)//Tinh test 14/1
+	if (!CContra::GetInstance()->m_isGameOver)//Tinh test 14/1
 		CPoolingObject::GetInstance()->Update(deltaTime, CLoadGameObject::GetInstance()->GetListGameObjectOnScreen());
 }
 
 void CStateGamePlay::Render()
 {
 	CLoadBackGround::GetInstance()->Draw();
-	CLoadGameObject::GetInstance()->Draw();
-
+	//
 	if (!CContra::GetInstance()->m_isGameOver)//Tinh test 14/1
 	{
+		CLoadGameObject::GetInstance()->Draw();
 		//Draw Object
-		CDrawObject::GetInstance()->Draw(CContra::GetInstance());
+		//CDrawObject::GetInstance()->Draw(CContra::GetInstance());
+		if (CContra::GetInstance()->m_isHided)
+		{
+			CDrawObject::GetInstance()->Draw(CContra::GetInstance(), D3DCOLOR_ARGB(127, 255, 255, 255));
+		}
+		else
+		{
+			CDrawObject::GetInstance()->Draw(CContra::GetInstance(), D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
 		// Draw Pooling Object
 		CPoolingObject::GetInstance()->Draw();
 	}
-	//
-	//TT
-	int i = 0;
-	if (CContra::GetInstance()->m_countAlive > 0)
+	else
 	{
-		for (std::vector<CLifeItem*>::iterator it = this->m_listLifeItem.begin(); it != this->m_listLifeItem.end(); ++it)
+		//Tinh-> ve game over item
+		this->m_gameOverItem->Draw();
+
+		if (this->m_isGameOverred)
 		{
-			CLifeItem* obj = *it;
-			D3DXVECTOR3 pos = obj->GetPos();
-			pos.x = pos.x + 25 * i;
-			obj->SetPos(pos);
-			i++;
-			if (i > CContra::GetInstance()->m_countAlive)
-			{
-				i = 0;
-			}
-			obj->Draw();
+			///Ve man hinh diem
+			D3DXVECTOR3 cameraPos = CCamera::GetInstance()->GetCameraPos();
+			this->m_scoreScense->SetPos(D3DXVECTOR2(cameraPos.x + this->m_scoreScense->GetWidth() / 2, cameraPos.y - this->m_scoreScense->GetHeight() / 2));
+			//
+			this->m_scoreScense->InitScore(89712315);
+			this->m_scoreScense->InitNameStage(CMenuGame::m_mapId);
+			this->m_scoreScense->Draw();
 		}
 	}
-
-	//Tinh->game over item
-	if (CContra::GetInstance()->m_isGameOver)
-	{
-		D3DXVECTOR3 cameraPos = CCamera::GetInstance()->GetCameraPos();
-		D3DXVECTOR3 posGameOverItem = D3DXVECTOR3(posGameOverItem.x = cameraPos.x + 10, posGameOverItem.y = cameraPos.y - 10, posGameOverItem.z = 0);
-		this->m_gameOverItem->SetPos(posGameOverItem);
-		this->m_gameOverItem->Draw(); 
-	}
+	//
+	CLifeItem::GetInstance()->Draw();
 }
 
 void CStateGamePlay::Destroy()

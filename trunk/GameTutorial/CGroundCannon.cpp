@@ -56,9 +56,6 @@ void CGroundCanon::Init()
 	this->m_bulletCount = 0;
 	this->m_timeDelay = 0.25f;
 	this->m_waitForShoot = 0.0f;
-
-	//
-	this->SetLayer(LAYER::ENEMY);
 }
 
 void CGroundCanon::Update(float deltaTime)

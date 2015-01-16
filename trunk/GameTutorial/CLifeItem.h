@@ -16,7 +16,6 @@ public:
 	~CLifeItem();
 	void Draw(); //
 	void Update(float deltaTime);
-	void LoadAllTextureFromFile();
 	D3DXVECTOR3 GetPos();
 	void SetPos(D3DXVECTOR3 pos);
 	void SetAlive(bool);

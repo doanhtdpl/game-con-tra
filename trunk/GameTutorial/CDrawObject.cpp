@@ -202,6 +202,57 @@ void CDrawObject::Draw(CGameObject* obj)
 	}
 }
 
+void CDrawObject::Draw(CGameObject* obj, D3DCOLOR color)
+{
+	if (obj != nullptr)
+	{
+		//Neu doi tuong khong phai la hide object thi ve len ma hinh
+		if (obj->ClassName() != __CLASS_NAME__(CGameObject))
+		{
+			int typeObject = obj->GetIDType();
+			int idObject = obj->GetID();
+			//Kiem tra xem Id cua doi tuong no co hop le hay khong
+			if (typeObject > 0)
+			{
+				CTexture* texture;
+				//Lay ra resource anh cua doi tuongLevel1quadTree
+				if (typeObject == 13) //Day la weapon tinh
+					texture = CManagementTexture::GetInstance()->GetTextureByID(1, 13);
+				else
+				if (typeObject == 14 && idObject != 8)
+				{
+					texture = CManagementTexture::GetInstance()->GetTextureByID(1, 14);
+				}
+				else
+				{
+					texture = CManagementTexture::GetInstance()->GetTextureByID(idObject, typeObject);
+				}
+				if (typeObject == 15)
+				{
+					texture = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
+				}
+				//Neu ton tai texture 
+				if (texture && this->m_draw)
+				{
+					D3DXVECTOR3 posObj(obj->GetPos().x, obj->GetPos().y, 0);
+					//D3DXVECTOR2 posCenter;
+					//posCenter.x = posObj.x + obj->GetWidth() / 2;
+					//posCenter.y = posObj.y + obj->GetHeight() / 2;
+					D3DXVECTOR3 posObjAfterTransform = CCamera::GetInstance()->GetPointTransform(posObj.x, posObj.y);
+					if (!obj->GetDirection())
+					{
+						this->m_draw->draw(texture, obj->GetRectRS(), posObjAfterTransform, color, true);
+					}
+					else
+					{
+						this->m_draw->drawFlipX(texture, obj->GetRectRS(), posObjAfterTransform, color, true);
+					}
+				}
+			}
+		}
+	}
+}
+
 CDrawObject::~CDrawObject()
 {
 	if (this->m_draw)

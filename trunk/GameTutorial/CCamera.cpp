@@ -43,3 +43,7 @@ D3DXVECTOR3 CCamera::GetCameraPos()
 {
 	return this->m_pos;
 }
+void CCamera::SetPos(D3DXVECTOR3 pos)
+{
+	this->m_pos = pos;
+}

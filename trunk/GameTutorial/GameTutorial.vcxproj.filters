@@ -336,6 +336,9 @@
     <ClCompile Include="CScoreScense.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
     </ClCompile>
+    <ClCompile Include="CWord.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTexture.h">
@@ -582,6 +585,9 @@
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
     </ClInclude>
     <ClInclude Include="CScoreScense.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    </ClInclude>
+    <ClInclude Include="CWord.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
     </ClInclude>
   </ItemGroup>

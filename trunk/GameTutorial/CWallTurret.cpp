@@ -58,8 +58,6 @@ void CWallTurret::Init()
 
 	this->m_allowShoot = true;
 	this->m_HP = 7;
-
-	this->SetLayer(LAYER::ENEMY);
 }
 
 void CWallTurret::Update(float deltaTime)
