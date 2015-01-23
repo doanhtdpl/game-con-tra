@@ -766,9 +766,7 @@ void CContra::InputUpdate(float deltaTime)
 					}
 					else if(this->m_keyDown == DIK_C)
 					{
-						if (this->m_currentFrame == 48)//Tinh them zo bo ban luc contra lan
-							return;
-						else
+						if (this->m_currentFrame != 48)//Tinh them zo bo ban luc contra lan
 							this->m_stateCurrent = UNDER_WATER::IS_SHOOTING_UNDER_WATER_NORMAL;
 					}
 				}
@@ -1473,27 +1471,34 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 	if (!this->m_isDie && !this->m_isHiding)//Neu da chet hoac dang o trang thai hiden thi ko xet va cham
 	{
 		#pragma region Va cham voi canh duoi camera
-		if (CMenuGameScense::m_mapId == 11 || CMenuGameScense::m_mapId == 12 || CMenuGameScense::m_mapId == 10)
+		if (!checkColWithWater)
 		{
-			if ((this->m_pos.y - this->m_height) <= (CCamera::GetInstance()->GetCameraPos().y - 1.13f*__SCREEN_HEIGHT))
+			if (CMenuGameScense::m_mapId == 11 || CMenuGameScense::m_mapId == 12 || CMenuGameScense::m_mapId == 10)
 			{
-				this->m_stateCurrent = ON_GROUND::IS_DIE;
-				if (!this->m_isDie)
+				if ((this->m_pos.y - this->m_height) <= (CCamera::GetInstance()->GetCameraPos().y - 1.13f*__SCREEN_HEIGHT))
 				{
-					this->m_countAlive--;
-					//
-					if (this->m_left)
-						this->m_vx = this->m_vxDefault;
-					else
-						this->m_vx = -this->m_vxDefault;
-					this->m_vy = this->m_vyDefault;
-					this->m_isDie = true;
-					//
-					this->m_elapseTimeChangeFrame = 0.23f;
-					//Load sound contra die
-					ManageAudio::GetInstance()->playSound(TypeAudio::RAMBO_DEAD_SFX);
+					this->m_stateCurrent = ON_GROUND::IS_DIE;
+					if (!this->m_isDie)
+					{
+						this->m_countAlive--;
+						//
+						if (this->m_left)
+							this->m_vx = this->m_vxDefault;
+						else
+							this->m_vx = -this->m_vxDefault;
+						this->m_vy = this->m_vyDefault;
+						this->m_isDie = true;
+						//
+						this->m_elapseTimeChangeFrame = 0.23f;
+						//Load sound contra die
+						ManageAudio::GetInstance()->playSound(TypeAudio::RAMBO_DEAD_SFX);
+					}
 				}
 			}
+		}
+		else
+		{
+			int temp = 0;
 		}
 		#pragma endregion
 
@@ -1506,33 +1511,54 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					{
 						if (CCollision::GetInstance()->Collision(this, bullet))
 						{
-							//Load sound contra die
-							ManageAudio::GetInstance()->playSound(TypeAudio::RAMBO_DEAD_SFX);
 							if (m_isUnderWater)
 							{
-								if (this->m_currentFrame == 48)//Tinh them zo de ko cho va cham voi 
-									return;//dan enemy khi contra lan
-								else
+								if (this->m_currentFrame != 48)//Tinh them zo de ko cho va cham voi dan enemy luc lan
+								{
+									//Load sound contra die
+									ManageAudio::GetInstance()->playSound(TypeAudio::RAMBO_DEAD_SFX);
 									this->m_stateCurrent = UNDER_WATER::IS_DIE_UNDER_WATER;
+
+									if (!this->m_isDie)
+									{
+										this->m_countAlive--;
+										//
+										if (this->m_left)
+											this->m_vx = this->m_vxDefault;
+										else
+											this->m_vx = -this->m_vxDefault;
+										this->m_vy = this->m_vyDefault;
+										this->m_isDie = true;
+										this->m_elapseTimeChangeFrame = 0.23f;
+
+									}
+									it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+								}
+								else
+									++it;
 							}
 							else
 							{
+								//Load sound contra die
+								ManageAudio::GetInstance()->playSound(TypeAudio::RAMBO_DEAD_SFX);
 								this->m_stateCurrent = ON_GROUND::IS_DIE;
-							}
-							if (!this->m_isDie)
-							{
-								this->m_countAlive--;
-								//
-								if (this->m_left)
-									this->m_vx = this->m_vxDefault;
-								else
-									this->m_vx = -this->m_vxDefault;
-								this->m_vy = this->m_vyDefault;
-								this->m_isDie = true;
-								this->m_elapseTimeChangeFrame = 0.23f;
 
+								if (!this->m_isDie)
+								{
+									this->m_countAlive--;
+									//
+									if (this->m_left)
+										this->m_vx = this->m_vxDefault;
+									else
+										this->m_vx = -this->m_vxDefault;
+									this->m_vy = this->m_vyDefault;
+									this->m_isDie = true;
+									this->m_elapseTimeChangeFrame = 0.23f;
+
+								}
+								it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
 							}
-							it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+							
 						}
 						else
 							++it;
