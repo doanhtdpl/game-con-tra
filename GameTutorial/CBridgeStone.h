@@ -20,6 +20,7 @@ public:
 	RECT* GetRectRS();
 	Box GetBox();
 	void setRadius(float r);
+	float GetVx();
 protected:
 	void Init();
 	float m_radius;

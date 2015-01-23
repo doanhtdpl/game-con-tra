@@ -3,20 +3,34 @@
 
 #include "CStaticObject.h"
 #include "CAnimation.h"
+#include "CScense.h"
 
-class CWinScense : public CStaticObject, public CAnimation
+class CWinScense : public CScense
 {
 public:
-	CWinScense(void);
+	CWinScense();
+	CWinScense(string);
+	CWinScense(string, string);
 	CWinScense(const std::vector<int>& info);
-	~CWinScense();
+	virtual ~CWinScense(){};
 	std::string ClassName(){ return __CLASS_NAME__(CWinScense); };
-	virtual void Update(float deltaTime);
-	virtual void Move(float deltaTime);
+	void Update(float deltaTime);
+	void Move(float deltaTime);
+	void Draw();
+	void Init();
+	void InitTitile();
+	void InitMessage();
 	RECT* GetRectRS();
 protected:
-	void Init();
 	float m_timeDelay;
+	bool m_isHided;
+	string m_title;
+	string m_Message;
+public:
+	CWordItem** m_listTitleWord;
+	CWordItem** m_listMessageWord;
+	int lenghtTitleWord;
+	int lenghtMessageWord;
 };
 
 #endif // !__CWIN_SCENSE_H__

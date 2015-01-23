@@ -4,6 +4,7 @@
 #include "CCamera.h"
 #include "CCollision.h"
 #include "CPoolingObject.h"
+#include "CManageAudio.h"
 
 CGunner::CGunner(void)
 {
@@ -20,7 +21,7 @@ CGunner::CGunner(const std::vector<int>& info)
 		this->m_width = info.at(3);
 		this->m_height = info.at(4);
 	}
-	this->Init();//
+	this->Init();
 }
 
 // Ham khoi tao cua linh nup
@@ -45,12 +46,11 @@ void CGunner::Init()
 	this->m_totalFrame = 2;
 	this->m_column = 2;
 	//
-	this->m_isShoot = true;
 	this->m_stateCurrent = GUNNER_STATE::GN_IS_NORMAL;
 	this->m_bulletCount = 0;
 	this->m_timeDelay = 0.40f;
 	this->m_waitForShoot = 0.7f;
-
+	this->m_isShoot = false;//true;
 	this->m_allowShoot = true;
 	this->m_HP = 5;
 }
@@ -104,6 +104,10 @@ void CGunner::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 			{
 				// Gan trang thai die cho doi tuong
 				this->m_stateCurrent = GUNNER_STATE::GN_IS_DIE;
+				//Load sound die
+				ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+				// Tang diem cua contra len
+				CContra::GetInstance()->IncreateScore(300);
 			}
 		}
 		else
@@ -115,14 +119,6 @@ void CGunner::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 
 void CGunner::BulletUpdate(float deltaTime)
 {
-#pragma region THIET LAP GOC BAN
-	//Ban 1 goc thang
-#pragma endregion
-
-#pragma region THIET LAP TRANG THAI BAN
-
-#pragma endregion
-
 #pragma region KHOI TAO MOT VIEN DAN THEO HUONG
 	D3DXVECTOR2 offset;
 	offset.x = -this->m_width / 2;
@@ -131,24 +127,32 @@ void CGunner::BulletUpdate(float deltaTime)
 
 #pragma region THIET LAP TOC DO DAN
 
-	if (this->m_currentFrame == 1)
+	if (this->m_isShoot)
 	{
-		if (m_bulletCount == 0)
+		if (this->m_currentFrame == 1)
 		{
-			CBullet_M* bullet = new CBullet_M(0, this->m_pos, offset, !this->m_left);
-			bullet->SetLayer(LAYER::ENEMY);
-			CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
-			m_bulletCount++;
-		}
-		//
-		if (this->m_waitForShoot <= 0)
-		{
-			this->m_waitForShoot = 0.70f; // thoi gian delay frame 8
-			this->m_bulletCount = 0;
-		}
-		else
-		{
-			this->m_waitForShoot -= deltaTime;
+			if (m_bulletCount == 0)
+			{
+				CBullet_M* bullet = new CBullet_M(0, this->m_pos, offset, !this->m_left);
+				bullet->SetLayer(LAYER::ENEMY);
+				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
+				m_bulletCount++;
+			}
+			else
+			{
+				this->m_isShoot = false;
+			}
+			//
+			if (this->m_waitForShoot <= 0)
+			{
+				this->m_waitForShoot = 0.70f; // thoi gian delay frame 8
+				this->m_bulletCount = 0;
+				this->m_isShoot = true;
+			}
+			else
+			{
+				this->m_waitForShoot -= deltaTime;
+			}
 		}
 	}
 #pragma endregion
@@ -160,33 +164,34 @@ void CGunner::SetFrame(float deltaTime)
 	//Chuyen doi frame
 	switch (this->m_stateCurrent)
 	{
-	case GUNNER_STATE::GN_IS_NORMAL:
-	{
-									   if (this->m_isShoot)
-									   {
-										   this->m_startFrame = 0;
-										   this->m_endFrame = 1;
-									   }
-									   else
-									   {
-										   this->m_startFrame = 0;
-										   this->m_endFrame = 0;
-									   }
-									   break;
-	}
-	case GUNNER_STATE::GN_IS_DIE:
-	{
-									CExplosionEffect* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
-									effect->SetAlive(true);
-									effect->SetPos(this->m_pos);
-									this->m_isALive = false;
-									break;
-	}
-	default:
-		break;
+		case GUNNER_STATE::GN_IS_NORMAL:
+		{
+			this->m_startFrame = 0;
+			this->m_endFrame = 0;
+			if (!this->m_isShoot && this->m_bulletCount == 0)
+				this->m_stateCurrent = GUNNER_STATE::GN_IS_SHOOTTING;
+			break;
+		}
+	
+		case GUNNER_STATE::GN_IS_SHOOTTING:
+		{
+			this->m_startFrame = 0;
+			this->m_endFrame = 1;
+			this->m_isShoot = true;
+			break;
+		}
+		case GUNNER_STATE::GN_IS_DIE:
+		{
+			CExplosionEffect* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
+			effect->SetAlive(true);
+			effect->SetPos(this->m_pos);
+			this->m_isALive = false;
+			break;
+		}
+		default:
+			break;
 	}
 }
-
 
 RECT* CGunner::GetBound()
 {

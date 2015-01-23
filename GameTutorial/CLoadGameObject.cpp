@@ -4,7 +4,7 @@
 #include "CDrawObject.h"
 #include "CFactoryDynamicObject.h"
 #include "CFactoryStaticObject.h"
-#include <algorithm>    // std::sort
+#include <algorithm> 
 
 CLoadGameObject::CLoadGameObject()
 {
@@ -93,6 +93,7 @@ void CLoadGameObject::CreateObjectOnScreen()
 				// Co trong moi nhung k ton tai trong cu
 				if (!contains(m_oldListIdObject, m_listIdObject.at(i)))
 				{
+					//NO bo cho nay sau khi goi change map no trung doi tuong
 					// Them doi tuong vao d/s
 					if(this->m_listObjectCurr.find(m_listIdObject.at(i)) != this->m_listObjectCurr.end())
 					{
@@ -129,6 +130,7 @@ bool CLoadGameObject::contains(std::vector<int> v, int x)
 		return false;
 	}
 }
+
 CGameObject* CLoadGameObject::CreateObject(const std::vector<int>& info)
 {
 	if(!info.empty())
@@ -240,17 +242,15 @@ void CLoadGameObject::Update(float deltaTime)
 			++it)
 		{
 			CGameObject* gameObj = *it;
-			//if(gameObj->GetIDType() != 15)
-			//{
-				///gameObj->Update(deltaTime);
-				gameObj->Update(deltaTime, this->m_listGameObject);
-			//}
+			gameObj->Update(deltaTime, this->m_listGameObject);
 		}
 	}
 }
 
 void CLoadGameObject::LoadGameObjectFromFile(const std::string& filePath) 
 {
+	this->m_listAllGameObject->clear();
+	//
 	int mapID;
 	std::string pathItem;
 	typedef pair<int, std::string> Pair;
@@ -303,6 +303,9 @@ std::hash_map<int, CGameObject*> CLoadGameObject::LoadGameObjectInfo(const std::
 
 void CLoadGameObject::ChangeMap(const int& idMap)
 {
+	//Xoa nhung doi tuong con trong viewport map truoc
+	this->m_listIdObject.clear();
+	//
 	if(this->m_listQuadTree)
 	{
 		this->m_quadTree->Clear();
@@ -331,6 +334,31 @@ void CLoadGameObject::ChangeMap(const int& idMap)
 			throw;
 		}
 	}
+}
+
+void CLoadGameObject::Reset(const int& idMap)
+{
+	//Lam rong danh sach doi tuong trong listGameObject- cac doi tuong co tren man hinh
+	if (this->m_listGameObject)
+		m_listGameObject->clear();
+	//
+	if (this->m_listAllGameObject)
+	{
+		this->m_listObjectCurr.clear();
+		std::hash_map<int, std::string>::iterator it = this->m_listAllGameObject->find(idMap);
+		if (it != this->m_listAllGameObject->end())
+		{
+			this->m_listObjectCurr = this->LoadGameObjectInfo(it->second);
+		}
+		else
+		{
+			throw;
+		}
+	}
+	//Load lai danh sach cac doi tuong tren man hinh
+	// TT
+	this->CreateObjectOnScreen();
+	int x = 0;
 }
 
 CLoadGameObject::~CLoadGameObject()

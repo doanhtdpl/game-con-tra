@@ -63,8 +63,7 @@ void CBullet_N::Init()
 		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	}
 	
-	this->m_pos += this->m_offset; //Vi tri cua vien dan
-	
+	this->m_pos += this->m_offset; //Vi tri cua vien dan	
 }
 
 void CBullet_N::MoveUpdate(float deltaTime)
@@ -133,7 +132,7 @@ RECT* CBullet_N::GetBound()
 
 Box CBullet_N::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 1, this->m_height - 1, this->m_vx, this->m_vy);
 }
 
 CBullet_N::~CBullet_N()

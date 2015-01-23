@@ -94,8 +94,11 @@
     <Filter Include="Source Files\GameLoop\InitGame\LoadResource\EffectBackground">
       <UniqueIdentifier>{5b39a3bf-cd32-40e2-83a6-acdc43ce128c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense">
+    <Filter Include="Source Files\GameLoop\InitGame\Scense">
       <UniqueIdentifier>{f2d44d41-2533-4c2a-8a44-2f78d8e48a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop\InitGame\Scense\ScenseItem">
+      <UniqueIdentifier>{86b81a76-e447-4c6d-b08a-ae5d472a4aa0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -312,11 +315,8 @@
     <ClCompile Include="CSubArm.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClCompile>
-    <ClCompile Include="CMenuGame.cpp">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
-    </ClCompile>
     <ClCompile Include="CWinScense.cpp">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+      <Filter>Source Files\GameLoop\InitGame\Scense</Filter>
     </ClCompile>
     <ClCompile Include="CBulletEffect.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Effect</Filter>
@@ -327,20 +327,32 @@
     <ClCompile Include="CMechanicalAlien.cpp">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClCompile>
-    <ClCompile Include="CGameOverItem.cpp">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
-    </ClCompile>
-    <ClCompile Include="CLifeItem.cpp">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
-    </ClCompile>
     <ClCompile Include="CScoreScense.cpp">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+      <Filter>Source Files\GameLoop\InitGame\Scense</Filter>
     </ClCompile>
-    <ClCompile Include="CWord.cpp">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    <ClCompile Include="CSniperBoss.cpp">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="CMenuGameScense.cpp">
+      <Filter>Source Files\GameLoop\InitGame\Scense</Filter>
     </ClCompile>
     <ClCompile Include="CChooseItem.cpp">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+      <Filter>Source Files\GameLoop\InitGame\Scense\ScenseItem</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameOverItem.cpp">
+      <Filter>Source Files\GameLoop\InitGame\Scense\ScenseItem</Filter>
+    </ClCompile>
+    <ClCompile Include="CLifeItem.cpp">
+      <Filter>Source Files\GameLoop\InitGame\Scense\ScenseItem</Filter>
+    </ClCompile>
+    <ClCompile Include="CWordItem.cpp">
+      <Filter>Source Files\GameLoop\InitGame\Scense\ScenseItem</Filter>
+    </ClCompile>
+    <ClCompile Include="CScense.cpp">
+      <Filter>Source Files\GameLoop\InitGame\Scense</Filter>
+    </ClCompile>
+    <ClCompile Include="CScenseManagement.cpp">
+      <Filter>Source Files\GameLoop\InitGame\Scense</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -566,11 +578,8 @@
     <ClInclude Include="CSubArm.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClInclude>
-    <ClInclude Include="CMenuGame.h">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
-    </ClInclude>
     <ClInclude Include="CWinScense.h">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+      <Filter>Source Files\GameLoop\InitGame\Scense</Filter>
     </ClInclude>
     <ClInclude Include="CBulletEffect.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Effect</Filter>
@@ -581,20 +590,32 @@
     <ClInclude Include="CMechanicalAlien.h">
       <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss2</Filter>
     </ClInclude>
-    <ClInclude Include="CGameOverItem.h">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
-    </ClInclude>
-    <ClInclude Include="CLifeItem.h">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
-    </ClInclude>
     <ClInclude Include="CScoreScense.h">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+      <Filter>Source Files\GameLoop\InitGame\Scense</Filter>
     </ClInclude>
-    <ClInclude Include="CWord.h">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+    <ClInclude Include="CSniperBoss.h">
+      <Filter>Source Files\GameLoop\InitGame\GameObject\DynamicObject\Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="CMenuGameScense.h">
+      <Filter>Source Files\GameLoop\InitGame\Scense</Filter>
     </ClInclude>
     <ClInclude Include="CChooseItem.h">
-      <Filter>Source Files\GameLoop\InitGame\GameObject\StaticObject\Ground\Scense</Filter>
+      <Filter>Source Files\GameLoop\InitGame\Scense\ScenseItem</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameOverItem.h">
+      <Filter>Source Files\GameLoop\InitGame\Scense\ScenseItem</Filter>
+    </ClInclude>
+    <ClInclude Include="CLifeItem.h">
+      <Filter>Source Files\GameLoop\InitGame\Scense\ScenseItem</Filter>
+    </ClInclude>
+    <ClInclude Include="CWordItem.h">
+      <Filter>Source Files\GameLoop\InitGame\Scense\ScenseItem</Filter>
+    </ClInclude>
+    <ClInclude Include="CScense.h">
+      <Filter>Source Files\GameLoop\InitGame\Scense</Filter>
+    </ClInclude>
+    <ClInclude Include="CScenseManagement.h">
+      <Filter>Source Files\GameLoop\InitGame\Scense</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include "CCollision.h"
 #include "CContra.h"
 #include "CPoolingObject.h"
+#include "CManageAudio.h"
 
 CBridge::CBridge(void)
 {
@@ -84,6 +85,9 @@ void CBridge::SetFrame(float deltaTime)
 			this->m_endFrame = this->m_currentFrame;
 			if(this->m_isALive)
 			{
+				//Load am thanh no
+				ManageAudio::GetInstance()->playSound(TypeAudio::BRIDGE_BURN_SFX);
+				//
 				D3DXVECTOR2 posEff(this->GetBox().x - 5*this->GetBox().w/8, this->GetBox().y);
 				CExplosionEffect* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
 				effect->SetPos(D3DXVECTOR2(posEff.x /*+ this->m_width / 4*/, posEff.y));
@@ -94,7 +98,6 @@ void CBridge::SetFrame(float deltaTime)
 				effect1->SetAlive(true);
 
 				//
-				//
 				CExplosionEffect* effect2 = CPoolingObject::GetInstance()->GetExplosionEffect();
 				effect2->SetPos(D3DXVECTOR2(posEff.x - 20 /*+ this->m_width / 4*/, posEff.y + 25));
 				effect2->SetAlive(true);
@@ -103,6 +106,7 @@ void CBridge::SetFrame(float deltaTime)
 		else
 		{
 			this->m_isALive = false;
+			ManageAudio::GetInstance()->stopSound(TypeAudio::BRIDGE_BURN_SFX);
 		}
 	}
 }
@@ -135,19 +139,6 @@ Box CBridge::GetBox()
 
 void CBridge::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-	//float normalX = 0;
-	//float normalY = 0;
-	//float moveX = 0.0f;
-	//float moveY = 0.0f;
-	//float timeCollision;
-
-	////Sắp va chạm > 0 và < 1
-	////Hai Box Giao Nhau (Đã va chạm rồi) = 2 và moveX, moveY (độ lún)
-	//timeCollision = CCollision::GetInstance()->Collision(CContra::GetInstance(), this, normalX, normalY, moveX, moveY, deltaTime);
-	//if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
-	//{
-	//	this->m_isCollisionContra = true;
-	//}
 }
 
 

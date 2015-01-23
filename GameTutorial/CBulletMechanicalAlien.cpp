@@ -56,12 +56,12 @@ void CBulletMechanicalAlien::Init()
 	//Khoi tao cac thong so chuyen doi sprite
 	this->m_currentTime = 0;
 	this->m_currentFrame = 0;
-	this->m_elapseTimeChangeFrame = 0.20f;
+	this->m_elapseTimeChangeFrame = 0.40f;
 	this->m_increase = 1;
 	this->m_totalFrame = 4;
 	this->m_column = 4;
 	//
-	this->m_timeDelay = 0.20f;
+	this->m_timeDelay = 0.40f;
 
 	if (!this->m_left)
 	{
@@ -154,7 +154,7 @@ RECT* CBulletMechanicalAlien::GetBound()
 
 Box CBulletMechanicalAlien::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 4, this->m_height - 4, 0, 0);
 }
 
 CBulletMechanicalAlien::~CBulletMechanicalAlien()

@@ -133,6 +133,9 @@ void CTank::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCo
 					this->m_vy = 0;
 					this->m_a = 0;
 					this->m_stateCurrent = TANK_STATE::TANK_IS_DIE;
+
+					// Tang diem cua contra len
+					CContra::GetInstance()->IncreateScore(5000);
 				}
 			}
 			else
@@ -458,7 +461,7 @@ RECT* CTank::GetRectRS()
 
 Box CTank::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 10, this->m_height - 10, this->m_vx, this->m_vy);
 }
 
 CTank::~CTank()

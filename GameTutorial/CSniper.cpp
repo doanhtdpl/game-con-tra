@@ -4,6 +4,7 @@
 #include "CCamera.h"
 #include "CCollision.h"
 #include "CPoolingObject.h"
+#include "CManageAudio.h"
 
 CSniper::CSniper(void)
 {
@@ -57,7 +58,7 @@ void CSniper::Init()
 	}
 
 	this->m_bulletCount = 0;
-	this->m_timeDelay = 2.0f;
+	this->m_timeDelay = 0.20f;
 	this->m_waitForChangeSprite = 0.0f;
 	this->m_waitForShoot = 0.0f;
 
@@ -109,6 +110,10 @@ void CSniper::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 				this->m_stateCurrent = SN_IS_DIE;
 				// Xoa vien dan ra khoi d.s
 				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+				//Load sound die
+				ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+				// Tang diem cua contra len
+				CContra::GetInstance()->IncreateScore(500);
 			}
 			else
 				++it;
@@ -297,7 +302,7 @@ void CSniper::BulletUpdate(float deltaTime)
 	if (this->m_id == 1)
 	{
 		this->m_waitForShoot += deltaTime;
-		if(this->m_waitForShoot > 1.5f)
+		if(this->m_waitForShoot > 2.2f)
 		{
 			this->m_waitForShoot = 0.0f;
 			this->m_isShoot = true;
@@ -309,7 +314,7 @@ void CSniper::BulletUpdate(float deltaTime)
 				this->m_bulletCount = 0;
 				this->m_isShoot = false;
 			}
-			if(this->m_timeDelay >= 0.25f)
+			if(this->m_timeDelay >= 0.2f)
 			{
 				CBullet_N* bullet = new CBullet_N(angle, this->m_pos, offset, !this->m_left);
 				bullet->SetLayer(LAYER::ENEMY);
@@ -460,7 +465,7 @@ Box CSniper::GetBox()
 	}
 	else
 	{
-		return Box(this->m_pos.x, this->m_pos.y, this->m_width - 20, this->m_height, 0, 0);
+		return Box(this->m_pos.x, this->m_pos.y - 10, this->m_width - 20, this->m_height - 15, 0, 0);
 	}
 }
 

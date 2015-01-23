@@ -5,11 +5,12 @@
 #include "CLoadGameObject.h"
 #include "CContra.h"
 
+bool CPoolingObject::m_isContraHaveBulletItemR = false;
+
 CPoolingObject::CPoolingObject()
 {
 
 }
-
 
 void CPoolingObject::CreateEnemyEffect(int size)
 {
@@ -102,6 +103,7 @@ void CPoolingObject::CreateBigStone(int size)
 		}
 	}
 }
+
 void CPoolingObject::CreateWeapon(int size)
 {
 	if (this->m_listWeapon.empty())
@@ -165,7 +167,7 @@ CSoldier* CPoolingObject::GetSoliderObject()
 		}
 		if (objCheck->IsAlive())
 		{
-			count ++;
+			count++;
 		}
 	}
 
@@ -247,11 +249,11 @@ CBigStone* CPoolingObject::GetBigStone()
 	// kiem tra so luong bigStone toi da tren man hinh
 	/*if (count < 4)
 	{
-		count = 0;
-		return obj;
+	count = 0;
+	return obj;
 	}
 	else
-		return nullptr;*/
+	return nullptr;*/
 	return obj;
 }
 
@@ -382,9 +384,10 @@ CBulletLaze* CPoolingObject::GetBulletLaze()
 		return obj;
 	}
 	else
-	return nullptr;
+		return nullptr;
 
 }
+
 void CPoolingObject::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
 	// Update enemyEffect
@@ -407,6 +410,8 @@ void CPoolingObject::Update(float deltaTime, std::vector<CGameObject*>* listObje
 		++it)
 	{
 		CExplosionEffect* obj = *it;
+		if (obj->GetBox().h < 0)
+			int temp = 0;
 		if (obj != NULL && obj->IsAlive())
 		{
 			obj->Update(deltaTime);
@@ -427,6 +432,30 @@ void CPoolingObject::Update(float deltaTime, std::vector<CGameObject*>* listObje
 
 	}
 
+	////Update bullet
+	//for (int i = 0; i < this->m_listBulletOfObject.size(); ++i)
+	//{
+	//	CBullet* obj = this->m_listBulletOfObject.at(i);
+	//	if (obj->GetBox().h < 0)
+	//		int temp = 0;
+
+	//	if (obj != NULL && obj->IsAlive())
+	//	{
+	//		obj->Update(deltaTime);
+	//		obj->Update(deltaTime, listObjectCollision);
+	//		D3DXVECTOR3 pos;
+	//		pos.x = obj->GetPos().x;
+	//		pos.y = obj->GetPos().y;
+	//		pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
+	//		if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0
+	//			|| !obj->IsAlive())
+	//		{
+	//			delete obj;
+	//			this->m_listBulletOfObject.erase(m_listBulletOfObject.begin() + i);
+	//		}
+	//	}
+	//}
+
 	//Update bullet
 	for (std::vector<CBullet*>::iterator it = this->m_listBulletOfObject.begin();
 		it != this->m_listBulletOfObject.end();)
@@ -434,16 +463,15 @@ void CPoolingObject::Update(float deltaTime, std::vector<CGameObject*>* listObje
 		CBullet* obj = *it;
 		if (obj != NULL && obj->IsAlive())
 		{
-			//obj->Update(deltaTime);
 			obj->Update(deltaTime, listObjectCollision);
 			D3DXVECTOR3 pos;
 			pos.x = obj->GetPos().x;
 			pos.y = obj->GetPos().y;
 			pos = CCamera::GetInstance()->GetPointTransform(pos.x, pos.y);
-			if(pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0
+			if (pos.x > __SCREEN_WIDTH || pos.x < 0 || pos.y > __SCREEN_HEIGHT || pos.y < 0
 				|| !obj->IsAlive())
 			{
-				delete obj;
+				//delete obj;
 				it = this->m_listBulletOfObject.erase(it);
 			}
 			else
@@ -595,20 +623,30 @@ void CPoolingObject::Draw()
 			CDrawObject::GetInstance()->Draw(obj);
 		}
 	}
-	////Draw bullet
-	for (std::vector<CBullet*>::iterator it = this->m_listBulletOfObject.begin();
-		it != this->m_listBulletOfObject.end();
-		++it)
+
+	//Draw bullet
+	for (int i = 0; i < this->m_listBulletOfObject.size(); ++i)
 	{
-		CBullet* obj = *it;
+		CBullet* obj = this->m_listBulletOfObject.at(i);//*it;
 		if (obj != NULL && obj->IsAlive())
 		{
 			CDrawObject::GetInstance()->Draw(obj);
 		}
 	}
 
-	//
 	////Draw bullet
+	//for (std::vector<CBullet*>::iterator it = this->m_listBulletOfObject.begin();
+	//	it != this->m_listBulletOfObject.end();
+	//	++it)
+	//{
+	//	CBullet* obj = *it;
+	//	if (obj != NULL && obj->IsAlive())
+	//	{
+	//		CDrawObject::GetInstance()->Draw(obj);
+	//	}
+	//}
+
+	//Draw bullet Item
 	for (std::vector<CBulletItem*>::iterator it = this->m_listBulletItem.begin();
 		it != this->m_listBulletItem.end();
 		++it)
@@ -618,7 +656,6 @@ void CPoolingObject::Draw()
 		{
 			CDrawObject::GetInstance()->Draw(obj);
 		}
-
 	}
 
 	////Draw Weapon
@@ -711,4 +748,44 @@ void CPoolingObject::Draw()
 		}
 
 	}
+}
+
+void CPoolingObject::Reset()
+{
+	if (m_listBulletOfObject.size() > 0)
+		m_listBulletOfObject.clear();
+	if (m_listWeapon.size() > 0)
+		m_listWeapon.clear();
+	if (m_listBulletLaze.size() > 0)
+		m_listBulletLaze.clear();
+	if (m_listBulletScubaSolider.size() > 0)
+		m_listBulletScubaSolider.clear();
+	if (m_listBigStone.size() > 0)
+		m_listBigStone.clear();
+	if (m_listCapsuleBoss.size() > 0)
+		m_listCapsuleBoss.clear();
+	if (m_listSolider.size() > 0)
+		m_listSolider.clear();
+	if (m_listSoliderShoot.size() > 0)
+		m_listSoliderShoot.clear();
+	if (m_listBulletItem.size() > 0)
+		m_listBulletItem.clear();
+	if (m_enemyEffect.size() > 0)
+		m_enemyEffect.clear();
+	if (m_explosionEffect.size() > 0)
+		m_explosionEffect.clear();
+	if (m_bulletEffect.size() > 0)
+		m_bulletEffect.clear();
+	//
+	this->CreateBulletItem(20);
+	this->CreateEnemyEffect(30);
+	this->CreateExplosionEffect(30);
+	this->CreateBulletEffect(40);
+	this->CreateSoliderObject(10);
+	this->CreateSoliderShootObject(10);
+	this->CreateBigStone(12);
+	this->CreateSoliderShootObject(10);
+	this->CreateCapsuleBoss(25);
+	this->CreateBulletLaze(10);
+	this->CreateWeapon(15);
 }

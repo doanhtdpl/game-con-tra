@@ -3,6 +3,8 @@
 #include "CBullet.h"
 #include "CPoolingObject.h"
 #include "CCamera.h"
+#include "CContra.h"
+#include "CManageAudio.h"
 
 CBigStone::CBigStone(void)
 {
@@ -126,6 +128,10 @@ void CBigStone::OnCollision(float deltaTime, std::vector<CGameObject*>* listObje
 					effect->SetAlive(true);
 					effect->SetPos(this->m_pos);
 					this->m_isALive = false;
+					//Load sound die
+					ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+					// Tang diem cua contra len
+					CContra::GetInstance()->IncreateScore(500);
 				}
 			}
 			else
@@ -194,7 +200,7 @@ RECT* CBigStone::GetRectRS()
 
 Box CBigStone::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 10, this->m_height - 10, this->m_vx, this->m_vy);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 15, this->m_height - 15, this->m_vx, this->m_vy);
 }
 
 CBigStone::~CBigStone()

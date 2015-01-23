@@ -44,7 +44,7 @@ void CEnemyEffect::ChangeFrame(float deltaTime)
 		}
 		this->m_currentTime -= this->m_elapseTimeChangeFrame;
 	}
-	
+
 }
 
 void CEnemyEffect::Update(float deltaTime)

@@ -11,6 +11,7 @@
 #include "CPoolingObject.h"
 #include <vector>
 #include "CLoadGameObject.h"
+#include "CManageAudio.h"
 
 CDefenseCannonGun::CDefenseCannonGun(bool isGunLeft)
 {
@@ -105,6 +106,9 @@ void CDefenseCannonGun::Update(float deltaTime, std::vector<CGameObject*>* listO
 		this->BulletUpdate(deltaTime);
 		this->OnCollision(deltaTime, listObjectCollision);
 	}
+	else
+		//play sound
+		ManageAudio::GetInstance()->stopSound(TypeAudio::ENEMY_DEAD_SFX);
 }
 
 void CDefenseCannonGun::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -137,6 +141,10 @@ void CDefenseCannonGun::OnCollision(float deltaTime, std::vector<CGameObject*>* 
 			{
 				// Gan trang thai die cho doi tuong
 				this->m_stateCurrent = DC_GUN_STATE::DC_GUN_IS_DIE;
+				//play sound
+				ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+				// Tang diem cua contra len
+				CContra::GetInstance()->IncreateScore(1000);
 			}
 		}
 		else
@@ -263,7 +271,7 @@ RECT* CDefenseCannonGun::GetRectRS()
 
 Box CDefenseCannonGun::	GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height - 2, 0, 0);
 }
 
 CDefenseCannonGun::~CDefenseCannonGun()

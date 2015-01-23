@@ -101,10 +101,13 @@
     <ClCompile Include="CHeadBoss.cpp" />
     <ClCompile Include="CLifeItem.cpp" />
     <ClCompile Include="CMechanicalAlien.cpp" />
-    <ClCompile Include="CMenuGame.cpp" />
+    <ClCompile Include="CMenuGameScense.cpp" />
+    <ClCompile Include="CScense.cpp" />
+    <ClCompile Include="CScenseManagement.cpp" />
     <ClCompile Include="CScoreScense.cpp" />
     <ClCompile Include="CScubaSolider.cpp" />
     <ClCompile Include="CSniper.cpp" />
+    <ClCompile Include="CSniperBoss.cpp" />
     <ClCompile Include="CSoldier.cpp" />
     <ClCompile Include="CFactoryDynamicObject.cpp" />
     <ClCompile Include="CFactoryStaticObject.cpp" />
@@ -136,7 +139,7 @@
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="CEnemyEffect.cpp" />
     <ClCompile Include="CWinScense.cpp" />
-    <ClCompile Include="CWord.cpp" />
+    <ClCompile Include="CWordItem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CStateManagement.cpp" />
     <ClCompile Include="CStaticObject.cpp" />
@@ -183,10 +186,13 @@
     <ClInclude Include="CHeadBoss.h" />
     <ClInclude Include="CLifeItem.h" />
     <ClInclude Include="CMechanicalAlien.h" />
-    <ClInclude Include="CMenuGame.h" />
+    <ClInclude Include="CMenuGameScense.h" />
+    <ClInclude Include="CScense.h" />
+    <ClInclude Include="CScenseManagement.h" />
     <ClInclude Include="CScoreScense.h" />
     <ClInclude Include="CScubaSolider.h" />
     <ClInclude Include="CSniper.h" />
+    <ClInclude Include="CSniperBoss.h" />
     <ClInclude Include="CSoldier.h" />
     <ClInclude Include="CFactoryObject.h" />
     <ClInclude Include="CFactoryDynamicObject.h" />
@@ -234,7 +240,7 @@
     <ClInclude Include="CManageAudio.h" />
     <ClInclude Include="CSoundUtil.h" />
     <ClInclude Include="CWinScense.h" />
-    <ClInclude Include="CWord.h" />
+    <ClInclude Include="CWordItem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

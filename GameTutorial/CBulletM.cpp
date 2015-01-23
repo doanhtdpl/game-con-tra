@@ -46,8 +46,8 @@ void CBullet_M::Init()
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
 	this->m_canJump = false;
-	this->m_vxDefault = 400.0f;
-	this->m_vyDefault = 400.0f;
+	this->m_vxDefault = 350.0f;
+	this->m_vyDefault = 350.0f;
 
 	if(!this->m_left)
 	{
@@ -133,7 +133,7 @@ RECT* CBullet_M::GetBound()
 
 Box CBullet_M::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 6, this->m_height - 6, 0, 0);
 }
 
 CBullet_M::~CBullet_M()

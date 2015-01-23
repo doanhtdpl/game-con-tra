@@ -3,6 +3,8 @@
 #include <math.h>
 #include "CCamera.h"
 #include "CPoolingObject.h"
+#include "CStateGamePlay.h"
+#include "CManageAudio.h"
 
 CDefenseCannon::CDefenseCannon(void)
 {
@@ -54,12 +56,13 @@ void CDefenseCannon::Init()
 
 	//Khoi tao cac doi tuong con
 	std::vector<int> info;
-	info.push_back(11002);
-	info.push_back(this->m_pos.x - 70);
-	info.push_back(this->m_pos.y + 133);
-	info.push_back(52);
-	info.push_back(78);
-	this->sniper = new CSniper(info);
+	info.push_back(17004);
+	info.push_back(this->m_pos.x - 80);
+	info.push_back(this->m_pos.y + 145);
+	info.push_back(48);
+	info.push_back(80);
+	this->sniper = new CSniperBoss(info);
+
 	this->gunLeft = new CDefenseCannonGun(true, this->m_pos.x, this->m_pos.y);
 	this->gunRight = new CDefenseCannonGun(false, this->m_pos.x, this->m_pos.y);
 	this->turrect = new CDefenseCannonTurret(this->m_pos.x, this->m_pos.y);
@@ -74,39 +77,43 @@ void CDefenseCannon::Update(float deltaTime)
 
 void CDefenseCannon::Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
 {
-	this->SetFrame();
-	this->ChangeFrame(deltaTime);
-	//////Update cho cac doi tuong con
-	//Co doi tuong linh nup tren dau nua
-	// update effect isalive
-	if (this->sniper->IsAlive())
-		this->sniper->Update(deltaTime, listObjectCollision);
-	//
-	if (this->turrect->IsAlive())
-		this->turrect->Update(deltaTime, listObjectCollision);
-
-	// TT test
-	// 2 gun die
-	if (!this->gunLeft->IsAlive())
+	if (this->m_isALive)
 	{
-		this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_GUNLEFT_DIE;
-	}
-	if (!this->gunRight->IsAlive())
-	{
-		this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_GUNRIGHT_DIE;
-	}
+		this->SetFrame(deltaTime);
+		this->ChangeFrame(deltaTime);
+		//////Update cho cac doi tuong con
+		//Co doi tuong linh nup tren dau nua
+		// update effect isalive
+		if (this->sniper->IsAlive())
+			this->sniper->Update(deltaTime, listObjectCollision);
+		//
+		if (this->turrect->IsAlive())
+			this->turrect->Update(deltaTime, listObjectCollision);
 
-	// Boss die
-	if (!this->turrect->IsAlive())
-	{
-		this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_IS_DIE;
-	}
+		// TT test
+		// 2 gun die
+		if (!this->gunLeft->IsAlive())
+		{
+			this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_GUNLEFT_DIE;
+		}
+		if (!this->gunRight->IsAlive())
+		{
+			this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_GUNRIGHT_DIE;
+		}
 
-	this->gunLeft->Update(deltaTime, listObjectCollision);
-	this->gunRight->Update(deltaTime, listObjectCollision);
+		// Boss die
+		if (!this->turrect->IsAlive())
+		{
+			this->sniper->SetAlive(false);
+			this->m_stateCurrent = DEFENSE_CANNON_STATE::DC_IS_DIE;
+		}
+
+		this->gunLeft->Update(deltaTime, listObjectCollision);
+		this->gunRight->Update(deltaTime, listObjectCollision);
+	}
 }
 
-void CDefenseCannon::SetFrame()
+void CDefenseCannon::SetFrame(float deltaTime)
 {
 	//Chuyen doi frame
 	switch (this->m_stateCurrent)
@@ -166,7 +173,9 @@ void CDefenseCannon::SetFrame()
 			this->turrect->SetAlive(false);
 			this->m_startFrame = 4;
 			this->m_endFrame = 11;
-			//Sang lam hieu ung
+			//Load sound boss die
+			ManageAudio::GetInstance()->playSound(TypeAudio::BOSS_DEAD_SFX);
+			//Tinh
 			if (m_currentFrame != m_oldFrame)
 			{
 				m_oldFrame = m_currentFrame;
@@ -188,13 +197,21 @@ void CDefenseCannon::SetFrame()
 				effect->SetPos(posEff);
 			}
 			//tinh
-			if (this->m_currentFrame == 11)
+			if (this->m_currentFrame == 11) 
 			{
 				this->m_currentFrame = 11;
 				this->m_startFrame = 11;
 				this->m_endFrame = 11;
+			
+				//Dung play sound boss die
+				ManageAudio::GetInstance()->stopSound(TypeAudio::BOSS_DEAD_SFX);
+
+				if (!CScenseManagement::m_isWinScenseShowed)
+				//gan cho bien hien thi mann hinh diem qua man
+					CContra::GetInstance()->m_isBossCurrentDie = true;
+				else
+					this->m_isALive = false;
 			}
-			//Cho 1 khoang thoi gian rui chuyen sang map 2
 			break;
 		}
 	default:

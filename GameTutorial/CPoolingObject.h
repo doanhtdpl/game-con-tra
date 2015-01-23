@@ -59,7 +59,9 @@ protected:
 	std::vector<CBulletEffect*> m_bulletEffect;
 	std::vector<CBulletItem*> m_listBulletItem;
 
-private:
+public:
+	static bool m_isContraHaveBulletItemR;
+	void Reset();
 };
 
 

@@ -122,6 +122,11 @@ Box CBridgeStone::GetBox()
 	return Box(this->m_pos.x, this->m_pos.y - 5, this->m_width, this->m_height - 10, this->m_vx, this->m_vy);
 }
 
+float CBridgeStone::GetVx()
+{
+	return this->m_vx;
+}
+
 CBridgeStone::~CBridgeStone()
 {
 

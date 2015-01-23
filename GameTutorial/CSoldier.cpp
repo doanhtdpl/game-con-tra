@@ -4,6 +4,7 @@
 #include "CContra.h"
 #include "CLoadGameObject.h"
 #include "CCamera.h"
+#include "CManageAudio.h"
 
 CSoldier::CSoldier(void)
 {
@@ -106,6 +107,10 @@ void CSoldier::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjec
 				this->m_stateCurrent = SOLDIER_STATE::S_IS_DIE;
 				// Xoa vien dan ra khoi d.s
 				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+				//Load sound die
+				ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+				// Tang diem cua contra len
+				CContra::GetInstance()->IncreateScore(500);
 			}
 			else
 				++it;
@@ -344,7 +349,7 @@ RECT* CSoldier::GetRectRS()
 
 Box CSoldier::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 26, this->m_height - 8, this->m_vx, this->m_vy);
+	return Box(this->m_pos.x, this->m_pos.y - 4, this->m_width - 16, this->m_height - 8, this->m_vx, this->m_vy);
 }
 
 void CSoldier::setJump(bool jump)

@@ -49,7 +49,7 @@ void CBullet_Capsule::Init()
 	this->m_isMoveRight = false;
 	this->m_canJump = false;
 	this->m_vxDefault = 0.0f;
-	this->m_vyDefault = 120.0f;
+	this->m_vyDefault = 130.0f;
 	this->m_vx = this->m_vxDefault;
 	this->m_vy = this->m_vyDefault;
 	this->m_a = 2.0f;
@@ -71,6 +71,7 @@ void CBullet_Capsule::Init()
 	}
 
 	this->m_pos += this->m_offset; //Vi tri cua vien dan
+	this->m_layer = LAYER::ENEMY;
 }
 
 void CBullet_Capsule::MoveUpdate(float deltaTime)
@@ -128,8 +129,7 @@ void CBullet_Capsule::OnCollision(float deltaTime, std::vector<CGameObject*>* li
 	std::vector<CGameObject*>::iterator it;
 	std::vector<CBullet*>::iterator cit;
 	//Xet va cham giua dan voi dat
-	for (it = listObjectCollision->begin();
-		it != listObjectCollision->end(); ++it)
+	for (it = listObjectCollision->begin(); it != listObjectCollision->end(); ++it)
 	{
 		CGameObject* obj = *it;
 		// Neu doi tuong la ground
@@ -181,7 +181,7 @@ RECT* CBullet_Capsule::GetBound()
 
 Box CBullet_Capsule::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 2, this->m_height - 2, 0, 0);
 }
 
 CBullet_Capsule::~CBullet_Capsule()

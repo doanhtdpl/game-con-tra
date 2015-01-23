@@ -2,6 +2,7 @@
 #include "CPoolingObject.h"
 #include "CCollision.h"
 #include "CBulletMechanicalAlien.h"
+#include "CManageAudio.h"
 
 CSubArm::CSubArm()
 {
@@ -125,6 +126,8 @@ void CSubArm::BulletUpdate(float deltaTime)
 				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				this->m_timeDelayWaitShoot = 0;
 				m_bulletCount++;
+				//Load sound
+				ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_ATTACKED_SFX);
 			}
 
 			this->m_timeDelayWaitShoot += deltaTime;
@@ -326,7 +329,7 @@ RECT* CSubArm::GetRectRS()
 
 Box CSubArm::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 2, this->m_height - 2, this->m_vx, this->m_vy);
 }
 
 float CSubArm::GetAngle()

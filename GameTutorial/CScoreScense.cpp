@@ -1,10 +1,15 @@
+#include <iostream> 
+#include <fstream> 
+#include <iostream> 
 #include "CScoreScense.h"
 #include "CInput.h"
 #include "CStateGamePlay.h"
 #include "CStateManagement.h"
 #include "CDrawObject.h"
-#include "CMenuGame.h"
+#include "CMenuGameScense.h"
 #include "CLoadGameObject.h"
+#include "CPoolingObject.h"
+#include "CManageAudio.h"
 
 CScoreScense::CScoreScense(bool isScenseGameOver)
 {
@@ -49,41 +54,44 @@ void CScoreScense::Init()
 	this->m_startFrame = 0;
 	this->m_endFrame = 1;
 	//
-	this->m_timeDelay = 3.0f;
+	this->m_timeDelay = 0.0f;
+	this->m_isHided = false;
+	//
+	this->m_isPlaySoundGameOver = false;
 	//
 	this->lenghtlPWord = this->lenghtHIWord = 2;
 	this->lenghtRestWord = 4;
 	//
 	string tempName = "LP";
-	this->m_listLPWord = new CWord*[this->lenghtlPWord];
+	this->m_listLPWord = new CWordItem*[this->lenghtlPWord];
 	for (int i = 0; i < this->lenghtlPWord; i++)
 	{
-		int tempNum = InitWord(tempName.at(i));
+		int tempNum = this->InitWord(tempName.at(i));
 		if (tempNum != -1)
 		{
-			this->m_listLPWord[i] = new CWord(tempNum);
+			this->m_listLPWord[i] = new CWordItem(tempNum);
 		}
 	}
 	//Tao moi rest
 	tempName = "REST";
-	this->m_listRestWord = new CWord*[this->lenghtRestWord];
+	this->m_listRestWord = new CWordItem*[this->lenghtRestWord];
 	for (int i = 0; i < this->lenghtRestWord; i++)
 	{
-		int tempNum = InitWord(tempName.at(i));
+		int tempNum = this->InitWord(tempName.at(i));
 		if (tempNum != -1)
 		{
-			this->m_listRestWord[i] = new CWord(tempNum);
+			this->m_listRestWord[i] = new CWordItem(tempNum);
 		}
 	}
 	//Tao moi HI, hight score
 	tempName = "HI";
-	this->m_listHIWord = new CWord*[this->lenghtHIWord];
+	this->m_listHIWord = new CWordItem*[this->lenghtHIWord];
 	for (int i = 0; i < this->lenghtHIWord; i++)
 	{
-		int tempNum = InitWord(tempName.at(i));
+		int tempNum = this->InitWord(tempName.at(i));
 		if (tempNum != -1)
 		{
-			this->m_listHIWord[i] = new CWord(tempNum);
+			this->m_listHIWord[i] = new CWordItem(tempNum);
 		}
 	}
 	#pragma endregion
@@ -99,24 +107,24 @@ void CScoreScense::Init()
 		//tao moi lable Continue, End
 		string tempContinue = "CONTINUE";
 		this->lenghtContinueWord = tempContinue.size();
-		this->m_listContinueWord = new CWord*[this->lenghtContinueWord];
+		this->m_listContinueWord = new CWordItem*[this->lenghtContinueWord];
 		for (int i = 0; i < this->lenghtContinueWord; i++)
 		{
 			int tempNum = InitWord(tempContinue.at(i));
 			if (tempNum != -1)
 			{
-				this->m_listContinueWord[i] = new CWord(tempNum);
+				this->m_listContinueWord[i] = new CWordItem(tempNum);
 			}
 		}
 		string tempEnd = "END";
 		this->lenghtEndWord = tempEnd.size();
-		this->m_listEndWord = new CWord*[this->lenghtEndWord];
+		this->m_listEndWord = new CWordItem*[this->lenghtEndWord];
 		for (int i = 0; i < this->lenghtEndWord; i++)
 		{
 			int tempNum = InitWord(tempEnd.at(i));
 			if (tempNum != -1)
 			{
-				this->m_listEndWord[i] = new CWord(tempNum);
+				this->m_listEndWord[i] = new CWordItem(tempNum);
 			}
 		}
 		//Khoi tao doi tuong Choose Item
@@ -133,34 +141,88 @@ void CScoreScense::Init()
 	#pragma endregion
 
 	#pragma region KHOI TAO CHUNG 2
-	this->m_listStageWord = new CWord*[this->lenghtStageWord];
+	this->m_listStageWord = new CWordItem*[this->lenghtStageWord];
 	for (int i = 0; i < this->lenghtStageWord; i++)
 	{
 		int tempNum = InitWord(tempName.at(i));
 		if (tempNum != -1)
 		{
-			this->m_listStageWord[i] = new CWord(tempNum);
+			this->m_listStageWord[i] = new CWordItem(tempNum);
 		}
 	}
+	this->m_isReadFileHightScore = false;
 	#pragma endregion
+
+	//Sound
+	//Dung sound background menu
+	ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_MENU);
 }
 
 void CScoreScense::Update(float deltaTime)
 {
+	//Am thanh
+	switch (CMenuGameScense::m_mapId)
+	{
+		case 10:
+			//Dung sound background map 1
+			ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
+			break;
+		case 11: 
+			//Dung sound background map 3
+			ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_STATE_3);
+			break;
+		case 12: 
+			//Dung sound background map 5
+			ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_STATE_5);
+			break;
+		default:
+			break;
+	}
+	
+	//
+	#pragma region SU KIEN BAN PHIM
 	if (this->m_isScenseGameOver)
 	{
-		//this->Move(deltaTime);
-		int te = CInput::GetInstance()->GetKeyDown();
+		//Sound
+		if (!this->m_isPlaySoundGameOver)
+		{
+			ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_GAMEOVER);
+			this->m_isPlaySoundGameOver = true;
+		}
+		//
 		if (CInput::GetInstance()->IsKeyDown(DIK_RETURN))
 		{
 			if (this->m_itemChoose->m_SelectedId == 0)
 			{
-				CStateManagement::GetInstance()->ChangeState(new CStateGamePlay(CMenuGame::m_mapId));
 				CContra::GetInstance()->Reset();
-				CLoadGameObject::GetInstance()->ChangeMap(CMenuGame::m_mapId);
+				CPoolingObject::GetInstance()->Reset();
+				CLoadGameObject::GetInstance()->Reset(CMenuGameScense::m_mapId);
+				CLoadGameObject::GetInstance()->ChangeMap(CMenuGameScense::m_mapId);
+
+				//Dung am thanh man hinh Game Over
+				switch (CMenuGameScense::m_mapId)
+				{
+				case 10:
+					//Dung sound background map 1
+					ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
+					break;
+				case 11:
+					//Dung sound background map 3
+					ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_3);
+					break;
+				case 12:
+					//Dung sound background map 5
+					ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_5);
+					break;
+				default:
+					break;
+				}
+				ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_GAMEOVER);
+				this->m_isPlaySoundGameOver = false;
 			}
 			else
 			{
+				ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_GAMEOVER);
 				//Exit game
 				std::exit(1);
 			}
@@ -185,6 +247,18 @@ void CScoreScense::Update(float deltaTime)
 			}
 		}
 	}
+	#pragma endregion 
+
+	#pragma region UPDATE CHO CAC CHU
+	//Update cho chu nhap nhay
+	if (this->m_timeDelay > 0.2f)
+	{
+		this->m_timeDelay = 0.0f;
+		this->m_isHided = !this->m_isHided;
+	}
+	else
+		this->m_timeDelay += deltaTime;
+	#pragma endregion 
 }
 
 void CScoreScense::Move(float deltaTime)
@@ -207,20 +281,23 @@ void CScoreScense::Draw()
 		CDrawObject::GetInstance()->Draw(this->m_listLPWord[i]);
 	}
 	//hien thi diem len(LP)
-	for (int i = 0; i < this->lenghtNumberScore; i++)
+	if (this->m_isHided)
 	{
-		CDrawObject::GetInstance()->Draw(this->m_listNumberScore[i]);
+		for (int i = 0; i < this->lenghtNumberScore; i++)
+		{
+			CDrawObject::GetInstance()->Draw(this->m_listNumberScore[i], D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
+		//hien thi chu  noi dung HI len
+		for (int i = 0; i < this->lenghtNumberHightScore; i++)
+		{
+			CDrawObject::GetInstance()->Draw(this->m_listHightScoreNumber[i], D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
 	}
 	//hien thi chu HI len
 	for (int i = 0; i < this->lenghtHIWord; i++)
 	{
 		this->m_listHIWord[i]->SetPos(D3DXVECTOR2(this->m_pos.x - 70 + i * 16, this->m_pos.y + 60));
 		CDrawObject::GetInstance()->Draw(this->m_listHIWord[i]);
-	}
-	//hien thi chu  noi dung HI len
-	for (int i = 0; i < this->lenghtNumberHightScore; i++)
-	{
-		CDrawObject::GetInstance()->Draw(this->m_listHightScoreNumber[i]);
 	}
 	//Luon hien vi thay doi dc
 	//hien thi chu STAGE len
@@ -290,96 +367,6 @@ void CScoreScense::Draw()
 	#pragma endregion
 }
 
-int CScoreScense::InitWord(char _c)
-{
-	int temp = -1;
-	switch (_c)
-	{
-	case 'A'://a
-		temp = 10;
-		break;
-	case 'B'://b
-		temp = 11;
-		break;
-	case 'C'://c
-		temp = 12;
-		break;
-	case 'D'://d
-		temp = 13;
-		break;
-	case 'E'://e
-		temp = 14;
-		break;
-	case 'F'://f
-		temp = 15;
-		break;
-	case 'G'://g
-		temp = 16;
-		break;
-	case 'H'://h
-		temp = 17;
-		break;
-	case 'I'://i
-		temp = 18;
-		break;
-	case 'J'://j
-		temp = 19;
-		break;
-	case 'K'://k
-		temp = 20;
-		break;
-	case 'L'://l
-		temp = 21;
-		break;
-	case 'M'://m
-		temp = 22;
-		break;
-	case 'N'://n
-		temp = 23;
-		break;
-	case 'O'://o
-		temp = 24;
-		break;
-	case 'P'://p
-		temp = 25;
-		break;
-	case 'Q'://q
-		temp = 26;
-		break;
-	case 'R'://r
-		temp = 27;
-		break;
-	case 'S'://s
-		temp = 28;
-		break;
-	case 'T'://t
-		temp = 29;
-		break;
-	case 'U'://u
-		temp = 30;
-		break;
-	case 'V'://v
-		temp = 31;
-		break;
-	case 'W'://w
-		temp = 32;
-		break;
-	case 'X'://x
-		temp = 33;
-		break;
-	case 'Y'://y
-		temp = 34;
-		break;
-	case 'Z'://z
-		temp = 35;
-		break;
-	case ' '://Sapce
-		temp = 36;
-		break;
-	}
-	return temp;
-}
-
 void CScoreScense::InitScore(int score)
 {
 	this->m_ScoreMap = score;
@@ -390,15 +377,14 @@ void CScoreScense::InitScore(int score)
 	//
 	this->lenghtNumberScore = tempScore.size();
 	//Khoi tao cac doi tuong chu so
-	this->m_listNumberScore = new CWord*[tempScore.size()];
+	this->m_listNumberScore = new CWordItem*[tempScore.size()];
 	
 	string temp;
 	for (int i = 0; i < tempScore.size(); i++)
 	{
 		temp = tempScore.at(i);
-		this->m_listNumberScore[i] = new CWord(atoi(temp.c_str()));
+		this->m_listNumberScore[i] = new CWordItem(atoi(temp.c_str()));
 		this->m_listNumberScore[i]->SetPos(D3DXVECTOR2(this->m_pos.x - 100 + i * 16, this->m_pos.y + 160));
-		//this->m_listNumberScore[i]->SetPos(D3DXVECTOR2(this->m_pos.x + 15 + i * 16, this->m_pos.y + 90));
 	}
 }
 
@@ -418,36 +404,70 @@ void CScoreScense::InitNameStage(int mapId)
 		break;
 	}
 	this->lenghtWordStateName = tempName.size();
-	this->m_listWordStageName = new CWord*[tempName.size()];
+	this->m_listWordStageName = new CWordItem*[tempName.size()];
 	for (int i = 0; i < tempName.size(); i++)
 	{
 		int tempNum = InitWord(tempName.at(i));
 		if (tempNum != -1)
 		{
-			this->m_listWordStageName[i] = new CWord(tempNum);
-			this->m_listWordStageName[i]->SetPos(D3DXVECTOR2(this->m_pos.x - 60 + i * 16, this->m_pos.y - 80));
+			this->m_listWordStageName[i] = new CWordItem(tempNum);
+			this->m_listWordStageName[i]->SetPos(D3DXVECTOR2(this->m_pos.x - 55 + i * 16, this->m_pos.y - 80));
 		}
 	}
 }
 
 void CScoreScense::InitHightScore(int hightScore)
 {
-	//Tinh toan ra hight Score va so word
+	#pragma region DOC/GHI FILE HIGHT SCORE
+	//Kiem tra neu nhu hightScore truyen vao ma nho hon hight score trogn file
+	//thi hight score la trogn file nguoc lai ghi hight score moi xuong file
+	if (!this->m_isReadFileHightScore)
+	{
+		this->m_hightScore = hightScore;
+		//
+		int hightScoreFile = 0;
+		//Doc file HightScore len
+		ifstream readFileHightScore(__HightScore_Path__);
+		if (readFileHightScore.is_open())
+		{
+			readFileHightScore >> hightScoreFile;
+		}
+		//Doc xong file
+		if (hightScore > hightScoreFile)
+		{
+			hightScoreFile = hightScore;
+			//Ghi file xuong HighScore
+			ofstream writeFileHightScore(__HightScore_Path__);
+			writeFileHightScore << hightScoreFile;
+			writeFileHightScore.close();
+			//Ghi xong file
+		}
+		else
+		{
+			this->m_hightScore = hightScoreFile;
+		}
+
+		this->m_isReadFileHightScore = true;
+	}
+	#pragma endregion
+
+	#pragma region Tinh toan ra hight Score(string) va so word
 	stringstream ss;
-	ss << hightScore;
+	ss << this->m_hightScore;
 	string tempHightScore = ss.str();
 	//
 	this->lenghtNumberHightScore = tempHightScore.size();
 	//Khoi tao cac doi tuong chu so
-	this->m_listHightScoreNumber = new CWord*[tempHightScore.size()];
+	this->m_listHightScoreNumber = new CWordItem*[tempHightScore.size()];
 
 	string temp;
 	for (int i = 0; i < tempHightScore.size(); i++)
 	{
 		temp = tempHightScore.at(i);
-		this->m_listHightScoreNumber[i] = new CWord(atoi(temp.c_str()));
+		this->m_listHightScoreNumber[i] = new CWordItem(atoi(temp.c_str()));
 		this->m_listHightScoreNumber[i]->SetPos(D3DXVECTOR2(this->m_pos.x + 20 + i * 16, this->m_pos.y + 60));
 	}
+	#pragma endregion
 }
 
 void CScoreScense::InitCountAlive(int countAlive)
@@ -459,13 +479,13 @@ void CScoreScense::InitCountAlive(int countAlive)
 	//
 	this->lenghtCountAliveNumber = tempCountAlive.size();
 	//Khoi tao cac doi tuong chu so
-	this->m_listCountAliveNumber = new CWord*[tempCountAlive.size()];
+	this->m_listCountAliveNumber = new CWordItem*[tempCountAlive.size()];
 
 	string temp;
 	for (int i = 0; i < tempCountAlive.size(); i++)
 	{
 		temp = tempCountAlive.at(i);
-		this->m_listCountAliveNumber[i] = new CWord(atoi(temp.c_str()));
+		this->m_listCountAliveNumber[i] = new CWordItem(atoi(temp.c_str()));
 		this->m_listCountAliveNumber[i]->SetPos(D3DXVECTOR2(this->m_pos.x - 100 + i * 16, this->m_pos.y + 125));
 	}
 }
@@ -491,13 +511,13 @@ void CScoreScense::InitStageNumber(int stageNumberCurrent)
 	//
 	this->lenghtStageNumber = tempStageNumber.size();
 	//Khoi tao cac doi tuong chu so
-	this->m_listStageNumber = new CWord*[tempStageNumber.size()];
+	this->m_listStageNumber = new CWordItem*[tempStageNumber.size()];
 
 	string temp;
 	for (int i = 0; i < tempStageNumber.size(); i++)
 	{
 		temp = tempStageNumber.at(i);
-		this->m_listStageNumber[i] = new CWord(atoi(temp.c_str()));
+		this->m_listStageNumber[i] = new CWordItem(atoi(temp.c_str()));
 		this->m_listStageNumber[i]->SetPos(D3DXVECTOR2(this->m_pos.x + 60 + i * 16, this->m_pos.y - 40));
 	}
 }
@@ -505,9 +525,4 @@ void CScoreScense::InitStageNumber(int stageNumberCurrent)
 RECT* CScoreScense::GetRectRS()
 {
 	return this->UpdateRectResource(this->m_height, this->m_width);
-}
-
-CScoreScense::~CScoreScense()
-{
-
 }

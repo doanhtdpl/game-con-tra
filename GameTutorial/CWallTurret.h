@@ -42,6 +42,7 @@ protected:
 public:
 	int m_bulletCount; //So luong vien dan da ban ra
 	float m_timeDelay;
+	float m_waitForShoot;
 	double m_oldangle;
 	double m_totalCurr;
 	double m_space;

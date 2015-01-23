@@ -4,6 +4,7 @@
 #include "CCamera.h"
 #include "CPoolingObject.h"
 #include "CBulletMechanicalAlien.h"
+#include "CManageAudio.h"
 
 CHeadBoss::CHeadBoss(D3DXVECTOR2 posBoss)
 {
@@ -81,6 +82,9 @@ void CHeadBoss::Update(float deltaTime, std::vector<CGameObject*>* listObjectCol
 		this->BulletUpdate(deltaTime);
 		this->OnCollision(deltaTime, listObjectCollision);
 	}
+	else
+		//play sound
+		ManageAudio::GetInstance()->stopSound(TypeAudio::ENEMY_DEAD_SFX);
 }
 
 void CHeadBoss::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -93,32 +97,41 @@ void CHeadBoss::OnCollision(float deltaTime, std::vector<CGameObject*>* listObje
 
 	for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin(); it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
 	{
-		CGameObject* obj = *it;
-		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
-		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+		if (this->m_currentFrame > 2 && this->m_currentFrame < 8)
 		{
-			if (obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
+			CGameObject* obj = *it;
+			timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
+			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 			{
-				this->m_HP--;
-				it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
-				//
-				CBulletEffect* effect = CPoolingObject::GetInstance()->GetBulletEffect();
-				effect->SetAlive(true);
-				effect->SetPos(obj->GetPos());
+				if (obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
+				{
+					this->m_HP--;
+					it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+					//
+					CBulletEffect* effect = CPoolingObject::GetInstance()->GetBulletEffect();
+					effect->SetAlive(true);
+					effect->SetPos(obj->GetPos());
+				}
+				else
+					++it;
+
+				if (this->m_HP == 0)
+				{
+					// Gan trang thai die cho doi tuong
+					this->m_stateCurrent = STATE_HEAD_BOSS::SHB_IS_DIE;
+					//play sound
+					ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+					// Tang diem cua contra len
+					CContra::GetInstance()->IncreateScore(10000);
+				}
 			}
 			else
-				++it;
-
-			if (this->m_HP == 0)
 			{
-				// Gan trang thai die cho doi tuong
-				this->m_stateCurrent = STATE_HEAD_BOSS::SHB_IS_DIE;
+				++it;
 			}
 		}
 		else
-		{
 			++it;
-		}
 	}
 }
 
@@ -226,7 +239,7 @@ RECT* CHeadBoss::GetRectRS()
 
 Box CHeadBoss::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 120, this->m_height - 15);
+	return Box(this->m_pos.x, this->m_pos.y - 21, this->m_width - 120, this->m_height - 82);
 }
 CHeadBoss::~CHeadBoss()
 {

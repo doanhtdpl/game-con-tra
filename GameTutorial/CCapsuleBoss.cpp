@@ -4,6 +4,7 @@
 #include "CCamera.h"
 #include "CPoolingObject.h"
 #include "CBulletMechanicalAlien.h"
+#include "CManageAudio.h"
 
 CCapsuleBoss::CCapsuleBoss()
 {
@@ -56,13 +57,15 @@ void CCapsuleBoss::Init()
 	this->m_isShoot = false;
 	this->m_allowShoot = true;
 	this->m_time = 0;
+
+	this->m_layer = LAYER::ENEMY;
 }
 
 void CCapsuleBoss::Update(float deltaTime)
 {
 	if (this->m_isALive)
 	{
-		this->SetFrame(deltaTime);
+		this->SetFrame();
 		this->ChangeFrame(deltaTime);
 		this->MoveUpdate(deltaTime);
 	}
@@ -72,11 +75,14 @@ void CCapsuleBoss::Update(float deltaTime, std::vector<CGameObject*>* listObject
 {
 	if (this->m_isALive)
 	{
-		this->SetFrame(deltaTime);
+		this->SetFrame();
 		this->ChangeFrame(deltaTime);
 		this->MoveUpdate(deltaTime);
 		this->OnCollision(deltaTime, listObjectCollision);
 	}
+	else
+		//play sound
+		ManageAudio::GetInstance()->stopSound(TypeAudio::ENEMY_DEAD_SFX);
 }
 
 void CCapsuleBoss::MoveUpdate(float deltaTime)
@@ -142,18 +148,32 @@ void CCapsuleBoss::OnCollision(float deltaTime, std::vector<CGameObject*>* listO
 	for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin(); it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
 	{
 		CGameObject* obj = *it;
-		timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
-		if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+		if (obj->GetLayer() == LAYER::PLAYER)
 		{
-			// Gan trang thai die cho doi tuong
-			this->m_stateCurrent = CAPSULE_STATE::CAP_IS_DIE;
-			// Xoa vien dan ra khoi d.s
-			it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+			timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
+			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+			{
+				if (obj->IsAlive())
+				{
+					// Gan trang thai die cho doi tuong
+					this->m_stateCurrent = CAPSULE_STATE::CAP_IS_DIE;
+					//play sound
+					ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+					// Xoa vien dan ra khoi d.s
+					it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+				}
+				else
+				{
+					++it;
+				}
+			}
+			else
+			{
+				++it;
+			}
 		}
 		else
-		{
 			++it;
-		}
 	}
 
 	//xet va cham vs dat
@@ -179,7 +199,7 @@ void CCapsuleBoss::OnCollision(float deltaTime, std::vector<CGameObject*>* listO
 	}
 }
 
-void CCapsuleBoss::SetFrame(float deltaTime)
+void CCapsuleBoss::SetFrame()
 {
 	//Chuyen doi frame
 	switch (this->m_stateCurrent)
@@ -221,7 +241,7 @@ RECT* CCapsuleBoss::GetRectRS()
 
 Box CCapsuleBoss::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 4, this->m_height - 4);
 }
 CCapsuleBoss::~CCapsuleBoss()
 {

@@ -14,7 +14,7 @@ CStateMenu::~CStateMenu()
 
 void CStateMenu::Init()	
 {
-	this->mainMenu = new CMenuGame();
+	this->mainMenu = new CMenuGameScense();
 	this->mainMenu->SetPos(D3DXVECTOR2(this->mainMenu->GetWidth(), this->mainMenu->GetHeight() / 2));
 }
 

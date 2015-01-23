@@ -4,6 +4,7 @@
 #include "CCamera.h"
 #include "CCollision.h"
 #include "CPoolingObject.h"
+#include "CManageAudio.h"
 
 CScubaSolider::CScubaSolider(void)
 {
@@ -57,7 +58,7 @@ void CScubaSolider::Init()
 	this->m_waitForChangeSprite = 0.0f;
 
 	//khoi tao gia tri no
-	this->m_maxYRandom = this->m_pos.y + 195 + rand() % (101);
+	this->m_maxYRandom = this->m_pos.y + 190 + rand() % (101);
 }
 
 void CScubaSolider::Update(float deltaTime)
@@ -107,6 +108,10 @@ void CScubaSolider::OnCollision(float deltaTime, std::vector<CGameObject*>* list
 					effect->SetPos(this->m_pos);
 					this->m_isALive = false;
 					it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+					//Load sound die
+					ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+					// Tang diem cua contra len
+					CContra::GetInstance()->IncreateScore(1000);
 				}
 				else
 					++it;
@@ -156,9 +161,8 @@ void CScubaSolider::BulletUpdate(float deltaTime, std::vector<CGameObject*>* lis
 				CPoolingObject::GetInstance()->m_listBulletScubaSolider.clear();
 				//
 				CBullet_ScubaSolider* m_bullet_1 = new CBullet_ScubaSolider(PI / 2, this->m_pos, offset);
-				m_bullet_1->m_isContra = false;
 				m_bullet_1->SetAlive(true);
-				m_bullet_1->SetV(0.0f, 7.0f);
+				m_bullet_1->SetV(0.0f, 5.0f);
 				m_bullet_1->SetIsFirstBullet(true);
 				m_bullet_1->m_time = 0;
 
@@ -189,24 +193,21 @@ void CScubaSolider::BulletUpdate(float deltaTime, std::vector<CGameObject*>* lis
 
 					//Tao moi 3 vien dan kia
 					CBullet_ScubaSolider* m_bullet_2 = new CBullet_ScubaSolider(PI / 2, CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(0)->GetPos(), D3DXVECTOR2(0, 0));
-					m_bullet_2->m_isContra = false;
-					m_bullet_2->SetV(0.0f, -7.0f);
+					m_bullet_2->SetV(0.0f, -6.0f);
 					m_bullet_2->SetAlive(true);
 					m_bullet_2->SetIsFirstBullet(false);
 					m_bullet_2->SetLayer(LAYER::ENEMY);
 					m_bullet_2->m_time = 0;
 					//
 					CBullet_ScubaSolider* m_bullet_3 = new CBullet_ScubaSolider(PI / 6, CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(0)->GetPos(), D3DXVECTOR2(0, 0));
-					m_bullet_3->m_isContra = false;
-					m_bullet_3->SetV(3.0f, -15.50f);
+					m_bullet_3->SetV(3.0f, -14.50f);
 					m_bullet_3->SetAlive(true);
 					m_bullet_3->SetIsFirstBullet(false);
 					m_bullet_3->SetLayer(LAYER::ENEMY);
 					m_bullet_3->m_time = 0;
 
 					CBullet_ScubaSolider* m_bullet_4 = new CBullet_ScubaSolider(5 * PI / 6, CPoolingObject::GetInstance()->m_listBulletScubaSolider.at(0)->GetPos(), D3DXVECTOR2(0, 0));
-					m_bullet_4->m_isContra = false;
-					m_bullet_4->SetV(3.0f, -15.50f);
+					m_bullet_4->SetV(3.0f, -14.50f);
 					m_bullet_4->SetAlive(true);
 					m_bullet_4->SetIsFirstBullet(false);
 					m_bullet_4->SetLayer(LAYER::ENEMY);
@@ -323,7 +324,7 @@ RECT* CScubaSolider::GetRectRS()
 
 Box CScubaSolider::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height - 20, 0, 0);
+	return Box(this->m_pos.x, this->m_pos.y - 15, this->m_width, this->m_height - 32, 0, 0);
 }
 
 CScubaSolider::~CScubaSolider()

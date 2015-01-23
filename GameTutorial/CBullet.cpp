@@ -51,8 +51,8 @@ void CBullet::Init()
 	this->m_isMoveRight = true;
 	this->m_canJump = false;
 	this->m_jumpMax = 40.0f;
-	this->m_vxDefault = 100.0f;
-	this->m_vyDefault = 400.0f;
+	this->m_vxDefault = 60.0f;
+	this->m_vyDefault = 200.0f;
 
 	if(!this->m_left)
 	{

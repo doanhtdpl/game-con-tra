@@ -54,8 +54,8 @@ void CBullet_L::Init()
 	this->m_isMoveLeft = false;
 	this->m_isMoveRight = true;
 	this->m_canJump = false;
-	this->m_vxDefault = 250.0f;
-	this->m_vyDefault = 250.0f;
+	this->m_vxDefault = 200.0f;
+	this->m_vyDefault = 200.0f;
 	//Chuyen doi sprite
 	this->m_totalFrame = 11;
 	this->m_column = 1;
@@ -198,7 +198,7 @@ RECT* CBullet_L::GetBound()
 
 Box CBullet_L::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 4, this->m_height - 4, this->m_vx, this->m_vy);
 }
 
 int CBullet_L::getStateRotation()

@@ -1,5 +1,6 @@
 #include "CExplosionEffect.h"
 
+
 CExplosionEffect::CExplosionEffect() : CDynamicObject(){
 	this->Init();
 	this->m_pos = D3DXVECTOR2(0.0f, 0.0f);
@@ -53,7 +54,6 @@ void CExplosionEffect::ChangeFrame(float deltaTime)
 void CExplosionEffect::Update(float deltaTime)
 {
 	this->ChangeFrame(deltaTime);
-
 }
 
 void CExplosionEffect::Update(float deltaTime, std::vector<CGameObject*> _listObjectCollision){

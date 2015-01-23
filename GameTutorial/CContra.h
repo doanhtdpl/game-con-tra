@@ -81,8 +81,7 @@ public:
 	RECT* GetRectRS();
 protected:
 	void SetFrame(float deltaTime);
-	//int m_startFrame; //Frame bat dau
-	//int m_endFrame; //Frame ket thuc
+	bool m_isStadingInStone;//Dang dung tren cay cau da
 	bool m_isUnderWater; // Dang o duoi nuoc
 	bool m_isShoot; // Duoc phep ban
 	bool m_isShooting; //Dang ban
@@ -105,6 +104,8 @@ protected:
 	//Bien luu vi tri ban dau khi khoi tao contra
 	D3DXVECTOR2 m_posStart;
 	//
+	// Score
+	int m_scoreGame;
 public:
 	float m_currentFall; // Do cao hien tai
 	float m_currentJump;//
@@ -116,7 +117,6 @@ public:
 	float m_timeHiding;
 	//diem contra tai man hien tai & so mang cua contra
 	int m_countAlive;//mac dinh la 3 mang
-	int m_scoreCurrentMap;//mac dinh la 0
 	// Hieu ung no cay cau
 	bool m_bridgeEffect;
 	//Bien luu vi tri truoc khi chet
@@ -126,6 +126,14 @@ public:
 	void SetPosY(float posY){this->m_pos.y = posY;};
 	float GetPosY(){return this->m_pos.y;};
 	void Reset();
+	void SetScoreGame(int);
+	int GetScoreGame();
+	void IncreateScore(int);
+	//Bien const luu so mang contra
+	const int __ALIVE_CONTRA_MAX__ = 10;
+	//Bien luu da giet boss o man hien tai chua
+	bool m_isBossCurrentDie;
+	bool m_isDrawBoss;//Cho phep ve boss
 };
 
 #endif // !__CCONTRA_H__

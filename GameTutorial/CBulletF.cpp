@@ -72,15 +72,11 @@ void CBullet_F::Init()
 	}
 	if(!this->m_left)
 	{
-		//this->m_vx = this->m_vxDefault;
-		//this->m_a = 1000;
 		this->m_vx = this->m_vxDefault * cos(this->m_rotation);
 		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	}
 	else
 	{
-		//this->m_vx = -this->m_vxDefault;
-		//this->m_a = 1000;
 		this->m_vx = -this->m_vxDefault * cos(this->m_rotation);
 		this->m_vy = this->m_vyDefault * sin(this->m_rotation);
 	}
@@ -90,43 +86,13 @@ void CBullet_F::MoveUpdate(float deltaTime)
 {
 #pragma region __XET_TRANG_THAI_DAN__
 	
-	//this->m_vx = (this->m_vxDefault * cos(this->m_angle + PI + 1) + this->m_angle * 12);
-	//this->m_vy = (this->m_vyDefault * sin(this->m_angle + PI));
-	//this->m_pos.x += this->m_vx * deltaTime;
-	//this->m_pos.y += this->m_vy * deltaTime;
-
 	//Dung ban tra sin-cos
 	this->m_angle -= 0.45f;
 	this->m_pos.x = 30 * (cos(this->m_angle - PI)) + this->m_center.x;
 	this->m_pos.y = (30 * (sin(this->m_angle - PI)) + this->m_center.y);
 
-	//if(m_vx != 0) 
-	//{
-	//	if(this->m_vx > 0)
-	//	{
-	//		this->m_vx += this->m_a * deltaTime;
-	//	}
-	//	else
-	//	{
-	//		this->m_vx -= this->m_a * deltaTime;
-	//	}
-	//}
-	//if(m_vy != 0)
-	//{
-	//	if(this->m_vy > 0)
-	//	{
-	//		this->m_vy += this->m_a * deltaTime;
-	//	}
-	//	else
-	//	{
-	//		this->m_vy -= this->m_a * deltaTime;
-	//	}
-	//}
 	this->m_center.x += this->m_vx * deltaTime;
 	this->m_center.y += this->m_vy * deltaTime;
-
-	//this->m_angle += 0.01;
-
 #pragma endregion
 }
 void CBullet_F::Update(float deltaTime)
@@ -161,7 +127,7 @@ RECT* CBullet_F::GetBound()
 
 Box CBullet_F::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, this->m_vx, this->m_vy);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 2, this->m_height - 2, this->m_vx, this->m_vy);
 }
 
 CBullet_F::~CBullet_F()

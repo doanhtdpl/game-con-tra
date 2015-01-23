@@ -3,7 +3,7 @@
 
 #include "CStaticObject.h"
 #include "CAnimation.h"
-#include "CSniper.h"
+#include "CSniperBoss.h"
 #include "CDefenseCannonGun.h"
 #include "CDefenseCannonTurret.h"
 
@@ -38,7 +38,7 @@ public:
 	RECT* GetRectRS();
 	Box GetBox();
 	//
-	CSniper* sniper;
+	CSniperBoss* sniper;
 	CDefenseCannonGun* gunLeft;
 	CDefenseCannonGun* gunRight;
 	CDefenseCannonTurret* turrect;
@@ -47,7 +47,7 @@ protected:
 	void Init();
 	void BulletUpdate(float deltaTime);
 	DEFENSE_CANNON_STATE m_stateCurrent;
-	void SetFrame();
+	void SetFrame(float deltaTime);
 	//Tham so dung de test
 	int m_count;
 	float m_timeCreateExplosion; //Thoi gian sinh hieu ung tiep theo

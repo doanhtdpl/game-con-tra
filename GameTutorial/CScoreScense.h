@@ -3,56 +3,61 @@
 
 #include "CStaticObject.h"
 #include "CAnimation.h"
-#include "CWord.h"
+#include "CScense.h"
 #include "CChooseItem.h"
 
-class CScoreScense : public CStaticObject, public CAnimation
+#define __HightScore_Path__ "..\\Resource\\File\\BackGround\\HightScore.txt"
+
+class CScoreScense : public CScense
 {
 public:
+	CScoreScense();
 	CScoreScense(bool);
 	CScoreScense(const std::vector<int>& info);
-	~CScoreScense();
+	virtual ~CScoreScense(){};
 	std::string ClassName(){ return __CLASS_NAME__(CScoreScense); };
-	virtual void Update(float deltaTime);
-	virtual void Move(float deltaTime);
+	void Update(float deltaTime);
+	void Move(float deltaTime);
 	void Draw();
+	void Init();
 	void InitScore(int score);
 	void InitNameStage(int mapId);
 	void InitHightScore(int hightScore);
 	void InitCountAlive(int countAlive);
 	void InitStageNumber(int stageNumberCurrent);
-	int InitWord(char);
 	RECT* GetRectRS();
 protected:
-	void Init();
 	float m_timeDelay;
 	int m_ScoreMap;
+	int m_hightScore;
 	bool m_isScenseGameOver;//Cho biet la man diem qua man hay man hinh diem game over
+	bool m_isHided;
+	bool m_isPlaySoundGameOver;
 public:
 	//Choose item
 	CChooseItem* m_itemChoose;
 	//tao 1 dong word de luu va ve diem so
-	CWord** m_listNumberScore;
+	CWordItem** m_listNumberScore;
 	//List luu ten man
-	CWord** m_listWordStageName;
+	CWordItem** m_listWordStageName;
 	//Man thu n
-	CWord** m_listStageNumber;
+	CWordItem** m_listStageNumber;
 	//So man cua contra
-	CWord** m_listCountAliveNumber;
+	CWordItem** m_listCountAliveNumber;
 	//Hight Score cua game
-	CWord** m_listHightScoreNumber;
+	CWordItem** m_listHightScoreNumber;
 	//List luu label 'lP'//Score
-	CWord** m_listLPWord;
+	CWordItem** m_listLPWord;
 	//List luu label 'REST'//So mang
-	CWord** m_listRestWord;
+	CWordItem** m_listRestWord;
 	//List luu label 'HI'//Hight Score
-	CWord** m_listHIWord;
+	CWordItem** m_listHIWord;
 	//List luu label 'STAGE'//Man
-	CWord** m_listStageWord;
+	CWordItem** m_listStageWord;
 	//List luu Label "CONTINUE"
-	CWord** m_listContinueWord;
+	CWordItem** m_listContinueWord;
 	//List luu Label "END"
-	CWord** m_listEndWord;
+	CWordItem** m_listEndWord;
 	///
 	int lenghtNumberScore;//do dai cua diem
 	int lenghtWordStateName;//Do dai cua ten man
@@ -70,5 +75,6 @@ public:
 	{
 		return this->m_isScenseGameOver;
 	}
+	bool m_isReadFileHightScore;
 };
 #endif // !__CSCORE_SCENSE_H__

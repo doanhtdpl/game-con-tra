@@ -171,13 +171,6 @@ bool CCollision::AABBCheck(Box first, Box second, float& moveX, float& moveY, fl
 
 bool CCollision::AABBCheck(Box first, Box second)
 {
-	//return !(b1.x + b1.w < b2.x || b1.x > b2.x + b2.w || b1.y + b1.h < b2.y || b1.y > b2.y + b2.h);
-	/*
-	return !((second.x - second.w / 2) - (first.x + first.w / 2) > 0 || 
-		(second.x + second.w / 2) - (first.x - first.w / 2) < 0||
-		(second.y + second.h / 2) - (first.y - first.h / 2) < 0 ||
-		(second.y - second.h / 2) - (first.y + first.h / 2) > 0);
-		*/
    return !((first.x + first.w / 2 < second.x - second.w / 2)||
 			(first.x - first.w / 2) > (second.x + second.w / 2) ||
 			(first.y + first.h / 2) < (second.y - second.h / 2) || 
@@ -187,6 +180,10 @@ bool CCollision::AABBCheck(Box first, Box second)
 
 float CCollision::Collision(CGameObject* objectA, CGameObject* objectB, float& normalx, float& normaly, float& moveX, float& moveY, float deltaTime)
 {
+	if (objectA->GetBox().h < 0 || objectA->GetBox().w < 0)
+		int temp = 0;
+	if (objectB->GetBox().h < 0 || objectB->GetBox().w < 0)
+		int temp = 0;
 	Box first = objectA->GetBox();
 	Box second = objectB->GetBox();
 	Box broadphaseBox = this->GetSweptBroadphaseBox(first, deltaTime);

@@ -36,6 +36,7 @@ protected:
 	float m_timeDelay;
 	float m_timeDelayWaitShoot;
 	float m_timeDelayWaitChangePos;
+	float m_timeDelayShowWinner;
 	bool m_isShoot;
 public:
 	int m_bulletCount;//So luong vien dan da ban ra
@@ -44,11 +45,12 @@ public:
 	float m_spaceMoveCapsuleLeft;
 	float m_spaceMoveCapsuleRight;
 	float m_timeDelayShootBullet;
+
 	int m_countEffect;
 	bool m_isFirst;
+	bool m_isShowScenseScore;
 	//Ham set random vi tri cua boss
 	void resetPosOfBoss(float);
-	void resetPosOfBoss1(float);
 };
 
 #endif // !__CBIG_CAPSULE_BOSS_H__

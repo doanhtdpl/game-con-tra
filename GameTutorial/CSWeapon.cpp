@@ -155,7 +155,6 @@ void CSWeapon::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjec
 				bulletItem->SetAlive(true);
 				bulletItem->SetPos(this->m_pos);
 				bulletItem->m_stateItem = this->m_stateItem;
-
 			
 				this->m_isALive = false;
 			}

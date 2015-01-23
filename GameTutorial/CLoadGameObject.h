@@ -21,6 +21,7 @@ public:
 	void LoadReSourceFromFile();
 	void Update(float deltaTime);
 	void ChangeMap(const int& );
+	void Reset(const int&);
 protected:
 	//Luu danh sach doi tuong khi xen viewport
 
@@ -29,7 +30,7 @@ protected:
 	// Danh sach nay de ve doi tuong ra.
 	std::vector<CGameObject*>* m_listGameObject;
 
-	// D/s tat ca cac doi tuong trong map.
+	// D/s tat ca cac duong link chua file map.
 	std::hash_map<int, std::string>* m_listAllGameObject;
 	// hash map<stt cua man`, stt cua obj trong node, doi tuong game>
 
@@ -55,7 +56,7 @@ protected:
 	// TT
 	bool contains(std::vector<int> v, int x);
 
-
+	int count = 0;
 };
 
 #endif // !__CLOADGAMEOBJECT_H__

@@ -2,6 +2,8 @@
 #include "CCollision.h"
 #include "CContra.h"
 #include "CPoolingObject.h"
+#include "CStateGamePlay.h"
+#include "CManageAudio.h"
 
 CMechanicalAlien::CMechanicalAlien(void)
 {
@@ -47,7 +49,7 @@ void CMechanicalAlien::Init()
 	this->m_stateCurrent = STATE_MECHANICAL_ALIEN::SMA_IS_START;
 	//
 	this->m_timeDelay = 0.40f;
-	this->m_timeDelayStartBoss = 0.40f;
+	this->m_timeDelayStartBoss = 0.60f;
 	this->m_timeDelayEffect = 1.0f;
 
 	//Tao moi cac thanh phan boss
@@ -86,7 +88,8 @@ void CMechanicalAlien::Update(float deltaTime, std::vector<CGameObject*>* listOb
 				this->m_isEffect = true;
 				this->m_timeDelayEffect = 1.0f;
 			}
-			this->m_timeDelayEffect -= deltaTime;
+			else
+				this->m_timeDelayEffect -= deltaTime;
 			this->SetFrame(deltaTime);
 		}
 	}
@@ -104,7 +107,7 @@ void CMechanicalAlien::SetFrame(float deltaTime)
 											//Time delay 8 s rui ban dan
 											if (this->m_timeDelayStartBoss <= 0.0f)
 											{
-												this->m_timeDelayStartBoss = 0.40f;
+												this->m_timeDelayStartBoss = 0.60f;
 												this->m_stateCurrent = STATE_MECHANICAL_ALIEN::SMA_IS_NORMAL;
 											}
 											else
@@ -122,6 +125,8 @@ void CMechanicalAlien::SetFrame(float deltaTime)
 											this->m_currentFrame = 2;
 											this->m_startFrame = 2;
 											this->m_endFrame = 2;
+											//Load sound boss die
+											ManageAudio::GetInstance()->playSound(TypeAudio::BOSS_DEAD_SFX);
 
 											if (this->m_countEffect <= 14)
 											{
@@ -181,7 +186,26 @@ void CMechanicalAlien::SetFrame(float deltaTime)
 												this->m_countEffect++;
 											}
 											else
-												this->m_isDie = false;
+											{
+												//Cho 1 thoi gian
+												if (this->m_timeDelay <= 0)
+												{ 
+													this->m_timeDelay = 0.40f;
+													this->m_isDie = false;
+													//Dung load sound boss die
+													ManageAudio::GetInstance()->stopSound(TypeAudio::BOSS_DEAD_SFX);
+													//
+													//gan cho bien hien thi mann hinh diem qua man
+													if (!CScenseManagement::m_isWinScenseShowed)
+														CContra::GetInstance()->m_isBossCurrentDie = true;
+													else
+														this->m_isALive = false;
+												}
+												else
+												{
+													this->m_timeDelay -= deltaTime;
+												}
+											}
 											}
 											 break;
 	}

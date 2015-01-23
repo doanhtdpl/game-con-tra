@@ -3,7 +3,7 @@
 #include "CTexture.h"
 #include "CCamera.h"
 #include "CHidenObject.h"
-#include "CBulletL.h"
+#include "CContra.h"
 #include "CDefenseCannon.h"
 #include "CBridgeFire.h"
 #include "CBigCapsule.h"
@@ -24,11 +24,6 @@ void CDrawObject::Draw(CGameObject* obj)
 		{
 			int typeObject = obj->GetIDType();
 			int idObject = obj->GetID();
-
-			if (typeObject == 16 && idObject == 4)
-			{
-				int x = 0;
-			}
 
 			//Kiem tra xem Id cua doi tuong no co hop le hay khong
 			if (typeObject > 0)
@@ -54,9 +49,6 @@ void CDrawObject::Draw(CGameObject* obj)
 				if (texture && this->m_draw)
 				{
 					D3DXVECTOR3 posObj(obj->GetPos().x, obj->GetPos().y, 0);
-					//D3DXVECTOR2 posCenter;
-					//posCenter.x = posObj.x + obj->GetWidth() / 2;
-					//posCenter.y = posObj.y + obj->GetHeight() / 2;
 					D3DXVECTOR3 posObjAfterTransform = CCamera::GetInstance()->GetPointTransform(posObj.x, posObj.y);
 					//Ve theo huong cua Object
 
@@ -92,19 +84,22 @@ void CDrawObject::Draw(CGameObject* obj)
 					}
 					else
 					{
-						//RECT* rect = new RECT();
-						//rect->left = 0;
-						//rect->right = 64;
-						//rect->top = 0;
-						//rect->bottom = 64;
-						//D3DXVECTOR3 posofBox = CCamera::GetInstance()->GetPointTransform(obj->GetBox().x, obj->GetBox().y);
-						//CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
-						//this->m_draw->drawScale(text,
-						//	rect, posofBox,
-						//	D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
-						//	D3DCOLOR_XRGB(255, 255, 255), true);
+						//if (obj->GetIDType() != 50)
+						//{
+
+						//	RECT* rect = new RECT();
+						//	rect->left = 0;
+						//	rect->right = 64;
+						//	rect->top = 0;
+						//	rect->bottom = 64;
+						//	D3DXVECTOR3 posofBox = CCamera::GetInstance()->GetPointTransform(obj->GetBox().x, obj->GetBox().y);
+						//	CTexture* text = CManagementTexture::GetInstance()->GetTextureByID(1, 15);
+						//	this->m_draw->drawScale(text,
+						//		rect, posofBox,
+						//		D3DXVECTOR2(obj->GetBox().w / text->GetImageWidth(), obj->GetBox().h / text->GetImageHeight())/* D3DXVECTOR2(0.5,0.5)*/,
+						//		D3DCOLOR_XRGB(255, 255, 255), true);
 						//}
-						////sang test
+						//sang test
 						if (!obj->GetDirection())
 						{
 							this->m_draw->draw(texture, obj->GetRectRS(), posObjAfterTransform, D3DCOLOR_XRGB(255, 255, 255), true);
@@ -153,48 +148,50 @@ void CDrawObject::Draw(CGameObject* obj)
 				// k co box cho nong sung, sao no va cham :D=
 				if (typeObject == 17)
 				{
-					switch (idObject)
+					if (CContra::GetInstance()->m_isDrawBoss)
 					{
-					case 1://Boss map 1
+						switch (idObject)
 						{
-							CDefenseCannon* objDef = ((CDefenseCannon*)obj);
-							//ve boss
-							//Ve spiner
-							if (objDef->sniper->IsAlive())
-								CDrawObject::GetInstance()->Draw(objDef->sniper);
-							//
-							//ve u sung
-							if (objDef->turrect->IsAlive())
-							{
-								CDrawObject::GetInstance()->Draw(objDef->turrect);
-							}
-							//
-							if (objDef->gunLeft->IsAlive())
-								CDrawObject::GetInstance()->Draw(objDef->gunLeft);
-							if (objDef->gunRight->IsAlive())
-								CDrawObject::GetInstance()->Draw(objDef->gunRight);
+						case 1://Boss map 1
+						{
+								   CDefenseCannon* objDef = ((CDefenseCannon*)obj);
+								   //ve boss
+								   //Ve spiner
+								   if (objDef->sniper->IsAlive())
+									   CDrawObject::GetInstance()->Draw(objDef->sniper);
+								   //
+								   //ve u sung
+								   if (objDef->turrect->IsAlive())
+								   {
+									   CDrawObject::GetInstance()->Draw(objDef->turrect);
+								   }
+								   //
+								   if (objDef->gunLeft->IsAlive())
+									   CDrawObject::GetInstance()->Draw(objDef->gunLeft);
+								   if (objDef->gunRight->IsAlive())
+									   CDrawObject::GetInstance()->Draw(objDef->gunRight);
+								   break;
+						}
+						case 5://Boss map 2
+						{
+								   CMechanicalAlien* objMec = ((CMechanicalAlien*)obj);
+								   //ve boss
+								   //Ve dau boss
+								   if (objMec->m_Head->IsAlive())
+									   CDrawObject::GetInstance()->Draw(objMec->m_Head);
+								   //
+								   //ve tay ben trai
+								   if (objMec->m_ArmLeft->IsAlive())
+									   objMec->m_ArmLeft->Draw();
+								   //Ve tay ben phai
+								   if (objMec->m_ArmRight->IsAlive())
+									   objMec->m_ArmRight->Draw();
+								   break;
+						}
+						default:
 							break;
 						}
-					case 5://Boss map 2
-					{
-							   CMechanicalAlien* objMec = ((CMechanicalAlien*)obj);
-							   //ve boss
-							   //Ve dau boss
-							   if (objMec->m_Head->IsAlive())
-								   CDrawObject::GetInstance()->Draw(objMec->m_Head);
-							   //
-							   //ve tay ben trai
-							   if (objMec->m_ArmLeft->IsAlive())
-								   objMec->m_ArmLeft->Draw();
-							   //Ve tay ben phai
-							   if (objMec->m_ArmRight->IsAlive())
-								   objMec->m_ArmRight->Draw();  
-							   break;
 					}
-					default:
-						break;
-					}
-
 				}
 			}
 

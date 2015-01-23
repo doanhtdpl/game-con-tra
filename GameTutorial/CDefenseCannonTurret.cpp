@@ -4,6 +4,7 @@
 #include "CCamera.h"
 #include "CPoolingObject.h"
 #include "CCollision.h"
+#include "CManageAudio.h"
 
 CDefenseCannonTurret::CDefenseCannonTurret(void)
 {
@@ -68,6 +69,9 @@ void CDefenseCannonTurret::Update(float deltaTime, std::vector<CGameObject*>* li
 		this->ChangeFrame(deltaTime);
 		this->OnCollision(deltaTime, listObjectCollision);
 	}
+	else
+		//play sound
+		ManageAudio::GetInstance()->stopSound(TypeAudio::ENEMY_DEAD_SFX);
 }
 
 void CDefenseCannonTurret::OnCollision(float deltaTime, std::vector<CGameObject*>* listObjectCollision)
@@ -100,6 +104,10 @@ void CDefenseCannonTurret::OnCollision(float deltaTime, std::vector<CGameObject*
 			{
 				// Gan trang thai die cho doi tuong
 				this->m_stateCurrent = DC_TURRECT_STATE::DC_TURRECT_IS_DIE;
+				//play sound
+				ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+				// Tang diem cua contra len
+				CContra::GetInstance()->IncreateScore(10000);
 			}
 		}
 		else
@@ -121,7 +129,7 @@ void CDefenseCannonTurret::SetFrame()
 			break;
 		}
 	case DC_TURRECT_STATE::DC_TURRECT_IS_DIE:
-		{
+	{
 			CExplosionEffect* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
 			effect->SetAlive(true);
 			effect->SetPos(D3DXVECTOR2(this->m_pos.x, this->m_pos.y));
@@ -143,7 +151,7 @@ RECT* CDefenseCannonTurret::GetRectRS()
 
 Box CDefenseCannonTurret::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 4, this->m_height - 4, 0, 0);
 }
 
 CDefenseCannonTurret::~CDefenseCannonTurret()

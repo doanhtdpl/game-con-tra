@@ -4,6 +4,8 @@
 #include "CCamera.h"
 #include "CPoolingObject.h"
 #include "CBulletCapsule.h"
+#include "CStateGamePlay.h"
+#include "CManageAudio.h"
 
 CBigCapsule::CBigCapsule()
 {
@@ -45,7 +47,7 @@ void CBigCapsule::Init()
 	this->m_column = 13;
 	this->m_startFrame = 0;
 	this->m_endFrame = 0;
-	this->m_stateCurrent = BIG_CAPSULE_STATE::BIG_CAP_IS_START;
+	this->m_stateCurrent = BIG_CAPSULE_STATE::BIG_CAP_IS_HIDEN;
 	//Khoi gan gia tri di chuyen
 	this->m_vxDefault = 50.0f;
 	this->m_vyDefault = 50.0f;
@@ -57,15 +59,17 @@ void CBigCapsule::Init()
 	this->m_timeDelayWaitShoot = 1.20f;
 	this->m_timeDelayWaitChangePos = 2.0f;
 	this->m_timeDelayShootBullet = 0.90f;
-	this->m_HP = 20;
+	this->m_timeDelayShowWinner = 0.0f;
+	this->m_HP = 30;
 	//
 	this->m_isShoot = false;
 	this->m_allowShoot = true;
+	this->m_isShowScenseScore = false;
 	this->m_time = 0;
 	this->m_bulletCount = 0;
 	this->m_CapsuleCount = 0;
 	this->m_countEffect = 0;
-	this->m_spaceMoveCapsuleLeft = 200.0f;
+	this->m_spaceMoveCapsuleLeft = 150.0f;
 	this->m_spaceMoveCapsuleRight = 150.0f;
 }
 
@@ -95,30 +99,25 @@ void CBigCapsule::BulletUpdate(float deltaTime, std::vector<CGameObject*>* listO
 	// Kiem tra, neu Gun alive thi tao dan, nguoc lai chi update ma thoi.
 	if (this->IsAlive())
 	{
-#pragma region THIET LAP TRANG THAI BAN
-#pragma endregion
-
-#pragma region KHOI TAO MOT VIEN DAN THEO HUONG
+	#pragma region KHOI TAO MOT VIEN DAN THEO HUONG
 		D3DXVECTOR2 offset;
 		offset.x = 0.0f;
 		offset.y = 23.0f;
-#pragma endregion
+	#pragma endregion
 
 #pragma region THIET LAP TOC DO DAN
 
 		if (this->m_isShoot)
 		{
-			if (m_bulletCount >= 1)
+			if (m_bulletCount > 0)
 			{
 				this->m_bulletCount = 0;
 				this->m_isShoot = false;
 			}
-#pragma region THIET LAP GOC BAN
-#pragma endregion
+
 			if (this->m_timeDelayShootBullet >= 0.90f)
 			{
 				CBullet_Capsule* bullet = new CBullet_Capsule(-PI / 2, this->m_pos, offset, this->m_left);
-				bullet->SetLayer(LAYER::ENEMY);
 				CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 				this->m_timeDelayShootBullet = 0;
 				m_bulletCount++;
@@ -133,7 +132,7 @@ void CBigCapsule::BulletUpdate(float deltaTime, std::vector<CGameObject*>* listO
 void CBigCapsule::MoveUpdate(float deltaTime)
 {
 #pragma region RamDom vi tri cua boss khi hiden
-	this->resetPosOfBoss1(deltaTime);
+	this->resetPosOfBoss(deltaTime);
 #pragma endregion
 }
 
@@ -150,31 +149,53 @@ void CBigCapsule::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 		for (std::vector<CBullet*>::iterator it = CPoolingObject::GetInstance()->m_listBulletOfObject.begin(); it != CPoolingObject::GetInstance()->m_listBulletOfObject.end();)
 		{
 			CGameObject* obj = *it;
-			timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
-			if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
+			if (obj->GetLayer() == LAYER::PLAYER)
 			{
-				if (obj->IsAlive() && obj->GetLayer() == LAYER::PLAYER)
+				timeCollision = CCollision::GetInstance()->Collision(obj, this, normalX, normalY, moveX, moveY, deltaTime);
+				if ((timeCollision > 0.0f && timeCollision < 1.0f) || timeCollision == 2.0f)
 				{
-					this->m_HP--;
-					it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+					if (obj->IsAlive())
+					{
+						this->m_HP--;
 
-					CBulletEffect* effect = CPoolingObject::GetInstance()->GetBulletEffect();
-					effect->SetAlive(true);
-					effect->SetPos(obj->GetPos());
+						CBulletEffect* effect = CPoolingObject::GetInstance()->GetBulletEffect();
+						effect->SetAlive(true);
+						effect->SetPos(obj->GetPos());
+
+						it = CPoolingObject::GetInstance()->m_listBulletOfObject.erase(it);
+					}
+					else
+						++it;
+
+					if (this->m_HP == 0)
+					{
+						// Gan trang thai die cho doi tuong
+						this->m_stateCurrent = BIG_CAPSULE_STATE::BIG_CAP_IS_DIE;
+						//Cho cac capsule chet theo
+						for (std::vector<CCapsuleBoss*>::iterator it = CPoolingObject::GetInstance()->m_listCapsuleBoss.begin();
+							it != CPoolingObject::GetInstance()->m_listCapsuleBoss.end();
+							++it)
+						{
+							CCapsuleBoss* obj = *it;
+							if (obj != NULL && obj->IsAlive())
+							{
+								obj->SetAlive(false);
+								obj->m_stateCurrent = CAPSULE_STATE::CAP_IS_DIE;
+								//obj->SetFrame(deltaTime);
+							}
+
+						}
+						// Tang diem cua contra len
+						CContra::GetInstance()->IncreateScore(15000);
+					}
 				}
 				else
-					++it;
-
-				if (this->m_HP == 0)
 				{
-					// Gan trang thai die cho doi tuong
-					this->m_stateCurrent = BIG_CAPSULE_STATE::BIG_CAP_IS_DIE;
+					++it;
 				}
 			}
 			else
-			{
 				++it;
-			}
 		}
 	}
 }
@@ -190,7 +211,6 @@ void CBigCapsule::SetFrame(float deltaTime)
 			//
 			this->m_startFrame = 1;
 			this->m_endFrame = 6;
-			this->m_isShoot = true;
 			//Time delay 2 s rui ban dan
 			if (this->m_timeDelayWaitShoot <= 0.0f)
 			{
@@ -206,10 +226,10 @@ void CBigCapsule::SetFrame(float deltaTime)
 			this->m_increase = 1;
 			this->m_startFrame = 6;
 			this->m_endFrame = 12;
-			this->m_isShoot = true;
 			if (this->m_currentFrame == 12)
 			{
 				this->m_increase = 0;
+				this->m_isShoot = true;
 				if (this->m_CapsuleCount == 8)
 				{
 					this->m_increase = 1;
@@ -220,6 +240,8 @@ void CBigCapsule::SetFrame(float deltaTime)
 				//Time delay 2 s sinh ra capsule
 				if (this->m_timeDelay <= 0.0f)
 				{
+					//Load sound
+					ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_ATTACKED_SFX);
 					this->m_timeDelay = 0.40f;
 					CCapsuleBoss* capsule = CPoolingObject::GetInstance()->GetCapsuleBoss();
 					capsule->Init();
@@ -250,6 +272,7 @@ void CBigCapsule::SetFrame(float deltaTime)
 			this->m_increase = -1;
 			this->m_startFrame = 6;
 			this->m_endFrame = 12;
+			this->m_isShoot = false;
 			break;
 		}
 		case BIG_CAPSULE_STATE::BIG_CAP_IS_HIDEN:
@@ -257,12 +280,14 @@ void CBigCapsule::SetFrame(float deltaTime)
 			this->m_increase = 1;
 			this->m_startFrame = 0;
 			this->m_endFrame = 0;
+			this->m_isShoot = false;
 			break;
 		}
 		case BIG_CAPSULE_STATE::BIG_CAP_IS_DIE:
 		{
 			CCapsuleBoss* capsule = CPoolingObject::GetInstance()->GetCapsuleBoss();
 			capsule->m_stateCurrent = CAPSULE_STATE::CAP_IS_DIE;
+			capsule->SetFrame();
 
 			if (this->m_countEffect <= 5)
 			{
@@ -293,8 +318,17 @@ void CBigCapsule::SetFrame(float deltaTime)
 				this->m_countEffect++;
 			}
 			else
-				this->m_isALive = false;
-
+			{
+				if (!CScenseManagement::m_isWinScenseShowed)
+				{
+					//gan cho bien hien thi mann hinh diem qua man
+					//CContra::GetInstance()->m_isBossCurrentDie = true;
+					CScenseManagement::m_isWinScenseShowed = true;
+					CScenseManagement::m_isGameWinner = true;
+				}
+				else
+					this->m_isALive = false;
+			}
 			break;
 		}
 	}
@@ -312,76 +346,14 @@ RECT* CBigCapsule::GetRectRS()
 
 Box CBigCapsule::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 20, this->m_height - 56);
 }
 CBigCapsule::~CBigCapsule()
 {
 
 }
-
-//y tuong of sang
-void CBigCapsule::resetPosOfBoss(float deltaTime)
-{
-	switch (this->m_stateCurrent)
-	{
-		case BIG_CAPSULE_STATE::BIG_CAP_IS_HIDEN:
-		{
-			if (this->m_currentFrame == 0)
-			{
-				//Time delay 2 s rui ban dan
-				if (this->m_timeDelayWaitChangePos <= 0.0f)
-				{
-					this->m_timeDelayWaitChangePos = 1.80f;
-					//vi tri
-					int temp = rand() % 4;
-					int temp1 = rand() % 3;
-					D3DXVECTOR2 pos1 = D3DXVECTOR2(200, 350);
-					D3DXVECTOR2 pos;
-					if (!this->m_isFirst)
-					{
-						pos = D3DXVECTOR2(pos1.x + temp * 60, pos1.y);
-						this->m_isFirst = true;
-					}
-					else
-					{
-						pos = D3DXVECTOR2(pos1.x + temp * 60, pos1.y + temp1 * 30);
-					}
-					/*D3DXVECTOR2 pos = listOffSet[temp];*/
-					if (this->m_pos != pos)
-						this->m_pos = pos;
-
-					//Vung di chuyen cua may con boss nho
-					switch (temp)
-					{
-					case 0:
-						this->m_spaceMoveCapsuleRight = 250;
-						this->m_spaceMoveCapsuleLeft = 50;
-						break;
-					case 1:
-						this->m_spaceMoveCapsuleRight = 180;
-						this->m_spaceMoveCapsuleLeft = 180;
-						break;
-					case 3:
-						this->m_spaceMoveCapsuleRight = 50;
-						this->m_spaceMoveCapsuleLeft = 200;
-						break;
-					default:
-						break;
-					}
-
-					this->m_stateCurrent = BIG_CAPSULE_STATE::BIG_CAP_IS_START;
-				}
-				else
-					this->m_timeDelayWaitChangePos -= deltaTime;
-			}
-			break;
-		}
-		default:
-			break;
-	}
-}
 //tinh
-void CBigCapsule::resetPosOfBoss1(float deltaTime)
+void CBigCapsule::resetPosOfBoss(float deltaTime)
 {
 	//Khoi tao danh sach cac vi tri cua boss
 	D3DXVECTOR2 listOffSet[3][4] = { { D3DXVECTOR2(9779, 266), D3DXVECTOR2(9774, 346), D3DXVECTOR2(9782, 299), D3DXVECTOR2(9827, 291) },

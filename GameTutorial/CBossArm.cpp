@@ -2,6 +2,7 @@
 #include "CDrawObject.h"
 #include "CContra.h"
 #include "CPoolingObject.h"
+#include "CManageAudio.h"
 
 CBossArm::CBossArm(D3DXVECTOR2 posOfBoss, bool isArmLeft)
 {
@@ -65,6 +66,9 @@ void CBossArm::Update(float deltaTime, std::vector<CGameObject*>* listObjectColl
 		this->subArms[i]->Update(deltaTime, listObjectCollision);
 		if (!this->subArms[i]->IsAlive() && this->m_stateCurrent != BOSS_ARM_STATE::BAS_IS_POPUP)
 		{
+			//play sound
+			ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+			//
 			this->m_isALive = false;
 			CExplosionEffect* effect = CPoolingObject::GetInstance()->GetExplosionEffect();
 			effect->SetAlive(true);
@@ -90,10 +94,16 @@ void CBossArm::Update(float deltaTime, std::vector<CGameObject*>* listObjectColl
 			effect4->SetAlive(true);
 			effect4->SetPos(this->subArms[4]->GetPos());
 			this->subArms[4]->SetAlive(false);
+
+			// Tang diem cua contra len
+			CContra::GetInstance()->IncreateScore(2000);
 		}
 	}
 	if (this->m_isALive)
 		this->MoveUpdate(deltaTime, listObjectCollision);
+	else
+		//play sound
+		ManageAudio::GetInstance()->stopSound(TypeAudio::ENEMY_DEAD_SFX);
 }
 
 void CBossArm::MoveUpdate(float deltaTime, std::vector<CGameObject*>* listObjectCollision)

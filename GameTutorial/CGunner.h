@@ -8,7 +8,8 @@
 enum GUNNER_STATE
 {
 	GN_IS_NORMAL = 0,
-	GN_IS_DIE = 1
+	GN_IS_SHOOTTING = 1,
+	GN_IS_DIE = 2
 };
 
 class CGunner : public CStaticObject, public CAnimation

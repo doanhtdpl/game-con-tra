@@ -5,6 +5,7 @@
 #include "CCollision.h"
 #include "CPoolingObject.h"
 #include "CEnemyEffect.h"
+#include "CManageAudio.h"
 
 CGroundCanon::CGroundCanon(void)
 {
@@ -73,12 +74,12 @@ void CGroundCanon::Update(float deltaTime, std::vector<CGameObject*>* listObject
 {
 	if (this->m_isALive)
 	{
-		if(abs(this->m_pos.x - CContra::GetInstance()->GetPos().x) >  250)
-		{
-			this->MoveDown(deltaTime);
-		}
-		else
-		{
+		//if(abs(this->m_pos.x - CContra::GetInstance()->GetPos().x) >  250)
+		//{
+		//	//this->MoveDown(deltaTime);
+		//}
+		//else
+		//{
 			if(abs(this->m_pos.x - CContra::GetInstance()->GetPos().x) <=  250)
 			{
 				this->m_moveUpComplete = true;
@@ -90,7 +91,7 @@ void CGroundCanon::Update(float deltaTime, std::vector<CGameObject*>* listObject
 				this->MoveUp(deltaTime);
 				this->OnCollision(deltaTime, listObjectCollision);
 			}
-		}
+		//}
 		
 	}
 }
@@ -125,6 +126,10 @@ void CGroundCanon::OnCollision(float deltaTime, std::vector<CGameObject*>* listO
 			{
 				// Gan trang thai die cho doi tuong
 				this->m_stateCurrent = GROUNDCANON_SHOOT_STATE::G_IS_SHOOTING_DIE;
+				//Load sound die
+				ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+				// Tang diem cua contra len
+				CContra::GetInstance()->IncreateScore(300);
 			}
 		}
 		else

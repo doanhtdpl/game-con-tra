@@ -5,6 +5,7 @@
 #include "CCollision.h"
 #include "CPoolingObject.h"
 #include "CEnemyEffect.h"
+#include "CManageAudio.h"
 
 CWallTurret::CWallTurret(void)
 {
@@ -40,7 +41,7 @@ void CWallTurret::Init()
 	//Khoi tao cac thong so chuyen doi sprite
 	this->m_currentTime = 0;
 	this->m_currentFrame = 0;
-	this->m_elapseTimeChangeFrame = 0.4f;
+	this->m_elapseTimeChangeFrame = 0.35f;
 	this->m_increase = 1;
 	this->m_totalFrame = 42;
 	this->m_column = 6;
@@ -49,7 +50,8 @@ void CWallTurret::Init()
 	this->m_stateCurrent = WALLTURRET_SHOOT_STATE::W_IS_SHOOTING_START;
 	//Test
 	this->m_bulletCount = 0;
-	this->m_timeDelay = 0.5f;
+	this->m_timeDelay = 1.20f;
+	this->m_waitForShoot = 0.0f;
 
 	this->m_IsCre = false;
 	this->m_direction = false;
@@ -111,6 +113,10 @@ void CWallTurret::OnCollision(float deltaTime, std::vector<CGameObject*>* listOb
 			{
 				// Gan trang thai die cho doi tuong
 				this->m_stateCurrent = WALLTURRET_SHOOT_STATE::W_IS_DIE;
+				//Load sound die
+				ManageAudio::GetInstance()->playSound(TypeAudio::ENEMY_DEAD_SFX);
+				// Tang diem cua contra len
+				CContra::GetInstance()->IncreateScore(500);
 			}
 		}
 		else
@@ -362,12 +368,13 @@ void CWallTurret::BulletUpdate(float deltaTime)
 		{
 			//Goc cua vien dan da duoc chinh san
 			//Chuyen ve toa do goc phan tu 1 - 2
-			if(m_bulletCount > 2)
+			if (m_bulletCount > 2)
 			{
 				this->m_bulletCount = 0;
+				this->m_isShoot = true;
 			}
 
-			if(this->m_timeDelay > 1.5f)
+			if (this->m_timeDelay > 1.2f)
 			{
 				temp = this->m_direction ? temp : PI - temp;
 				CBullet_N* bullet = new CBullet_N(temp, this->m_pos, offset, !this->m_direction);
@@ -494,7 +501,7 @@ RECT* CWallTurret::GetRectRS()
 
 Box CWallTurret::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 10, this->m_height - 10, 0, 0);
 }
 
 CWallTurret::~CWallTurret()

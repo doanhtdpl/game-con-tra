@@ -143,7 +143,7 @@ RECT* CBullet_DefenseCannon::GetBound()
 
 Box CBullet_DefenseCannon::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 2, this->m_height - 2, 0, 0);
 }
 
 CBullet_DefenseCannon::~CBullet_DefenseCannon()

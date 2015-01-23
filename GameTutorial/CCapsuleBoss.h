@@ -18,7 +18,7 @@ public:
 	CCapsuleBoss(const std::vector<int>& info);
 	~CCapsuleBoss();
 	std::string ClassName(){ return __CLASS_NAME__(CCapsuleBoss); };
-	virtual void SetFrame(float deltaTime);
+	virtual void SetFrame();
 	virtual void Update(float deltaTime);
 	virtual void Update(float deltaTime, std::vector<CGameObject*>* listObjectCollision);
 	virtual void MoveUpdate(float deltaTime);

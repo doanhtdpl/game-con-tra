@@ -3,12 +3,10 @@
 #include "CState.h"
 #include <iostream>
 #include "CContra.h"
-#include "CDynamicObject.h"
-#include "CSubArm.h"
-#include "CBossArm.h"
-#include "CLifeItem.h"
 #include "CGameOverItem.h"
 #include "CScoreScense.h"
+#include "CWinScense.h"
+#include "CScenseManagement.h"
 
 class CStateGamePlay : public CState
 {
@@ -22,9 +20,7 @@ public:
 	void Destroy();
 public:
 	int m_mapId;
-	CGameOverItem* m_gameOverItem;
-	CScoreScense* m_scoreScense;
-	bool m_isGameOverred = false;
+	CScenseManagement* m_scenseManager;
 };
 
 #endif // !__CStateGamePlay_H__

@@ -53,6 +53,7 @@ void CBullet_ScubaSolider::Init()
 	this->m_time = 0;
 	//
 	this->m_pos += this->m_offset; //Vi tri cua vien dan
+	this->SetLayer(LAYER::ENEMY);
 }
 
 void CBullet_ScubaSolider::MoveUpdate(float deltaTime)
@@ -63,7 +64,7 @@ void CBullet_ScubaSolider::MoveUpdate(float deltaTime)
 
 	//xet van toc cho vx
 	this->m_pos.x += this->m_vxDefault * cos(this->m_rotation) * m_time;
-	this->m_pos.y += 3.0f + this->m_vyDefault * sin(this->m_rotation) * m_time - this->m_a * m_time*m_time / 2;
+	this->m_pos.y += 3.50f + this->m_vyDefault * sin(this->m_rotation) * m_time - this->m_a * m_time*m_time / 2;
 #pragma endregion
 
 }
@@ -94,7 +95,7 @@ void CBullet_ScubaSolider::OnCollision(float deltaTime, std::vector<CGameObject*
 	std::vector<CGameObject*>::iterator it;
 
 	// kiem tra co phai la vien dan dau tien hay k
-	if (!this->m_isFirstBullet || this->m_vy < 0)
+	if (!this->m_isFirstBullet)
 	{
 		for (it = listObjectCollision->begin();
 			it != listObjectCollision->end(); ++it)
@@ -108,12 +109,15 @@ void CBullet_ScubaSolider::OnCollision(float deltaTime, std::vector<CGameObject*
 				{
 					if (normalY > 0)
 					{
-						// Gan trang thai die cho doi tuong
-						CGameObject* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
-						effect->SetAlive(true);
-						effect->SetPos(this->m_pos);
+						if (this->m_vy <= 0)
+						{
+							// Gan trang thai die cho doi tuong
+							CGameObject* effect = CPoolingObject::GetInstance()->GetEnemyEffect();
+							effect->SetAlive(true);
+							effect->SetPos(this->m_pos);
 
-						this->SetAlive(false);
+							this->SetAlive(false);
+						}
 					}
 				}
 			}
@@ -138,7 +142,7 @@ RECT* CBullet_ScubaSolider::GetBound()
 
 Box CBullet_ScubaSolider::GetBox()
 {
-	return Box(this->m_pos.x, this->m_pos.y, this->m_width, this->m_height, 0, 0);
+	return Box(this->m_pos.x, this->m_pos.y, this->m_width - 4, this->m_height - 4, 0, 0);
 }
 
 CBullet_ScubaSolider::~CBullet_ScubaSolider()

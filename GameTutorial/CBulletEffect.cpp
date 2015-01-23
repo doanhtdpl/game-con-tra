@@ -20,8 +20,8 @@ void CBulletEffect::Init(){
 	this->m_width = 14.0f;//56.0f; //78
 	this->m_height = 14.0f; //88.0f; //84
 	//Chuyen doi sprite
-	this->m_totalFrame = 2;
-	this->m_column = 2;
+	this->m_totalFrame = 1;
+	this->m_column = 1;
 	this->m_elapseTimeChangeFrame = 0.3f;
 	this->m_currentTime = 0;
 	this->m_increase = 1;
@@ -34,11 +34,11 @@ void CBulletEffect::ChangeFrame(float deltaTime)
 	if (this->m_currentTime > this->m_elapseTimeChangeFrame)
 	{
 		this->m_currentFrame += this->m_increase;
-		if (this->m_currentFrame >= 3){
+		if (this->m_currentFrame >= 0){
 			this->m_currentFrame = 0;
 			this->m_isALive = false;
 		}
-		if (this->m_currentFrame > 3 || this->m_currentFrame < 0)
+		if (this->m_currentFrame > 0 || this->m_currentFrame < 0)
 		{
 			this->m_currentFrame = 0;
 		}
