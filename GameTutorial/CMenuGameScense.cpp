@@ -60,6 +60,8 @@ void CMenuGameScense::Init()
 	this->m_isChoosePlay = false;
 	this->m_isCanShowScoreScense = false;
 	this->m_isHided = false;
+	//Tao moi man hinh diem ban dau cho chac an
+	this->m_scoreScense = new CScoreScense(false);
 }
 
 void CMenuGameScense::Update(float deltaTime)
@@ -96,7 +98,7 @@ void CMenuGameScense::Update(float deltaTime)
 			{
 				this->m_timeDelay = 2.0f;
 				CStateManagement::GetInstance()->ChangeState(new CStateGamePlay(this->m_mapId));
-				delete this->m_scoreScense;//co the bo
+				//delete this->m_scoreScense;//co the bo
 				this->m_isCanShowScoreScense = false;//node co the bo
 			}
 			this->m_timeDelay -= deltaTime;
@@ -132,8 +134,8 @@ void CMenuGameScense::Move(float deltaTime)
 					CLoadGameObject::GetInstance()->LoadReSourceFromFile();
 					//
 					this->m_isChoosePlay = true;
-					//Tao moi man hinh score
-					this->m_scoreScense = new CScoreScense(false);
+					////Tao moi man hinh score
+					//this->m_scoreScense = new CScoreScense(false);
 				}
 			}
 			else
