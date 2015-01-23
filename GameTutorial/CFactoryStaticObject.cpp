@@ -52,6 +52,7 @@ CGameObject* CFactoryStaticObject::CreateObject(const std::vector<int>& info)
 		case 15012://Create BigStone
 		case 15013://Create Bullet Laze
 		case 15014://Hidden ve Bullet laze
+		case 15015://Hidden ko cho contra di qua da
 		case 14002: //Dan F
 		case 14003: //Dan L
 		case 14004: //Dan M
