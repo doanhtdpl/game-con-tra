@@ -30,12 +30,15 @@ CContra::CContra()
 	{
 		case 10:
 			this->m_pos = D3DXVECTOR2(100.0f, 400.0f);
+			ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
 			break;
 		case 11:
-			this->m_pos = D3DXVECTOR2(120.0f, 1300.0f);
+			this->m_pos = D3DXVECTOR2(120.0f, 300.0f);
+			ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_3);
 			break;
 		case 12:
 			this->m_pos = D3DXVECTOR2(100.0f, 450.0f);
+			ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_5);
 			break;
 	}
 	this->m_posStart = this->m_pos;
@@ -185,6 +188,7 @@ void CContra::MoveUpdate(float deltaTime)
 								this->m_isHiding = true;
 								CScenseManagement::m_isWinScenseShowed = true;
 								CMenuGameScense::m_mapId++;
+								this->m_countAlive++;
 								//CContra::GetInstance()->Reset();
 								//CStateManagement::GetInstance()->ChangeState(new CStateGamePlay(CMenuGameScense::m_mapId));
 								//CLoadGameObject::GetInstance()->ChangeMap(CMenuGameScense::m_mapId);
@@ -224,6 +228,7 @@ void CContra::MoveUpdate(float deltaTime)
 								this->m_isHiding = true;
 								CScenseManagement::m_isWinScenseShowed = true;
 								CMenuGameScense::m_mapId++;
+								this->m_countAlive++;
 							}
 							else
 							{
@@ -267,6 +272,7 @@ void CContra::MoveUpdate(float deltaTime)
 								CScenseManagement::m_isWinScenseShowed = true;
 								this->m_isBossCurrentDie = false;
 								CMenuGameScense::m_mapId++;
+								this->m_countAlive++;
 							}
 							else
 							{
@@ -559,10 +565,12 @@ void CContra::InputUpdate(float deltaTime)
 	this->m_waitForShoot += deltaTime;
 	if(m_keyDown == DIK_C)
 	{
-		if(this->m_waitForShoot > 0.1f)
+		if (this->m_currentFrame != 48)
 		{
-			switch (this->m_typeBullet)
+			if (this->m_waitForShoot > 0.1f)
 			{
+				switch (this->m_typeBullet)
+				{
 				case STATE_BULLET_ITEM::BULLET_ITEM_N:
 					ManageAudio::GetInstance()->playSound(TypeAudio::BULLET_N);
 					break;
@@ -578,13 +586,14 @@ void CContra::InputUpdate(float deltaTime)
 				case STATE_BULLET_ITEM::BULLET_ITEM_S:
 					ManageAudio::GetInstance()->playSound(TypeAudio::BULLET_S);
 					break;
-			default:
-				ManageAudio::GetInstance()->playSound(TypeAudio::BULLET_N);
-				break;
+				default:
+					ManageAudio::GetInstance()->playSound(TypeAudio::BULLET_N);
+					break;
+				}
+				this->m_isShoot = true;
+				this->m_isShooting = true;
+				this->m_waitForShoot = 0.0f;
 			}
-			this->m_isShoot = true;
-			this->m_isShooting = true;
-			this->m_waitForShoot = 0.0f;
 		}
 	}
 #pragma endregion
@@ -811,6 +820,10 @@ void CContra::InputUpdate(float deltaTime)
 			//Tang toc do dan len
 			CPoolingObject::m_isContraHaveBulletItemR = true;
 		}
+		else if (CInput::GetInstance()->IsKeyDown(DIK_B))
+		{
+			this->m_isHiding = true;
+		}
 	#pragma endregion
 }
 //Kiem tra co tao ra dan hay ko, sau nay add vao quadtree no se tu dong di chuyen
@@ -907,7 +920,9 @@ void CContra::BulletUpdate(float deltaTime)
 							offset.y = -25.0f;
 						}
 						break;
-
+					case STATE_BULLET_ITEM::BULLET_ITEM_B:
+						this->m_isHiding = true;
+						break;
 					default:
 					{
 						if (!this->m_left){
@@ -1318,21 +1333,24 @@ void CContra::BulletUpdate(float deltaTime)
 					CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bulletS->m_bullet_5);
 					break;
 				}
+			case STATE_BULLET_ITEM::BULLET_ITEM_B:
+				this->m_isHiding = true;
+				break;
 			default:
 				{
 					if (this->m_isShoot)
 					{
-						if (m_bulletCount > 0)
+						/*if (m_bulletCount > 0)
 						{
 							this->m_bulletCount = 0;
 							this->m_isShoot = false;
 						}
-						else{
+						else{*/
 							bullet = new CBullet_N(rotation, this->m_pos, offset, this->m_left);
 							bullet->SetLayer(LAYER::PLAYER);
 							CPoolingObject::GetInstance()->m_listBulletOfObject.push_back(bullet);
 							m_bulletCount++;
-						}
+					//
 					}
 					break;
 				}
@@ -1414,6 +1432,8 @@ void CContra::Update(float deltaTime)
 					this->m_isALive = true;
 					this->m_isDie = false;
 					this->m_currentFrame = 0;
+					this->m_isStadingInStone = false;
+					this->m_isUnderWater = false;
 					this->m_stateCurrent = ON_GROUND::IS_JOGGING;
 					//set lai vi tri contra
 					switch (CMenuGameScense::m_mapId)
@@ -2096,6 +2116,20 @@ void CContra::OnCollision(float deltaTime, std::vector<CGameObject*>* listObject
 					#pragma endregion
 					//TT
 				}
+				#pragma region VA CHAM VOI BE THANG DUNG CUA DA O MAP 5
+					if ((obj->GetID() == 15 && obj->GetIDType() == 15) && !checkColWithGround)
+					{
+						this->m_allowFall = false;
+						checkColWithGround = true;
+						this->m_isUnderWater = false;
+						this->m_vx = 0;
+						if (this->m_left)
+							this->m_pos.x = obj->GetPos().x + (obj->GetWidth() / 3);
+						else
+							this->m_pos.x = obj->GetPos().x - (obj->GetWidth() / 3);
+					}
+				#pragma endregion
+
 				#pragma region VA CHAM VS CAY CAU NO
 							else if (obj->GetIDType() == 15 && obj->GetID() == 5)
 							{
@@ -2298,16 +2332,26 @@ void CContra::Reset()
 		CScenseManagement::m_isWinScenseShowed = false;
 		this->m_vx = 0;
 		this->m_vy = -this->m_vyDefault;
+		//Set vi tri contra theo map
 		switch (CMenuGameScense::m_mapId)
 		{
 		case 10:
 			this->m_pos = D3DXVECTOR2(100.0f, 400.0f);
+			ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
+			ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_STATE_3);
+			ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_STATE_5);
 			break;
 		case 11:
 			this->m_pos = D3DXVECTOR2(120.0f, 300.0f);
+			ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_3);
+			ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
+			ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_STATE_5);
 			break;
 		case 12:
 			this->m_pos = D3DXVECTOR2(100.0f, 450.0f);
+			ManageAudio::GetInstance()->playSound(TypeAudio::AUDIO_BACKGROUND_STATE_5);
+			ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_STATE_3);
+			ManageAudio::GetInstance()->stopSound(TypeAudio::AUDIO_BACKGROUND_STATE_1);
 			break;
 		}
 		this->m_posStart = this->m_pos;

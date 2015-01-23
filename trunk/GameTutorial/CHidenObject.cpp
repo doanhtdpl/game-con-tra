@@ -80,6 +80,9 @@ CHidenObject::CHidenObject(const std::vector<int>& info) : CStaticObject()
 		case 15014:
 			this->m_type = HIDEN_OBJECT_TYPE::H_BULLET_LAZE;
 			break;
+		case 15015:
+			this->m_type = HIDEN_OBJECT_TYPE::NO_OVER_STONE;
+			break;
 		default:
 			break;
 		}

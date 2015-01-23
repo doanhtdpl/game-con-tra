@@ -160,7 +160,7 @@ void CScoreScense::Init()
 
 void CScoreScense::Update(float deltaTime)
 {
-	//Am thanh
+	#pragma region Am thanh
 	switch (CMenuGameScense::m_mapId)
 	{
 		case 10:
@@ -178,7 +178,7 @@ void CScoreScense::Update(float deltaTime)
 		default:
 			break;
 	}
-	
+	#pragma endregion
 	//
 	#pragma region SU KIEN BAN PHIM
 	if (this->m_isScenseGameOver)

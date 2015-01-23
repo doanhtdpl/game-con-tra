@@ -180,10 +180,6 @@ bool CCollision::AABBCheck(Box first, Box second)
 
 float CCollision::Collision(CGameObject* objectA, CGameObject* objectB, float& normalx, float& normaly, float& moveX, float& moveY, float deltaTime)
 {
-	if (objectA->GetBox().h < 0 || objectA->GetBox().w < 0)
-		int temp = 0;
-	if (objectB->GetBox().h < 0 || objectB->GetBox().w < 0)
-		int temp = 0;
 	Box first = objectA->GetBox();
 	Box second = objectB->GetBox();
 	Box broadphaseBox = this->GetSweptBroadphaseBox(first, deltaTime);

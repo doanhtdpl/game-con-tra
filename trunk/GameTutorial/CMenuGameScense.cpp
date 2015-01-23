@@ -7,7 +7,7 @@
 #include "CLoadGameObject.h"
 #include "CManageAudio.h"
 
-int CMenuGameScense::m_mapId = 10;
+int CMenuGameScense::m_mapId = 11;
 
 CMenuGameScense::CMenuGameScense(void)
 {
@@ -66,7 +66,6 @@ void CMenuGameScense::Init()
 
 void CMenuGameScense::Update(float deltaTime)
 {
-	//this->ChangeFrame(deltaTime);
 	this->Move(deltaTime);
 	//update am thanh
 	if (this->m_isMoveComplete && !this->m_isPlaySoundMenu)
